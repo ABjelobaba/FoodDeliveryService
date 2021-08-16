@@ -1,32 +1,47 @@
-Vue.component("restaurants",{
+Vue.component("restaurants", {
     data: function() {
-        return {     
-            restaurants: null  
+        return {
+            mode: "logIn"
         }
-    
+
     },
-    
+
     template: `
-    <section class="restaurants">
-    <h1> Restorani u ponudi</h1>
-    <p></p>
-    <div class="row">
-        <div class="restaurants-col" v-for="r in restaurants">
-            <img src="images/kfc.jpg">
-            <h3>{{r.name}}</h3>
-            <p>Piletina, Burgeri, Americka hrana</p>
+    <section class="header">
+
+    
+        
+        <div class="modal" >
+        <div class="tab">
+                <h1 v-on:click="mode = 'logIn'">Uloguj se</h1>
+                <h1 v-on:click="mode = 'register'">Registruj se</h1>
+            </div>
+            <div v-bind:hidden="mode == 'register'">
+                <label >
+                    <h3>Korisnicko ime:</h3>
+                    <input type="text"></input>
+                </label>
+                <label >
+                    <h3>Lozinka:</h3>
+                    <input type="text"></input>
+                    <button class="hero-btn1">Prijavi se</button>
+                </label>
+            </div>
+
+            <div v-bind:hidden="mode == 'logIn'">
+                <label >
+                    <h3>Korisnicko ime:</h3>
+                    <input type="text"></input>
+                </label>
+                <label >
+                    <h3>Lozinka:</h3>
+                    <input type="text"></input>
+                    <button class="hero-btn1">Prijavi se</button>
+                </label>
+            </div>
         </div>
-        <div class="restaurants-col">
-            <img src="images/mcdonalds.png">
-            <h3>McDonald's</h3>
-            <p>Burgeri, Americka hrana, Poslastice</p>
-        </div>
-        <div class="restaurants-col">
-            <img src="images/burgerhouse.jpg">
-            <h3>Burger House</h3>
-            <p>Burgeri, Americka hrana, Rostilj</p>
-        </div>
-    </div>
-</section>
+
+       
+    </section>	
             `
 })

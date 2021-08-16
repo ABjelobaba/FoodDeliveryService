@@ -1,11 +1,11 @@
-Vue.component("logIn",{
+Vue.component("logIn", {
     data: function() {
-        return {     
+        return {
             mode: "logIn"
         }
-    
+
     },
-    
+
     template: `
     <section class="header">
 

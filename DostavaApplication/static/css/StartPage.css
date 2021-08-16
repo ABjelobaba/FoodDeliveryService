@@ -1,12 +1,18 @@
 @charset "UTF-8";
-
-body{
-	margin: 0;
+body {
+    margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
 }
 
 .home-img {
-	display:block;
+    display: block;
     font-size: 14px;
     background: #ffffff;
     width: 100%;
@@ -17,60 +23,59 @@ body{
     margin: 0 auto;
     background-size: cover;
     background-attachment: scroll;
-    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)), url(../images/background.jpg);   
+    background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(../images/background.jpg);
 }
-
 
 .main-window {
     width: 100%;
     height: 100vh;
 }
 
-.logo-img{
-  	width: 7cm;
-	float: left;
-	padding-top: 2mm;
+.logo-img {
+    width: 7cm;
+    float: left;
+    padding-top: 2mm;
 }
 
-.navigation-area{
-  width: 100%;
-  top: 0;
-  height: 50px;
-  border-bottom: #fff;
-  background: rgba(44,53,63,1);
+.navigation-area {
+    width: 100%;
+    top: 0;
+    height: 50px;
+    border-bottom: #fff;
+    background: rgba(44, 53, 63, 1);
 }
 
-.nav-navbar {    
-  list-style-type : none;
-  margin : 0;
-  padding : 0;
-  width: 100%;
-  height: 100%;
-  overflow : auto;
-  background: rgba(44,53,63,1);
+.nav-navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: rgba(44, 53, 63, 1);
 }
 
 .menu {
-  height: 100%;
-  float: left;
+    height: 100%;
+    float: left;
 }
 
 .menu a {
-  color: white;
-  height: 100%;
-  text-align: center;
-  padding: 12px 13px;
-  text-decoration: none;
-  font-size: 17px;
+    color: white;
+    height: 100%;
+    text-align: center;
+    padding: 12px 13px;
+    text-decoration: none;
+    font-size: 17px;
 }
 
 .menu a:hover {
- 	background: white;
+    background: white;
     transition: 0.5s;
     color: black;
 }
 
-.btn{
+.btn {
     display: inline-block;
     text-decoration: none;
     color: white;
@@ -84,48 +89,49 @@ body{
     cursor: pointer;
 }
 
-.btn:hover{
+.btn:hover {
     background: white;
     transition: 0.5s;
     color: black;
 }
 
-.greet{
-	color: white;
-	text-align: center;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
-	width: 100%;
+.greet {
+    color: white;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 }
 
-.greet h1{
-	font-size: 62px;
+.greet h1 {
+    font-size: 62px;
 }
 
-.address{
-	box-shadow: 10px 20px 20px 0 rgba(0,0,0,0.5);
-	margin: 0 280px;
-	border: outset;
-	border-width: 2px;
+.address {
+    box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.5);
+    margin: 0 280px;
+    border: outset;
+    border-width: 2px;
 }
 
-.address p{
-	margin: 0 30px 20px;
-	text-align: left;
+.address p {
+    margin: 0 30px 20px;
+    text-align: left;
 }
 
-.search{
+.search {
     margin: 0 10px;
-	width: 100%;
-	display: flex;
+    width: 100%;
+    display: flex;
+    align-items: center;
 }
 
-.search input{ 
-	width: 100%;
+.search input {
+    width: 100%;
     position: relative;
-    margin: 0 30px 0 0;
+    margin: 0 30px 0 15px;
     font-size: 20px;
     background: transparent;
     border-bottom-style: ridge;
@@ -133,71 +139,180 @@ body{
     border-width: 0 0 1px 0;
 }
 
-.search button{
-	margin: 0 30px 0 0;
+.search button {
+    margin: 0 30px 0 0;
+}
+
+.content {
+    width: 100%;
+    display: flex;
 }
 
 
-.content{
-	width: 100%;	
-	display: flex;
+/*--register--*/
+
+.register {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(44, 53, 63, 0.5);
+    position: fixed;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
 }
 
-.restaurant-types{
-	width: 30%;
-    box-shadow: 4px 10px 20px 0 rgb(0 0 0 / 20%);
-    margin: 30px;
+.modal {
+    width: 500px;
+    height: auto;
+    background: rgba(44, 53, 63, 1);
+    border-radius: 10px;
     text-align: center;
+    padding: 20px;
+    position: relative;
 }
+
+.tab {
+    display: flex;
+    border-bottom: 1px solid rgba(109, 93, 93, 0.4);
+}
+
+.tab button {
+    font-size: 17px;
+    display: inline-flexbox;
+    cursor: pointer;
+    background-color: transparent;
+    border-width: 0;
+    text-align: center;
+    width: 100%;
+    color: #fff;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.tab button:hover {
+    background: linear-gradient(rgba(44, 53, 63, 1), rgba(44, 53, 63, 1), rgba(44, 53, 63, 1), rgba(44, 53, 63, 1), rgba(255, 255, 255, 1));
+    transition: 0.5s;
+}
+
+.login-title {
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+.login-inputs {
+    display: block;
+    margin: 15px auto 0 auto;
+    background-color: transparent;
+    width: 50%;
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-color: white;
+    padding: 2px 20px;
+    color: white;
+    font-size: 17px;
+}
+
+.login-inputs-select {
+    display: block;
+    margin: 15px auto 0 auto;
+    background-color: transparent;
+    width: 58%;
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-color: white;
+    padding: 2px 16px;
+    color: white;
+    font-size: 17px;
+}
+
+.login-inputs-select option {
+    background-color: rgba(44, 53, 63, 1);
+    color: white;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 15px;
+    font-size: 40px;
+    transform: rotate(45deg);
+    cursor: pointer;
+    color: white;
+}
+
+.error {
+    color: red;
+    display: block;
+}
+
+
 /*-----restaurants----*/
-.restaurants{
+
+.restaurant-types {
+    width: 100%;
+    box-shadow: 4px 10px 20px 0 rgb(0 0 0 / 20%);
+    text-align: left;
+    height: auto;
+    padding-bottom: 10px;
+}
+
+.chechbox_types {
+    margin: 20px;
+    font-size: 17px;
+}
+
+.restaurants {
     width: 80%;
     margin: auto;
     text-align: center;
     padding-top: 100px;
+    padding-right: 30px;
 }
-.restaurants h1{
+
+.restaurants h1 {
     margin: 50px 0 50px 0;
 }
-.restaurants-col{
-	display: flex;
+
+.restaurants-col {
+    display: flex;
     border-radius: 10px;
     margin-bottom: 5%;
     text-align: left;
     background: #4f2f2f30;
 }
 
-.restaurants-col img{
+.restaurants-col img {
     width: 30%;
     border-radius: 10px;
 }
 
-.restaurants-col p{
+.restaurants-col p {
     color: #777;
     padding: 0;
 }
-.restaurants-col h3{
+
+.restaurants-col h3 {
     margin-top: 16px;
     margin-bottom: 15px;
     text-align: left;
 }
 
-.restaurant-info{
-	margin: 0 0 0 20px;
+.restaurant-info {
+    margin: 0 0 0 20px;
 }
 
-.closed-restaurant{
-	background: darkgray;
+.closed-restaurant {
+    background: darkgray;
     text-align: center;
     border-radius: 10px;
 }
 
-.restaurants input{
-	width: 100%;
+.restaurants input {
+    width: 100%;
 }
 
-
-.black-btn{
+.black-btn {
     display: inline-block;
     text-decoration: none;
     color: black;
@@ -211,7 +326,7 @@ body{
     cursor: pointer;
 }
 
-.black-btn:hover{
+.black-btn:hover {
     background: black;
     transition: 0.5s;
     color: white;
