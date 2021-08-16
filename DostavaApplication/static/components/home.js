@@ -31,7 +31,7 @@ Vue.component("home", {
 					<div class="search">
 						<i class="fa fa-search fa-lg"></i>
 						<input style="color: white" v-model="deliveryAddress" type="text">
-						<button v-on:click="order" class="btn">Pretraži</button>
+						<button v-on:click="order" class="log-btn">Pretraži</button>
 					</div>
 					<label id="addressErr">Knez Mihajlova 7, Beograd</label>
 				</div>
@@ -188,7 +188,7 @@ Vue.component("home", {
 							<input type="date" class="login-inputs" style="margin-top: 1px;" id="date_input">
 							<label class="error" id="dateErr" name="labels" display="hidden"> </label>
 	
-							<button v-on:click="registerUser" style="margin: 20px 10px" class="btn"> Potvrdi</button>
+							<button v-on:click="registerUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
 						</form>
 					</div>
 				</div>
@@ -206,7 +206,7 @@ Vue.component("home", {
 							<input v-model="passwordLogIn" type="password" class="login-inputs" placeholder="Lozinka">
 							<label class="error" id="passwordLogInErr" name="labels" display="hidden"> </label>
 	
-							<button v-on:click="logInUser" style="margin: 20px 10px" class="btn"> Potvrdi</button>
+							<button v-on:click="logInUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
 						</form>
 					</div>
 				</div>
@@ -218,6 +218,9 @@ Vue.component("home", {
 
 	</div>
 	`,
+    mounted() {
+        window.scrollTo(0, 0);
+    },
 
     methods: {
         register: function(event) {
@@ -287,7 +290,7 @@ Vue.component("home", {
         },
         order: function(event) {
             if (this.deliveryAddress.match(/[\p{Letter}\s]+ [0-9]+,[\p{Letter}\s]+/gu)) {
-                window.location.href = "#/restaurants?" + this.deliveryAddress.replace(',', ' ');
+                window.location.href = "#/restaurants?" + this.deliveryAddress;
             } else {
                 document.getElementById('addressErr').innerHTML = "Adresa mora biti u obliku 'Knez Mihajlova 7, Beograd'!";
                 document.getElementById('addressErr').style.color = 'red';
