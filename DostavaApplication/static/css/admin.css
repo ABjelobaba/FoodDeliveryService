@@ -1,0 +1,17 @@
+.user-nav ul {
+    list-style: none;
+    display: flex;
+    float: left;
+    vertical-align: bottom;
+    margin-top: 80px;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.user-nav ul li a {
+    text-decoration: solid;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin: 0 10px;
+}
