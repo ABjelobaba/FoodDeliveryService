@@ -1,131 +1,96 @@
 Vue.component("admin-profile", {
     data: function() {
-        return {}
+        return {
+            name: 'Lea',
+            surname: 'Kalmar',
+            username: 'lea_kalmar',
+            gender: 'ŽENSKO',
+            oldPassword: '',
+            newPassword: ''
+        }
     },
-
     template: `
-	<div>
+<div>
 
-		<div class="content">
-        
-			<div class="left-side-div">
-				<button class="black-btn" style="font-size: 17px; border-width: 2px;">+ Novi restoran</button>
+    <div class="content">
 
-				<div class="restaurant-types">
-					<h2 style="text-align: center;" >Kuhinje</h2>
-					<div class="chechbox_types">
-						<div>
-							<input type="checkbox" id="italian" name="cuisine" value="italian">
-							<label for="italian">Italijanska</label>
-						</div>
-						<div>
-							<input type="checkbox" id="chinese" name="cuisine" value="chinese">
-							<label for="chinese">Kineska</label>
-						</div>
-						<div>
-							<input type="checkbox" id="barbecue" name="cuisine" value="barbecue">
-							<label for="barbecue">Rostilj</label>
-						</div>
-						<div>
-							<input type="checkbox" id="american" name="cuisine" value="american">
-							<label for="american">Americka hrana</label>
-						</div>
-						<div>
-							<input type="checkbox" id="sweets" name="cuisine" value="sweets">
-							<label for="sweets">Poslastice</label>
-						</div>
-					</div>
-					<h2 style="text-align: center;" >Ocene</h2>
-					<div class="chechbox_types">
-						<div>
-							<input type="checkbox" id="one" name="stars" value="one">
-							<label for="one">1</label>
-						</div>
-						<div>
-							<input type="checkbox" id="two" name="stars" value="two">
-							<label for="two">2</label>
-						</div>
-						<div>
-							<input type="checkbox" id="three" name="stars" value="three">
-							<label for="three">3</label>
-						</div>
-						<div>
-							<input type="checkbox" id="four" name="stars" value="four">
-							<label for="four">4</label>
-						</div>
-						<div>
-							<input type="checkbox" id="five" name="stars" value="five">
-							<label for="five">5</label>
-						</div>
-					</div>
-				</div>
-			</div>
+        <div class="left-side-div">
+            <div class="restaurant-types">
+                <img class="user-img" src="images/user-img.png">
+                <h2 style="text-align: center; margin:0">Lea Kalmar</h2>
+            </div>
+        </div>
 
-			<div class="restaurants">
-				<div class="search">
-					<i class="fa fa-search"></i>
-					<input type="text" placeholder="Unesi naziv restorana..">
-					<button class="black-btn">Pretraži</button>
-				</div>
-				<h1> Restorani u ponudi</h1>
-				<p></p>
+        <div style="width:100%">
+            <div class="user-info">
+                <h3>Vaši podaci</h3>
+                <form>
 
-				<div class="restaurants-col">
-					<img src="images/kfc.jpg">
-					<div class="restaurant-info">
-						<h3>KFC</h3>
-						<p>Piletina, Burgeri, Americka hrana</p>
-						<div class="closed-restaurant"><span>Zatvoren objekat</span></div>
-					</div>
+                    <div class="inputs-div">
+                        <label class="input-label">Ime:</label>
+                        <input v-model="name" type="text" class="profile-change-input">
+                        <label class="error" id="nameErr" name="labels" display="hidden"> </label>
+                    </div>
+                    <div class="inputs-div">
+                        <label class="input-label">Prezime:</label>
+                        <input v-model="surname" type="text" class="profile-change-input" placeholder="Prezime">
+                        <label class="error" id="surnameErr" name="labels" display="hidden"> </label>
+                    </div>
+                    <div class="inputs-div">
+                        <label class="input-label">Korisnicko ime:</label>
+                        <input disabled v-model="username" type="text" class="profile-change-disabled" placeholder="Korisničko ime">
+                    </div>
+                    <div class="inputs-div">
+                        <label class="input-label">Pol:</label>
+                        <select v-model="gender" class="profile-change-select">
+                                <option hidden>Odaberite pol..</option>
+                                <option>MUŠKO</option>
+                                <option>ŽENSKO</option>
+                            </select>
+                        <label class="error" id="genderErr" name="labels" display="hidden"> </label>
+                    </div>
+                    <div class="inputs-div">
+                        <label class="input-label">Datum rođenja:</label>
+                        <input type="date" class="profile-change-input" style="margin-top: 1px;" id="date_input">
+                        <label class="error" id="dateErr" name="labels" display="hidden"> </label>
+                    </div>
 
-				</div>
-				<div class="restaurants-col">
-					<img src="images/mcdonalds.png">
-					<div class="restaurant-info">
-						<h3>McDonald's</h3>
-						<p>Burgeri, Americka hrana, Poslastice</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
+                    <button style=" margin: 20px 10px 10px 50px;width:280px" class="black-btn"> Potvrdi</button>
+                </form>
 
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
+            </div>
 
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
+            <div class="user-info">
+                <h3>Promena lozinke</h3>
+                <form>
 
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
+                    <div class="inputs-div">
+                        <label class="input-label">Trenutna lozinka:</label>
+                        <input v-model="oldPassword" type="password" class="profile-change-input" placeholder="Lozinka">
+                        <label class="error" id="passwordErr" name="labels" display="hidden"> </label>
+                    </div>
 
-			</div>
-		</div>
-	</div>
-	`,
+                    <div class="inputs-div">
+                        <label class="input-label">Nova lozinka:</label>
+                        <input v-model="newPassword" type="password" class="profile-change-input" placeholder="Lozinka">
+                        <label class="error" id="passwordErr" name="labels" display="hidden"> </label>
+                    </div>
+
+                    <label style="display: block;margin:15px 0 0 50px;;color:grey">Vaša lozinka mora biti 
+                        najmanje 8 znakova <br>duga  i sadržati najmanje jedan broj, jedno <br> veliko i jedno malo slovo.</label>
+
+
+                    <button style="margin: 20px 10px 10px 50px;width:280px" class="black-btn"> Potvrdi</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+`,
     mounted() {
         window.scrollTo(0, 0);
     },
-
     methods: {
         logOut: function(event) {
             window.location.href = "/#/"
