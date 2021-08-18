@@ -39,7 +39,7 @@ Vue.component("home", {
 		</div>
 
 		<div class="content">
-			<div style="margin: 30px; width:30%">
+			<div class="float-left-div">
 				<div class="restaurant-types">
 					<h2 style="text-align: center;" >Kuhinje</h2>
 					<div class="chechbox_types">

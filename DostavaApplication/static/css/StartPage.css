@@ -13,6 +13,8 @@ select:focus {
 
 .home-img {
     display: block;
+    position: relative;
+    z-index: -1;
     font-size: 14px;
     background: #ffffff;
     width: 100%;
@@ -42,6 +44,7 @@ select:focus {
 .navigation-area {
     width: 100%;
     top: 0;
+    position: sticky;
     height: 80px;
     border-bottom: #fff;
     background: rgba(44, 53, 63, 1);
@@ -94,11 +97,12 @@ select:focus {
 .greet {
     color: white;
     text-align: center;
-    position: absolute;
+    position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
+    z-index: -1;
 }
 
 .greet h1 {
@@ -107,9 +111,11 @@ select:focus {
 
 .address {
     box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.5);
-    margin: 0 280px;
+    margin: 0 auto;
     border: outset;
     border-width: 2px;
+    min-width: 300px;
+    max-width: 800px;
 }
 
 .address p {
@@ -122,6 +128,8 @@ select:focus {
     width: 100%;
     display: flex;
     align-items: center;
+    z-index: -1;
+    position: relative;
 }
 
 .search input {
@@ -141,7 +149,9 @@ select:focus {
 
 .content {
     width: 100%;
-    display: flex;
+    display: grid;
+    grid: auto/ 30% 1fr;
+    grid-gap: 0 2em;
 }
 
 
@@ -250,6 +260,17 @@ select:focus {
     flex-direction: column;
     margin: 30px;
     width: 30%
+}
+
+.float-left-div {
+    margin: 30px;
+    width: 100%;
+    grid-column: 1;
+    position: sticky;
+    top: 100px;
+    text-align: right;
+    align-self: start;
+    z-index: -1;
 }
 
 .restaurant-types {
