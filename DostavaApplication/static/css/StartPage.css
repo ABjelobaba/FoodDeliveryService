@@ -14,7 +14,6 @@ select:focus {
 .home-img {
     display: block;
     position: relative;
-    z-index: -1;
     font-size: 14px;
     background: #ffffff;
     width: 100%;
@@ -48,6 +47,7 @@ select:focus {
     height: 80px;
     border-bottom: #fff;
     background: rgba(44, 53, 63, 1);
+    z-index: 1;
 }
 
 .nav-navbar {
@@ -102,7 +102,6 @@ select:focus {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    z-index: -1;
 }
 
 .greet h1 {
@@ -128,7 +127,6 @@ select:focus {
     width: 100%;
     display: flex;
     align-items: center;
-    z-index: -1;
     position: relative;
 }
 
@@ -150,7 +148,7 @@ select:focus {
 .content {
     width: 100%;
     display: grid;
-    grid: auto/ 30% 1fr;
+    grid: auto/ 25% 1fr;
     grid-gap: 0 2em;
 }
 
@@ -270,7 +268,6 @@ select:focus {
     top: 100px;
     text-align: right;
     align-self: start;
-    z-index: -1;
 }
 
 .restaurant-types {

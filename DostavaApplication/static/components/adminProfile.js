@@ -14,7 +14,7 @@ Vue.component("admin-profile", {
 
     <div class="content">
 
-        <div class="left-side-div">
+        <div class="float-left-div" style="position:relative; top:0;">
             <div class="restaurant-types">
                 <img class="user-img" src="images/user-img.png">
                 <h2 style="text-align: center; margin:0">Lea Kalmar</h2>
@@ -55,7 +55,7 @@ Vue.component("admin-profile", {
                         <label class="error" id="dateErr" name="labels" display="hidden"> </label>
                     </div>
 
-                    <button style=" margin: 20px 10px 10px 50px;width:280px" class="black-btn"> Potvrdi</button>
+                    <button style=" margin: 20px auto;width:280px" class="black-btn"> Potvrdi</button>
                 </form>
 
             </div>
@@ -76,11 +76,11 @@ Vue.component("admin-profile", {
                         <label class="error" id="passwordErr" name="labels" display="hidden"> </label>
                     </div>
 
-                    <label style="display: block;margin:15px 0 0 50px;;color:grey">Vaša lozinka mora biti 
+                    <label style="display: block;margin: 20px auto;color:grey">Vaša lozinka mora biti 
                         najmanje 8 znakova <br>duga  i sadržati najmanje jedan broj, jedno <br> veliko i jedno malo slovo.</label>
 
 
-                    <button style="margin: 20px 10px 10px 50px;width:280px" class="black-btn"> Potvrdi</button>
+                    <button style="margin: 20px auto;width:280px" class="black-btn"> Potvrdi</button>
                 </form>
             </div>
 

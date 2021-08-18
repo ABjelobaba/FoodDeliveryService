@@ -8,8 +8,9 @@ Vue.component("admin-restaurants", {
 
 		<div class="content">
         
-			<div class="left-side-div">
-				<button class="black-btn" style="font-size: 17px; border-width: 2px;">+ Novi restoran</button>
+			<div class="float-left-div" style="top:196px">
+				<button class="black-btn" style="
+				width: 100%;font-size: 17px; border-width: 2px;">+ Novi restoran</button>
 
 				<div class="restaurant-types">
 					<h2 style="text-align: center;" >Kuhinje</h2>

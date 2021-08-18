@@ -4,10 +4,10 @@ Vue.component("admin", {
     },
 
     template: `
-	<div>
+	<div class="page">
 
 		<div class="small-home-img">
-        <div>
+        <div style="z-index:1000">
                 <a href="#/"><img class="logo-img" src="images/logo_transparent.png"></a>  
                  
                 <a v-on:click="logOut" class="btn">Odjavi se</a>
@@ -30,7 +30,17 @@ Vue.component("admin", {
 	`,
     mounted() {
         window.scrollTo(0, 0);
-        document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        if (window.location.href.endsWith('restaurants')) {
+            document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('users')) {
+            document.getElementById('users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('profile')) {
+            document.getElementById('profile').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else {
+            document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        }
+
+
     },
 
     methods: {
