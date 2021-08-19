@@ -153,7 +153,7 @@ Vue.component("admin-users", {
             window.location.href = "/#/"
         },
         register: function(event) {
-            document.querySelector('.filter-div').style.display = 'flex';
+            document.querySelector('.filter-div').style.display = 'inline-table';
             document.querySelector('.table-users').style.top = '-325px';
         },
         registrationClose: function(event) {

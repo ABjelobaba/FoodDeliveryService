@@ -7,7 +7,7 @@ Vue.component("admin", {
 	<div class="page">
 
 		<div class="small-home-img">
-        <div style="z-index:1000">
+        <div >
                 <a href="#/"><img class="logo-img" src="images/logo_transparent.png"></a>  
                  
                 <a v-on:click="logOut" class="btn">Odjavi se</a>

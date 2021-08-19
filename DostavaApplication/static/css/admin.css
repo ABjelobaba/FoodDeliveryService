@@ -1,7 +1,3 @@
-.user-nav {
-    z-index: 1000
-}
-
 .user-nav ul {
     list-style: none;
     display: flex;
@@ -80,6 +76,7 @@
 }
 
 .table-users {
+    display: inline-table;
     border-collapse: collapse;
     width: -webkit-fill-available;
     margin: 50px 100px 0 100px;
@@ -89,13 +86,16 @@
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     position: relative;
-    z-index: -1;
 }
 
 .table-users thead tr {
     background-color: rgba(44, 53, 63, 1);
     color: white;
     text-align: center;
+}
+
+.table-users th {
+    cursor: pointer;
 }
 
 .table-users th,
@@ -126,7 +126,7 @@
     grid-template-columns: 2% auto 15%;
     align-items: center;
     background-color: #dddddd;
-    z-index: 1000;
+    z-index: 50;
 }
 
 .users-search input {
@@ -166,11 +166,11 @@
 
 .filter-div {
     display: none;
-    width: 100%;
-    height: 100%;
+    float: right;
     position: sticky;
     top: 240px;
     text-align: center;
+    z-index: 1;
 }
 
 .filter-modal {
@@ -179,7 +179,6 @@
     margin: 5px 120px 0 auto;
     background-color: #dddddd;
     border: 1px solid #555454;
-    z-index: 950;
 }
 
 .close-filter {
