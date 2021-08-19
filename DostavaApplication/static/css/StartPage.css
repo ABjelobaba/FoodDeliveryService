@@ -88,6 +88,12 @@ select:focus {
     cursor: pointer;
 }
 
+.log-btn:hover {
+    background: white;
+    transition: 0.5s;
+    color: rgba(44, 53, 63, 1);
+}
+
 .btn:hover {
     background: white;
     transition: 0.5s;
@@ -337,9 +343,9 @@ select:focus {
 .black-btn {
     display: inline-block;
     text-decoration: none;
-    color: black;
+    color: rgba(44, 53, 63, 0.85);
     font-weight: bold;
-    border: 1px solid black;
+    border: 1px solid rgba(44, 53, 63, 0.85);
     padding: 10px 30px;
     font-size: 15px;
     margin: 4px;
@@ -349,7 +355,7 @@ select:focus {
 }
 
 .black-btn:hover {
-    background: black;
+    background: rgba(44, 53, 63, 0.85);
     transition: 0.5s;
     color: white;
 }

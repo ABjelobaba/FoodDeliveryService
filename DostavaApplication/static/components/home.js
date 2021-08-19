@@ -178,7 +178,7 @@ Vue.component("home", {
 							<label class="error" id="surnameErr" name="labels" display="hidden"> </label>
 	
 							<select v-model="gender" class="login-inputs-select">
-								<option hidden>Odaberite pol..</option>
+								<option selected disabled>Odaberite pol..</option>
 								<option>MUŠKO</option>
 								<option>ŽENSKO</option>
 							</select>
@@ -231,6 +231,8 @@ Vue.component("home", {
             this.password = '';
             this.name = '';
             this.surname = '';
+            this.gender = 'Odaberite pol..';
+            this.dateOfBirth = '';
             for (element of document.getElementsByName('labels')) {
                 element.innerHTML = '';
                 element.style.display = 'hidden';
