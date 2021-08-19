@@ -5,12 +5,24 @@ Vue.component("admin-restaurants", {
 
     template: `
 	<div>
-
+		<div class="white-behind-search" style="top:166px">
+			<div class="search-restaurants">
+				<button class="black-btn" style="
+				font-size: 17px;
+				height: 40px;
+				display: inline-block;
+				width: 400px;
+				margin-right: 80px;">+ Novi restoran</button>
+				<i class="fa fa-search"></i>
+				<input type="text" placeholder="Unesi naziv restorana..">
+				<button class="black-btn">Pretraži</button>
+				
+			</div>
+		</div>
 		<div class="content">
         
-			<div class="float-left-div" style="top:196px">
-				<button class="black-btn" style="
-				width: 100%;font-size: 17px; border-width: 2px;">+ Novi restoran</button>
+			<div class="float-left-div" style="top: 276px;margin-top: 0;">
+				
 
 				<div class="restaurant-types">
 					<h2 style="text-align: center;" >Kuhinje</h2>
@@ -63,11 +75,6 @@ Vue.component("admin-restaurants", {
 			</div>
 
 			<div class="restaurants">
-				<div class="search">
-					<i class="fa fa-search"></i>
-					<input type="text" placeholder="Unesi naziv restorana..">
-					<button class="black-btn">Pretraži</button>
-				</div>
 				<h1> Restorani u ponudi</h1>
 				<p></p>
 
