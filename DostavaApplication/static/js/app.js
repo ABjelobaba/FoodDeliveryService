@@ -5,6 +5,7 @@ const Admin = { template: '<admin></admin>' }
 const AdminRestaurants = { template: '<admin-restaurants></admin-restaurants>' }
 const AdminProfile = { template: '<admin-profile></admin-profile>' }
 const AdminUsers = { template: '<admin-users></admin-users>' }
+const RestaurantPage = { template: '<restaurantPage></restaurantPage>' }
 
 
 const router = new VueRouter({
@@ -22,7 +23,8 @@ const router = new VueRouter({
                 { path: 'profile', component: AdminProfile },
                 { path: 'users', component: AdminUsers }
             ]
-        }
+        },
+        { path: '/restaurantPage', component: RestaurantPage }
     ]
 });
 
