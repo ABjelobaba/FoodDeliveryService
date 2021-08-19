@@ -1,0 +1,53 @@
+.small-home-img {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    background: #ffffff;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    margin: 0 auto;
+    background-size: cover;
+    background-attachment: scroll;
+    background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(../images/background.jpg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.main-nav {
+    position: relative;
+    float: right;
+}
+
+.small-nav-navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    float: right;
+}
+
+.address-container {
+    color: white;
+    text-align: center;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+}
+
+.entered-address {
+    font-size: 17px;
+    padding: 10px;
+    box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.3);
+    min-width: 150px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.entered-address label {
+    margin: 0 30px 20px;
+    text-align: left;
+}

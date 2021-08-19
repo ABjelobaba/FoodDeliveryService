@@ -13,10 +13,11 @@ select:focus {
 
 .home-img {
     display: block;
+    position: relative;
     font-size: 14px;
     background: #ffffff;
     width: 100%;
-    height: 100vh;
+    height: 90vh;
     justify-content: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
@@ -34,15 +35,19 @@ select:focus {
 .logo-img {
     width: 7cm;
     float: left;
-    padding-top: 2mm;
+    top: 20px;
+    left: 50px;
+    position: relative;
 }
 
 .navigation-area {
     width: 100%;
     top: 0;
-    height: 50px;
+    position: sticky;
+    height: 80px;
     border-bottom: #fff;
     background: rgba(44, 53, 63, 1);
+    z-index: 1;
 }
 
 .nav-navbar {
@@ -55,27 +60,22 @@ select:focus {
     background: rgba(44, 53, 63, 1);
 }
 
-.menu {
-    height: 100%;
-    float: left;
-}
-
-.menu a {
-    color: white;
-    height: 100%;
-    text-align: center;
-    padding: 12px 13px;
-    text-decoration: none;
-    font-size: 17px;
-}
-
-.menu a:hover {
-    background: white;
-    transition: 0.5s;
-    color: black;
-}
-
 .btn {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    border: 1px solid #fff;
+    padding: 10px 30px;
+    font-size: 15px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+    top: 30px;
+    right: 50px;
+    float: right;
+}
+
+.log-btn {
     display: inline-block;
     text-decoration: none;
     color: white;
@@ -83,10 +83,15 @@ select:focus {
     border: 1px solid #fff;
     padding: 10px 30px;
     font-size: 15px;
-    margin: 4px;
     background: transparent;
     position: relative;
     cursor: pointer;
+}
+
+.log-btn:hover {
+    background: white;
+    transition: 0.5s;
+    color: rgba(44, 53, 63, 1);
 }
 
 .btn:hover {
@@ -98,7 +103,7 @@ select:focus {
 .greet {
     color: white;
     text-align: center;
-    position: absolute;
+    position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -111,9 +116,11 @@ select:focus {
 
 .address {
     box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.5);
-    margin: 0 280px;
+    margin: 0 auto;
     border: outset;
     border-width: 2px;
+    min-width: 300px;
+    max-width: 800px;
 }
 
 .address p {
@@ -126,6 +133,7 @@ select:focus {
     width: 100%;
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .search-restaurants {
@@ -166,7 +174,9 @@ select:focus {
 
 .content {
     width: 100%;
-    display: flex;
+    display: grid;
+    grid: auto/ 25% 1fr;
+    grid-gap: 0 2em;
 }
 
 
@@ -288,6 +298,7 @@ select:focus {
 }
 
 .restaurant-types {
+    margin-top: 20px;
     width: 100%;
     box-shadow: 4px 10px 20px 0 rgb(0 0 0 / 20%);
     text-align: left;
@@ -353,9 +364,9 @@ select:focus {
 .black-btn {
     display: inline-block;
     text-decoration: none;
-    color: black;
+    color: rgba(44, 53, 63, 0.85);
     font-weight: bold;
-    border: 1px solid black;
+    border: 1px solid rgba(44, 53, 63, 0.85);
     padding: 10px 30px;
     font-size: 15px;
     margin: 4px;
@@ -365,7 +376,7 @@ select:focus {
 }
 
 .black-btn:hover {
-    background: black;
+    background: rgba(44, 53, 63, 0.85);
     transition: 0.5s;
     color: white;
 }
