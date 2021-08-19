@@ -128,7 +128,28 @@ select:focus {
     align-items: center;
 }
 
-.search input {
+.search-restaurants {
+    padding: 10px;
+    display: flex;
+    background-color: white;
+    box-shadow: 4px 10px 20px 0 rgb(0 0 0 / 20%);
+    align-items: center;
+}
+
+.white-behind-search {
+    z-index: 50;
+    background-color: white;
+    height: 100px;
+    margin: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: sticky;
+    top: 80px;
+}
+
+.search input,
+.search-restaurants input {
     width: 100%;
     position: relative;
     margin: 0 30px 0 15px;
@@ -249,6 +270,23 @@ select:focus {
 
 /*-----restaurants----*/
 
+.left-side-div {
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+    width: 30%
+}
+
+.float-left-div {
+    margin: 30px;
+    width: 100%;
+    grid-column: 1;
+    position: sticky;
+    top: 210px;
+    text-align: right;
+    align-self: start;
+}
+
 .restaurant-types {
     width: 100%;
     box-shadow: 4px 10px 20px 0 rgb(0 0 0 / 20%);
@@ -266,7 +304,7 @@ select:focus {
     width: 80%;
     margin: auto;
     text-align: center;
-    padding-top: 100px;
+    padding-top: 50px;
     padding-right: 30px;
 }
 

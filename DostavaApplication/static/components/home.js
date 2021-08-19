@@ -31,15 +31,21 @@ Vue.component("home", {
 					<div class="search">
 						<i class="fa fa-search fa-lg"></i>
 						<input style="color: white" v-model="deliveryAddress" type="text">
-						<button v-on:click="order" class="btn">Pretraži</button>
+						<button v-on:click="order" class="log-btn">Pretraži</button>
 					</div>
 					<label id="addressErr">Knez Mihajlova 7, Beograd</label>
 				</div>
 			</div>
 		</div>
-
+		<div class="white-behind-search">
+			<div class="search-restaurants">
+				<i class="fa fa-search"></i>
+				<input type="text" placeholder="Unesi naziv restorana..">
+				<button class="black-btn">Pretraži</button>
+			</div>
+		</div>
 		<div class="content">
-			<div style="margin: 30px; width:30%">
+			<div class="float-left-div">
 				<div class="restaurant-types">
 					<h2 style="text-align: center;" >Kuhinje</h2>
 					<div class="chechbox_types">
@@ -91,11 +97,6 @@ Vue.component("home", {
 			</div>
 
 			<div class="restaurants">
-				<div class="search">
-					<i class="fa fa-search"></i>
-					<input type="text" placeholder="Unesi naziv restorana..">
-					<button class="black-btn">Pretraži</button>
-				</div>
 				<h1> Restorani u ponudi</h1>
 				<p></p>
 
@@ -178,7 +179,7 @@ Vue.component("home", {
 							<label class="error" id="surnameErr" name="labels" display="hidden"> </label>
 	
 							<select v-model="gender" class="login-inputs-select">
-								<option hidden>Odaberite pol..</option>
+								<option selected disabled>Odaberite pol..</option>
 								<option>MUŠKO</option>
 								<option>ŽENSKO</option>
 							</select>
@@ -188,7 +189,7 @@ Vue.component("home", {
 							<input type="date" class="login-inputs" style="margin-top: 1px;" id="date_input">
 							<label class="error" id="dateErr" name="labels" display="hidden"> </label>
 	
-							<button v-on:click="registerUser" style="margin: 20px 10px" class="btn"> Potvrdi</button>
+							<button v-on:click="registerUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
 						</form>
 					</div>
 				</div>
@@ -206,7 +207,7 @@ Vue.component("home", {
 							<input v-model="passwordLogIn" type="password" class="login-inputs" placeholder="Lozinka">
 							<label class="error" id="passwordLogInErr" name="labels" display="hidden"> </label>
 	
-							<button v-on:click="logInUser" style="margin: 20px 10px" class="btn"> Potvrdi</button>
+							<button v-on:click="logInUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
 						</form>
 					</div>
 				</div>
@@ -218,6 +219,9 @@ Vue.component("home", {
 
 	</div>
 	`,
+    mounted() {
+        window.scrollTo(0, 0);
+    },
 
     methods: {
         register: function(event) {
@@ -228,6 +232,8 @@ Vue.component("home", {
             this.password = '';
             this.name = '';
             this.surname = '';
+            this.gender = 'Odaberite pol..';
+            this.dateOfBirth = '';
             for (element of document.getElementsByName('labels')) {
                 element.innerHTML = '';
                 element.style.display = 'hidden';
@@ -287,7 +293,7 @@ Vue.component("home", {
         },
         order: function(event) {
             if (this.deliveryAddress.match(/[\p{Letter}\s]+ [0-9]+,[\p{Letter}\s]+/gu)) {
-                window.location.href = "#/restaurants?" + this.deliveryAddress.replace(',', ' ');
+                window.location.href = "#/restaurants?" + this.deliveryAddress;
             } else {
                 document.getElementById('addressErr').innerHTML = "Adresa mora biti u obliku 'Knez Mihajlova 7, Beograd'!";
                 document.getElementById('addressErr').style.color = 'red';
