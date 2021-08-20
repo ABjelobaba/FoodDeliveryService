@@ -5,7 +5,9 @@ Vue.component("admin-restaurants", {
             street: '',
             houseNumber: '',
             city: '',
-            postalCode: ''
+            postcode: '',
+            latitude: 0,
+            longitude: 0
         }
     },
 
@@ -203,22 +205,24 @@ Vue.component("admin-restaurants", {
 				<div style="display: none"  class="secondStep">
 					
 					<div class="login-title">
-						<h3 style="color: white; font-weight: bolder;"> LOKACIJA "{{restaurantName}}" </h3>
+						<h3 style="color: white; font-weight: bolder;"> {{restaurantName}} </h3>
+						<p>Neophodno je odrediti lokaciju restorana popunjavanjem <b><em>svih</em></b> navedenih polja.  
+						Polja je moguće popuniti i klikom na željenu lokaciju na mapi.</p>
 					</div>
 					
 					<div style="margin-top: 20px;" >
 						<form>
-							<input  v-model="street" id="street" type="text" class="login-inputs" placeholder="Ulica:">
+							<input  v-model="street" id="street" type="text" class="login-inputs" placeholder="Ulica">
 							<label class="error" id="streetErr" name="labels" display="hidden"> </label>
 
-							<input  v-model="houseNumber" id="number" type="text" class="login-inputs" placeholder="Broj:">
+							<input  v-model="houseNumber" id="number" type="text" class="login-inputs" placeholder="Broj">
 							<label class="error" id="houseNumberErr" name="labels" display="hidden"> </label>
 
-							<input v-model="city" id="city" type="text" class="login-inputs" placeholder="Grad:">
+							<input v-model="city" id="city" type="text" class="login-inputs" placeholder="Grad">
 							<label class="error" id="cityErr" name="labels" display="hidden"> </label>
 							
-							<input v-model="postalCode" id="postalcode" type="text" class="login-inputs" placeholder="Postanski broj:">
-							<label class="error" id="postalCodeErr" name="labels" display="hidden"> </label>
+							<input v-model="postcode" id="postcode" type="text" class="login-inputs" placeholder="Postanski broj">
+							<label class="error" id="postcodeErr" name="labels" display="hidden"> </label>
 							
 							<div id="map"></div>
 
@@ -317,65 +321,65 @@ Vue.component("admin-restaurants", {
             accessToken: apiKey
         }).addTo(Map);
 
-
+        var marker;
         Map.on('click', function(e) {
             var coordinate = e.latlng;
             var lon = coordinate.lng;
             var lat = coordinate.lat;
             simpleReverseGeocoding(lon, lat);
-        });
-
-        document.getElementById('street').addEventListener('blur', (event) => {
-            let search = false;
-            let query = 'search?q=';
-            if (this.city) {
-                if (this.street) {
-                    if (this.number) {
-                        query += this.number.trim() + '+';
-                    }
-                    query += this.street.replace(' ', '+').trim() + '%2C+';
-                    search = true;
-                }
-                query += this.city.trim();
+            if (marker != undefined) {
+                Map.removeLayer(marker);
             }
 
-            query += '&format=geojson';
+            marker = L.marker([lat, lon]).addTo(Map);
+        });
+
+        function findPlace() {
+            let search = false;
+            let query = '?addressdetails=1&q=';
+            if (this.city.value) {
+                if (this.street.value) {
+                    if (this.number.value) {
+                        query += this.number.value.trim() + '+';
+                    }
+                    query += this.street.value.replace(' ', '+').trim() + '%2C+';
+                    search = true;
+                }
+                query += this.city.value.trim();
+            }
+
+            query += '&format=json&limit=1&accept-language=sr-Latn';
 
             if (search) {
                 fetch('http://nominatim.openstreetmap.org/' + query).then(function(response) {
                     return response.json();
                 }).then(function(json) {
-                    L.map('map').setView(json.features[0].geometry.coordinates, 9);
-                    L.marker(json.features[0].geometry.coordinates).addTo(Map);
-                })
-            }
-        });
+                    if (json.length != 0) {
+                        this.city.value = json[0].address.city;
+                        if (this.city.value.startsWith('Grad')) {
+                            this.city.value = json[0].address.city.substring(5);
+                        } else if (this.city.value.startsWith('Opština')) {
+                            this.city.value = json[0].address.city.substring(8);
+                        } else if (this.city.startsWith('Gradska opština')) {
+                            this.city.value = json[0].address.city.substring(16);
+                        }
 
-        document.getElementById('city').addEventListener('blur', (event) => {
-            let search = false;
-            let query = 'search?q=';
-            if (this.city) {
-                if (this.street) {
-                    if (this.number) {
-                        query += this.number.trim() + '+';
+                        if (marker != undefined) {
+                            Map.removeLayer(marker);
+                        }
+                        this.street.value = json[0].address.road;
+                        this.postcode.value = json[0].address.postcode;
+                        Map.setView([parseInt(json[0].lat) + 0.15, parseInt(json[0].lon) + 0.65], 9);
+                        marker = L.marker([json[0].lat, json[0].lon]).addTo(Map);
                     }
-                    query += this.street.replace(' ', '+').trim() + '%2C+';
-                    search = true;
-                }
-                query += this.city.trim();
-            }
-
-            query += '&format=geojson';
-
-            if (search) {
-                fetch('http://nominatim.openstreetmap.org/' + query).then(function(response) {
-                    return response.json();
-                }).then(function(json) {
-                    Map.setView([json.features[0].geometry.coordinates[1] + 0.01, json.features[0].geometry.coordinates[0] - 0.015], 14);
-                    L.marker([json.features[0].geometry.coordinates[1], json.features[0].geometry.coordinates[0]]).addTo(Map);
                 })
             }
-        });
+        }
+        document.getElementById('street').addEventListener('blur', (event) => { findPlace(); });
+        document.getElementById('city').addEventListener('blur', (event) => { findPlace(); });
+        document.getElementById('number').addEventListener('blur', (event) => { findPlace(); });
+
+
     },
 
     methods: {
@@ -490,7 +494,7 @@ function simpleReverseGeocoding(lon, lat) {
     }).then(function(json) {
         let street = document.getElementById("street");
         let city = document.getElementById("city");
-        let postcode = document.getElementById("postalcode");
+        let postcode = document.getElementById("postcode");
         let number = document.getElementById("number");
 
         if (json.address.house_number) {
@@ -537,30 +541,5 @@ function simpleReverseGeocoding(lon, lat) {
             postcode.value = '';
             postcode.dispatchEvent(new Event('input'));
         }
-    })
-}
-
-
-function simpleGeocoding() {
-    let query = 'search?q=';
-    let number = document.getElementById("number").innerHTML;
-    let street = document.getElementById("street").innerHTML;
-    let city = document.getElementById("city").innerHTML;
-    if (city) {
-        if (street) {
-            if (number) {
-                query += number.trim() + '+';
-            }
-            query += street.replace(' ', '+').trim() + '%2C+';
-        }
-        query += city.trim();
-    }
-
-    query += '&format=geojson';
-
-    fetch('http://nominatim.openstreetmap.org/search?street=' + document.getElementById("number") + '+' + document.getElementById("street") + '&accept-language=sr-Latn').then(function(response) {
-        return response.json();
-    }).then(function(json) {
-        L.marker(json.geometry.coordinates).addTo(Map);
     })
 }
