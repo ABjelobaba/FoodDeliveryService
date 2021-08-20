@@ -159,7 +159,7 @@ Vue.component("admin-restaurants", {
 
 							<label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Logo:</label>
 							<input type="file" class="login-inputs" style="margin: 2px auto 2px;" id="inpFile" v-on:change="fileUploaded">
-							<label class="error" id="logoErr" name="labels" display="hidden"> </label>
+							<label class="error" id="fileErr" name="labels" display="hidden"> </label>
 
 							<div class="image-preview" id="imagePreview">
 								<img src="" alt="Image Preview" class="image-preview__image">
@@ -212,14 +212,14 @@ Vue.component("admin-restaurants", {
 					
 					<div class="login-title">
 						<h3 style="color: white; font-weight: bolder;"> {{restaurantName}} </h3>
-						<p>Neophodno je odrediti lokaciju restorana popunjavanjem <b><em>svih</em></b> navedenih polja.  
+						<p id="secondErr">Neophodno je odrediti lokaciju restorana popunjavanjem <b><em>svih</em></b> navedenih polja.  
 						Polja je moguće popuniti i klikom na željenu lokaciju na mapi.</p>
 					</div>
 					
 					<div style="margin: auto 0px;" >
 						<form>
-							<input  v-model="street" id="street" type="text" class="login-inputs" placeholder="Ulica">
-							<input  v-model="houseNumber" id="number" type="text" class="login-inputs" placeholder="Broj">
+							<input v-model="street" id="street" type="text" class="login-inputs" placeholder="Ulica">
+							<input v-model="houseNumber" id="number" type="text" class="login-inputs" placeholder="Broj">
 							<input v-model="city" id="city" type="text" class="login-inputs" placeholder="Grad">
 							<input v-model="postcode" id="postcode" type="text" class="login-inputs" placeholder="Postanski broj">
 							
@@ -412,19 +412,25 @@ Vue.component("admin-restaurants", {
 
             let errors = false;
 
-            if (!this.restaurantName) {
-                document.getElementById('restaurantNameErr').innerHTML = "Morate uneti korisničko ime!";
-                errors = true;
-            }
+
             //TO-DO: Dodati proveru za sliku da li je dodata i odabrane kategorije hrane
 
             if (!errors) {
                 if (document.querySelector('.firstStep').style.display == 'grid') {
-                    document.querySelector('.firstStep').style.display = 'none';
-                    document.querySelector('.secondStep').style.display = 'grid';
+                    if (!this.restaurantName) {
+                        document.getElementById('restaurantNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti korisničko ime!';
+                        errors = true;
+                    } else {
+                        document.querySelector('.firstStep').style.display = 'none';
+                        document.querySelector('.secondStep').style.display = 'grid';
+                    }
                 } else if (document.querySelector('.secondStep').style.display == 'grid') {
-                    document.querySelector('.secondStep').style.display = 'none';
-                    document.querySelector('.thirdStep').style.display = 'grid';
+                    if (!this.street || !this.houseNumber || !this.city || !this.postcode) {
+                        document.getElementById('secondErr').style.color = 'red';
+                    } else {
+                        document.querySelector('.secondStep').style.display = 'none';
+                        document.querySelector('.thirdStep').style.display = 'grid';
+                    }
                 } else {
 
                     document.querySelector('.register').style.display = 'none';
