@@ -354,6 +354,19 @@ select:focus {
     cursor: pointer;
 }
 
+.black-btn:disabled {
+    border-color: #dddddd;
+    color: #dddddd;
+    cursor: default;
+}
+
+.black-btn:disabled:hover {
+    border-color: #dddddd;
+    color: #dddddd;
+    background-color: transparent;
+    cursor: default;
+}
+
 .black-btn:hover {
     background: rgba(44, 53, 63, 0.85);
     transition: 0.5s;

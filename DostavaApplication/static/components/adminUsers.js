@@ -47,6 +47,18 @@ Vue.component("admin-users", {
                 </div>
             </div>
 
+            <h2>Sumnjiv kupac</h2>
+            <div class="chechbox_types" style="text-align: left;">
+                <div>
+                    <input type="checkbox" id="yes" name="suspicious" value="yes">
+                    <label for="yes">Da</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="no" name="suspicious" value="no">
+                    <label for="no">Ne</label>
+                </div>
+            </div>
+
             <h2>Tip kupca</h2>
             <div class="chechbox_types" style="text-align: left;">
                 <div>
@@ -76,6 +88,8 @@ Vue.component("admin-users", {
                 <th>Prezime <i class="fa fa-sort"></i></th>
                 <th>Korisnicko ime <i class="fa fa-sort"></i></th>
                 <th>Broj bodova <i class="fa fa-sort"></i></th>
+                <th>Sumnjiv <i class="fa fa-sort"></i></th>
+                <th>Blokiraj</th>
             </tr>
         </thead>
         <tbody>
@@ -85,6 +99,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn" disabled><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -92,6 +108,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -99,6 +117,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -106,6 +126,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -113,6 +135,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn" disabled><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -120,6 +144,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -127,6 +153,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -134,6 +162,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -141,6 +171,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn" disabled><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -148,6 +180,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -155,6 +189,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
             <tr>
                 <td>Slika</td>
@@ -162,132 +198,8 @@ Vue.component("admin-users", {
                 <td>Kalmar</td>
                 <td>lea_kalmar</td>
                 <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
-            </tr>
-            <tr>
-                <td>Slika</td>
-                <td>Lea</td>
-                <td>Kalmar</td>
-                <td>lea_kalmar</td>
-                <td>3568</td>
+                <td>+</td>
+                <td><button class="black-btn"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button></td>
             </tr>
         </tbody>
 
@@ -363,7 +275,7 @@ Vue.component("admin-users", {
             if (document.querySelector('.filter-div').style.display == 'none' || document.querySelector('.filter-div').style.display ==
                 '') {
                 document.querySelector('.filter-div').style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-348px';
+                document.querySelector('.table-users').style.top = '-464px';
             } else { this.filterClose(); }
         },
         filterClose: function(event) {
