@@ -7,7 +7,8 @@ Vue.component("admin-restaurants", {
             city: '',
             postcode: '',
             latitude: 0,
-            longitude: 0
+            longitude: 0,
+            searchText: ''
         }
     },
 
@@ -37,49 +38,49 @@ Vue.component("admin-restaurants", {
 
 				<div class="restaurant-types">
 					<h2 style="text-align: center;" >Kuhinje</h2>
-					<div class="chechbox_types">
+					<div class="checkbox-btn-container-dark" style="margin: 20px;font-size: 17px;">
 						<div>
 							<input type="checkbox" id="italian" name="cuisine" value="italian">
-							<label for="italian">Italijanska</label>
+							<label class="checkbox-label" for="italian">Italijanska</label>
 						</div>
 						<div>
 							<input type="checkbox" id="chinese" name="cuisine" value="chinese">
-							<label for="chinese">Kineska</label>
+							<label class="checkbox-label" for="chinese">Kineska</label>
 						</div>
 						<div>
 							<input type="checkbox" id="barbecue" name="cuisine" value="barbecue">
-							<label for="barbecue">Rostilj</label>
+							<label class="checkbox-label" for="barbecue">Rostilj</label>
 						</div>
 						<div>
 							<input type="checkbox" id="american" name="cuisine" value="american">
-							<label for="american">Americka hrana</label>
+							<label class="checkbox-label" for="american">Americka hrana</label>
 						</div>
 						<div>
 							<input type="checkbox" id="sweets" name="cuisine" value="sweets">
-							<label for="sweets">Poslastice</label>
+							<label class="checkbox-label" for="sweets">Poslastice</label>
 						</div>
 					</div>
 					<h2 style="text-align: center;" >Ocene</h2>
-					<div class="chechbox_types">
+					<div class="checkbox-btn-container-dark" style="margin: 20px;font-size: 17px;">
 						<div>
 							<input type="checkbox" id="one" name="stars" value="one">
-							<label for="one">1</label>
+							<label class="checkbox-label" for="one">1</label>
 						</div>
 						<div>
 							<input type="checkbox" id="two" name="stars" value="two">
-							<label for="two">2</label>
+							<label class="checkbox-label" for="two">2</label>
 						</div>
 						<div>
 							<input type="checkbox" id="three" name="stars" value="three">
-							<label for="three">3</label>
+							<label class="checkbox-label" for="three">3</label>
 						</div>
 						<div>
 							<input type="checkbox" id="four" name="stars" value="four">
-							<label for="four">4</label>
+							<label class="checkbox-label" for="four">4</label>
 						</div>
 						<div>
 							<input type="checkbox" id="five" name="stars" value="five">
-							<label for="five">5</label>
+							<label class="checkbox-label" for="five">5</label>
 						</div>
 					</div>
 				</div>
@@ -166,26 +167,26 @@ Vue.component("admin-restaurants", {
 							</div>
 
 							<label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Odaberite tip hrane:</label>
-							<div class="choose-type">
+							<div class="checkbox-btn-container">
 								<div>
-									<input type="checkbox" id="italian" name="cuisine" value="italian">
-									<label for="italian">Italijanska</label>
+									<input type="checkbox" id="newItalian" name="cuisine" value="italian">
+									<label class="checkbox-label" for="newItalian">Italijanska</label>
 								</div>
 								<div>
-									<input type="checkbox" id="chinese" name="cuisine" value="chinese">
-									<label for="chinese">Kineska</label>
+									<input type="checkbox" id="newChinese" name="cuisine" value="chinese">
+									<label class="checkbox-label" for="newChinese">Kineska</label>
 								</div>
 								<div>
-									<input type="checkbox" id="barbecue" name="cuisine" value="barbecue">
-									<label for="barbecue">Rostilj</label>
+									<input type="checkbox" id="newBarbecue" name="cuisine" value="barbecue">
+									<label class="checkbox-label" for="newBarbecue">Rostilj</label>
 								</div>
 								<div>
-									<input type="checkbox" id="american" name="cuisine" value="american">
-									<label for="american">Americka hrana</label>
+									<input type="checkbox" id="newAmerican" name="cuisine" value="american">
+									<label class="checkbox-label" for="newAmerican">Americka hrana</label>
 								</div>
 								<div>
-									<input type="checkbox" id="sweets" name="cuisine" value="sweets">
-									<label for="sweets">Poslastice</label>
+									<input type="checkbox" id="newSweets" name="cuisine" value="sweets">
+									<label class="checkbox-label" for="newSweets">Poslastice</label>
 								</div>
 							</div>
 							<label class="error" id="logoErr" name="labels" display="hidden"> </label>
@@ -242,53 +243,33 @@ Vue.component("admin-restaurants", {
 					</div>
 				</div>
 
-				<div style="display: none;height: 100%;
-				grid-template-rows: auto auto 50px;" class="thirdStep">
+				<div style="display: none;height: 100%;grid-template-rows: auto auto auto 50px;" class="thirdStep">
 					<div class="login-title">
-						<h3 style="color: white; font-weight: bolder;"> {{restaurantName}} </h3>
-						<p>Neophodno je odrediti lokaciju restorana popunjavanjem <b><em>svih</em></b> navedenih polja.  
-						Polja je moguće popuniti i klikom na željenu lokaciju na mapi.</p>
+						<h3 style="color: white; font-weight: bolder;"> Menadžer {{restaurantName}}-a </h3>
+						<p>Odaberite nadležnog menadžera restora.</p>
 					</div>
+
+					<div class="search" style="margin: auto 5%;width:auto;">
+							<i class="fa fa-search fa-lg" style="color:white"></i>
+							<input style="color: white;margin: 0 0 0 10px;" v-model="searchText" type="text" placeholder="Pretraži po imenu i prezimenu..">
+						</div>
 
 					<div style="margin: auto 0px;" >
 						<form>
-							<input v-model="restaurantName" type="text" class="login-inputs" placeholder="Naziv restorana">
-							<label class="error" id="restaurantNameErr" name="labels" display="hidden"> </label>
-
-							<label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Logo:</label>
-							<input type="file" class="login-inputs" style="margin: 2px auto 2px;" id="inpFile" v-on:change="fileUploaded">
-							<label class="error" id="logoErr" name="labels" display="hidden"> </label>
-
-							<div class="image-preview" id="imagePreview">
-								<img src="" alt="Image Preview" class="image-preview__image">
-								<span class="image-preview__default-text">Image Preview</span>
+							<div class="radio-btn-container">
+								<input type="radio" id="contactChoice1"
+									name="contact" value="email">
+								<label class="radio-label" for="contactChoice1">Petar Petovic</label>
+							
+								<input type="radio" id="contactChoice2"
+									name="contact" value="phone">
+								<label class="radio-label" for="contactChoice2">Nenad Kostic</label>
+							
+								<input type="radio" id="contactChoice3"
+									name="contact" value="mail">
+								<label class="radio-label" for="contactChoice3">Milica Lenov</label>
+								
 							</div>
-
-							<label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Odaberite tip hrane:</label>
-							<div class="choose-type">
-								<div>
-									<input type="checkbox" id="italian" name="cuisine" value="italian">
-									<label for="italian">Italijanska</label>
-								</div>
-								<div>
-									<input type="checkbox" id="chinese" name="cuisine" value="chinese">
-									<label for="chinese">Kineska</label>
-								</div>
-								<div>
-									<input type="checkbox" id="barbecue" name="cuisine" value="barbecue">
-									<label for="barbecue">Rostilj</label>
-								</div>
-								<div>
-									<input type="checkbox" id="american" name="cuisine" value="american">
-									<label for="american">Americka hrana</label>
-								</div>
-								<div>
-									<input type="checkbox" id="sweets" name="cuisine" value="sweets">
-									<label for="sweets">Poslastice</label>
-								</div>
-							</div>
-							<label class="error" id="logoErr" name="labels" display="hidden"> </label>
-
 						</form>
 					</div>
 					
@@ -310,7 +291,7 @@ Vue.component("admin-restaurants", {
 		</div>
 
 		<div class="registration-success"> 
-			<div class="modal">
+			<div class="modal" style="height:auto;">
 				<div id="checkMark" class="fa"></div>
 				<h1 style="color:white">Uspešno kreiran novi restoran!</h1>
 			</div>
@@ -488,7 +469,7 @@ Vue.component("admin-restaurants", {
                 element.style.display = 'hidden';
             }
             document.querySelector('.register').style.display = 'none';
-            document.querySelector('.firstStep').style.display = 'block';
+            document.querySelector('.firstStep').style.display = 'grid';
             document.querySelector('.secondStep').style.display = 'none';
             document.querySelector('.thirdStep').style.display = 'none';
         }
