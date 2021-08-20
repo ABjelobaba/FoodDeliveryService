@@ -7,6 +7,14 @@ Vue.component("restaurantPage",{
 
     template: `
     <div class="restourant-page-div">
+        <div class="nav-rp" id="navmenu-rp" style="visibility: collapse;">
+            <a href="#/"><img class="logo-img" src="images/logo_transparent.png"></a>  
+            <a class="btn">Odjavi se</a>
+            <div class="nav-cart-rp" id="ncart-rp" style="visibility: collapse;">
+                <a>Korpa (0)</a>
+            </div>
+        </div>
+
         <section class="top-section-rp">
             <div class="top-part-rp">
                 <div class="top-menu-rp">
@@ -41,7 +49,7 @@ Vue.component("restaurantPage",{
                 </div>
 
                 <nav class="user-nav">
-                    <ul style="margin-top: 65px; width: 100%; box-sizing: border-box;">
+                    <ul style="margin-top: 60px; width: 100%; box-sizing: border-box;">
                         <!-- <li><a name="user-nav" id="profile">Narudžbine</a></li> -->
                         <div style=" width: 100%; text-align: right;">
                             <li><a>Korpa (0)</a></li>
@@ -53,6 +61,7 @@ Vue.component("restaurantPage",{
             
         </section>
         <!-- navigacioni meni -->
+        
         <section class="bottom-section-rp">
             <div class="nav-menu-rp">
                 <h3>Artikli</h3>
@@ -126,5 +135,28 @@ Vue.component("restaurantPage",{
             </div>
         </section>
     </div>
-             `
-})
+             `,
+             mounted() {    
+                function createNavMenu() {
+
+                    if (window.scrollY >= 250) {
+                        document.getElementById('navmenu-rp').style.visibility = 'visible';
+
+                        if (window.scrollY >= 308) {
+                            document.getElementById('ncart-rp').style.visibility = 'visible';
+                        }
+                        else {
+                            document.getElementById('ncart-rp').style.visibility = 'collapse';
+                        }
+                    }
+                    else {
+                        document.getElementById('navmenu-rp').style.visibility = 'collapse';
+                    }
+                }
+
+                window.addEventListener('scroll', createNavMenu);
+             },
+         
+             methods: {
+             }
+         })

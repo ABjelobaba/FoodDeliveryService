@@ -3,18 +3,46 @@
     padding: 0;
     margin: 0;
     width: 100%;
-    height: 305px;
+    height: 308px;
     position: absolute;
     top: 0em;
+    background-size: cover;
+    background-attachment: scroll;
+    z-index: 2;
+    background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(../images/background.jpg);
+}
+
+/* Fixed top menu */
+.nav-rp {
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    height: 70px;
+    width: 100%;
     background-size: cover;
     background-attachment: scroll;
     background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(../images/background.jpg);
 }
 
-.top-menu-rp {
-    position: sticky;
-    top: 0em;
-    z-index: 50;
+.nav-rp a {
+    margin: 0;
+    margin-top: -15px;
+}
+
+.nav-rp #ncart-rp {
+    margin: 0;
+    margin-top: 75px;
+    margin-right: 25px;
+    text-align: right;
+    text-decoration: solid;
+    color: #054e72;
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.nav-rp a:hover {
+    font-size: 26px;
 }
 
 /* Restaurant info */
@@ -28,7 +56,7 @@
     position: relative;
     left: 12.3%;
     top: 60px;
-    margin: 10px 0;
+    margin: 17px 0;
     width: fit-content;
     display: block;
 }
@@ -136,7 +164,7 @@
     padding-top: 0.5em;
     height: fit-content;
     position: sticky;
-    top: 5em;
+    top: 7em;
     box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
 }
 
