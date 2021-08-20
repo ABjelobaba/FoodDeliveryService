@@ -265,3 +265,9 @@
     justify-items: stretch;
     align-items: center;
 }
+
+#map {
+    height: 300px;
+    width: 400px;
+    margin: 20px auto
+}
