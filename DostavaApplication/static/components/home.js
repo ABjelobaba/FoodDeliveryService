@@ -152,7 +152,7 @@ Vue.component("home", {
 		</div>
 
 		<div class="register">
-			<div class="modal">
+			<div class="modal" style="height: auto">
 				<div class="tab">
 					<button v-on:click="tabClick('logIn')">Uloguj se</button>
 					<button v-on:click="tabClick('register')">Registruj se</button>

@@ -141,15 +141,17 @@ Vue.component("admin-restaurants", {
 		</div>
 
 		<div class="register" style="z-index:100">
-			<div class="modal">
+			<div class="modal" style="width:500px;">
 				<div v-on:click="newRestaurantClose" class="close">+</div>
 
-				<div style="display:block;" class="firstStep">
-					<div class="login-title">
+				<div style="
+				display: grid;height: 100%;
+				grid-template-rows: auto auto 50px;" class="firstStep">
+					<div class="login-title" style="margin: auto 0;">
 						<h3 style="color: white; font-weight: bolder;"> KREIRAJTE NOVI RESTORAN </h3>
 					</div>
 					
-					<div style="margin-top: 20px;" >
+					<div style="margin: auto 0px;" >
 						<form>
 							<input v-model="restaurantName" type="text" class="login-inputs" placeholder="Naziv restorana">
 							<label class="error" id="restaurantNameErr" name="labels" display="hidden"> </label>
@@ -188,21 +190,24 @@ Vue.component("admin-restaurants", {
 							</div>
 							<label class="error" id="logoErr" name="labels" display="hidden"> </label>
 
-							<div class="steps-div">
-								<div style="margin-left: 150px;color:white">
-									<i class="fa fa-square" aria-hidden="true"></i>
-									<i class="fa fa-square-o" aria-hidden="true"></i>
-									<i class="fa fa-square-o" aria-hidden="true"></i>
-								</div>
-								<button v-on:click="nextStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
-									Nastavi<i class="fa fa-chevron-right" style="margin-left: 10px;"></i>
-								</button>
-							</div>
 						</form>
+						<br>
+						
 					</div>
+					<div class="steps-div">
+							<div style="margin-left: 150px;color:white">
+								<i class="fa fa-square" aria-hidden="true"></i>
+								<i class="fa fa-square-o" aria-hidden="true"></i>
+								<i class="fa fa-square-o" aria-hidden="true"></i>
+							</div>
+							<button v-on:click="nextStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
+								Nastavi<i class="fa fa-chevron-right" style="margin-left: 10px;"></i>
+							</button>
+						</div>
 				</div>
 				
-				<div style="display: none"  class="secondStep">
+				<div style="display: none;height: 100%;
+				grid-template-rows: auto auto 50px;"  class="secondStep">
 					
 					<div class="login-title">
 						<h3 style="color: white; font-weight: bolder;"> {{restaurantName}} </h3>
@@ -210,41 +215,42 @@ Vue.component("admin-restaurants", {
 						Polja je moguće popuniti i klikom na željenu lokaciju na mapi.</p>
 					</div>
 					
-					<div style="margin-top: 20px;" >
+					<div style="margin: auto 0px;" >
 						<form>
 							<input  v-model="street" id="street" type="text" class="login-inputs" placeholder="Ulica">
-							<label class="error" id="streetErr" name="labels" display="hidden"> </label>
-
 							<input  v-model="houseNumber" id="number" type="text" class="login-inputs" placeholder="Broj">
-							<label class="error" id="houseNumberErr" name="labels" display="hidden"> </label>
-
 							<input v-model="city" id="city" type="text" class="login-inputs" placeholder="Grad">
-							<label class="error" id="cityErr" name="labels" display="hidden"> </label>
-							
 							<input v-model="postcode" id="postcode" type="text" class="login-inputs" placeholder="Postanski broj">
-							<label class="error" id="postcodeErr" name="labels" display="hidden"> </label>
 							
 							<div id="map"></div>
 
-							<div class="steps-div" style="grid-template-columns: 30% 40% 30%;">
-								<button v-on:click="backStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
-								<i class="fa fa-chevron-left" style="margin-right: 10px;"></i>Nazad</i>
-								</button>
-								<div style="color:white">
-									<i class="fa fa-square" aria-hidden="true"></i>
-									<i class="fa fa-square" aria-hidden="true"></i>
-									<i class="fa fa-square-o" aria-hidden="true"></i>
-								</div>
-								<button v-on:click="nextStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
-									Nastavi<i class="fa fa-chevron-right" style="margin-left: 10px;"></i>
-								</button>
-							</div>
+							
 						</form>
+					</div>
+					<div class="steps-div" style="grid-template-columns: 30% 40% 30%;">
+						<button v-on:click="backStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
+							<i class="fa fa-chevron-left" style="margin-right: 10px;"></i>Nazad</i>
+						</button>
+						<div style="color:white">
+							<i class="fa fa-square" aria-hidden="true"></i>
+							<i class="fa fa-square" aria-hidden="true"></i>
+							<i class="fa fa-square-o" aria-hidden="true"></i>
+						</div>
+						<button v-on:click="nextStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
+							Nastavi<i class="fa fa-chevron-right" style="margin-left: 10px;"></i>
+						</button>
 					</div>
 				</div>
 
-				<div style="display: none" class="thirdStep">
-					<div style="margin-top: 20px;" >
+				<div style="display: none;height: 100%;
+				grid-template-rows: auto auto 50px;" class="thirdStep">
+					<div class="login-title">
+						<h3 style="color: white; font-weight: bolder;"> {{restaurantName}} </h3>
+						<p>Neophodno je odrediti lokaciju restorana popunjavanjem <b><em>svih</em></b> navedenih polja.  
+						Polja je moguće popuniti i klikom na željenu lokaciju na mapi.</p>
+					</div>
+
+					<div style="margin: auto 0px;" >
 						<form>
 							<input v-model="restaurantName" type="text" class="login-inputs" placeholder="Naziv restorana">
 							<label class="error" id="restaurantNameErr" name="labels" display="hidden"> </label>
@@ -283,20 +289,21 @@ Vue.component("admin-restaurants", {
 							</div>
 							<label class="error" id="logoErr" name="labels" display="hidden"> </label>
 
-							<div class="steps-div" style="grid-template-columns: 30% 40% 30%;">
-								<button v-on:click="backStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
-								<i class="fa fa-chevron-left" style="margin-right: 10px;"></i>Nazad
-								</button>
-								<div style="color:white">
-									<i class="fa fa-square" aria-hidden="true"></i>
-									<i class="fa fa-square" aria-hidden="true"></i>
-									<i class="fa fa-square" aria-hidden="true"></i>
-								</div>
-								<button v-on:click="nextStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
-									Gotovo<i class="fa fa-chevron-right" style="margin-left: 10px;"></i>
-								</button>
-							</div>
 						</form>
+					</div>
+					
+					<div class="steps-div" style="grid-template-columns: 30% 40% 30%;">
+						<button v-on:click="backStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
+						<i class="fa fa-chevron-left" style="margin-right: 10px;"></i>Nazad
+						</button>
+						<div style="color:white">
+							<i class="fa fa-square" aria-hidden="true"></i>
+							<i class="fa fa-square" aria-hidden="true"></i>
+							<i class="fa fa-square" aria-hidden="true"></i>
+						</div>
+						<button v-on:click="nextStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
+							Gotovo<i class="fa fa-chevron-right" style="margin-left: 10px;"></i>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -431,12 +438,12 @@ Vue.component("admin-restaurants", {
             //TO-DO: Dodati proveru za sliku da li je dodata i odabrane kategorije hrane
 
             if (!errors) {
-                if (document.querySelector('.firstStep').style.display == 'block') {
+                if (document.querySelector('.firstStep').style.display == 'grid') {
                     document.querySelector('.firstStep').style.display = 'none';
-                    document.querySelector('.secondStep').style.display = 'block';
-                } else if (document.querySelector('.secondStep').style.display == 'block') {
+                    document.querySelector('.secondStep').style.display = 'grid';
+                } else if (document.querySelector('.secondStep').style.display == 'grid') {
                     document.querySelector('.secondStep').style.display = 'none';
-                    document.querySelector('.thirdStep').style.display = 'block';
+                    document.querySelector('.thirdStep').style.display = 'grid';
                 } else {
 
                     document.querySelector('.register').style.display = 'none';
@@ -460,11 +467,11 @@ Vue.component("admin-restaurants", {
         backStep: function(event) {
             event.preventDefault();
 
-            if (document.querySelector('.secondStep').style.display == 'block') {
-                document.querySelector('.firstStep').style.display = 'block';
+            if (document.querySelector('.secondStep').style.display == 'grid') {
+                document.querySelector('.firstStep').style.display = 'grid';
                 document.querySelector('.secondStep').style.display = 'none';
             } else {
-                document.querySelector('.secondStep').style.display = 'block';
+                document.querySelector('.secondStep').style.display = 'grid';
                 document.querySelector('.thirdStep').style.display = 'none';
             }
         },
