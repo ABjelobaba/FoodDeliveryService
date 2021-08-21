@@ -12,3 +12,47 @@
 .table-users[name="orders"] tbody tr {
     cursor: pointer;
 }
+
+.order-articles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-articles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-status {
+    border: 1px solid white;
+    padding: 0% 5%;
+    color: rgba(44, 53, 63, 1);
+    font-weight: bold;
+    background-color: white;
+}
+
+.cancle-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    border: 1px solid #fff;
+    padding: 10px 30px;
+    font-size: 15px;
+    background-color: rgb(224, 44, 44);
+    position: relative;
+    cursor: pointer;
+}
+
+.cancle-btn:hover {
+    background-color: rgb(255, 31, 31);
+    transition: 0.5s;
+}
+
+.cancle-btn:disabled {
+    background-color: rgb(114, 16, 16);
+    border-color: #dddddd;
+    color: #dddddd;
+}

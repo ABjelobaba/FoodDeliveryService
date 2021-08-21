@@ -8,7 +8,9 @@ Vue.component("user-orders", {
             password: '',
             role: 'Odaberite ulogu korisnika..',
             dateOfBirth: '',
-            currentRestaurant: []
+            currentRestaurant: [],
+            article: '',
+            order: ''
         }
     },
     template: `
@@ -30,28 +32,51 @@ Vue.component("user-orders", {
             <h2>Status porudžbine</h2>
             <div class="chechbox_types" style="text-align: left;">
                 <div>
-                    <input type="checkbox" id="manager" name="role" value="manager">
-                    <label for="manager">Obrada</label>
+                    <input type="checkbox" id="processing" name="orderStatus" value="processing">
+                    <label for="processing">Obrada</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="customer" name="role" value="customer">
-                    <label for="customer">U pripremi</label>
+                    <input type="checkbox" id="prep" name="orderStatus" value="prep">
+                    <label for="prep">U pripremi</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="deliverer" name="role" value="deliverer">
-                    <label for="deliverer">Čeka dostavljača</label>
+                    <input type="checkbox" id="waitinDeliverer" name="orderStatus" value="waitinDeliverer">
+                    <label for="waitinDeliverer">Čeka dostavljača</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="admin" name="role" value="admin">
-                    <label for="admin">U transportu</label>
+                    <input type="checkbox" id="transporting" name="orderStatus" value="transporting">
+                    <label for="transporting">U transportu</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="admin" name="role" value="admin">
-                    <label for="admin">Dostavljena</label>
+                    <input type="checkbox" id="finished" name="orderStatus" value="finished">
+                    <label for="finished">Dostavljena</label>
                 </div>
                 <div>
-                    <input type="checkbox" id="admin" name="role" value="admin">
-                    <label for="admin">Otkazana</label>
+                    <input type="checkbox" id="canceled" name="orderStatus" value="canceled">
+                    <label for="canceled">Otkazana</label>
+                </div>
+            </div>
+            <h2>Status porudžbine</h2>
+            <div class="chechbox_types" style="text-align: left;">
+                <div>
+                    <input type="checkbox" id="italian" name="cuisine" value="italian">
+                    <label for="italian">Italijanska</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="chinese" name="cuisine" value="chinese">
+                    <label for="chinese">Kineska</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="barbecue" name="cuisine" value="barbecue">
+                    <label for="barbecue">Rostilj</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="american" name="cuisine" value="american">
+                    <label for="american">Americka hrana</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="sweets" name="cuisine" value="sweets">
+                    <label for="sweets">Poslastice</label>
                 </div>
             </div>
         </div>
@@ -145,44 +170,37 @@ Vue.component("user-orders", {
         <div v-on:click="newUserClose" class="close">+</div>
 
         <div >
-            <div class="login-title">
-                <h3 style="color: white; font-weight: bolder;"> {{currentRestaurant.name}} IME </h3>
+            <div class="order-articles" style="margin: 5% 0;">
+                <div style="text-align:left;margin-left:15%">
+                    <h3 style="color: white; font-weight: bolder;margin:auto"> {{order.restaurantName}} KFC </h3>
+                    <p style="color: white; font-weight: bolder;margin:auto"> {{order.date}} 21.08.2021. </p>
+                </div>
+                <div class="order-status" style="text-align:right;margin-right:15%">
+                    <p><i aria-hidden="true" class="fa fa-ban"></i> Otkazana</p>
+                    
+                </div>
             </div>
             
             <div style="margin-top: 20px;" >
-                <form>
-                    <select v-model="role" class="login-inputs-select">
-                        <option selected disabled>Odaberite ulogu korisnika..</option>
-                        <option value="deliverer">Dostavljač</option>
-                        <option value="manager">Menadžer</option>
-                    </select>
-                    <label class="error" id="roleErr" name="labels" display="hidden"> </label>
+                <div class="restaurants-col" style="background-color:transparent;margin: 2% 15%;justify-content: space-between;">
+                    <img src="images/kfc.jpg" style="height: fit-content;">
+                    <h3 style="width: -webkit-fill-available;color:white;margin-left:5%">{{article.name}} Burger </h3>
+                    <h3 style="width: -webkit-fill-available;color:white;text-align:right">x1 {{article.quantity}}</h3>
+                </div>
+                <div class="restaurants-col" style="background-color:transparent;margin: 2% 15%;justify-content: space-between;">
+                    <img src="images/kfc.jpg" style="height: fit-content;">
+                    <h3 style="width: -webkit-fill-available;color:white;margin-left:5%">{{article.name}} Burger </h3>
+                    <h3 style="width: -webkit-fill-available;color:white;text-align:right">x1 {{article.quantity}}</h3>
+                </div>
+                <div class="restaurants-col" style="background-color:transparent;margin: 2% 15%;justify-content: space-between;">
+                    <img src="images/kfc.jpg" style="height: fit-content;">
+                    <h3 style="width: -webkit-fill-available;color:white;margin-left:5%">{{article.name}} Burger </h3>
+                    <h3 style="width: -webkit-fill-available;color:white;text-align:right">x1 {{article.quantity}}</h3>
+                </div>
 
-                    <input v-model="username" type="text" class="login-inputs" placeholder="Korisničko ime">
-                    <label class="error" id="usernameErr" name="labels" display="hidden"> </label>
-
-                    <input v-model="password" type="password" class="login-inputs" placeholder="Lozinka">
-                    <label class="error" id="passwordErr" name="labels" display="hidden"> </label>
-
-                    <input v-model="name" type="text" class="login-inputs" placeholder="Ime">
-                    <label class="error" id="nameErr" name="labels" display="hidden"> </label>
-
-                    <input v-model="surname" type="text" class="login-inputs" placeholder="Prezime">
-                    <label class="error" id="surnameErr" name="labels" display="hidden"> </label>
-
-                    <select v-model="gender" class="login-inputs-select">
-                        <option selected disabled>Odaberite pol..</option>
-                        <option value="male">Muško</option>
-                        <option value="female">Žensko</option>
-                    </select>
-                    <label class="error" id="genderErr" name="labels" display="hidden"> </label>
-
-                    <label style="color: white;display: block;margin:15px 0 0 0">Datum rođenja:</label>
-	    			<input type="date" class="login-inputs" style="margin-top: 1px;" id="date_input" v-model="dateOfBirth" min="1896-01-01">
-					<label class="error" id="dateErr" name="labels" display="hidden"> </label>
-
-                    <button v-on:click="registerUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
-                </form>
+                <div style="border:1px solid white;margin: 5% 15% 2%" ></div>
+                <p style="color:white;font-weight:bold;float:right;margin:0 15% 0 0">{{order.sum}} = 1235.00 RSD</p>
+                <button disabled v-on:click="registerUser" style="margin: 20px 15%;width: -webkit-fill-available;" class="cancle-btn"> Otkazi</button>
             </div>
         </div>
 
@@ -210,7 +228,7 @@ Vue.component("user-orders", {
             if (document.querySelector('.filter-div').style.display == 'none' || document.querySelector('.filter-div').style.display ==
                 '') {
                 document.querySelector('.filter-div').style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-254px';
+                document.querySelector('.table-users').style.top = '-404px';
             } else { this.filterClose(); }
         },
         filterClose: function(event) {

@@ -194,6 +194,9 @@
 }
 
 .filter-modal {
+    max-height: 57vh;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding: 10px;
     width: 40vh;
     height: auto;
