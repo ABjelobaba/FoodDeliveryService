@@ -8,10 +8,8 @@ Vue.component("shoppingCart",{
     template: `
     <section class="shopping-cart-page">
 	    <div class="cover-photo">
-	        <img class="cover-img" src="images/background.jpg" alt="Cover photo">
 	    </div>
-	
-	    <h1>Pregled korpe</h1>
+
 	    <div class="cart-view">
 	        <section class="cart-items-section">
 	            <div class="container">
@@ -59,25 +57,29 @@ Vue.component("shoppingCart",{
 	            </div>
 	        </section>
 	
-	        <section class="right-section">
-	            <div class="price-calculation">
-	                <div class="total-price-text">
-	                        <h3>Ukupna cena artikala</h3>
-	
-	                        <h3>Dostava </h3>
-	
-	                        <h3>Ukupna cena </h3>
-	                </div>
-	                <div class="total-price-values">
-	                    <h3>1350,00 RSD </span></h3>
-	
-	                    <h3 class="delivery-text">200,00 RSD </span></h3>
-	
-	                    <h3 class="total-price-value">1550,00 RSD </span></h3>
-	                </div>
-	            </div>
-	            <a class="continue-with-order-btn" href="#">Završi narudžbinu</a>
-	        </section>
+			<section class="right-section">
+				<div class="finish-order">
+					<div class="price-calculation">
+						<div class="total-price-text">
+								<h3>Ukupna cena artikala</h3>
+		
+								<h3>Dostava </h3>
+		
+								<h3>Ukupna cena </h3>
+						</div>
+						<div class="total-price-values">
+							<h3>1350,00 RSD </span></h3>
+		
+							<h3 class="delivery-text">200,00 RSD </span></h3>
+		
+							<h3 class="total-price-value">1550,00 RSD </span></h3>
+						</div>
+					</div>
+					<a class="continue-with-order-btn" href="#">Završi narudžbinu</a>
+				</div>
+				<a id="back-to-restaurant-btn" href="#">Niste završili sa narudžbinom?</a>
+			</section>
+			
 	    </div>
     </section>
                 `
