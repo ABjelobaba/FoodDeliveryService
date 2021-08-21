@@ -1,5 +1,5 @@
 .order-restaurant img {
-    width: 10vh;
+    width: 20vh;
     border-radius: 10px;
     margin: 1vh;
 }
@@ -13,24 +13,68 @@
     cursor: pointer;
 }
 
-.order-articles {
+.order-articles-title-div {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 5% 0;
 }
 
-.order-articles {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.order-articles-title {
+    font-size: 19px;
+    text-align: left;
+    margin-left: 15%;
 }
 
-.order-status {
+.order-articles-title p {
+    color: white;
+    font-weight: bolder;
+    margin: auto;
+}
+
+.order-status-white {
     border: 1px solid white;
     padding: 0% 5%;
     color: rgba(44, 53, 63, 1);
     font-weight: bold;
     background-color: white;
+}
+
+.order-status-black {
+    border: 1px solid rgba(75, 83, 92, 1);
+    padding: 5% 5%;
+    margin: 10%;
+    color: rgba(75, 83, 92, 1);
+    font-weight: bold;
+    background-color: white;
+}
+
+.article-col {
+    display: flex;
+    border-radius: 10px;
+    text-align: left;
+    background-color: transparent;
+    margin: 2% 15%;
+    justify-content: space-between;
+}
+
+.article-col img {
+    width: 30%;
+    border-radius: 10px;
+    height: fit-content;
+}
+
+.article-col p {
+    color: #777;
+    padding: 0;
+}
+
+.article-col h3 {
+    margin-top: 16px;
+    margin-bottom: 15px;
+    text-align: left;
+    width: -webkit-fill-available;
+    color: white;
 }
 
 .cancle-btn {

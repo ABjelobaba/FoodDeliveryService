@@ -18,7 +18,7 @@ Vue.component("account", {
                         <li><a v-on:click="profileView" name="user-nav" id="profile">Profil</a></li>
                         <li><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
                         <li><a v-on:click="restaurantsView" name="user-nav" id="restaurants">Restorani</a></li>
-                        <li><a v-on:click="ordersView" name="user-nav" id="orders">Porudžbuine</a></li>
+                        <li><a v-on:click="ordersView" name="user-nav" id="orders">Porudžbine</a></li>
                     </ul>
                 </nav>
 		</div>
