@@ -1,0 +1,464 @@
+/* Top menu */
+.top-part-rp {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 308px;
+    position: absolute;
+    top: 0em;
+    background-size: cover;
+    background-attachment: scroll;
+    z-index: 2;
+    background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(../images/background.jpg);
+}
+
+/* Fixed top menu */
+.nav-rp {
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    height: 70px;
+    width: 100%;
+    background-size: cover;
+    background-attachment: scroll;
+    background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(../images/background.jpg);
+}
+
+.nav-rp a {
+    margin: 0;
+    margin-top: -15px;
+}
+
+#ncart-rp {
+    z-index: 3;
+    position: sticky;
+    margin: 0;
+    margin-right: -20%;
+    text-align: right;
+    top: 4em;
+    text-decoration: solid;
+    color: #054e72;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+#ncart-rp a:hover {
+    color: #043B56;
+    cursor: pointer;
+}
+
+/* Restaurant info */
+
+.restaurant-info-rp {
+    padding: 1em;
+    margin: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5%;
+    max-height: 180px;
+    position: relative;
+    left: 12.3%;
+    top: 60px;
+    margin: 17px 0;
+    width: fit-content;
+    display: block;
+}
+
+.logo-rp {
+    width: 7em;
+    height: 7em;
+    border-radius: 5% 0 0 0;
+    opacity: 100%;
+    border: 2px solid black;
+}
+
+.rating-rp {
+    display: inline-flex;
+}
+
+.rating-rp p {
+    margin: 0;
+    margin-top: -2px;
+    margin-left: 0.2em;
+    font-size: 1.033em;
+}
+
+.star-rating-rp {
+    width: 1.3em;
+    height: 1.3em;
+}
+
+.rating-num-rp {
+    font-weight: bold;
+}
+
+.title-and-rating {
+    margin-left: 0.7em;
+}
+
+.top-info-rp {
+    display: flex;
+    position: relative;
+    left: -15em;
+}
+
+.restaurant-title-rp {
+    margin: 0;
+    padding: 0.2em 4.5em 1.2em 0;
+    word-wrap: break-word;
+    max-width: 10em;
+}
+
+.restaurant-status-rp {
+    margin: 0.5em 0.5em 0 0;
+    padding: 0.3em 0.5em 0.5em 0.5em;
+    background-color: rgba(44, 67, 77, 0.281);
+    height: 1.2em;
+    border-radius: 5%;
+    font-size: large;
+    font-weight: bold;
+}
+
+.bottom-info-rp {
+    display: inline-flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.bottom-info-rp h3 {
+    padding-left: 0.5em;
+    font-weight: normal;
+    font-variant: small-caps;
+    font-weight:  600;
+    letter-spacing: 4px;
+    position: relative;
+    top: 1em;
+}
+
+.full-address-rp p{
+    font-size: medium;
+    font-style: oblique;
+    font-size: small;
+    margin: 0;
+    padding: 0 0 0.2em 0;
+}
+
+.full-address-rp {
+    margin-top: 0.2em;
+}
+
+.bottom-section-rp {
+    display: grid;
+    grid: auto/ 25% 1fr;
+    grid-gap: 0 2em;
+    width: 75%;
+    margin: 0 auto;
+    margin-top: 320px;
+}
+
+/* Navigation menu (articles, reviews) */
+
+.nav-menu-rp {
+    width: 65%;
+    margin-top: 2em;
+    grid-column: 1;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    height: fit-content;
+    position: sticky;
+    top: 7em;
+    box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
+}
+
+.nav-menu-rp h3 {
+    font-weight: normal;
+    padding: 0;
+    margin: 0;
+    margin: 1em;
+    width: max-content;
+}
+
+.nav-menu-rp h3:hover {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Article list */
+
+.articles-rp {
+    padding: 1em;
+    margin: 0;
+    box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
+    cursor: pointer;
+}
+
+.articles-rp h1 {
+    margin: 0;
+    margin-left: 0em;
+    font-size: 1.8em;
+}
+
+.article-list-rp {
+    padding: 0;
+}
+
+.article-rp {
+    position: relative;
+    padding: 0.2em;
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px outset rgba(5, 5, 5, 0.5);
+    background: rgba(255, 255, 255, 0.842);
+}
+
+.article-rp:hover {
+    background-color: #dddddd;
+    width: 100%;
+}
+
+.article-rp h2 {
+    font-size: 1.8em;
+    padding-left: 0.2em;
+    margin: 0;
+}
+
+.article-rp h3 {
+    font-size: 1.4em;
+    color: #054e72;
+    padding: 0.5vh 0.2em;
+    margin: 0;
+    position: relative;
+    bottom: 0;  
+}
+
+.article-rp p {
+    word-wrap: break-word;
+    padding: 0.5em 0.2em;
+    margin: 0;
+    font-size: 1.3em;
+}
+
+.food-img-container-rp {
+    padding: 1em 0;
+    margin-right: 0.2em;
+}
+
+.food-img-rp {
+    margin: auto 0;
+    border-radius: 10%;
+    width: 8em;
+    height: 5.5em;
+}
+
+/* Article view */
+
+.article-view-rp {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background-color: rgba(44, 53, 63, 0.5);
+    z-index: 5;
+    color: white;
+    display: none;
+}
+
+.selected-item-rp {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    margin: auto;
+    width: 31em;
+    height: fit-content;
+    background: rgba(44, 53, 63, 1);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.item-img-av-rp {
+    width: 100%;
+    text-align: center;
+}
+
+.item-img-av-rp img {  
+    width: 75%;
+    height: 40%;
+    background-color: transparent;
+    border-radius: 5%;
+}
+
+.close-window-btn-rp {
+    text-decoration: none;
+    font-size: 2em;
+    transform: rotate(-45deg);
+    color: white;
+    float: right;
+    font-weight: bold;
+    margin-top: -20px;
+    margin-right: -5px;
+}
+
+.title-price-rp {
+    padding: 0;
+    width: 75%;
+    margin-left: 11%;
+    display: flex;
+    align-items: baseline;
+}
+
+
+.title-price-rp h3 {
+    font-size: 1.25em;
+    color: white;
+    margin-left: auto;
+}
+
+.description-av-rp {
+    margin: 0.5em 0 1em 0;
+    padding: 0;
+    font-size: 1.2em;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.av-buttons-rp {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+
+.av-buttons-rp h5 {
+    padding: 0;
+    font-size: 1.7em;
+    margin: 0 0.7em;
+}
+
+.cq-buttons-rp {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 1.5em;
+}
+
+.cq-buttons-rp img {
+    z-index: 1;
+    cursor: pointer;
+    width: 2em;
+    border: 1px solid white;
+    border-radius: 50%;
+}
+
+.add-to-basket-rp {
+    position: absolute;
+    margin-left: -20px;
+    width: 100%;
+    text-align: center;
+    bottom: 0;
+    margin-bottom: 30px;
+}
+
+.add-to-basket-rp a {
+    color: white;
+    text-decoration: none;
+    border: 2px solid white;
+    padding: 0.3em 1em;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.add-to-basket-rp a:hover {
+    transition: 0.5s;
+    background-color: white;
+    color: rgba(44, 53, 63, 1);
+}
+
+/* Review list */
+
+.restaurant-reviews-rp {
+    padding: 0;
+    /* margin: 0 2em 0 2em;
+    width: 70%; */
+    height: fit-content;
+    box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
+}
+
+.restaurant-reviews-rp h1{
+    padding-top: 0.4em;
+    margin-left: 0.6em;
+    font-size: 1.8em;
+}
+
+.user-reviews-list-rp {
+    list-style-type: none;
+    margin: 0 auto;
+    max-width: 80%;
+}
+
+.review-rp {
+    background-color: rgb(75, 83, 92);;
+    border-radius: 1em;
+    display: flex;
+    min-height: 100px;
+    margin: 1em 0;
+
+}
+
+.user-img-rp {
+    vertical-align: middle;
+    margin: 0;
+    width: 4em;
+    height: 4em;
+    border: 2px solid rgb(75, 83, 92);
+    border-radius: 50%;
+    margin-left: -2em;
+    margin-top: 0.5em;
+    background-color: rgb(75, 83, 92);
+}
+
+.review-info-rp {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+}
+
+.review-rating-rp {
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
+    color: white;
+}
+
+.review-info-rp h4 {
+    padding: 0.8em 0 1em 0.5em;
+    font-weight: normal;
+    margin: 0;
+    font-size: 1.5em;
+    color: white;
+}
+
+
+.review-info-rp h5 {
+    padding: 0;
+    margin: 0;
+    font-size: 1.3em;
+    word-wrap: break-word;
+    font-style: italic;
+    font-weight: normal;
+    position: relative;
+    bottom: 0.5em;
+    color: white;
+}
+
+.restaurant-reviews-rp h6{
+    padding: 0;
+    padding-bottom: 0.3em;
+    margin: 0;
+    margin-right: 1em;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #054e72;
+    cursor: pointer;
+    width: max-content;
+    margin-left: auto;
+}
+
+.restaurant-reviews-rp h6:hover{
+    font-size: 1.22em;
+    color: #054463;
+}
