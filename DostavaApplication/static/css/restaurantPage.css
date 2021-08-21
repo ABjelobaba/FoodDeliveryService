@@ -50,9 +50,9 @@
 /* Restaurant info */
 
 .restaurant-info-rp {
-    padding: 0;
+    padding: 1em;
     margin: 0;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 5%;
     max-height: 180px;
     position: relative;
@@ -98,7 +98,7 @@
 .top-info-rp {
     display: flex;
     position: relative;
-    left: -265px;
+    left: -15em;
 }
 
 .restaurant-title-rp {
@@ -143,8 +143,7 @@
 }
 
 .full-address-rp {
-    padding-right: 1em;
-    padding-bottom: 1em;
+    margin-top: 0.2em;
 }
 
 .bottom-section-rp {
@@ -188,10 +187,14 @@
 .articles-rp {
     padding: 1em;
     margin: 0;
-    /* width: 70%; */
     box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
     cursor: pointer;
+}
 
+.articles-rp h1 {
+    margin: 0;
+    margin-left: 0em;
+    font-size: 1.8em;
 }
 
 .article-list-rp {
@@ -204,14 +207,13 @@
     margin-top: 1em;
     display: flex;
     justify-content: space-between;
-    border: 1px outset rgba(5, 5, 5, 0.5);
+    border-top: 1px outset rgba(5, 5, 5, 0.5);
     background: rgba(255, 255, 255, 0.842);
 }
 
 .article-rp:hover {
-    /* background-color: rgb(230, 230, 230); */
+    background-color: #dddddd;
     width: 100%;
-    box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
 }
 
 .article-rp h2 {
@@ -225,7 +227,7 @@
     color: #054e72;
     padding: 0.5vh 0.2em;
     margin: 0;
-    position: absolute;
+    position: relative;
     bottom: 0;  
 }
 
@@ -236,13 +238,16 @@
     font-size: 1.3em;
 }
 
-.food-img-rp {
-    border: 2px solid black;
+.food-img-container-rp {
+    padding: 1em 0;
     margin-right: 0.2em;
-    opacity: 85%;
-    border-radius: 50%;
-    width: 9em;
-    height: 7em;
+}
+
+.food-img-rp {
+    margin: auto 0;
+    border-radius: 10%;
+    width: 8em;
+    height: 5.5em;
 }
 
 /* Article view */
@@ -252,7 +257,7 @@
     top: 0; right: 0; bottom: 0; left: 0;
     background-color: rgba(44, 53, 63, 0.5);
     z-index: 5;
-    color: black;
+    color: white;
     display: none;
 }
 
@@ -262,9 +267,8 @@
     margin: auto;
     width: 31em;
     height: fit-content;
-    background: white;
+    background: rgba(44, 53, 63, 1);
     border-radius: 10px;
-    border: 1px solid black;
     padding: 20px;
 }
 
@@ -276,32 +280,34 @@
 .item-img-av-rp img {  
     width: 75%;
     height: 40%;
-    border: 1px solid black;
-    background-color: black;
+    background-color: transparent;
     border-radius: 5%;
 }
 
 .close-window-btn-rp {
     text-decoration: none;
-    font-size: 1.1em;
-    color: black;
+    font-size: 2em;
+    transform: rotate(-45deg);
+    color: white;
     float: right;
     font-weight: bold;
-    margin-top: -10px;
+    margin-top: -20px;
+    margin-right: -5px;
 }
 
 .title-price-rp {
-    width: 100%;
     padding: 0;
-    margin: 0;
-    display: inline-flex;
+    width: 75%;
+    margin-left: 11%;
+    display: flex;
     align-items: baseline;
-    justify-content: space-between;
 }
+
 
 .title-price-rp h3 {
     font-size: 1.25em;
-    color: #054e72;
+    color: white;
+    margin-left: auto;
 }
 
 .description-av-rp {
@@ -327,7 +333,6 @@
 .cq-buttons-rp {
     display: inline-flex;
     align-items: center;
-    margin-left: 1em;
     margin-top: 1.5em;
 }
 
@@ -335,7 +340,7 @@
     z-index: 1;
     cursor: pointer;
     width: 2em;
-    border: 1px solid black;
+    border: 1px solid white;
     border-radius: 50%;
 }
 
@@ -349,9 +354,9 @@
 }
 
 .add-to-basket-rp a {
-    color: black;
+    color: white;
     text-decoration: none;
-    border: 2px solid black;
+    border: 2px solid white;
     padding: 0.3em 1em;
     font-weight: bold;
     font-size: 1.1em;
@@ -359,8 +364,8 @@
 
 .add-to-basket-rp a:hover {
     transition: 0.5s;
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: rgba(44, 53, 63, 1);
 }
 
 /* Review list */
@@ -375,7 +380,7 @@
 
 .restaurant-reviews-rp h1{
     padding-top: 0.4em;
-    margin-left: 2em;
+    margin-left: 0.6em;
     font-size: 1.8em;
 }
 
@@ -386,7 +391,7 @@
 }
 
 .review-rp {
-    background-color: rgba(44, 53, 63, 1);
+    background-color: rgb(75, 83, 92);;
     border-radius: 1em;
     display: flex;
     min-height: 100px;
@@ -399,11 +404,11 @@
     margin: 0;
     width: 4em;
     height: 4em;
-    border: 2px solid rgba(44, 53, 63, 1);
+    border: 2px solid rgb(75, 83, 92);
     border-radius: 50%;
     margin-left: -2em;
     margin-top: 0.5em;
-    background-color: rgba(44, 53, 63, 1);
+    background-color: rgb(75, 83, 92);
 }
 
 .review-info-rp {
@@ -435,8 +440,7 @@
     word-wrap: break-word;
     font-style: italic;
     font-weight: normal;
-    position: absolute;
-    right: 5em;
+    position: relative;
     bottom: 0.5em;
     color: white;
 }

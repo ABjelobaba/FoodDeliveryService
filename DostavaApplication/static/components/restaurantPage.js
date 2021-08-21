@@ -70,6 +70,7 @@ Vue.component("restaurantPage",{
                 </div>
 
                 <div class="articles-rp">
+                    <h1>Artikli</h1>
                     <ul class="article-list-rp">
                         <li class="article-rp" v-on:click="showFoodItem">
                             <div class="article-info-rp">
@@ -77,7 +78,9 @@ Vue.component("restaurantPage",{
                                 <p> Zelena salata, paradajz, sir, kiseli krastavac</p>
                                 <h3> 450,00 RSD </h3>
                             </div>
-                            <img class="food-img-rp" src="images/burger.jpg" alt="Food">
+                            <div class="food-img-container-rp">
+                                <img class="food-img-rp" src="images/burger.jpg" alt="Food">
+                            </div>
                         </li>
 
                         <li class="article-rp" v-on:click="showFoodItem">
@@ -86,7 +89,9 @@ Vue.component("restaurantPage",{
                                 <p> Zelena salata, paradajz, sir, kiseli krastavac</p>
                                 <h3> 450,00 RSD </h3>
                             </div>
-                            <img class="food-img-rp" src="images/burger.jpg" alt="Food">
+                            <div class="food-img-container-rp">
+                                <img class="food-img-rp" src="images/burger.jpg" alt="Food">
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -139,7 +144,7 @@ Vue.component("restaurantPage",{
             <div class="selected-item-rp">
                 <div class="item-img-av-rp">
                     <img src="images/burger.jpg" alt="Food">
-                    <a href="#" class="close-window-btn-rp" v-on:click="closeFoodItem">X</a>
+                    <a href="#" class="close-window-btn-rp" v-on:click="closeFoodItem">+</a>
                 </div>
                 <div class="title-price-rp">
                     <h2>Burger</h2>
@@ -150,9 +155,9 @@ Vue.component("restaurantPage",{
                 </p>
                 <div class="av-buttons-rp">
                     <div class="cq-buttons-rp">
-                        <img src="images/remove.png" alt="Remove item" class="change-quantity-rp">
+                        <img src="images/remove-white.png" alt="Remove item" class="change-quantity-rp">
                         <h5>1</h5>
-                        <img src="images/add.png" alt="Add item" class="change-quantity-rp">
+                        <img src="images/add-white.png" alt="Add item" class="change-quantity-rp">
                     </div>
                     <div class="add-to-basket-rp">
                         <a href="#">Dodaj u korpu</a>
