@@ -1,0 +1,14 @@
+.order-restaurant img {
+    width: 10vh;
+    border-radius: 10px;
+    margin: 1vh;
+}
+
+.order-restaurant {
+    display: flex;
+    align-items: center;
+}
+
+.table-users[name="orders"] tbody tr {
+    cursor: pointer;
+}
