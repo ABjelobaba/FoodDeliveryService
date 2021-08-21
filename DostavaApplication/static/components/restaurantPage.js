@@ -150,9 +150,9 @@ Vue.component("restaurantPage",{
                 </p>
                 <div class="av-buttons-rp">
                     <div class="cq-buttons-rp">
-                        <img src="images/remove-white.png" alt="Remove item" class="change-quantity-rp">
+                        <img src="images/remove.png" alt="Remove item" class="change-quantity-rp">
                         <h5>1</h5>
-                        <img src="images/add-white.png" alt="Add item" class="change-quantity-rp">
+                        <img src="images/add.png" alt="Add item" class="change-quantity-rp">
                     </div>
                     <div class="add-to-basket-rp">
                         <a href="#">Dodaj u korpu</a>
