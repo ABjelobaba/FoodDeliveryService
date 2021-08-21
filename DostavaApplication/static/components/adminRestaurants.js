@@ -167,26 +167,26 @@ Vue.component("admin-restaurants", {
 							</div>
 
 							<label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Odaberite tip hrane:</label>
-							<div class="checkbox-btn-container">
+							<div class="radio-btn-container" style="width: 60%;height: 100px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);">
 								<div>
-									<input type="checkbox" id="newItalian" name="cuisine" value="italian">
-									<label class="checkbox-label" for="newItalian">Italijanska</label>
+									<input type="radio" id="newItalian" name="cuisine" value="italian">
+									<label name="cuisine" class="radio-label" for="newItalian">Italijanska</label>
 								</div>
 								<div>
-									<input type="checkbox" id="newChinese" name="cuisine" value="chinese">
-									<label class="checkbox-label" for="newChinese">Kineska</label>
+									<input type="radio" id="newChinese" name="cuisine" value="chinese">
+									<label name="cuisine" class="radio-label" for="newChinese">Kineska</label>
 								</div>
 								<div>
-									<input type="checkbox" id="newBarbecue" name="cuisine" value="barbecue">
-									<label class="checkbox-label" for="newBarbecue">Rostilj</label>
+									<input type="radio" id="newBarbecue" name="cuisine" value="barbecue">
+									<label name="cuisine" class="radio-label" for="newBarbecue">Rostilj</label>
 								</div>
 								<div>
-									<input type="checkbox" id="newAmerican" name="cuisine" value="american">
-									<label class="checkbox-label" for="newAmerican">Americka hrana</label>
+									<input type="radio" id="newAmerican" name="cuisine" value="american">
+									<label name="cuisine" class="radio-label" for="newAmerican">Americka hrana</label>
 								</div>
 								<div>
-									<input type="checkbox" id="newSweets" name="cuisine" value="sweets">
-									<label class="checkbox-label" for="newSweets">Poslastice</label>
+									<input type="radio" id="newSweets" name="cuisine" value="sweets">
+									<label name="cuisine" class="radio-label" for="newSweets">Poslastice</label>
 								</div>
 							</div>
 							<label class="error" id="logoErr" name="labels" display="hidden"> </label>

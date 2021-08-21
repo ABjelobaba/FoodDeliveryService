@@ -30,6 +30,9 @@ select:focus {
     outline: none;
 }
 
+
+/*Radio without marker*/
+
 input[type="radio"] {
     display: none;
 }
@@ -63,6 +66,61 @@ input[type="radio"]:checked+.radio-label {
     box-shadow: 0px 0px 40px 0 rgb(0 0 0 / 20%);
 }
 
+
+/* Radio with marker */
+
+input[type="radio"][name="cuisine"] {
+    display: none;
+}
+
+input[type="radio"][name="cuisine"]:checked+.radio-label {
+    font-size: 20px;
+    transition: 0.5s;
+    background-color: rgba(255, 255, 255, 0.089);
+}
+
+.radio-label {
+    font-weight: lighter;
+    font-size: 17px;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.089);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.089);
+}
+
+.radio-label:hover {
+    background-color: rgba(255, 255, 255, 0.089);
+}
+
+.radio-btn-container {
+    margin: 2% auto;
+    width: 80%;
+    height: 352px;
+    overflow-y: auto;
+    box-shadow: 0px 0px 40px 0 rgb(0 0 0 / 20%);
+}
+
+.radio-btn-container input[type="radio"][name="cuisine"]:checked+.radio-label::before {
+    height: 5px;
+    width: 5px;
+    border: 5px solid rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+}
+
+.radio-label[name="cuisine"]::before {
+    content: "";
+    height: 10px;
+    width: 10px;
+    border: 2px solid white;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+
+/*Checkbox white*/
+
 input[type="checkbox"] {
     display: none;
 }
@@ -78,33 +136,6 @@ input[type="checkbox"] {
     width: 5px;
     border: 5px solid rgb(255, 255, 255);
     background-color: rgb(255, 255, 255);
-}
-
-.checkbox-btn-container-dark input[type="checkbox"]:checked+.checkbox-label {
-    font-size: 18px;
-    transition: 0.5s;
-    background-color: rgba(0, 0, 0, 0.089);
-}
-
-.checkbox-btn-container-dark input[type="checkbox"]:checked+.checkbox-label::before {
-    height: 5px;
-    width: 5px;
-    border: 5px solid rgba(0, 0, 0, 0.089);
-    background-color: black;
-}
-
-.checkbox-btn-container-dark label::before {
-    content: "";
-    height: 10px;
-    width: 10px;
-    border: 2px solid black;
-    border-radius: 5px;
-    margin-right: 20px;
-    color: black;
-}
-
-.checkbox-btn-container-dark label {
-    color: black;
 }
 
 .checkbox-label {
@@ -137,6 +168,36 @@ input[type="checkbox"] {
     height: 100px;
     overflow-y: auto;
     box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+/* Checkbox black*/
+
+.checkbox-btn-container-dark input[type="checkbox"]:checked+.checkbox-label {
+    font-size: 18px;
+    transition: 0.5s;
+    background-color: rgba(0, 0, 0, 0.089);
+}
+
+.checkbox-btn-container-dark input[type="checkbox"]:checked+.checkbox-label::before {
+    height: 5px;
+    width: 5px;
+    border: 5px solid rgba(0, 0, 0, 0.089);
+    background-color: black;
+}
+
+.checkbox-btn-container-dark label::before {
+    content: "";
+    height: 10px;
+    width: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-right: 20px;
+    color: black;
+}
+
+.checkbox-btn-container-dark label {
+    color: black;
 }
 
 .home-img {
