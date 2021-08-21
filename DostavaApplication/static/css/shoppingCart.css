@@ -156,6 +156,7 @@
 
 #back-to-restaurant-btn:hover {
     background-color: #054e72;
+    transition: 0.5s;
     color: white;
 }
 
@@ -205,5 +206,6 @@
 
 .continue-with-order-btn:hover {
     color: black;
+    transition: 0.5s;
     background-color: white;
 }
