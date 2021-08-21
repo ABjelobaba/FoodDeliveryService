@@ -1,11 +1,8 @@
 .user-nav ul {
     list-style: none;
     display: flex;
-    float: left;
-    vertical-align: bottom;
-    margin-top: 80px;
     font-size: 18px;
-    margin-bottom: 20px;
+    margin: 80px 10% 20px 7%;
 }
 
 .user-nav ul li a {
@@ -79,7 +76,7 @@
     display: inline-table;
     border-collapse: collapse;
     width: -webkit-fill-available;
-    margin: 50px 100px 0 100px;
+    margin: 50px 0;
     font-size: 20px;
     text-align: center;
     border-radius: 5px 5px 0 0;

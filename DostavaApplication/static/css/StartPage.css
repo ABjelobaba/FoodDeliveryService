@@ -152,10 +152,11 @@ select:focus {
 }
 
 .content {
-    width: 100%;
+    width: 80%;
     display: grid;
     grid: auto/ 25% 1fr;
     grid-gap: 0 2em;
+    margin: 0 auto;
 }
 
 
@@ -267,7 +268,7 @@ select:focus {
 }
 
 .float-left-div {
-    margin: 30px;
+    margin: 30px 0;
     width: 100%;
     grid-column: 1;
     position: sticky;
