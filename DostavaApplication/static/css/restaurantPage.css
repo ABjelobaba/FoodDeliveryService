@@ -29,20 +29,22 @@
     margin-top: -15px;
 }
 
-.nav-rp #ncart-rp {
+#ncart-rp {
+    z-index: 3;
+    position: sticky;
     margin: 0;
-    margin-top: 75px;
-    margin-right: 25px;
+    margin-right: -20%;
     text-align: right;
+    top: 4em;
     text-decoration: solid;
     color: #054e72;
-    cursor: pointer;
     font-size: 25px;
     font-weight: 700;
 }
 
 #ncart-rp a:hover {
-    font-size: 26px;
+    color: #043B56;
+    cursor: pointer;
 }
 
 /* Restaurant info */
@@ -185,7 +187,7 @@
 
 .articles-rp {
     padding: 1em;
-    margin: 2.3em 0;
+    margin: 0;
     /* width: 70%; */
     box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
     cursor: pointer;
@@ -241,6 +243,121 @@
     border-radius: 50%;
     width: 9em;
     height: 7em;
+}
+
+/* Article view */
+
+.article-view-rp {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background-color: rgba(44, 53, 63, 0.5);
+    z-index: 5;
+    color: white;
+    display: none;
+}
+
+.selected-item-rp {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    margin: auto;
+    width: 31em;
+    height: fit-content;
+    background: rgba(44, 53, 63, 1);
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 20px;
+}
+
+.item-img-av-rp {
+    width: 100%;
+    text-align: center;
+}
+
+.item-img-av-rp img {  
+    width: 65%;
+    height: 40%;
+    border: 1px solid black;
+    border-radius: 5%;
+}
+
+.close-window-btn-rp {
+    text-decoration: none;
+    font-size: 1.1em;
+    color: white;
+    float: right;
+    margin-top: -10px;
+}
+
+.title-price-rp {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.title-price-rp h3 {
+    font-size: 1.25em;
+}
+
+.description-av-rp {
+    margin: 0.5em 0 1em 0;
+    padding: 0;
+    font-size: 1.2em;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.av-buttons-rp {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+
+.av-buttons-rp h5 {
+    padding: 0;
+    font-size: 1.3em;
+    margin: 0 0.7em;
+}
+
+.cq-buttons-rp {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 1em;
+    margin-top: 1.5em;
+}
+
+.cq-buttons-rp img {
+    z-index: 1;
+    cursor: pointer;
+    width: 2em;
+    border: 1px solid white;
+    border-radius: 50%;
+}
+
+.add-to-basket-rp {
+    position: absolute;
+    margin-left: -20px;
+    width: 100%;
+    text-align: center;
+    bottom: 0;
+    margin-bottom: 30px;
+}
+
+.add-to-basket-rp a {
+    color: white;
+    text-decoration: none;
+    border: 2px solid white;
+    padding: 0.3em 1em;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.add-to-basket-rp a:hover {
+    transition: 0.5s;
+    background-color: white;
+    color: rgba(44, 53, 63, 1);
 }
 
 /* Review list */
