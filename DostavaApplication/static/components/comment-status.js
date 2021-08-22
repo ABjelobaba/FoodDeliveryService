@@ -22,25 +22,28 @@ Vue.component("comment-status", {
         </li>
              `,
     mounted() {
-        if (this.comment.status == "canceled") {
-            document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status"><i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>';
-        } else if (this.comment.status == "approved") {
-            document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status"><i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
-        } else {
-            if (this.logedInRole == 'admin') {
-                document.getElementsByName(this.comment.id)[0].innerHTML =
-                    '<div class="comment-status" style="background-color: red;border-radius: 0 1em 0 0em">' +
-                    '<i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>' +
-                    '<div class="comment-status" style="background-color: green;border-radius: 0em 0em 1em 0em">' +
-                    '<i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
-            } else if (this.logedInRole == 'manager') {
-                document.getElementsByName(this.comment.id)[0].innerHTML =
-                    '<div class="comment-status-button" name="red" v-on:click="cancleComment">' +
-                    '<i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>' +
-                    '<div class="comment-status-button" name="green" v-on:click="approveComment">' +
-                    '<i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
+        if (this.logedInRole == 'admin' || this.logedInRole == 'manager') {
+            if (this.comment.status == "canceled") {
+                document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status"><i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>';
+            } else if (this.comment.status == "approved") {
+                document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status"><i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
+            } else {
+                if (this.logedInRole == 'admin') {
+                    document.getElementsByName(this.comment.id)[0].innerHTML =
+                        '<div class="comment-status" style="background-color: red;border-radius: 0 1em 0 0em">' +
+                        '<i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>' +
+                        '<div class="comment-status" style="background-color: green;border-radius: 0em 0em 1em 0em">' +
+                        '<i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
+                } else if (this.logedInRole == 'manager') {
+                    document.getElementsByName(this.comment.id)[0].innerHTML =
+                        '<div class="comment-status-button" name="red" v-on:click="cancleComment">' +
+                        '<i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>' +
+                        '<div class="comment-status-button" name="green" v-on:click="approveComment">' +
+                        '<i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
+                }
             }
         }
+
     },
 
     methods: {
