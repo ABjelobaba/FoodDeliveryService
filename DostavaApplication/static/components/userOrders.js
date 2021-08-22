@@ -31,7 +31,7 @@ Vue.component("user-orders", {
             <div v-on:click="filterClose" class="close-filter">+</div>
 
             <h2>Status porudžbine</h2>
-            <div class="chechbox_types" style="text-align: left;">
+            <div class="checkbox-btn-container-dark" >
                 <div>
                     <input type="checkbox" id="processing" name="orderStatus" value="processing">
                     <label for="processing">Obrada</label>
@@ -58,7 +58,7 @@ Vue.component("user-orders", {
                 </div>
             </div>
             <h2>Status porudžbine</h2>
-            <div class="chechbox_types" style="text-align: left;">
+            <div class="checkbox-btn-container-dark">
                 <div>
                     <input type="checkbox" id="italian" name="cuisine" value="italian">
                     <label for="italian">Italijanska</label>

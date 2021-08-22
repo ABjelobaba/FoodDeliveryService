@@ -29,7 +29,7 @@ Vue.component("admin-users", {
             <div v-on:click="filterClose" class="close-filter">+</div>
 
             <h2>Uloge</h2>
-            <div class="chechbox_types" style="text-align: left;">
+            <div class="checkbox-btn-container-dark" >
                 <div>
                     <input type="checkbox" id="manager" name="role" value="manager">
                     <label for="manager">Menadzer</label>
@@ -49,7 +49,7 @@ Vue.component("admin-users", {
             </div>
 
             <h2>Sumnjiv kupac</h2>
-            <div class="chechbox_types" style="text-align: left;">
+            <div class="checkbox-btn-container-dark" >
                 <div>
                     <input type="checkbox" id="yes" name="suspicious" value="yes">
                     <label for="yes">Da</label>
@@ -61,7 +61,7 @@ Vue.component("admin-users", {
             </div>
 
             <h2>Tip kupca</h2>
-            <div class="chechbox_types" style="text-align: left;">
+            <div class="checkbox-btn-container-dark" >
                 <div>
                     <input type="checkbox" id="gold" name="role" value="gold">
                     <label for="gold">Zlatni</label>
