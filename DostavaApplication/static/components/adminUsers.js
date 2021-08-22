@@ -47,6 +47,18 @@ Vue.component("admin-users", {
                 </div>
             </div>
 
+            <h2>Sumnjiv kupac</h2>
+            <div class="chechbox_types" style="text-align: left;">
+                <div>
+                    <input type="checkbox" id="yes" name="suspicious" value="yes">
+                    <label for="yes">Da</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="no" name="suspicious" value="no">
+                    <label for="no">Ne</label>
+                </div>
+            </div>
+
             <h2>Tip kupca</h2>
             <div class="chechbox_types" style="text-align: left;">
                 <div>
@@ -364,7 +376,7 @@ Vue.component("admin-users", {
             if (document.querySelector('.filter-div').style.display == 'none' || document.querySelector('.filter-div').style.display ==
                 '') {
                 document.querySelector('.filter-div').style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-348px';
+                document.querySelector('.table-users').style.top = '-464px';
             } else { this.filterClose(); }
         },
         filterClose: function(event) {

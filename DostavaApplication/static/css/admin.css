@@ -105,6 +105,7 @@
 }
 
 .table-users tbody tr:hover {
+    transition: 0.5s;
     background-color: #f3f3f3;
 }
 
@@ -117,6 +118,7 @@
     position: sticky;
     top: 165px;
     padding: 0 120px;
+    padding: 0 5%;
     width: -webkit-fill-available;
     height: 70px;
     display: grid;
@@ -282,4 +284,24 @@
 
 .radio-btn-container {
     display: block;
+}
+
+@media only screen and (max-width: 900px) {
+    .users-search {
+        grid-template-rows: auto;
+        grid-template-columns: none;
+        height: auto;
+        justify-content: center;
+        padding: 2%;
+    }
+    .new-user-btn {
+        margin-left: 0;
+    }
+    .filter-div {
+        top: 295px;
+        width: 100%;
+    }
+    .filter-modal {
+        margin: 10px auto;
+    }
 }
