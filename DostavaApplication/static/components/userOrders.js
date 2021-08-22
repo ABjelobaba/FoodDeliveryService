@@ -19,9 +19,10 @@ Vue.component("user-orders", {
     <h1 style="text-align: center;">Pregled vaših porudžbina
     </h1>
     <div class="users-search">
-        <i style="text-align: center;" class="fa fa-search"></i>
-        <input type="text" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">
-
+        <div>
+            <i style="text-align: center;" class="fa fa-search"></i>
+            <input type="text" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">
+        </div>
         <button class="filter-btn" v-on:click="filterClicked"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
     </div>
 

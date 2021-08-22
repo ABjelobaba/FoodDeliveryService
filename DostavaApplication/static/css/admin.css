@@ -308,4 +308,7 @@
     .filter-modal {
         margin: 10px auto;
     }
+    .filter-btn {
+        margin-top: 10px;
+    }
 }

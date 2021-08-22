@@ -16,9 +16,10 @@ Vue.component("admin-users", {
     <h1 style="text-align: center;">Pregled registrovanih korisnika
     </h1>
     <div class="users-search">
-        <i class="fa fa-search"></i>
-        <input type="text" style="min-width: 470px" placeholder="Pretraži po imenu, prezimenu ili korisničkom imenu..">
-
+        <div>
+            <i class="fa fa-search"></i>
+            <input type="text" style="min-width: 470px" placeholder="Pretraži po imenu, prezimenu ili korisničkom imenu..">
+        </div>
         <button class="filter-btn" v-on:click="filterClicked"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
         <button class="new-user-btn" v-on:click="newUserClicked">+ Novi korisnik</button>
     </div>

@@ -48,10 +48,10 @@ Vue.component("home", {
 			</div>
 		</div>
 		<div class="content">
-			<div class="float-left-div">
+			<div class="float-left-div" >
 				<div class="restaurant-types">
 					<h2 style="text-align: center;" >Kuhinje</h2>
-					<div class="chechbox_types">
+					<div class="checkbox-btn-container-dark">
 						<div>
 							<input type="checkbox" id="italian" name="cuisine" value="italian">
 							<label for="italian">Italijanska</label>
@@ -74,7 +74,7 @@ Vue.component("home", {
 						</div>
 					</div>
 					<h2 style="text-align: center;" >Ocene</h2>
-					<div class="chechbox_types">
+					<div class="checkbox-btn-container-dark">
 						<div>
 							<input type="checkbox" id="one" name="stars" value="one">
 							<label for="one">1</label>

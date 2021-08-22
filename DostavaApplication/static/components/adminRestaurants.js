@@ -41,46 +41,46 @@ Vue.component("admin-restaurants", {
 					<div class="checkbox-btn-container-dark" style="margin: 20px;font-size: 17px;">
 						<div>
 							<input type="checkbox" id="italian" name="cuisine" value="italian">
-							<label class="checkbox-label" for="italian">Italijanska</label>
+							<label  for="italian">Italijanska</label>
 						</div>
 						<div>
 							<input type="checkbox" id="chinese" name="cuisine" value="chinese">
-							<label class="checkbox-label" for="chinese">Kineska</label>
+							<label  for="chinese">Kineska</label>
 						</div>
 						<div>
 							<input type="checkbox" id="barbecue" name="cuisine" value="barbecue">
-							<label class="checkbox-label" for="barbecue">Rostilj</label>
+							<label for="barbecue">Rostilj</label>
 						</div>
 						<div>
 							<input type="checkbox" id="american" name="cuisine" value="american">
-							<label class="checkbox-label" for="american">Americka hrana</label>
+							<label for="american">Americka hrana</label>
 						</div>
 						<div>
 							<input type="checkbox" id="sweets" name="cuisine" value="sweets">
-							<label class="checkbox-label" for="sweets">Poslastice</label>
+							<label for="sweets">Poslastice</label>
 						</div>
 					</div>
 					<h2 style="text-align: center;" >Ocene</h2>
 					<div class="checkbox-btn-container-dark" style="margin: 20px;font-size: 17px;">
 						<div>
 							<input type="checkbox" id="one" name="stars" value="one">
-							<label class="checkbox-label" for="one">1</label>
+							<label for="one">1</label>
 						</div>
 						<div>
 							<input type="checkbox" id="two" name="stars" value="two">
-							<label class="checkbox-label" for="two">2</label>
+							<label for="two">2</label>
 						</div>
 						<div>
 							<input type="checkbox" id="three" name="stars" value="three">
-							<label class="checkbox-label" for="three">3</label>
+							<label for="three">3</label>
 						</div>
 						<div>
 							<input type="checkbox" id="four" name="stars" value="four">
-							<label class="checkbox-label" for="four">4</label>
+							<label for="four">4</label>
 						</div>
 						<div>
 							<input type="checkbox" id="five" name="stars" value="five">
-							<label class="checkbox-label" for="five">5</label>
+							<label for="five">5</label>
 						</div>
 					</div>
 				</div>
