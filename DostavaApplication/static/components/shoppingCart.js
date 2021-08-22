@@ -20,7 +20,7 @@ Vue.component("shoppingCart",{
 	                            <h3> 450,00 RSD </h3>
 	                        </div>
 	                        <img class="food-img" src="images/burger.jpg" alt="Food">
-	                        <img class="remove-food" src="images/remove-all.png" alt="">
+	                        <div class="remove-item-from-cart">  <h4>+</h4> </div>
 	
 	                        <div class="change-quantity">
 	                            <img src="images/add.png" alt="Add one item">
@@ -33,7 +33,7 @@ Vue.component("shoppingCart",{
 	                            <h3> 450,00 RSD </h3>
 	                        </div>
 	                        <img class="food-img" src="images/burger.jpg" alt="Food">
-	                        <img class="remove-food" src="images/remove-all.png" alt="">
+	                        <div class="remove-item-from-cart">  <h4>+</h4> </div>
 	
 	                        <div class="change-quantity">
 	                            <img src="images/add.png" alt="Add one item">
@@ -46,7 +46,7 @@ Vue.component("shoppingCart",{
 	                            <h3> 450,00 RSD </h3>
 	                        </div>
 	                        <img class="food-img" src="images/burger.jpg" alt="Food">
-	                        <img class="remove-food" src="images/remove-all.png" alt="">
+	                        <div class="remove-item-from-cart">  <h4>+</h4> </div>
 	
 	                        <div class="change-quantity">
 	                            <img src="images/add.png" alt="Add one item">
