@@ -6,6 +6,7 @@ const AdminRestaurants = { template: '<admin-restaurants></admin-restaurants>' }
 const AdminProfile = { template: '<admin-profile></admin-profile>' }
 const AdminUsers = { template: '<admin-users></admin-users>' }
 const RestaurantPage = { template: '<restaurantPage></restaurantPage>' }
+const ShoppingCart = { template: '<shoppingCart></shoppingCart>' }
 
 
 const router = new VueRouter({
@@ -14,6 +15,7 @@ const router = new VueRouter({
         { path: '/', name: 'home', component: Home },
         { path: '/logIn', component: LogIn },
         { path: '/restaurants', component: restaurants },
+        { path: '/cart', component: ShoppingCart},
         {
             path: '/admin',
             component: Admin,
