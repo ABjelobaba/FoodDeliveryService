@@ -14,7 +14,7 @@ Vue.component("admin-restaurants", {
 
     template: `
 	<div>
-		<div class="white-behind-search" style="top:166px">
+		<div class="white-behind-search" style="top:181px">
 			<div class="search-restaurants">
 				<button class="black-btn" style="
 										font-size: 17px;

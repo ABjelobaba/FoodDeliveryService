@@ -166,7 +166,7 @@ Vue.component("user-orders", {
     </div>
 
     <div class="register" style="z-index:100">
-        <div class="modal">
+        <div class="modal" style="height:auto">
         <div v-on:click="newUserClose" class="close">+</div>
 
         <div >

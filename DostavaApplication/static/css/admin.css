@@ -296,6 +296,7 @@
         height: auto;
         justify-content: center;
         padding: 2%;
+        grid-auto-flow: inherit;
     }
     .new-user-btn {
         margin-left: 0;
