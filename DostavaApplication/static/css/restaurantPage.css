@@ -476,3 +476,27 @@
     font-size: 1.22em;
     color: #054463;
 }
+
+.bottom-section-rp input[type="checkbox"]:checked+.full-radio-btn-label {
+    background-color: rgba(44, 53, 63, 1);
+    transition: 0.5s;
+    color: white;
+}
+
+.bottom-section-rp .full-radio-btn-label {
+    padding: 5%;
+    font-weight: bold;
+    font-size: 17px;
+    color: rgba(44, 53, 63, 1);
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    border: 1px solid rgba(44, 53, 63, 1);
+    margin-top: 2em;
+}
+
+.bottom-section-rp .full-radio-btn-label:hover {
+    background-color: rgba(44, 53, 63, 0.85);
+    transition: 0.5s;
+    color: white;
+}

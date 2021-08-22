@@ -2,9 +2,14 @@ Vue.component("restaurantPage", {
     data: function() {
         return {
             comments: [
-                { id: 1, rating: 5.0, text: 'Odlicna hrana, brza dostava', userName: 'Nikola', status: 'canceled' },
+                { id: 1, rating: 5.0, text: 'Odlicna hrana, brza dostava', userName: 'Nikola', status: 'rejected' },
                 { id: 2, rating: 4.0, text: 'Dobra hrana, velike porcije', userName: 'Marko', status: 'approved' },
                 { id: 3, rating: 3.0, text: 'Okej hrana', userName: 'Marija', status: 'waiting' }
+            ],
+            review_states: [
+                { value: 'rejected', text: 'Odbijeni' },
+                { value: 'approved', text: 'Odobren' },
+                { value: 'waiting', text: 'Čeka obradu' }
             ],
             logedInRole: 'user'
         }
@@ -67,37 +72,20 @@ Vue.component("restaurantPage", {
         
         <section class="bottom-section-rp">
             <div style="height: fit-content;position: sticky;top: 5em;">
-                <button v-if="logedInRole == 'admin'" type="radio" class="black-btn" style="margin-top: 2em;width: 100%;font-size: 17px; border-width: 2px;">Pregled komentara</button>
-                <div class="nav-menu-rp">
+                <div v-if="logedInRole =='admin' || logedInRole=='manager'">
+                    <input v-on:click="showHideReviews()" type="checkbox" id="viewReviews" value="viewReviews">
+                    <label class="full-radio-btn-label" for="viewReviews">Pregled komentara</label>
+                </div>
+                <div class="nav-menu-rp" id="scrollPanel">
                     <h3>Artikli</h3>
                     <h3>Utisci</h3>
                 </div>
-                <div class="nav-menu-rp" style="display: none">
-                    <h2 style="text-align: center;" >Kuhinje</h2>
-                    <div class="chechbox_types">
-                        <div>
-                            <input type="checkbox" id="processing" name="order-status" value="processing">
-                            <label for="processing">Obrada</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="prep" name="order-status" value="prep">
-                            <label for="prep">U pripremi</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="waitingDeliverer" name="order-status" value="waitingDeliverer">
-                            <label for="waitingDeliverer">Ceka dostavljaca</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="transporting" name="order-status" value="transporting">
-                            <label for="transporting">U transportu</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="finished" name="order-status" value="finished">
-                            <label for="finished">Dostavljena</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="canceled" name="order-status" value="canceled">
-                            <label for="canceled">Otkazana</label>
+                <div class="nav-menu-rp" id="statusFilter" style="display: none">
+                    <h2 style="text-align: center;" >Status komentara</h2>
+                    <div class="checkbox-btn-container-dark">
+                        <div v-for="state in review_states" >
+                            <input type="checkbox" v-bind:id=state.value name="order-status" v-bind:value=state.value>
+                            <label v-bind:for=state.value style="border:0">{{state.text}}</label>
                         </div>
                     </div>
                 </div>
@@ -195,6 +183,20 @@ Vue.component("restaurantPage", {
         },
         closeFoodItem: function(event) {
             document.querySelector('.article-view-rp').style.display = 'none';
+        },
+        showHideReviews: function(checked) {
+            let cb = document.getElementById('viewReviews');
+            if (cb.checked) {
+                document.querySelector('.articles-rp').style.display = 'none';
+                document.getElementById('scrollPanel').style.display = 'none';
+                document.getElementById('statusFilter').style.display = 'block';
+                window.scrollTo(0, 0);
+            } else {
+                document.querySelector('.articles-rp').style.display = 'block';
+                document.getElementById('scrollPanel').style.display = 'block';
+                document.getElementById('statusFilter').style.display = 'none';
+                window.scrollTo(0, 0);
+            }
         }
     }
 })

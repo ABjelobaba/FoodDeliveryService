@@ -23,7 +23,7 @@ Vue.component("comment-status", {
              `,
     mounted() {
         if (this.logedInRole == 'admin' || this.logedInRole == 'manager') {
-            if (this.comment.status == "canceled") {
+            if (this.comment.status == "rejected") {
                 document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status"><i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>';
             } else if (this.comment.status == "approved") {
                 document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status"><i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
