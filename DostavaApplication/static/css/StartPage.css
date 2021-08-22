@@ -380,3 +380,8 @@ select:focus {
     transition: 0.5s;
     color: white;
 }
+
+.black-btn [type='radio']:checked {
+    background: rgba(44, 53, 63, 0.85);
+    transition: 0.5s;
+}

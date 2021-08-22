@@ -1,6 +1,12 @@
-Vue.component("restaurantPage",{
+Vue.component("restaurantPage", {
     data: function() {
-        return {     
+        return {
+            comments: [
+                { id: 1, rating: 5.0, text: 'Odlicna hrana, brza dostava', userName: 'Nikola', status: 'canceled' },
+                { id: 2, rating: 4.0, text: 'Dobra hrana, velike porcije', userName: 'Marko', status: 'approved' },
+                { id: 3, rating: 3.0, text: 'Okej hrana', userName: 'Marija', status: 'waiting' }
+            ],
+            logedInRole: 'user'
         }
 
     },
@@ -60,12 +66,44 @@ Vue.component("restaurantPage",{
         <!-- navigacioni meni -->
         
         <section class="bottom-section-rp">
-            <div class="nav-menu-rp">
-                <h3>Artikli</h3>
-                <h3>Utisci</h3>
+            <div style="height: fit-content;position: sticky;top: 5em;">
+                <button v-if="logedInRole == 'admin'" type="radio" class="black-btn" style="margin-top: 2em;width: 100%;font-size: 17px; border-width: 2px;">Pregled komentara</button>
+                <div class="nav-menu-rp">
+                    <h3>Artikli</h3>
+                    <h3>Utisci</h3>
+                </div>
+                <div class="nav-menu-rp">
+                <h2 style="text-align: center;" >Kuhinje</h2>
+                <div class="chechbox_types">
+                    <div>
+                        <input type="checkbox" id="processing" name="order-status" value="processing">
+                        <label for="processing">Obrada</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="prep" name="order-status" value="prep">
+                        <label for="prep">U pripremi</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="waitingDeliverer" name="order-status" value="waitingDeliverer">
+                        <label for="waitingDeliverer">Ceka dostavljaca</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="transporting" name="order-status" value="transporting">
+                        <label for="transporting">U transportu</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="finished" name="order-status" value="finished">
+                        <label for="finished">Dostavljena</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="canceled" name="order-status" value="canceled">
+                        <label for="canceled">Otkazana</label>
+                    </div>
+                </div>
+                </div>
             </div>
             <div class="right-container-rp">
-                <div class="nav-cart-rp" id="ncart-rp">
+                <div class="nav-cart-rp" id="ncart-rp" v-if="logedInRole == 'user'">
                     <a> Korpa (0)</a>
                 </div>
 
@@ -98,44 +136,14 @@ Vue.component("restaurantPage",{
 
                 <div class="restaurant-reviews-rp">
                     <h1>Utisci</h1>
-                    <ul class="user-reviews-list-rp">
-                        <li class="review-rp">
-                            <img class="user-img-rp" src="images/gold.png" alt="User">
-                            <div class="review-info-rp">
-                                <div class="rating-rp review-rating-rp">
-                                    <img class="star-rating-rp" src="images/white-star.png" alt="Rating">
-                                    <p> <span class="rating-num-rp"> 5.0 </span> </p>
-                                </div>
-                                <h4>Odlicna hrana, brza dostava </h4>
-                                <h5>- Nikola</h5>
-                            </div>
-                        </li>
-
-                        <li class="review-rp">
-                            <img class="user-img-rp" src="images/regular-user.png" alt="User">
-                            <div class="review-info-rp">
-                                <div class="rating-rp review-rating-rp">
-                                    <img class="star-rating-rp" src="images/white-star.png" alt="Rating">
-                                    <p> <span class="rating-num-rp"> 4.0 </span> </p>
-                                </div>
-                                <h4>Dobra hrana, velike porcije</h4>
-                                <h5>- Marko</h5>
-                            </div>
-                        </li>
-
-                        <li class="review-rp">
-                            <img class="user-img-rp" src="images/bronze.png" alt="User">
-                            <div class="review-info-rp">
-                                <div class="rating-rp review-rating-rp">
-                                    <img class="star-rating-rp" src="images/white-star.png" alt="Rating">
-                                    <p> <span class="rating-num-rp"> 3.0 </span> </p>
-                                </div>
-                                <h4>Okej hrana</h4>
-                                <h5>- Marija</h5>
-                            </div>
-                        </li>
+                    <ul class="user-reviews-list-rp" >
+                        <comment-status v-for="c in comments" v-bind:key="c.id" v-bind:comment="c" v-bind:logedInRole="logedInRole"></comment-status>
                     </ul>
                     <h6>Svi utisci... </h6>
+                </div>
+
+                
+                <div class="restaurant-reviews-rp" >
                 </div>
             </div>
         </section>
@@ -166,27 +174,27 @@ Vue.component("restaurantPage",{
             </div>
         </div>
 
+
     </div>
              `,
-             mounted() {    
-                function createNavMenu() {
-                    if (window.scrollY >= 250) {
-                        document.getElementById('navmenu-rp').style.visibility = 'visible';
-                    }
-                    else {
-                        document.getElementById('navmenu-rp').style.visibility = 'collapse';
-                    }
-                }
+    mounted() {
+        function createNavMenu() {
+            if (window.scrollY >= 250) {
+                document.getElementById('navmenu-rp').style.visibility = 'visible';
+            } else {
+                document.getElementById('navmenu-rp').style.visibility = 'collapse';
+            }
+        }
 
-                window.addEventListener('scroll', createNavMenu);
-             },
-         
-             methods: {
-                showFoodItem: function() {
-                    document.querySelector('.article-view-rp').style.display = 'flex';
-                },
-                closeFoodItem: function(event) {
-                    document.querySelector('.article-view-rp').style.display = 'none';
-                }
-             }
-         })
+        window.addEventListener('scroll', createNavMenu);
+    },
+
+    methods: {
+        showFoodItem: function() {
+            document.querySelector('.article-view-rp').style.display = 'flex';
+        },
+        closeFoodItem: function(event) {
+            document.querySelector('.article-view-rp').style.display = 'none';
+        }
+    }
+})
