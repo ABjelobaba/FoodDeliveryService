@@ -19,7 +19,10 @@ Vue.component("home", {
 		<div class="navigation-area">
 			<ul class="nav-navbar">
 				<li><a href="#/"><img class="logo-img" src="images/logo_transparent.png"></a></li>
-				<li style="float:right" v-on:click="register"><a class="btn">Prijavi se/Registruj se</a></li>
+				<span class="main-nav">
+					<li style="" v-on:click="register"><a class="btn" >Prijavi se/Registruj se</a></li>
+					<li style="display:flex;align-items: center;margin-left: 4%;" v-on:click="register"><a class="btn" style="border: 0;padding: 0;"><i class="fa fa-user-circle-o fa-2x"></i></a></li>
+				</span>
 			</ul>
 		</div>
 

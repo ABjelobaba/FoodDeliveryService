@@ -116,13 +116,13 @@
 .users-search {
     background-color: white;
     position: sticky;
-    top: 165px;
+    top: 181px;
     padding: 0 120px;
     padding: 0 5%;
     width: -webkit-fill-available;
     height: 70px;
     display: grid;
-    grid-template-columns: 2% auto 17% 17%;
+    grid-auto-flow: column;
     align-items: center;
     background-color: #dddddd;
     z-index: 50;
@@ -196,6 +196,9 @@
 }
 
 .filter-modal {
+    max-height: 57vh;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding: 10px;
     width: 40vh;
     height: auto;
