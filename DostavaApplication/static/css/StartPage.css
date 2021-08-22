@@ -5,10 +5,176 @@ body {
     overflow-x: hidden;
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(44, 53, 63, 1);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.25);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.493);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.315);
+}
+
 input:focus,
 textarea:focus,
 select:focus {
     outline: none;
+}
+
+
+/*Radio without marker*/
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked+.radio-label {
+    font-size: 20px;
+    transition: 0.5s;
+    background-color: rgba(255, 255, 255, 0.089);
+}
+
+.radio-label {
+    font-weight: lighter;
+    font-size: 17px;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.089);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.089);
+}
+
+.radio-label:hover {
+    background-color: rgba(255, 255, 255, 0.089);
+}
+
+.radio-btn-container {
+    margin: 2% auto;
+    width: 80%;
+    height: 352px;
+    overflow-y: auto;
+    box-shadow: 0px 0px 40px 0 rgb(0 0 0 / 20%);
+}
+
+
+/* Radio with marker */
+
+input[type="radio"][name="cuisine"] {
+    display: none;
+}
+
+input[type="radio"][name="cuisine"]:checked+.radio-label {
+    font-size: 20px;
+    transition: 0.5s;
+    background-color: rgba(255, 255, 255, 0.089);
+}
+
+.radio-btn-container input[type="radio"][name="cuisine"]:checked+.radio-label::before {
+    height: 5px;
+    width: 5px;
+    border: 5px solid rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+}
+
+.radio-label[name="cuisine"]::before {
+    content: "";
+    height: 10px;
+    width: 10px;
+    border: 2px solid white;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+
+/*Checkbox white*/
+
+input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-btn-container input[type="checkbox"]:checked+.checkbox-label {
+    font-size: 18px;
+    transition: 0.5s;
+    background-color: rgba(255, 255, 255, 0.089);
+}
+
+.checkbox-btn-container input[type="checkbox"]:checked+.checkbox-label::before {
+    height: 5px;
+    width: 5px;
+    border: 5px solid rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+}
+
+.checkbox-label {
+    font-weight: lighter;
+    font-size: 17px;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.089);
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.089);
+}
+
+.checkbox-label::before {
+    content: "";
+    height: 10px;
+    width: 10px;
+    border: 2px solid white;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.checkbox-label:hover {
+    background-color: rgba(255, 255, 255, 0.089);
+}
+
+.checkbox-btn-container {
+    margin: 2% auto;
+    width: 60%;
+    height: 100px;
+    overflow-y: auto;
+    box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+/* Checkbox black*/
+
+.checkbox-btn-container-dark input[type="checkbox"]:checked+.checkbox-label {
+    font-size: 18px;
+    transition: 0.5s;
+    background-color: rgba(0, 0, 0, 0.089);
+}
+
+.checkbox-btn-container-dark input[type="checkbox"]:checked+.checkbox-label::before {
+    height: 5px;
+    width: 5px;
+    border: 5px solid rgba(0, 0, 0, 0.089);
+    background-color: black;
+}
+
+.checkbox-btn-container-dark label::before {
+    content: "";
+    height: 10px;
+    width: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-right: 20px;
+    color: black;
+}
+
+.checkbox-btn-container-dark label {
+    color: black;
 }
 
 .home-img {
@@ -136,7 +302,28 @@ select:focus {
     position: relative;
 }
 
-.search input {
+.search-restaurants {
+    padding: 10px;
+    display: flex;
+    background-color: white;
+    box-shadow: 4px 10px 20px 0 rgb(0 0 0 / 20%);
+    align-items: center;
+}
+
+.white-behind-search {
+    z-index: 50;
+    background-color: white;
+    height: 100px;
+    margin: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: sticky;
+    top: 80px;
+}
+
+.search input,
+.search-restaurants input {
     width: 100%;
     position: relative;
     margin: 0 30px 0 15px;
@@ -183,6 +370,20 @@ select:focus {
     position: relative;
 }
 
+@media only screen and (max-height: 650px) {
+    .modal {
+        height: 90%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+}
+
+@media only screen and (min-height: 650px) {
+    .modal {
+        height: 580px;
+    }
+}
+
 .tab {
     display: flex;
     border-bottom: 1px solid rgba(109, 93, 93, 0.4);
@@ -207,7 +408,6 @@ select:focus {
 }
 
 .login-title {
-    margin-top: 30px;
     font-weight: bold;
 }
 
@@ -272,7 +472,7 @@ select:focus {
     width: 100%;
     grid-column: 1;
     position: sticky;
-    top: 100px;
+    top: 210px;
     text-align: right;
     align-self: start;
 }
@@ -286,21 +486,16 @@ select:focus {
     padding-bottom: 10px;
 }
 
-.chechbox_types {
-    margin: 20px;
-    font-size: 17px;
-}
-
 .restaurants {
     width: 80%;
     margin: auto;
     text-align: center;
-    padding-top: 100px;
+    padding-top: 50px;
     padding-right: 30px;
 }
 
 .restaurants h1 {
-    margin: 50px 0 50px 0;
+    margin: 0 0 50px 0;
 }
 
 .restaurants-col {

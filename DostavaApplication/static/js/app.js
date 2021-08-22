@@ -1,3 +1,4 @@
+const apiKey = 'pk.eyJ1IjoibGVha2FsbWFyIiwiYSI6ImNrc2pkNDVjYjExMDMyb21ieWp4cGoxMnIifQ.grYjuwulOL83SVRPz6M8_A';
 const Home = { template: '<home></home>' }
 const LogIn = { template: '<logIn></logIn>' }
 const restaurants = { template: '<restaurants></restaurants>' }

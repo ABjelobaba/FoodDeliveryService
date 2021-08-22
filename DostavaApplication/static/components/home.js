@@ -37,7 +37,13 @@ Vue.component("home", {
 				</div>
 			</div>
 		</div>
-
+		<div class="white-behind-search">
+			<div class="search-restaurants">
+				<i class="fa fa-search"></i>
+				<input type="text" placeholder="Unesi naziv restorana..">
+				<button class="black-btn">Pretraži</button>
+			</div>
+		</div>
 		<div class="content">
 			<div class="float-left-div">
 				<div class="restaurant-types">
@@ -91,11 +97,6 @@ Vue.component("home", {
 			</div>
 
 			<div class="restaurants">
-				<div class="search">
-					<i class="fa fa-search"></i>
-					<input type="text" placeholder="Unesi naziv restorana..">
-					<button class="black-btn">Pretraži</button>
-				</div>
 				<h1> Restorani u ponudi</h1>
 				<p></p>
 
@@ -151,7 +152,7 @@ Vue.component("home", {
 		</div>
 
 		<div class="register">
-			<div class="modal">
+			<div class="modal" style="height: auto">
 				<div class="tab">
 					<button v-on:click="tabClick('logIn')">Uloguj se</button>
 					<button v-on:click="tabClick('register')">Registruj se</button>

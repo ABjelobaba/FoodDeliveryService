@@ -295,7 +295,7 @@ Vue.component("admin-users", {
     </div>
 
     <div class="register" style="z-index:100">
-        <div class="modal">
+        <div class="modal" style="height:auto">
         <div v-on:click="newUserClose" class="close">+</div>
 
         <div >
@@ -344,7 +344,7 @@ Vue.component("admin-users", {
     </div>
 
     <div class="registration-success"> 
-        <div class="modal">
+        <div class="modal" style="height:auto">
             <div id="checkMark" class="fa"></div>
             <h1 style="color:white">Korisnik uspešno registrovan!</h1>
         </div>
@@ -385,32 +385,24 @@ Vue.component("admin-users", {
             let errors = false;
 
             if (this.role === 'Odaberite ulogu korisnika..') {
-                document.getElementById('roleErr').innerHTML = "Morate odabrati ulogu!";
+                document.getElementById('roleErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate odabrati ulogu!';
                 errors = true;
             }
             if (!this.username) {
-                document.getElementById('usernameErr').innerHTML = "Morate uneti korisničko ime!";
+                document.getElementById('usernameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti korisničko ime!';
                 errors = true;
             }
             if (!this.password) {
-                document.getElementById('passwordErr').innerHTML = "Morate uneti lozinku!";
-                errors = true;
-            }
-            if (this.name[0] < 'A' || this.name[0] > 'Z' || !this.name) {
-                document.getElementById('nameErr').innerHTML = "Morate uneti ime koje počinje velikim slovom!";
-                errors = true;
-            }
-            if (this.surname[0] < 'A' || this.surname[0] > 'Z' || !this.surname) {
-                document.getElementById('surnameErr').innerHTML = "Morate uneti prezime koje počinje velikim slovom!";
+                document.getElementById('passwordErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti lozinku!';
                 errors = true;
             }
             if (this.gender === 'Odaberite pol..') {
-                document.getElementById('genderErr').innerHTML = "Morate izabrati pol!";
+                document.getElementById('genderErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate izabrati pol!';
                 errors = true;
             }
 
             if (this.dateOfBirth > new Date()) {
-                document.getElementById('dateErr').innerHTML = "Morate izabrati datum rođenja!";
+                document.getElementById('dateErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate izabrati datum rođenja!';
                 errors = true;
             }
 
