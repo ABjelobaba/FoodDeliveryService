@@ -14,15 +14,15 @@ Vue.component("restaurantPage", {
     template: `
     <div class="restourant-page-div">
         <div class="nav-rp" id="navmenu-rp" style="visibility: collapse;">
-            <a href="#/"><img class="logo-img" src="images/logo_transparent.png"></a>  
-            <a class="btn">Odjavi se</a>
+            <a href="#/"><img class="logo-img" style="top:20px" src="images/logo_transparent.png"></a>  
+            <a class="btn" style="float:right;top:30px">Odjavi se</a>
         </div>
 
         <section class="top-section-rp">
             <div class="top-part-rp">
                 <div class="top-menu-rp">
-                    <a href="#/"><img class="logo-img" src="images/logo_transparent.png"></a>  
-                    <a class="btn">Odjavi se</a>
+                    <a href="#/"><img class="logo-img" style="top:20px" src="images/logo_transparent.png"></a>  
+                    <a class="btn" style="float:right;top:30px">Odjavi se</a>
                 </div>
         
                 <div class="restaurant-info-rp">

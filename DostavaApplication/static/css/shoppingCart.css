@@ -1,0 +1,211 @@
+@charset "utf-8";
+
+/* Cover photo */
+.cover-photo {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 10em;
+    position: absolute;
+    top: 0em;
+    background-size: cover;
+    background-attachment: scroll;
+    z-index: 2;
+    background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(../images/background.jpg);
+}
+
+.cover-photo img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+}
+
+
+.shopping-cart-page {
+    height: 100%;
+}
+
+.cart-items-section {
+    width: 70%;
+    margin-top: 10em;
+}
+
+.cart-view {
+    display: flex;
+    width: 75%;
+    height: 100%;
+    margin: 0 auto;
+    margin-top: 2.5em;
+}
+
+/* Shopping cart */
+
+.cart-items {
+    margin: 0;
+    padding: 0;
+    font-size: 1em;
+    list-style-type: none;
+}
+
+/* Cart items */
+
+.shopping-cart-item {
+    position: relative;
+    margin: 0.2em 2.5vh 0.2em 0;
+    margin-bottom: 0.8em;
+    padding: 0.2em;
+    display: inline-block;
+    border-radius: 2%;
+    box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
+}
+
+.shopping-cart-item h2 {
+    max-width: 120px;
+    word-wrap:break-word;
+}
+
+.shopping-cart-item h3 {
+    font-size: 1.3em;
+    color: #054e72;
+}
+
+.food-quantity {
+    color: #054e72;
+}
+
+.food-img {
+    margin-right: -0.5em;
+    margin-top: 0.3em;
+    border-radius: 5%;
+    width: 17vh;
+    height: 12vh;
+    margin: 1em 1.5em 0.5em 1em;
+}
+
+.cart-item-info {
+    float: left;
+    margin-left: 0.5em;
+    margin-right: 1.5em;
+}
+
+.cart-items-section h1 {
+    margin: 0;
+    margin-bottom: .5em;
+    padding: 0;
+    color: #054e72;
+    font-weight: bold;
+}
+
+.change-quantity {
+    display: block;
+    text-align: right;
+    margin-top: 0.2em;
+    margin-right: 1.5em;
+    padding: 0;
+}
+
+.change-quantity img {
+    border: 1px solid black;
+    border-radius: 10%;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.change-quantity img:hover {
+    background-color: #dddddd;
+}
+
+.remove-item-from-cart {
+    position: absolute;
+    font-size: 1.7em;
+    transform: rotate(45deg);
+    top: -1.5em;
+    right: 0em;
+    cursor: pointer;
+}
+
+/* Pricing section */
+
+.right-section {
+    width: 30%;
+    margin: 0;
+    margin-top: 10em;
+    height: 100%;
+    text-align: center;
+}
+
+#back-to-restaurant-btn {
+    text-decoration: none;
+    color: #054e72;
+    position: relative;
+    top: 2em;
+    word-wrap: break-word;
+    display: inline-block;
+    vertical-align: middle;
+    border: 3px solid #054e72;
+    max-width: 80%;
+    font-size: 1.1em;
+    padding: 0.4em 0.6em;
+}
+
+#back-to-restaurant-btn:hover {
+    background-color: #054e72;
+    transition: 0.5s;
+    color: white;
+}
+
+.finish-order {
+    border-radius: 2%;
+    padding: 3em 1em 3em 1em;
+    box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
+    min-width: fit-content;
+}
+
+.price-calculation {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    word-wrap: break-word;
+}
+
+.total-price-text {
+    text-align: left;
+}
+
+.total-price-values {
+    text-align: right;
+}
+
+.total-price-value {
+    color: #054e72;
+    font-weight: bold;
+}
+
+.delivery-text {
+    border-bottom: 4px solid black;
+}
+
+.continue-with-order-btn {
+    word-wrap: break-word;
+    display: inline-block;
+    width: 60%;
+    margin: 0 auto 0 auto;
+    padding: .1em .2em .1em .2em;
+    background: black;
+    color: white;
+    border: 1px solid black;
+    border-radius: 5%;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+.continue-with-order-btn:hover {
+    color: black;
+    transition: 0.5s;
+    background-color: white;
+}

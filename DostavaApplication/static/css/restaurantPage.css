@@ -71,7 +71,7 @@
 .logo-rp {
     width: 7em;
     height: 7em;
-    border-radius: 5% 0 0 0;
+    border-radius: 5%;
     opacity: 100%;
     border: 2px solid black;
 }

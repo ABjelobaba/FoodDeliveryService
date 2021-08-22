@@ -19,7 +19,10 @@ Vue.component("home", {
 		<div class="navigation-area">
 			<ul class="nav-navbar">
 				<li><a href="#/"><img class="logo-img" src="images/logo_transparent.png"></a></li>
-				<li style="float:right" v-on:click="register"><a class="btn">Prijavi se/Registruj se</a></li>
+				<span class="main-nav">
+					<li style="" v-on:click="register"><a class="btn" >Prijavi se/Registruj se</a></li>
+					<li style="display:flex;align-items: center;margin-left: 4%;" v-on:click="register"><a class="btn" style="border: 0;padding: 0;"><i class="fa fa-user-circle-o fa-2x"></i></a></li>
+				</span>
 			</ul>
 		</div>
 
@@ -45,10 +48,10 @@ Vue.component("home", {
 			</div>
 		</div>
 		<div class="content">
-			<div class="float-left-div">
+			<div class="float-left-div" >
 				<div class="restaurant-types">
 					<h2 style="text-align: center;" >Kuhinje</h2>
-					<div class="chechbox_types">
+					<div class="checkbox-btn-container-dark">
 						<div>
 							<input type="checkbox" id="italian" name="cuisine" value="italian">
 							<label for="italian">Italijanska</label>
@@ -71,7 +74,7 @@ Vue.component("home", {
 						</div>
 					</div>
 					<h2 style="text-align: center;" >Ocene</h2>
-					<div class="chechbox_types">
+					<div class="checkbox-btn-container-dark">
 						<div>
 							<input type="checkbox" id="one" name="stars" value="one">
 							<label for="one">1</label>
@@ -152,7 +155,7 @@ Vue.component("home", {
 		</div>
 
 		<div class="register">
-			<div class="modal">
+			<div class="modal" style="height: auto">
 				<div class="tab">
 					<button v-on:click="tabClick('logIn')">Uloguj se</button>
 					<button v-on:click="tabClick('register')">Registruj se</button>
