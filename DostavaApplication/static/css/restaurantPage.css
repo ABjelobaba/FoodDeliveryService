@@ -1,4 +1,5 @@
 /* Top menu */
+
 .top-part-rp {
     padding: 0;
     margin: 0;
@@ -12,7 +13,9 @@
     background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(../images/background.jpg);
 }
 
+
 /* Fixed top menu */
+
 .nav-rp {
     position: fixed;
     top: 0;
@@ -34,18 +37,20 @@
     position: sticky;
     margin: 0;
     margin-right: -20%;
-    text-align: right;
     top: 4em;
     text-decoration: solid;
     color: #054e72;
     font-size: 25px;
     font-weight: 700;
+    width: fit-content;
+    float: right;
 }
 
 #ncart-rp a:hover {
     color: #043B56;
     cursor: pointer;
 }
+
 
 /* Restaurant info */
 
@@ -128,13 +133,13 @@
     padding-left: 0.5em;
     font-weight: normal;
     font-variant: small-caps;
-    font-weight:  600;
+    font-weight: 600;
     letter-spacing: 4px;
     position: relative;
     top: 1em;
 }
 
-.full-address-rp p{
+.full-address-rp p {
     font-size: medium;
     font-style: oblique;
     font-size: small;
@@ -155,11 +160,11 @@
     margin-top: 320px;
 }
 
+
 /* Navigation menu (articles, reviews) */
 
 .nav-menu-rp {
-    width: 65%;
-    min-width: fit-content;
+    width: 100%;
     margin-top: 2em;
     grid-column: 1;
     padding-bottom: 0.5em;
@@ -183,6 +188,7 @@
     font-weight: 500;
 }
 
+
 /* Article list */
 
 .articles-rp {
@@ -190,6 +196,7 @@
     margin: 0;
     box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
     cursor: pointer;
+    margin-top: 2em;
 }
 
 .articles-rp h1 {
@@ -229,7 +236,7 @@
     padding: 0.5vh 0.2em;
     margin: 0;
     position: relative;
-    bottom: 0;  
+    bottom: 0;
 }
 
 .article-rp p {
@@ -251,11 +258,15 @@
     height: 5.5em;
 }
 
+
 /* Article view */
 
 .article-view-rp {
     position: fixed;
-    top: 0; right: 0; bottom: 0; left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background-color: rgba(44, 53, 63, 0.5);
     z-index: 5;
     color: white;
@@ -264,7 +275,10 @@
 
 .selected-item-rp {
     position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     margin: auto;
     width: 31em;
     height: fit-content;
@@ -278,7 +292,7 @@
     text-align: center;
 }
 
-.item-img-av-rp img {  
+.item-img-av-rp img {
     width: 75%;
     height: 40%;
     background-color: transparent;
@@ -303,7 +317,6 @@
     display: flex;
     align-items: baseline;
 }
-
 
 .title-price-rp h3 {
     font-size: 1.25em;
@@ -369,6 +382,7 @@
     color: rgba(44, 53, 63, 1);
 }
 
+
 /* Review list */
 
 .restaurant-reviews-rp {
@@ -379,7 +393,7 @@
     box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
 }
 
-.restaurant-reviews-rp h1{
+.restaurant-reviews-rp h1 {
     padding-top: 0.4em;
     margin-left: 0.6em;
     font-size: 1.8em;
@@ -392,12 +406,12 @@
 }
 
 .review-rp {
-    background-color: rgb(75, 83, 92);;
+    background-color: rgb(75, 83, 92);
+    ;
     border-radius: 1em;
     display: flex;
     min-height: 100px;
     margin: 1em 0;
-
 }
 
 .user-img-rp {
@@ -433,7 +447,6 @@
     color: white;
 }
 
-
 .review-info-rp h5 {
     padding: 0;
     margin: 0;
@@ -446,7 +459,7 @@
     color: white;
 }
 
-.restaurant-reviews-rp h6{
+.restaurant-reviews-rp h6 {
     padding: 0;
     padding-bottom: 0.3em;
     margin: 0;
@@ -459,7 +472,31 @@
     margin-left: auto;
 }
 
-.restaurant-reviews-rp h6:hover{
+.restaurant-reviews-rp h6:hover {
     font-size: 1.22em;
     color: #054463;
+}
+
+.bottom-section-rp input[type="checkbox"]:checked+.full-radio-btn-label {
+    background-color: rgba(44, 53, 63, 1);
+    transition: 0.5s;
+    color: white;
+}
+
+.bottom-section-rp .full-radio-btn-label {
+    padding: 5%;
+    font-weight: bold;
+    font-size: 17px;
+    color: rgba(44, 53, 63, 1);
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    border: 1px solid rgba(44, 53, 63, 1);
+    margin-top: 2em;
+}
+
+.bottom-section-rp .full-radio-btn-label:hover {
+    background-color: rgba(44, 53, 63, 0.85);
+    transition: 0.5s;
+    color: white;
 }

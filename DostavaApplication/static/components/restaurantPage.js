@@ -1,6 +1,18 @@
 Vue.component("restaurantPage", {
     data: function() {
-        return {}
+        return {
+            comments: [
+                { id: 1, rating: 5.0, text: 'Odlicna hrana, brza dostava', userName: 'Nikola', status: 'rejected' },
+                { id: 2, rating: 4.0, text: 'Dobra hrana, velike porcije', userName: 'Marko', status: 'approved' },
+                { id: 3, rating: 3.0, text: 'Okej hrana', userName: 'Marija', status: 'waiting' }
+            ],
+            review_states: [
+                { value: 'rejected', text: 'Odbijen' },
+                { value: 'approved', text: 'Odobren' },
+                { value: 'waiting', text: 'Čeka obradu' }
+            ],
+            logedInRole: 'user'
+        }
 
     },
 
@@ -59,12 +71,27 @@ Vue.component("restaurantPage", {
         <!-- navigacioni meni -->
         
         <section class="bottom-section-rp">
-            <div class="nav-menu-rp">
-                <h3>Artikli</h3>
-                <h3>Utisci</h3>
+            <div style="height: fit-content;position: sticky;top: 5em;">
+                <div v-if="logedInRole =='admin' || logedInRole=='manager'">
+                    <input v-on:click="showHideReviews()" type="checkbox" id="viewReviews" value="viewReviews">
+                    <label class="full-radio-btn-label" for="viewReviews">Pregled utisaka</label>
+                </div>
+                <div class="nav-menu-rp" id="scrollPanel">
+                    <h3>Artikli</h3>
+                    <h3>Utisci</h3>
+                </div>
+                <div class="nav-menu-rp" id="statusFilter" style="display: none">
+                    <h2 style="text-align: center;" >Status utiska</h2>
+                    <div class="checkbox-btn-container-dark">
+                        <div v-for="state in review_states" >
+                            <input type="checkbox" v-bind:id=state.value name="order-status" v-bind:value=state.value>
+                            <label v-bind:for=state.value style="border:0">{{state.text}}</label>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="right-container-rp">
-                <div class="nav-cart-rp" id="ncart-rp">
+                <div class="nav-cart-rp" id="ncart-rp" v-if="logedInRole == 'user'">
                     <a> Korpa (0)</a>
                 </div>
 
@@ -95,47 +122,15 @@ Vue.component("restaurantPage", {
                     </ul>
                 </div>
 
-                <div class="restaurant-reviews-rp">
+                <div class="restaurant-reviews-rp" >
                     <h1>Utisci</h1>
-                    <ul class="user-reviews-list-rp">
-                        <li class="review-rp">
-                            <img class="user-img-rp" src="images/gold.png" alt="User">
-                            <div class="review-info-rp">
-                                <div class="rating-rp review-rating-rp">
-                                    <img class="star-rating-rp" src="images/white-star.png" alt="Rating">
-                                    <p> <span class="rating-num-rp"> 5.0 </span> </p>
-                                </div>
-                                <h4>Odlicna hrana, brza dostava </h4>
-                                <h5>- Nikola</h5>
-                            </div>
-                        </li>
-
-                        <li class="review-rp">
-                            <img class="user-img-rp" src="images/regular-user.png" alt="User">
-                            <div class="review-info-rp">
-                                <div class="rating-rp review-rating-rp">
-                                    <img class="star-rating-rp" src="images/white-star.png" alt="Rating">
-                                    <p> <span class="rating-num-rp"> 4.0 </span> </p>
-                                </div>
-                                <h4>Dobra hrana, velike porcije</h4>
-                                <h5>- Marko</h5>
-                            </div>
-                        </li>
-
-                        <li class="review-rp">
-                            <img class="user-img-rp" src="images/bronze.png" alt="User">
-                            <div class="review-info-rp">
-                                <div class="rating-rp review-rating-rp">
-                                    <img class="star-rating-rp" src="images/white-star.png" alt="Rating">
-                                    <p> <span class="rating-num-rp"> 3.0 </span> </p>
-                                </div>
-                                <h4>Okej hrana</h4>
-                                <h5>- Marija</h5>
-                            </div>
-                        </li>
+                    <ul class="user-reviews-list-rp" >
+                        <comment-status v-for="c in comments" v-bind:key="c.id" v-bind:comment="c" v-bind:logedInRole="logedInRole"></comment-status>
                     </ul>
-                    <h6>Svi utisci... </h6>
+                    <h6 id="allReviews">Svi utisci... </h6>
                 </div>
+
+                
             </div>
         </section>
 
@@ -165,6 +160,7 @@ Vue.component("restaurantPage", {
             </div>
         </div>
 
+
     </div>
              `,
     mounted() {
@@ -185,6 +181,22 @@ Vue.component("restaurantPage", {
         },
         closeFoodItem: function(event) {
             document.querySelector('.article-view-rp').style.display = 'none';
+        },
+        showHideReviews: function(checked) {
+            let cb = document.getElementById('viewReviews');
+            if (cb.checked) {
+                document.querySelector('.articles-rp').style.display = 'none';
+                document.getElementById('scrollPanel').style.display = 'none';
+                document.getElementById('allReviews').style.display = 'none';
+                document.getElementById('statusFilter').style.display = 'block';
+                document.getElementsByClassName('restaurant-reviews-rp')[0].style.height = '100%';
+            } else {
+                document.querySelector('.articles-rp').style.display = 'block';
+                document.getElementById('scrollPanel').style.display = 'block';
+                document.getElementById('statusFilter').style.display = 'none';
+                document.getElementById('allReviews').style.display = 'block';
+                document.getElementsByClassName('restaurant-reviews-rp')[0].style.height = 'fit-content';
+            }
         }
     }
 })
