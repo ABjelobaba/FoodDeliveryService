@@ -15,11 +15,7 @@ Vue.component("restaurant-card", {
 		<div class="closed-restaurant"><div v-if="restaurant.status === 'CLOSED'" style="margin:5%">Zatvoren objekat</div></div>
 	</div>
 	`,
-    mounted() {
-        if (restaurant.status == "CLOSED") {
-            document.getElementById(restaurant.id).style.backgroundColor = "#f7c8c8";
-        }
-    },
+    mounted() {},
 
     methods: {}
 });
