@@ -159,9 +159,13 @@ Vue.component("user-orders", {
             <div style="margin-top: 7%;" >
                 <article-in-order v-for="article in selectedOrder.articles" v-bind:key="article.id" v-bind:article="article"></article-in-order>
 
-                <div style="border:1px solid white;margin: 5% 15% 2%" ></div>
-                <p class="summeryPrice"> = {{selectedOrder.summeryPrice}}.00 RSD</p>
-                <button disabled v-on:click="cancleOrder" class="cancle-btn"> Otkazi</button>
+                <div style="border:1px solid white;margin: 5% 10% 2%" ></div>
+                <div class="price-calculation-order-view">
+                        <p class="pc-order-view">  <span>Dostava</span>   <span>+ 200.00 RSD</span> </p>
+                        <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{selectedOrder.summeryPrice}}.00 RSD</span> </p>
+                </div>
+
+                <button disabled v-on:click="cancleOrder" class="cancle-btn" style="margin: 20px 20%"> Otkazi</button>
             </div>
         </div>
 
