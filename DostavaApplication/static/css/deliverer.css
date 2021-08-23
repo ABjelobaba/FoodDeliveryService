@@ -45,6 +45,7 @@
     color: #3F2C3F;
     font-weight: bold;
     background-color: white;
+    min-width: fit-content;
 }
 
 .permission-to-deliver-btn:hover {
