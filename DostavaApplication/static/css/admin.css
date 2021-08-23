@@ -130,7 +130,7 @@
 }
 
 .users-search input {
-    width: auto;
+    width: 90%;
     min-width: 400px;
     position: relative;
     margin: 0 15px;

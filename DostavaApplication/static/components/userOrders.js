@@ -99,14 +99,14 @@ Vue.component("user-orders", {
             <div v-on:click="filterClose" class="close-filter">+</div>
 
             <h2>Status porudžbine</h2>
-            <div class="chechbox_types" style="text-align: left;">
+            <div class="checkbox-btn-container-dark">
                 <div v-for="status in orderStatuses">
                     <input type="checkbox" v-bind:id="status.id" name="orderStatus" v-bind:value="status.id">
                     <label v-bind:for="status.id">{{status.value}}</label>
                 </div>
             </div>
-            <h2>Status porudžbine</h2>
-            <div class="chechbox_types" style="text-align: left;">
+            <h2>Tip restorana</h2>
+            <div class="checkbox-btn-container-dark">
                 <div v-for="cuisine in cuisines">
                     <input type="checkbox" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id>
                     <label  v-bind:for=cuisine.id>{{cuisine.value}}</label>

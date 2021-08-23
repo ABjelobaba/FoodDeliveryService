@@ -7,20 +7,20 @@ Vue.component("account", {
 	<div class="page">
 
 		<div class="small-home-img">
-        <div class="nav-navbar" style="background-color:transparent;margin-top:15px">
+            <div class="nav-navbar" style="background-color:transparent;margin-top:15px">
                 <a href="#/"><img class="logo-img" src="images/logo_transparent.png"></a>  
                 <span class="main-nav">
                     <a v-on:click="logOut" class="btn">Odjavi se</a>
                 </span>
-                </div>
-                <nav class="user-nav">
-                    <ul>
-                        <li><a v-on:click="profileView" name="user-nav" id="profile">Profil</a></li>
-                        <li><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
-                        <li><a v-on:click="restaurantsView" name="user-nav" id="restaurants">Restorani</a></li>
-                        <li><a v-on:click="ordersView" name="user-nav" id="orders">Porudžbine</a></li>
-                    </ul>
-                </nav>
+            </div>
+            <nav class="user-nav">
+                <ul>
+                    <li><a v-on:click="profileView" name="user-nav" id="profile">Profil</a></li>
+                    <li><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
+                    <li><a v-on:click="restaurantsView" name="user-nav" id="restaurants">Restorani</a></li>
+                    <li><a v-on:click="ordersView" name="user-nav" id="orders">Porudžbine</a></li>
+                </ul>
+            </nav>
 		</div>
 
         <div >
