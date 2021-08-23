@@ -1,0 +1,54 @@
+.ask-for-delivery-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    border: 2px solid #fff;
+    padding: 10px 30px;
+    font-size: 15px;
+    position: relative;
+    cursor: pointer;
+    background-color: rgba(44, 53, 63, 1);
+}
+
+.ask-for-delivery-btn:hover {
+    background: #fff;
+    color: rgba(44, 53, 63, 1);
+    transition: 0.5s;
+}
+
+.order-item-price {
+    font-size: 0.8em;
+    font-weight: normal;
+}
+
+.price-calculation-order-view {
+    float:right; 
+    margin:0 15% 0 0; 
+    width: 100%;
+}
+
+.pc-order-view {
+    color:white;
+    font-weight:bold; 
+    margin: 0; 
+    width: 70%; 
+    margin-left: 30%;
+    display: inline-flex; 
+    justify-content: space-between;
+}
+
+.permission-to-deliver-btn {
+    border: 1px solid #3F2C3F;
+    padding: 5% 4%;
+    margin: 10% 20%;
+    color: #3F2C3F;
+    font-weight: bold;
+    background-color: white;
+}
+
+.permission-to-deliver-btn:hover {
+    background-color: #3F2C3F;
+    color: white;
+    transition: 0.5s;
+}
