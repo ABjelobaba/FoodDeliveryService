@@ -24,18 +24,18 @@
 
 .price-calculation-order-view {
     float:right; 
-    margin:0 15% 0 0; 
+    margin:0 10% 0 0; 
     width: 100%;
 }
 
 .pc-order-view {
     color:white;
-    font-weight:bold; 
     margin: 0; 
-    width: 70%; 
-    margin-left: 30%;
+    width: 80%; 
+    margin-left: 20%;
     display: inline-flex; 
     justify-content: space-between;
+    font-weight: normal;
 }
 
 .permission-to-deliver-btn {

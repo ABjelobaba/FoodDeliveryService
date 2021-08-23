@@ -17,7 +17,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 5% 0;
+    margin: 5% -7%;
 }
 
 .order-articles-title {
@@ -54,13 +54,13 @@
     border-radius: 10px;
     text-align: left;
     background-color: transparent;
-    margin: 2% 15%;
+    margin: 2% 10%;
     justify-content: space-between;
     align-items: center;
 }
 
 .article-col img {
-    width: 30%;
+    width: 35%;
     border-radius: 10px;
     height: fit-content;
 }
@@ -76,6 +76,7 @@
     text-align: left;
     width: -webkit-fill-available;
     color: white;
+    font-weight: normal;
 }
 
 .cancle-btn {

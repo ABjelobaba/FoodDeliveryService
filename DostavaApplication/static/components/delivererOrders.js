@@ -13,7 +13,7 @@ Vue.component("deliverer-orders",{
     
     template: `
     <div>
-        <h1 style="text-align: center;">Pregled dostupnih porudžbina
+        <h1 style="text-align: center;">Pregled porudžbina
         </h1>
         <div class="users-search">
             <div>
@@ -168,7 +168,7 @@ Vue.component("deliverer-orders",{
         </div>
 
         <div class="register" style="z-index:100">
-            <div class="modal" style="height:auto; padding-bottom: 30px;">
+            <div class="modal" style="height:auto; padding-bottom: 35px;">
             <div v-on:click="closeOrderView" class="close">+</div>
 
             <div >
@@ -178,34 +178,34 @@ Vue.component("deliverer-orders",{
                         <p > {{order.date}} 21.08.2021. </p>
                     </div>
                     <div class="order-status-white" style="text-align:right;margin-right:15%">
-                        <p><i aria-hidden="true" class="fa fa-spinner"></i> Čeka dostavljača</p>
+                        <p><i aria-hidden="true" class="fa fa-bicycle"></i> U transportu</p>
                         
                     </div>
                 </div>
                 
                 <div style="margin-top: 7%;" >
-                    <div class="article-col" style="background-color:transparent;margin: 2% 15%;justify-content: space-between;">
+                    <div class="article-col" style="background-color:transparent;justify-content: space-between;">
                         <img src="images/kfc.jpg" style="height: fit-content;">
-                        <h3 style="margin-left:5%">{{article.name}} Burger </h3>
+                        <h3 style="margin-left:3%">{{article.name}} Burger </h3>
                         <h3 style="text-align:right"> <span class="order-item-price"> 450.00 RSD </span> x1 {{article.quantity}}</h3>
                     </div>
-                    <div class="article-col" style="background-color:transparent;margin: 2% 15%;justify-content: space-between;">
+                    <div class="article-col" style="background-color:transparent;justify-content: space-between;">
                         <img src="images/kfc.jpg" style="height: fit-content;">
-                        <h3 style="margin-left:5%">{{article.name}} Burger </h3>
+                        <h3 style="margin-left:3%">{{article.name}} Burger </h3>
                         <h3 style="text-align:right"><span class="order-item-price"> 450.00 RSD </span> x1 {{article.quantity}}</h3>
                     </div>
-                    <div class="article-col" style="background-color:transparent;margin: 2% 15%;justify-content: space-between;">
+                    <div class="article-col" style="background-color:transparent;justify-content: space-between;">
                         <img src="images/kfc.jpg" style="height: fit-content;">
-                        <h3 style="margin-left:5%">{{article.name}} Burger </h3>
+                        <h3 style="margin-left:3%">{{article.name}} Burger </h3>
                         <h3 style="text-align:right"><span class="order-item-price"> 450.00 RSD </span> x1 {{article.quantity}}</h3>
                     </div>
-                    <div style="border:1px solid white;margin: 5% 15% 2%" ></div>
+                    <div style="border:1px solid white;margin: 5% 10% 2%" ></div>
 
                     <div class="price-calculation-order-view">
                         <p class="pc-order-view">  <span>Dostava</span>   <span>+ 200.00 RSD</span> </p>
                         <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{order.sum}} = 1235.00 RSD</span> </p>
                     </div>
-                    <button style="margin: 20px 15%;width: -webkit-fill-available; display: none;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
+                    <button style="margin: 20px 20%;width: -webkit-fill-available; display: none;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
                 </div>
             </div>
 
