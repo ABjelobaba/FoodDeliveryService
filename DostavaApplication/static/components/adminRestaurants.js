@@ -8,7 +8,27 @@ Vue.component("admin-restaurants", {
             postcode: '',
             latitude: 0,
             longitude: 0,
-            searchText: ''
+            searchText: '',
+            cuisines: [
+                { id: 'italian', value: 'Italijanska' },
+                { id: 'chinese', value: 'Kineska' },
+                { id: 'barbecue', value: 'Rostilj' },
+                { id: 'american', value: 'Americka hrana' },
+                { id: 'sweets', value: 'Poslastice' }
+            ],
+            raitings: [
+                { id: 'zero-one', value: '0 - 1' },
+                { id: 'one-two', value: '1 - 2' },
+                { id: 'two-three', value: '2 - 3' },
+                { id: 'three-four', value: '3 - 4' },
+                { id: 'four-five', value: '4 - 5' }
+            ],
+            restaurants: [
+                { id: 1, img: 'images/kfc.jpg', name: 'KFC', type: 'Americka hrana', status: 'OPENED' },
+                { id: 2, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED' },
+                { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }
+
+            ]
         }
     },
 
@@ -39,48 +59,16 @@ Vue.component("admin-restaurants", {
 				<div class="restaurant-types">
 					<h2 style="text-align: center;" >Kuhinje</h2>
 					<div class="checkbox-btn-container-dark" style="margin: 20px;font-size: 17px;">
-						<div>
-							<input type="checkbox" id="italian" name="cuisine" value="italian">
-							<label  for="italian">Italijanska</label>
-						</div>
-						<div>
-							<input type="checkbox" id="chinese" name="cuisine" value="chinese">
-							<label  for="chinese">Kineska</label>
-						</div>
-						<div>
-							<input type="checkbox" id="barbecue" name="cuisine" value="barbecue">
-							<label for="barbecue">Rostilj</label>
-						</div>
-						<div>
-							<input type="checkbox" id="american" name="cuisine" value="american">
-							<label for="american">Americka hrana</label>
-						</div>
-						<div>
-							<input type="checkbox" id="sweets" name="cuisine" value="sweets">
-							<label for="sweets">Poslastice</label>
+						<div v-for="cuisine in cuisines">
+							<input type="checkbox" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id>
+							<label  v-bind:for=cuisine.id>{{cuisine.value}}</label>
 						</div>
 					</div>
 					<h2 style="text-align: center;" >Ocene</h2>
 					<div class="checkbox-btn-container-dark" style="margin: 20px;font-size: 17px;">
-						<div>
-							<input type="checkbox" id="one" name="stars" value="one">
-							<label for="one">1</label>
-						</div>
-						<div>
-							<input type="checkbox" id="two" name="stars" value="two">
-							<label for="two">2</label>
-						</div>
-						<div>
-							<input type="checkbox" id="three" name="stars" value="three">
-							<label for="three">3</label>
-						</div>
-						<div>
-							<input type="checkbox" id="four" name="stars" value="four">
-							<label for="four">4</label>
-						</div>
-						<div>
-							<input type="checkbox" id="five" name="stars" value="five">
-							<label for="five">5</label>
+						<div v-for="raiting in raitings">
+							<input type="checkbox" v-bind:id=raiting.id name="stars" v-bind:value=raiting.id>
+							<label v-bind:for=raiting.id>{{raiting.value}}</label>
 						</div>
 					</div>
 				</div>
@@ -90,53 +78,7 @@ Vue.component("admin-restaurants", {
 				<h1> Restorani u ponudi</h1>
 				<p></p>
 
-				<div class="restaurants-col">
-					<img src="images/kfc.jpg">
-					<div class="restaurant-info">
-						<h3>KFC</h3>
-						<p>Piletina, Burgeri, Americka hrana</p>
-						<div class="closed-restaurant"><span>Zatvoren objekat</span></div>
-					</div>
-
-				</div>
-				<div class="restaurants-col">
-					<img src="images/mcdonalds.png">
-					<div class="restaurant-info">
-						<h3>McDonald's</h3>
-						<p>Burgeri, Americka hrana, Poslastice</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
-
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
-
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
-
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
+				<restaurant-card v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:restaurant="restaurant"></restaurant-card>
 
 			</div>
 		</div>

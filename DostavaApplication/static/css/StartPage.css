@@ -397,6 +397,7 @@ input[type="checkbox"] {
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 50;
 }
 
 .modal {
@@ -545,6 +546,10 @@ input[type="checkbox"] {
     background: #4f2f2f30;
 }
 
+div[name="CLOSED"] {
+    background-color: #f7c8c8;
+}
+
 .restaurants-col img {
     width: 30%;
     border-radius: 10px;
@@ -563,12 +568,16 @@ input[type="checkbox"] {
 
 .restaurant-info {
     margin: 0 0 0 20px;
+    width: 100%;
 }
 
 .closed-restaurant {
     background: darkgray;
     text-align: center;
     border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    margin: 7%;
 }
 
 .restaurants input {
