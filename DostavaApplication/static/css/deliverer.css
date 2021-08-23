@@ -60,6 +60,7 @@
     color: rgba(75, 83, 92, 1);
     font-weight: bold;
     background-color: white;
+    min-width: fit-content;
 }
 
 .order-delivered-btn:hover {

@@ -16,11 +16,12 @@ Vue.component("deliverer-orders",{
         <h1 style="text-align: center;">Pregled dostupnih porudžbina
         </h1>
         <div class="users-search">
-        <div>
-            <i style="text-align: center;" class="fa fa-search"></i>
-            <input type="text" placeholder="Pretraži po nazivu restorana, opsegu cene ili opsegu datuma...">
-        </div>
-        <button class="filter-btn" v-on:click="filterClicked"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
+            <div>
+                <i style="text-align: center;" class="fa fa-search"></i>
+                <input type="text" placeholder="Pretraži po nazivu restorana, opsegu cene ili opsegu datuma...">
+            </div>
+            <button class="filter-btn" v-on:click="filterClicked"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
+            <button class="new-user-btn">Nedostavljane porudžbine</button>
         </div>
         
         <div class="filter-div" style="top:250px">
