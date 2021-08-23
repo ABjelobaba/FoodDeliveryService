@@ -7,7 +7,21 @@ Vue.component("admin-users", {
             username: '',
             password: '',
             role: 'Odaberite ulogu korisnika..',
-            dateOfBirth: ''
+            dateOfBirth: '',
+            roles: [
+                { id: 'manager', value: 'Menadžer' },
+                { id: 'customer', value: 'Kupac' },
+                { id: 'deliverer', value: 'Dostavljač' },
+                { id: 'admin', value: 'Administrator' }
+            ],
+            users: [
+                { id: '1', role: 'manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: '-' },
+                { id: '2', role: 'deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-' },
+                { id: '3', role: 'admin', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-' },
+                { id: '4', role: 'bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784 },
+                { id: '5', role: 'silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564 },
+                { id: '6', role: 'gold', name: 'Anita', surname: 'Marić', username: 'anita?maric', points: 5486 }
+            ]
         }
     },
     template: `
@@ -30,21 +44,9 @@ Vue.component("admin-users", {
 
             <h2>Uloge</h2>
             <div class="chechbox_types" style="text-align: left;">
-                <div>
-                    <input type="checkbox" id="manager" name="role" value="manager">
-                    <label for="manager">Menadzer</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="customer" name="role" value="customer">
-                    <label for="customer">Kupac</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="deliverer" name="role" value="deliverer">
-                    <label for="deliverer">Dostavljac</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="admin" name="role" value="admin">
-                    <label for="admin">Administrator</label>
+                <div v-for="role in roles">
+                    <input type="checkbox" v-bind:id="role.id" name="role" v-bind:value="role.id">
+                    <label v-bind:for="role.id">{{role.value}}</label>
                 </div>
             </div>
 
@@ -92,215 +94,19 @@ Vue.component("admin-users", {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
-                </tr>
-                <tr>
-                    <td>Slika</td>
-                    <td>Lea</td>
-                    <td>Kalmar</td>
-                    <td>lea_kalmar</td>
-                    <td>3568</td>
+                <tr v-for="user in users">
+                    <td>
+                        <i v-if="user.role == 'manager'" class="fa fa-line-chart fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'deliverer'" class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'admin'" class="fa fa-cog fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'gold'" style="color:gold" class="fa fa-user fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'silver'" style="color:silver" class="fa fa-user fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'bronze'" style="color:#cd7f32" class="fa fa-user fa-lg" aria-hidden="true"></i>
+                        </td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.surname}}</td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.points}}</td>
                 </tr>
             </tbody>
 
@@ -356,12 +162,7 @@ Vue.component("admin-users", {
         </div>
     </div>
 
-    <div class="registration-success"> 
-        <div class="modal" style="height:auto">
-            <div id="checkMark" class="fa"></div>
-            <h1 style="color:white">Korisnik uspešno registrovan!</h1>
-        </div>
-    </div>
+    <success></success>
 </div>
 `,
     mounted() {
