@@ -141,7 +141,7 @@ Vue.component("available-orders",{
                         <p class="pc-order-view">  <span>Dostava</span>   <span>+ 200.00 RSD</span> </p>
                         <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{order.sum}} = 1235.00 RSD</span> </p>
                     </div>
-                    <button disabled v-on:click="cancleOrder" style="margin: 20px 15%;width: -webkit-fill-available;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
+                    <button v-on:click="cancleOrder" style="margin: 20px 15%;width: -webkit-fill-available;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
                 </div>
             </div>
 

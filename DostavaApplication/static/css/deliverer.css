@@ -52,3 +52,19 @@
     color: white;
     transition: 0.5s;
 }
+
+.order-delivered-btn {
+    border: 1px solid rgba(75, 83, 92, 1);
+    padding: 5% 5%;
+    margin: 10%;
+    color: rgba(75, 83, 92, 1);
+    font-weight: bold;
+    background-color: white;
+}
+
+.order-delivered-btn:hover {
+    background-color: #353F2C;
+    border: 1px solid white;
+    transition: 0.5s;
+    color: white;
+}
