@@ -34,7 +34,7 @@
 
 .order-status-white {
     border: 1px solid white;
-    padding: 0% 5%;
+    padding: 2% 5%;
     color: rgba(44, 53, 63, 1);
     font-weight: bold;
     background-color: white;
@@ -50,12 +50,12 @@
 }
 
 .article-col {
-    display: flex;
-    border-radius: 10px;
-    text-align: left;
     background-color: transparent;
     margin: 2% 15%;
     justify-content: space-between;
+    display: flex;
+    border-radius: 10px;
+    text-align: left;
 }
 
 .article-col img {
@@ -88,6 +88,8 @@
     background-color: rgb(224, 44, 44);
     position: relative;
     cursor: pointer;
+    margin: 20px 15%;
+    width: -webkit-fill-available;
 }
 
 .cancle-btn:hover {
@@ -100,4 +102,11 @@
     border-color: #dddddd;
     color: #dddddd;
     cursor: default;
+}
+
+.summeryPrice {
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin: 0 15% 0 0
 }

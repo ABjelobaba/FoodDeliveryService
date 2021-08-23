@@ -20,7 +20,7 @@ Vue.component("admin-users", {
                 { id: '3', role: 'admin', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-' },
                 { id: '4', role: 'bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784 },
                 { id: '5', role: 'silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564 },
-                { id: '6', role: 'gold', name: 'Anita', surname: 'Marić', username: 'anita?maric', points: 5486 }
+                { id: '6', role: 'gold', name: 'Anita', surname: 'Marić', username: 'anita_maric', points: 5486 }
             ]
         }
     },
