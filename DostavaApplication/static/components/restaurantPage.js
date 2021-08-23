@@ -1,6 +1,10 @@
 Vue.component("restaurantPage", {
     data: function() {
         return {
+            articles: [
+                { id: 1, img: '', name: 'Burger', composition: 'Zelena salata, paradajz, sir, kiseli krastavac', price: 450 },
+                { id: 2, img: '', name: 'Burger', composition: 'Zelena salata, paradajz, sir, kiseli krastavac', price: 450 }
+            ],
             comments: [
                 { id: 1, rating: 5.0, text: 'Odlicna hrana, brza dostava', userName: 'Nikola', status: 'rejected' },
                 { id: 2, rating: 4.0, text: 'Dobra hrana, velike porcije', userName: 'Marko', status: 'approved' },
@@ -98,27 +102,7 @@ Vue.component("restaurantPage", {
                 <div class="articles-rp">
                     <h1>Artikli</h1>
                     <ul class="article-list-rp">
-                        <li class="article-rp" v-on:click="showFoodItem">
-                            <div class="article-info-rp">
-                                <h2>Burger</h2>
-                                <p> Zelena salata, paradajz, sir, kiseli krastavac</p>
-                                <h3> 450,00 RSD </h3>
-                            </div>
-                            <div class="food-img-container-rp">
-                                <img class="food-img-rp" src="images/burger.jpg" alt="Food">
-                            </div>
-                        </li>
-
-                        <li class="article-rp" v-on:click="showFoodItem">
-                            <div class="article-info-rp">
-                                <h2>Burger</h2>
-                                <p> Zelena salata, paradajz, sir, kiseli krastavac</p>
-                                <h3> 450,00 RSD </h3>
-                            </div>
-                            <div class="food-img-container-rp">
-                                <img class="food-img-rp" src="images/burger.jpg" alt="Food">
-                            </div>
-                        </li>
+                        <article-in-restaurant v-for="article in articles" v-bind:key="article.id" v-bind:article="article"></article-in-restaurant>
                     </ul>
                 </div>
 
