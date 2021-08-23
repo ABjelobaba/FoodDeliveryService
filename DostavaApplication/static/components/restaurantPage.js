@@ -148,6 +148,8 @@ Vue.component("restaurantPage", {
     </div>
              `,
     mounted() {
+        window.scrollTo(0, 0);
+        
         function createNavMenu() {
             if (window.scrollY >= 250) {
                 document.getElementById('navmenu-rp').style.visibility = 'visible';

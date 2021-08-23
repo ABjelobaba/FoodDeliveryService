@@ -82,5 +82,12 @@ Vue.component("shoppingCart",{
 			
 	    </div>
     </section>
-                `
+                `,
+	mounted() {
+		window.scrollTo(0, 0);
+	},
+
+	methods: {
+		
+	}
 })
