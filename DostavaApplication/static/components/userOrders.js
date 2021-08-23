@@ -168,12 +168,7 @@ Vue.component("user-orders", {
         </div>
     </div>
 
-    <div class="registration-success"> 
-        <div class="modal">
-            <div id="checkMark" class="fa"></div>
-            <h1 style="color:white">Korisnik uspešno registrovan!</h1>
-        </div>
-    </div>
+    <success></success>
 </div>
 `,
     mounted() {

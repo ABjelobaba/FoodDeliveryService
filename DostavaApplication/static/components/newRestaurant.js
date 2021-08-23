@@ -1,6 +1,7 @@
 Vue.component("new-restaurant", {
     data: function() {
         return {
+            mode: 'dd',
             searchText: '',
             restaurantName: '',
             street: '',
@@ -10,17 +11,23 @@ Vue.component("new-restaurant", {
             latitude: 0,
             longitude: 0,
             cuisines: [
-                { id: 'italian', value: 'Italijanska' },
-                { id: 'chinese', value: 'Kineska' },
-                { id: 'barbecue', value: 'Rostilj' },
-                { id: 'american', value: 'Americka hrana' },
-                { id: 'sweets', value: 'Poslastice' }
+                { id: 'newItalian', value: 'Italijanska' },
+                { id: 'newChinese', value: 'Kineska' },
+                { id: 'newBarbecue', value: 'Rostilj' },
+                { id: 'newAmerican', value: 'Americka hrana' },
+                { id: 'newSweets', value: 'Poslastice' }
+            ],
+            managers: [
+                { id: 1, name: 'Petar', surname: 'Petrović' },
+                { id: 2, name: 'Zoran', surname: 'Dimitrov' },
+                { id: 3, name: 'Sara', surname: 'Ilić' },
+                { id: 4, name: 'Marija', surname: 'Nikolov' }
             ]
         }
     },
     template: `
-	<div class="register" style="z-index:100">
-			<div class="modal" style="width:500px;">
+	<div class="register" style="z-index:100" >
+			<div class="modal" style="width:500px;" id="newRestaurantModal">
 				<div v-on:click="newRestaurantClose" class="close">+</div>
 
 				<div style="
@@ -47,8 +54,8 @@ Vue.component("new-restaurant", {
 							<label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Odaberite tip hrane:</label>
 							<div class="radio-btn-container" style="width: 60%;height: 100px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);">
                                 <div v-for="cuisine in cuisines">
-                                    <input type="checkbox" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id>
-                                    <label  v-bind:for=cuisine.id>{{cuisine.value}}</label>
+                                    <input type="radio" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id>
+                                    <label  class="radio-label" name="cuisine" v-bind:for=cuisine.id>{{cuisine.value}}</label>
                                 </div>
 							</div>
 							<label class="error" id="logoErr" name="labels" display="hidden"> </label>
@@ -117,21 +124,14 @@ Vue.component("new-restaurant", {
 						</div>
 
 					<div style="margin: auto 0px;" >
+                        <button v-on:click="newManager" class="btn" style="margin: auto;width: 80%;right:0">Novi menadzer</button>
 						<form>
-							<div class="radio-btn-container">
-								<input type="radio" id="contactChoice1"
-									name="contact" value="email">
-								<label class="radio-label" for="contactChoice1">Petar Petovic</label>
-							
-								<input type="radio" id="contactChoice2"
-									name="contact" value="phone">
-								<label class="radio-label" for="contactChoice2">Nenad Kostic</label>
-							
-								<input type="radio" id="contactChoice3"
-									name="contact" value="mail">
-								<label class="radio-label" for="contactChoice3">Milica Lenov</label>
-								
-							</div>
+							<div class="radio-btn-container" >
+                                <div v-for="manager in managers">
+                                    <input type="radio" v-bind:id="manager.id"	name="contact" v-bind:value="manager.id">
+                                    <label class="radio-label" v-bind:for="manager.id">{{manager.name}} {{manager.surname}}</label>
+                                </div>
+                            </div>
 						</form>
 					</div>
 					
@@ -150,6 +150,9 @@ Vue.component("new-restaurant", {
 					</div>
 				</div>
 			</div>
+
+
+            <new-user v-if="mode == 'newUser'" v-on:closeRegistration="newUserClose"  v-bind:mode="mode"></new-user>
 		</div>
 	`,
     mounted() {
@@ -325,6 +328,25 @@ Vue.component("new-restaurant", {
             document.querySelector('.firstStep').style.display = 'grid';
             document.querySelector('.secondStep').style.display = 'none';
             document.querySelector('.thirdStep').style.display = 'none';
+        },
+        newManager: function(event) {
+            this.mode = 'newUser'
+            document.getElementById('newRestaurantModal').style.backgroundColor = "rgb(75,83,92)"
+        },
+        newUserClose: function(event) {
+            this.role = 'Odaberite ulogu korisnika..';
+            this.username = '';
+            this.password = '';
+            this.name = '';
+            this.surname = '';
+            this.gender = 'Odaberite pol..';
+            $("input[type=date]").val("");
+            for (element of document.getElementsByName('labels')) {
+                element.innerHTML = '';
+                element.style.display = 'hidden';
+            }
+            this.mode = '';
+            document.getElementById('newRestaurantModal').style.backgroundColor = "rgb(44,53,63)"
         }
     }
 });

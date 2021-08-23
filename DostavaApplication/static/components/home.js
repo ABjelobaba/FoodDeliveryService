@@ -1,16 +1,27 @@
 Vue.component("home", {
     data: function() {
         return {
-            gender: 'Odaberite pol..',
-            mode: "logIn",
-            usernameRegistration: '',
-            passwordRegistration: '',
-            usernameLogIn: '',
-            passwordLogIn: '',
-            name: '',
-            surname: '',
-            dateOfBirth: '',
-            deliveryAddress: ''
+            deliveryAddress: '',
+            cuisines: [
+                { id: 'italian', value: 'Italijanska' },
+                { id: 'chinese', value: 'Kineska' },
+                { id: 'barbecue', value: 'Rostilj' },
+                { id: 'american', value: 'Americka hrana' },
+                { id: 'sweets', value: 'Poslastice' }
+            ],
+            raitings: [
+                { id: 'zero-one', value: '0 - 1' },
+                { id: 'one-two', value: '1 - 2' },
+                { id: 'two-three', value: '2 - 3' },
+                { id: 'three-four', value: '3 - 4' },
+                { id: 'four-five', value: '4 - 5' }
+            ],
+            restaurants: [
+                { id: 1, img: 'images/kfc.jpg', name: 'KFC', type: 'Americka hrana', status: 'OPENED' },
+                { id: 2, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED' },
+                { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }
+
+            ]
         }
     },
 
@@ -52,48 +63,16 @@ Vue.component("home", {
 				<div class="restaurant-types">
 					<h2 style="text-align: center;" >Kuhinje</h2>
 					<div class="checkbox-btn-container-dark">
-						<div>
-							<input type="checkbox" id="italian" name="cuisine" value="italian">
-							<label for="italian">Italijanska</label>
-						</div>
-						<div>
-							<input type="checkbox" id="chinese" name="cuisine" value="chinese">
-							<label for="chinese">Kineska</label>
-						</div>
-						<div>
-							<input type="checkbox" id="barbecue" name="cuisine" value="barbecue">
-							<label for="barbecue">Rostilj</label>
-						</div>
-						<div>
-							<input type="checkbox" id="american" name="cuisine" value="american">
-							<label for="american">Americka hrana</label>
-						</div>
-						<div>
-							<input type="checkbox" id="sweets" name="cuisine" value="sweets">
-							<label for="sweets">Poslastice</label>
+						<div v-for="cuisine in cuisines">
+							<input type="checkbox" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id>
+							<label  v-bind:for=cuisine.id>{{cuisine.value}}</label>
 						</div>
 					</div>
 					<h2 style="text-align: center;" >Ocene</h2>
 					<div class="checkbox-btn-container-dark">
-						<div>
-							<input type="checkbox" id="one" name="stars" value="one">
-							<label for="one">1</label>
-						</div>
-						<div>
-							<input type="checkbox" id="two" name="stars" value="two">
-							<label for="two">2</label>
-						</div>
-						<div>
-							<input type="checkbox" id="three" name="stars" value="three">
-							<label for="three">3</label>
-						</div>
-						<div>
-							<input type="checkbox" id="four" name="stars" value="four">
-							<label for="four">4</label>
-						</div>
-						<div>
-							<input type="checkbox" id="five" name="stars" value="five">
-							<label for="five">5</label>
+						<div v-for="raiting in raitings">
+							<input type="checkbox" v-bind:id=raiting.id name="stars" v-bind:value=raiting.id>
+							<label v-bind:for=raiting.id>{{raiting.value}}</label>
 						</div>
 					</div>
 				</div>
@@ -103,122 +82,13 @@ Vue.component("home", {
 				<h1> Restorani u ponudi</h1>
 				<p></p>
 
-				<div class="restaurants-col">
-					<img src="images/kfc.jpg">
-					<div class="restaurant-info">
-						<h3>KFC</h3>
-						<p>Piletina, Burgeri, Americka hrana</p>
-						<div class="closed-restaurant"><span>Zatvoren objekat</span></div>
-					</div>
-
-				</div>
-				<div class="restaurants-col">
-					<img src="images/mcdonalds.png">
-					<div class="restaurant-info">
-						<h3>McDonald's</h3>
-						<p>Burgeri, Americka hrana, Poslastice</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
-
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
-
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
-				<div class="restaurants-col">
-
-					<img src="images/burgerhouse.jpg">
-					<div class="restaurant-info">
-						<h3>Burger House</h3>
-						<p>Burgeri, Americka hrana, Rostilj</p>
-					</div>
-				</div>
+				<restaurant-card v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:restaurant="restaurant"></restaurant-card>
 
 			</div>
 		</div>
 
-		<div class="register">
-			<div class="modal" style="height: auto">
-				<div class="tab">
-					<button v-on:click="tabClick('logIn')">Uloguj se</button>
-					<button v-on:click="tabClick('register')">Registruj se</button>
-				</div>
-				<div v-on:click="registrationClose" class="close">+</div>
-
-				<div v-if="mode === 'register'">
-					<div class="login-title">
-						<h3 style="color: white; font-weight: bolder;"> KREIRAJTE VAŠ NALOG </h3>
-					</div>
-					
-					<div style="margin-top: 20px;" >
-						<form>
-							<input v-model="usernameRegistration" type="text" class="login-inputs" placeholder="Korisničko ime">
-							<label class="error" id="usernameErr" name="labels" display="hidden"> </label>
-	
-							<input v-model="passwordRegistration" type="password" class="login-inputs" placeholder="Lozinka">
-							<label class="error" id="passwordErr" name="labels" display="hidden"> </label>
-	
-							<input v-model="name" type="text" class="login-inputs" placeholder="Ime">
-							<label class="error" id="nameErr" name="labels" display="hidden"> </label>
-	
-							<input v-model="surname" type="text" class="login-inputs" placeholder="Prezime">
-							<label class="error" id="surnameErr" name="labels" display="hidden"> </label>
-	
-							<select v-model="gender" class="login-inputs-select">
-								<option selected disabled>Odaberite pol..</option>
-								<option>MUŠKO</option>
-								<option>ŽENSKO</option>
-							</select>
-							<label class="error" id="genderErr" name="labels" display="hidden"> </label>
-	
-							<label style="color: white;display: block;margin:15px 0 0 0">Datum rođenja:</label>
-							<input type="date" class="login-inputs" style="margin-top: 1px;" id="date_input">
-							<label class="error" id="dateErr" name="labels" display="hidden"> </label>
-	
-							<button v-on:click="registerUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
-						</form>
-					</div>
-				</div>
-
-				<div v-if="mode === 'logIn'">
-					<div class="login-title">
-						<h3 style="color: white; font-weight: bolder;"> PRIJAVITE SE </h3>
-					</div>
-					
-					<div style="margin-top: 20px;" >
-						<form>
-							<input v-model="usernameLogIn" type="text" class="login-inputs" placeholder="Korisničko ime">
-							<label class="error" id="usernameLogInErr" name="labels" display="hidden"> </label>
-	
-							<input v-model="passwordLogIn" type="password" class="login-inputs" placeholder="Lozinka">
-							<label class="error" id="passwordLogInErr" name="labels" display="hidden"> </label>
-	
-							<button v-on:click="logInUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
-						</form>
-					</div>
-				</div>
-
-				
-			</div>
-		</div>
-
+		
+		<logIn-register></logIn-register>
 
 	</div>
 	`,
@@ -229,70 +99,6 @@ Vue.component("home", {
     methods: {
         register: function(event) {
             document.querySelector('.register').style.display = 'flex';
-        },
-        registrationClose: function(event) {
-            this.username = '';
-            this.password = '';
-            this.name = '';
-            this.surname = '';
-            this.gender = 'Odaberite pol..';
-            this.dateOfBirth = '';
-            for (element of document.getElementsByName('labels')) {
-                element.innerHTML = '';
-                element.style.display = 'hidden';
-            }
-            document.querySelector('.register').style.display = 'none';
-            this.mode = 'logIn';
-        },
-        registerUser: function(event) {
-            event.preventDefault();
-
-            let genderReg;
-            if (this.gender === 'MUŠKO') {
-                genderReg = 'MALE';
-            } else if (this.gender === 'ŽENSKO') {
-                genderReg = 'FEMALE';
-            }
-
-            if (!this.usernameRegistration) {
-                document.getElementById('usernameErr').innerHTML = "Morate uneti korisničko ime!";
-            }
-            if (!this.passwordRegistration) {
-                document.getElementById('passwordErr').innerHTML = "Morate uneti lozinku!";
-            }
-            if (this.name[0] < 'A' || this.name[0] > 'Z' || !this.name) {
-                document.getElementById('nameErr').innerHTML = "Morate uneti ime koje počinje velikim slovom!";
-            }
-            if (this.surname[0] < 'A' || this.surname[0] > 'Z' || !this.surname) {
-                document.getElementById('surnameErr').innerHTML = "Morate uneti prezime koje počinje velikim slovom!";
-            }
-            if (!genderReg) {
-                document.getElementById('genderErr').innerHTML = "Morate izabrati pol!";
-            }
-            if (!dates) {
-                document.getElementById('dateErr').innerHTML = "Morate izabrati datum rođenja!";
-            }
-        },
-        logInUser: function(event) {
-            event.preventDefault();
-            if (!this.usernameLogIn) {
-                document.getElementById('usernameLogInErr').innerHTML = "Morate uneti korisničko ime!";
-            }
-            if (!this.passwordLogIn) {
-                document.getElementById('passwordLogInErr').innerHTML = "Morate uneti lozinku!";
-            }
-        },
-        tabClick: function(tabClicked) {
-            if (tabClicked === 'register') {
-                this.mode = 'register';
-            } else {
-                this.mode = 'logIn';
-            }
-
-            for (element of document.getElementsByName('labels')) {
-                element.innerHTML = '';
-                element.style.display = 'hidden';
-            }
         },
         order: function(event) {
             if (this.deliveryAddress.match(/[\p{Letter}\s]+ [0-9]+,[\p{Letter}\s]+/gu)) {
