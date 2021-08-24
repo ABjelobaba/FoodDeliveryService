@@ -96,6 +96,7 @@ Vue.component("available-orders",{
                 <thead>
                     <tr>
                         <th>Vreme <i class="fa fa-sort "></i></th>
+                        <th>Kupac <i class="fa fa-sort"></i></th>
                         <th>Restoran <i class="fa fa-sort "></i></th>
                         <th>Cena <i class="fa fa-sort"></i></th>
                         <th> </th>
@@ -104,6 +105,12 @@ Vue.component("available-orders",{
                 <tbody>
                     <tr v-for="order in orders" v-on:click="showOrder(order)">
                         <td>{{order.date}}</td>
+                        <td>
+                            <div class="user-address-delivery">
+                                <h3>Marko Markovic</h3>
+                                <h4>Bulevar Evrope 9, Novi Sad</h4>
+                            </div>
+                        </td>
                         <td>
                             <restaurant-cell v-bind:restaurant="order.restaurant"></restaurant-cell>
                         </td>
