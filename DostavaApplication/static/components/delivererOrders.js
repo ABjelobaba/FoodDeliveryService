@@ -75,7 +75,8 @@ Vue.component("deliverer-orders",{
                 { id: 5, date: '20.04.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 1200, status: 'finished' },
                 { id: 6, date: '15.03.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'canceled' }
             ],
-            hover: false
+            hover: false,
+            rect: undefined
         }
     },
     
@@ -88,7 +89,7 @@ Vue.component("deliverer-orders",{
                 <i style="text-align: center;" class="fa fa-search"></i>
                 <input type="text" placeholder="Pretraži po nazivu restorana, opsegu cene ili opsegu datuma...">
             </div>
-            <button class="filter-btn" v-on:click="filterClicked"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
+            <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
             <button class="new-user-btn">Nedostavljane porudžbine</button>
         </div>
         
@@ -191,6 +192,18 @@ Vue.component("deliverer-orders",{
               `,
     mounted() {
         window.scrollTo(0, 0);
+
+        var b = document.getElementById('filter-btn-do');
+        this.rect = b.getBoundingClientRect();
+        document.querySelector('.filter-modal').style.marginLeft = this.rect.left + 'px';
+
+        window.addEventListener('resize', function() {
+            var b = document.getElementById('filter-btn-do');
+            if (b != null) {
+                this.rect = b.getBoundingClientRect();
+                document.querySelector('.filter-modal').style.marginLeft = this.rect.left + 'px';
+            }
+        });
     },
     methods: {
         logOut: function(event) {
@@ -201,6 +214,7 @@ Vue.component("deliverer-orders",{
                 '') {
                 document.querySelector('.filter-div').style.display = 'inline-table';
                 document.querySelector('.table-users').style.top = '-404px';
+
             } else { this.filterClose(); }
         },
         filterClose: function(event) {
@@ -217,15 +231,12 @@ Vue.component("deliverer-orders",{
             this.selectedOrder = order;
             this.selectedOrder.status = 'finished';
             let el;
-            console.log(event.target);
-            if (event.target.className == 'fa fa-check-circle-o') {
-                el = event.target.parentElement.parentElement.parentElement.parentElement;
-                event.target.parentElement.parentElement.parentElement.remove();
-                console.log('a');
+            if (target.className == 'fa fa-check-circle-o') {
+                el = target.parentElement.parentElement.parentElement.parentElement;
+                target.parentElement.parentElement.parentElement.remove();
             } else {
-                el = event.target.parentElement.parentElement;
-                event.target.parentElement.remove();
-                console.log('b');
+                el = target.parentElement.parentElement;
+                target.parentElement.remove();
             }
 
             el.innerHTML += ('<td><div class="order-status-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Dostavljena</div></td>');
