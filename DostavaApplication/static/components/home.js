@@ -102,7 +102,7 @@ Vue.component("home", {
         },
         order: function(event) {
             if (this.deliveryAddress.match(/[\p{Letter}\s]+ [0-9]+,[\p{Letter}\s]+/gu)) {
-                window.location.href = "#/restaurants?" + this.deliveryAddress;
+                window.location.href = "#/account?" + this.deliveryAddress;
             } else {
                 document.getElementById('addressErr').innerHTML = "Adresa mora biti u obliku 'Knez Mihajlova 7, Beograd'!";
                 document.getElementById('addressErr').style.color = 'red';
