@@ -10,6 +10,7 @@ const ShoppingCart = { template: '<shopping-cart></shopping-cart>' }
 const UserOrders = { template: '<user-orders></user-orders>' }
 const DelivererOrders = { template: '<deliverer-orders></deliverer-orders>' }
 const AvailableOrders = { template: '<available-orders></available-orders>' }
+const SuspiciousUsers = { template: '<suspicious-users></suspicious-users>' }
 
 
 const router = new VueRouter({
@@ -28,7 +29,8 @@ const router = new VueRouter({
                 { path: 'users', component: AdminUsers },
                 { path: 'orders', component: UserOrders },
                 { path: 'allOrders', component: DelivererOrders },
-                { path: 'availableOrders', component: AvailableOrders }
+                { path: 'availableOrders', component: AvailableOrders },
+                { path: 'suspiciousUsers', component: SuspiciousUsers }
             ]
         },
         { path: '/restaurantPage', component: RestaurantPage }

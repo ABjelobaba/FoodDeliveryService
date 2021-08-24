@@ -1,4 +1,4 @@
-Vue.component("admin-users", {
+Vue.component("suspicious-users", {
     data: function() {
         return {
             mode: '',
@@ -10,9 +10,9 @@ Vue.component("admin-users", {
             ],
             users: [
                 { id: '1', role: 'manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: '-', suspicious: false, blocked: false },
-                { id: '2', role: 'deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-', suspicious: true, blocked: false },
+                { id: '2', role: 'deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-', suspicious: false, blocked: false },
                 { id: '3', role: 'admin', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-', suspicious: true, blocked: false },
-                { id: '4', role: 'bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784, suspicious: true, blocked: false },
+                { id: '4', role: 'bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784, suspicious: false, blocked: false },
                 { id: '5', role: 'silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564, suspicious: true, blocked: false },
                 { id: '6', role: 'gold', name: 'Anita', surname: 'Marić', username: 'anita_maric', points: 5486, suspicious: true, blocked: false }
             ]
@@ -21,7 +21,7 @@ Vue.component("admin-users", {
     template: `
 <div>
 
-    <h1 style="text-align: center;">Pregled registrovanih korisnika
+    <h1 style="text-align: center;">Pregled sumnjivih korisnika
     </h1>
     <div class="users-search">
         <div>
@@ -29,7 +29,6 @@ Vue.component("admin-users", {
             <input type="text" style="min-width: 470px" placeholder="Pretraži po imenu, prezimenu ili korisničkom imenu..">
         </div>
         <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
-        <button class="new-user-btn" v-on:click="newUserClicked">+ Novi korisnik</button>
     </div>
 
     <div class="filter-div" >
@@ -38,7 +37,7 @@ Vue.component("admin-users", {
 
             <h2>Uloge</h2>
             <div class="checkbox-btn-container-dark" style="text-align: left;">
-                <div v-for="role in roles">
+                <div v-for="role in roles" v-if="role.id !='admin'">
                     <input type="checkbox" v-bind:id="role.id" name="role" v-bind:value="role.id">
                     <label v-bind:for="role.id">{{role.value}}</label>
                 </div>
@@ -77,7 +76,7 @@ Vue.component("admin-users", {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="user in users">
+                <tr v-for="user in users" v-if="user.suspicious && user.role !='admin'" >
                     <td>
                         <i v-if="user.role == 'manager'" class="fa fa-line-chart fa-lg" aria-hidden="true"></i>
                         <i v-if="user.role == 'deliverer'" class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
@@ -91,8 +90,7 @@ Vue.component("admin-users", {
                     <td>{{user.username}}</td>
                     <td>{{user.points}}</td>
                     <td>
-                        <button class="black-btn" v-if="user.role== 'admin'"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
-                        <button class="black-btn" v-else v-on:click="blockUser(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
+                        <button class="black-btn" v-on:click="blockUser(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
                     </td>
                 </tr>
             </tbody>
@@ -127,7 +125,7 @@ Vue.component("admin-users", {
             if (document.querySelector('.filter-div').style.display == 'none' || document.querySelector('.filter-div').style.display ==
                 '') {
                 document.querySelector('.filter-div').style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-362px';
+                document.querySelector('.table-users').style.top = '-338px';
             } else { this.filterClose(); }
         },
         filterClose: function(event) {
