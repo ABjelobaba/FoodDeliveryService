@@ -1,6 +1,7 @@
 Vue.component("user-orders", {
     data: function() {
         return {
+            mode: 'all',
             gender: 'Odaberite pol..',
             name: '',
             surname: '',
@@ -92,6 +93,10 @@ Vue.component("user-orders", {
             <input type="text" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">
         </div>
         <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
+        <div >
+            <input v-on:click="undeliveredOrders" type="checkbox" id="undeliveredOrders" value="undeliveredOrders">
+            <label style="margin:0;padding:3%" class="full-radio-btn-label" for="undeliveredOrders">Nedostavljane porudžbine</label>
+        </div>
     </div>
 
     <div class="filter-div" style="top:250px">
@@ -118,7 +123,7 @@ Vue.component("user-orders", {
     </div>
 
     <div class="content" style="display:block" >
-        <table class="table-users" name="orders">
+        <table class="table-users" name="orders" id="allOrders" v-if="mode=='all'">
             <thead>
                 <tr>
                     <th>Datum <i class="fa fa-sort "></i></th>
@@ -129,6 +134,27 @@ Vue.component("user-orders", {
             </thead>
             <tbody>
                 <tr v-for="order in orders" v-on:click="showOrder(order)">
+                    <td>{{order.date}}</td>
+                    <td>
+                        <restaurant-cell v-bind:restaurant="order.restaurant"></restaurant-cell>
+                    </td>
+                    <td>{{order.summeryPrice}}.00 RSD</td>
+                    <td ><div class="order-status-black"><order-status-cell v-bind:orderStatus="order.status"></order-status-cell></div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table-users" name="orders" id="undeliveredOrders" v-if="mode=='undelivered'">
+            <thead>
+                <tr>
+                    <th>Datum <i class="fa fa-sort "></i></th>
+                    <th>Restoran <i class="fa fa-sort "></i></th>
+                    <th>Cena <i class="fa fa-sort"></i></th>
+                    <th>Status <i class="fa fa-sort"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="order in orders" v-on:click="showOrder(order)" v-if="order.status != 'finished' && order.status != 'canceled'">
                     <td>{{order.date}}</td>
                     <td>
                         <restaurant-cell v-bind:restaurant="order.restaurant"></restaurant-cell>
@@ -214,6 +240,13 @@ Vue.component("user-orders", {
         },
         newUserClose: function(event) {
             this.selectedOrder = undefined;
+        },
+        undeliveredOrders: function(event) {
+            if (this.mode == 'all') {
+                this.mode = 'undelivered';
+            } else {
+                this.mode = 'all';
+            }
         }
     }
 })
