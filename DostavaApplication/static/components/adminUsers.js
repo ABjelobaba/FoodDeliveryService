@@ -126,7 +126,7 @@ Vue.component("admin-users", {
                     document.querySelector('.filter-modal').style.width = this.rect.width + 'px';
                 }
 
-            } else if (document.body.clientWidth <= 900) {
+            } else if (b != null && document.body.clientWidth <= 900) {
 
                 document.querySelector('.filter-modal').style.width = 505 + 'px';
                 document.querySelector('.filter-modal').style.marginRight = 'auto';
