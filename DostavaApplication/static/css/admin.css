@@ -11,6 +11,7 @@
     padding: 5px 15px;
     border-radius: 5px;
     margin: 0 10px;
+    cursor: pointer;
 }
 
 .user-img {
@@ -188,7 +189,7 @@
 
 .filter-div {
     display: none;
-    float: right;
+    float: left;
     position: sticky;
     top: 240px;
     text-align: center;
@@ -202,7 +203,7 @@
     padding: 10px;
     width: 40vh;
     height: auto;
-    margin: 10px 40vh 0 auto;
+    margin: 10px 0 0 0;
     background-color: #dddddd;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }

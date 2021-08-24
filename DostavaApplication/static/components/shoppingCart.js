@@ -1,4 +1,4 @@
-Vue.component("shoppingCart",{
+Vue.component("shopping-cart",{
     data: function() {
         return {     
         }
@@ -82,5 +82,12 @@ Vue.component("shoppingCart",{
 			
 	    </div>
     </section>
-                `
+                `,
+	mounted() {
+		window.scrollTo(0, 0);
+	},
+
+	methods: {
+		
+	}
 })

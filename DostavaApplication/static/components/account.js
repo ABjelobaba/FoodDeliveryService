@@ -27,6 +27,8 @@ Vue.component("account", {
                     <li><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
                     <li><a v-on:click="restaurantsView" name="user-nav" id="restaurants">Restorani</a></li>
                     <li><a v-on:click="ordersView" name="user-nav" id="orders">Porudžbine</a></li>
+                    <li><a v-on:click="availableOrdersView" name="user-nav" id="available-orders">Dostupne porudžbine</a></li>
+                    <li><a v-on:click="deliverersOrdersView" name="user-nav" id="deliverers-orders">Porudžbine</a></li>
                 </ul>
                 
                 
@@ -57,8 +59,12 @@ Vue.component("account", {
             document.getElementById('profile').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('orders')) {
             document.getElementById('orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else {
+        } else if (window.location.href.endsWith('restaurants')) {
             document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('availableOrders')) {
+            document.getElementById('available-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('allOrders')) {
+            document.getElementById('deliverers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         }
 
 
@@ -95,6 +101,20 @@ Vue.component("account", {
             }
             document.getElementById('orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
             window.location.href = "#/account/orders";
+        },
+        availableOrdersView: function(event) {
+            for (element of document.getElementsByName("user-nav")) {
+                element.style.backgroundColor = "transparent";
+            }
+            document.getElementById('available-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            window.location.href = "#/account/availableOrders";
+        },
+        deliverersOrdersView: function(event) {
+            for (element of document.getElementsByName("user-nav")) {
+                element.style.backgroundColor = "transparent";
+            }
+            document.getElementById('deliverers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            window.location.href = "#/account/allOrders";
         }
     }
 })

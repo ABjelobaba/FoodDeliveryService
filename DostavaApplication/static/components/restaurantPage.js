@@ -1,4 +1,4 @@
-Vue.component("restaurantPage", {
+Vue.component("restaurant-page", {
     data: function() {
         return {
             articles: [
@@ -148,11 +148,15 @@ Vue.component("restaurantPage", {
     </div>
              `,
     mounted() {
+        window.scrollTo(0, 0);
+        
         function createNavMenu() {
-            if (window.scrollY >= 250) {
-                document.getElementById('navmenu-rp').style.visibility = 'visible';
-            } else {
-                document.getElementById('navmenu-rp').style.visibility = 'collapse';
+            if (window.location.href.endsWith('restaurantPage')) {
+                if (window.scrollY >= 250) {
+                    document.getElementById('navmenu-rp').style.visibility = 'visible';
+                } else {
+                    document.getElementById('navmenu-rp').style.visibility = 'collapse';
+                }
             }
         }
 
