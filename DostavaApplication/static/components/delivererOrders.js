@@ -7,7 +7,75 @@ Vue.component("deliverer-orders",{
             currentRestaurant: [],
             article: '',
             order: '',
-            hover: false, 
+            selectedOrder: undefined,
+            orderStatuses: [
+                { id: 'processing', value: 'Obrada' },
+                { id: 'prep', value: 'U pripremi' },
+                { id: 'waitingDeliverer', value: 'Čeka dostavljača' },
+                { id: 'transporting', value: 'U transportu' },
+                { id: 'finished', value: 'Dostavljena' },
+                { id: 'canceled', value: 'Otkazana' }
+            ],
+            cuisines: [
+                { id: 'italian', value: 'Italijanska' },
+                { id: 'chinese', value: 'Kineska' },
+                { id: 'barbecue', value: 'Rostilj' },
+                { id: 'american', value: 'Americka hrana' },
+                { id: 'sweets', value: 'Poslastice' }
+            ],
+            orders: [{
+                    id: 1,
+                    date: '21.08.2021.',
+                    restaurant: {
+                        id: 1,
+                        img: 'images/kfc.jpg',
+                        name: 'KFC',
+                        type: 'Americka hrana',
+                        status: 'OPENED'
+                    },
+                    summeryPrice: 1235,
+                    status: 'processing',
+                    articles: [{
+                        id: 1,
+                        name: 'Burger',
+                        quantity: 2
+                    }, {
+                        id: 2,
+                        name: 'Pomfrit',
+                        quantity: 2
+                    }]
+                },
+                {
+                    id: 2,
+                    date: '17.08.2021.',
+                    restaurant: {
+                        id: 2,
+                        img: 'images/mcdonalds.png',
+                        name: "McDonald's",
+                        type: 'Americka hrana',
+                        status: 'OPENED'
+                    },
+                    summeryPrice: 1200,
+                    status: 'prep'
+                },
+                {
+                    id: 3,
+                    date: '11.07.2021.',
+                    restaurant: {
+                        id: 3,
+                        img: 'images/burgerhouse.jpg',
+                        name: 'Burger House',
+                        type: 'Americka hrana',
+                        status: 'CLOSED'
+                    },
+                    summeryPrice: 3590,
+                    status: 'waitingDeliverer'
+                },
+                { id: 4, date: '05.06.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 560, status: 'transporting' },
+                { id: 5, date: '20.04.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 1200, status: 'finished' },
+                { id: 6, date: '15.03.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'canceled' }
+            ],
+            hover: false
         }
     },
     
@@ -30,52 +98,21 @@ Vue.component("deliverer-orders",{
     
                 <h2>Status porudžbine</h2>
                 <div class="checkbox-btn-container-dark" >
-                    <div>
-                        <input type="checkbox" id="processing" name="orderStatus" value="processing">
-                        <label for="processing">Obrada</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="prep" name="orderStatus" value="prep">
-                        <label for="prep">U pripremi</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="transporting" name="orderStatus" value="transporting">
-                        <label for="transporting">U transportu</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="finished" name="orderStatus" value="finished">
-                        <label for="finished">Dostavljena</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="canceled" name="orderStatus" value="canceled">
-                        <label for="canceled">Otkazana</label>
+                    <div v-for="status in orderStatuses" v-if="status.id != 'waitingDeliverer'">
+                        <input type="checkbox" v-bind:id="status.id" name="orderStatus" v-bind:value="status.id">
+                        <label v-bind:for="status.id">{{status.value}}</label>
                     </div>
                 </div>
-                <h2>Tip kuhine</h2>
+                <h2>Tip restorana</h2>
                 <div class="checkbox-btn-container-dark">
-                    <div>
-                        <input type="checkbox" id="italian" name="cuisine" value="italian">
-                        <label for="italian">Italijanska</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="chinese" name="cuisine" value="chinese">
-                        <label for="chinese">Kineska</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="barbecue" name="cuisine" value="barbecue">
-                        <label for="barbecue">Rostilj</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="american" name="cuisine" value="american">
-                        <label for="american">Americka hrana</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="sweets" name="cuisine" value="sweets">
-                        <label for="sweets">Poslastice</label>
+                    <div v-for="cuisine in cuisines">
+                        <input type="checkbox" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id>
+                        <label  v-bind:for=cuisine.id>{{cuisine.value}}</label>
                     </div>
                 </div>
             </div>
         </div>
+                    
 
         <div class="content" style="display:block" >
             <table class="table-users" name="orders">
@@ -88,122 +125,54 @@ Vue.component("deliverer-orders",{
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-on:click="showOrder">
-                        <td>21.08.2021.</td>
+                    <tr v-for="order in orders" v-on:click="showOrder(order)">
+                        <td>{{order.date}}</td>
                         <td>
-                            <div class="order-restaurant">
-                                <img src="images/burgerhouse.jpg">
-                                <label>Burger House</label>
-                            </div>
+                            <restaurant-cell v-bind:restaurant="order.restaurant"></restaurant-cell>
                         </td>
-                        <td>1235.00 RSD</td>
-                        <td>
-                            <div class="order-delivered-btn" v-on:click="confirmDelivery"
+                        <td>{{order.summeryPrice}}.00 RSD</td>
+                        <td >
+                            <div class="order-status-black" v-if="order.status != 'transporting'">
+                                <order-status-cell v-bind:orderStatus="order.status">
+                                </order-status-cell>
+                            </div>
+
+                            <div v-else class="order-delivered-btn" v-on:click="confirmDelivery(order)"
                                 @mouseover="hover = true"
                                 @mouseleave="hover = false">
 
-                            <span v-if="!hover" class="delivery-btn-text"><i class="fa fa-bicycle" aria-hidden="true"></i> U transportu</span>
+                            <span v-if="!hover" class="delivery-btn-text"><i class="fa fa-bicycle" aria-hidden="true" id="trans-icon-do"></i> U transportu</span>
                             <span v-if="hover" class="delivery-btn-confirmation-text" style="transition: 0.2s;"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Dostavljena</span>
                             
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>17.08.2021.</td>
-                        <td>
-                            <div class="order-restaurant">
-                                <img src="images/kfc.jpg">
-                                <label>KFC</label>
-                            </div>
-                        </td>
-                        <td>1200.00 RSD</td>
-                        <td><div class="order-status-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Dostavljena</div></td>
-                    </tr>
-                    <tr>
-                        <td>11.07.2021.</td>
-                        <td>
-                            <div class="order-restaurant">
-                                <img src="images/mcdonalds.png">
-                                <label>McDonald's</label>
-                            </div>
-                        </td>
-                        <td>3590.00 RSD</td>
-                        <td><div class="order-status-black"><i class="fa fa-bicycle" aria-hidden="true"></i> U transportu</div></td>
-                    </tr>
-                    <tr>
-                        <td>05.06.2021.</td>
-                        <td>
-                            <div class="order-restaurant">
-                                <img src="images/burgerhouse.jpg">
-                                <label>Burger House</label>
-                            </div>
-                        </td>
-                        <td>560.00 RSD</td>
-                        <td><div class="order-status-black"><i class="fa fa-spinner" aria-hidden="true"></i> Obrada</div></td>
-                    </tr>
-                    <tr>
-                        <td>20.04.2021.</td>
-                        <td>
-                            <div class="order-restaurant">
-                                <img src="images/burgerhouse.jpg">
-                                <label>Burger House</label>
-                            </div>
-                        </td>
-                        <td>1200.00 RSD</td>
-                        <td><div class="order-status-black"><i class="fa fa-spinner" aria-hidden="true"></i> Ceka dostavljaca</div></td>
-                    </tr>
-                    <tr>
-                        <td>15.03.2021.</td>
-                        <td>
-                            <div class="order-restaurant">
-                                <img src="images/burgerhouse.jpg">
-                                <label>Burger House</label>
-                            </div>
-                        </td>
-                        <td>2560.00 RSD</td>
-                        <td><div class="order-status-black"><i class="fa fa-cutlery" aria-hidden="true"></i> U pripremi</div></td>
-                    </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="register" style="z-index:100">
+        <div class="register"  style="display:flex;z-index:100" v-if="selectedOrder != undefined">
             <div class="modal" style="height:auto; padding-bottom: 35px;">
             <div v-on:click="closeOrderView" class="close">+</div>
 
             <div >
                 <div class="order-articles-title-div">
                     <div class="order-articles-title" >
-                        <p > {{order.restaurantName}} KFC </p>
-                        <p > {{order.date}} 21.08.2021. </p>
+                        <p> {{selectedOrder.restaurant.name}} </p>
+                        <p> {{selectedOrder.date}} </p>
                     </div>
                     <div class="order-status-white" style="text-align:right;margin-right:15%">
-                        <p><i aria-hidden="true" class="fa fa-bicycle"></i> U transportu</p>
-                        
+                        <order-status-cell v-bind:orderStatus="selectedOrder.status"></order-status-cell>  
                     </div>
                 </div>
                 
                 <div style="margin-top: 7%;" >
-                    <div class="article-col" style="background-color:transparent;justify-content: space-between;">
-                        <img src="images/kfc.jpg" style="height: fit-content;">
-                        <h3 style="margin-left:3%">{{article.name}} Burger </h3>
-                        <h3 style="text-align:right"> <span class="order-item-price"> 450.00 RSD </span> x1 {{article.quantity}}</h3>
-                    </div>
-                    <div class="article-col" style="background-color:transparent;justify-content: space-between;">
-                        <img src="images/kfc.jpg" style="height: fit-content;">
-                        <h3 style="margin-left:3%">{{article.name}} Burger </h3>
-                        <h3 style="text-align:right"><span class="order-item-price"> 450.00 RSD </span> x1 {{article.quantity}}</h3>
-                    </div>
-                    <div class="article-col" style="background-color:transparent;justify-content: space-between;">
-                        <img src="images/kfc.jpg" style="height: fit-content;">
-                        <h3 style="margin-left:3%">{{article.name}} Burger </h3>
-                        <h3 style="text-align:right"><span class="order-item-price"> 450.00 RSD </span> x1 {{article.quantity}}</h3>
-                    </div>
+                    <article-in-order v-for="article in selectedOrder.articles" v-bind:key="article.id" v-bind:article="article"></article-in-order>
+                    
                     <div style="border:1px solid white;margin: 5% 10% 2%" ></div>
-
                     <div class="price-calculation-order-view">
                         <p class="pc-order-view">  <span>Dostava</span>   <span>+ 200.00 RSD</span> </p>
-                        <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{order.sum}} = 1235.00 RSD</span> </p>
+                        <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{selectedOrder.summeryPrice}}.00 RSD</span> </p>
                     </div>
                     <button style="margin: 20px 20%;width: -webkit-fill-available; display: none;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
                 </div>
@@ -231,21 +200,25 @@ Vue.component("deliverer-orders",{
             document.querySelector('.filter-div').style.display = 'none';
             document.querySelector('.table-users').style.top = '0px';
         },
-        showOrder: function(event) {
-            document.querySelector('.register').style.display = 'flex';
+        showOrder: function(order) {
+            this.selectedOrder = order;
         },
         closeOrderView: function() {
-            document.querySelector('.register').style.display = 'none';
+            this.selectedOrder = undefined;
         },
-        confirmDelivery: function(event) {
+        confirmDelivery: function(order) {
+            this.selectedOrder = order;
+            this.selectedOrder.status = 'finished';
             let el;
-            if (event.target == 'order-delivered-btn') {
-                el = event.target.parentElement;
-                event.target.remove();
-            }
-            else {
+            console.log(event.target);
+            if (event.target.className == 'fa fa-check-circle-o') {
+                el = event.target.parentElement.parentElement.parentElement.parentElement;
+                event.target.parentElement.parentElement.parentElement.remove();
+                console.log('a');
+            } else {
                 el = event.target.parentElement.parentElement;
                 event.target.parentElement.remove();
+                console.log('b');
             }
 
             el.innerHTML += ('<td><div class="order-status-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Dostavljena</div></td>');
