@@ -79,7 +79,8 @@ Vue.component("user-orders", {
                 { id: 4, date: '05.06.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 560, status: 'transporting' },
                 { id: 5, date: '20.04.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 1200, status: 'finished' },
                 { id: 6, date: '15.03.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'canceled' }
-            ]
+            ],
+            hover: false
         }
     },
     template: `
@@ -139,7 +140,21 @@ Vue.component("user-orders", {
                         <restaurant-cell v-bind:restaurant="order.restaurant"></restaurant-cell>
                     </td>
                     <td>{{order.summeryPrice}}.00 RSD</td>
-                    <td ><div class="order-status-black"><order-status-cell v-bind:orderStatus="order.status"></order-status-cell></div></td>
+                    <td >
+                        <div class="order-status-black" v-if="order.status != 'processing'">
+                            <order-status-cell v-bind:orderStatus="order.status">
+                            </order-status-cell>
+                        </div>
+
+                        <div v-else class="order-canceled-btn"  v-on:click="cancelOrder(order)"
+                            @mouseover="hover = true"
+                            @mouseleave="hover = false">
+
+                        <span v-if="!hover" ><i class="fa fa-spinner" aria-hidden="true"></i> Obrada</span>
+                        <span v-if="hover" class="canceled-btn-confirmation-text" style="transition: 0.2s;background-color:#5e2121;"><i class="fa fa-ban" aria-hidden="true"></i> Otkaži</span>
+                        
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -160,7 +175,21 @@ Vue.component("user-orders", {
                         <restaurant-cell v-bind:restaurant="order.restaurant"></restaurant-cell>
                     </td>
                     <td>{{order.summeryPrice}}.00 RSD</td>
-                    <td ><div class="order-status-black"><order-status-cell v-bind:orderStatus="order.status"></order-status-cell></div></td>
+                    <td >
+                        <div class="order-status-black" v-if="order.status != 'processing'">
+                            <order-status-cell v-bind:orderStatus="order.status">
+                            </order-status-cell>
+                        </div>
+
+                        <div v-else class="order-canceled-btn"  v-on:click="cancelOrder(order)"
+                            @mouseover="hover = true"
+                            @mouseleave="hover = false">
+
+                        <span v-if="!hover" ><i class="fa fa-spinner" aria-hidden="true"></i> Obrada</span>
+                        <span v-if="hover" class="canceled-btn-confirmation-text" style="transition: 0.2s;background-color:#5e2121;"><i class="fa fa-ban" aria-hidden="true"></i> Otkaži</span>
+                        
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -191,7 +220,7 @@ Vue.component("user-orders", {
                         <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{selectedOrder.summeryPrice}}.00 RSD</span> </p>
                 </div>
 
-                <button disabled v-on:click="cancleOrder" class="cancle-btn" style="margin: 20px 20%"> Otkazi</button>
+                <button v-if="selectedOrder.status =='processing'" v-on:click="cancelOrder(selectedOrder)" class="cancle-btn" style="margin: 20px 20%"> Otkaži</button>
             </div>
         </div>
 
@@ -234,10 +263,6 @@ Vue.component("user-orders", {
         showOrder: function(order) {
             this.selectedOrder = order;
         },
-        cancleOrder: function(event) {
-            this.selectedOrder = undefined;
-
-        },
         newUserClose: function(event) {
             this.selectedOrder = undefined;
         },
@@ -247,6 +272,10 @@ Vue.component("user-orders", {
             } else {
                 this.mode = 'all';
             }
+        },
+        cancelOrder: function(order) {
+            order.status = "canceled";
+            event.stopPropagation();
         }
     }
 })
