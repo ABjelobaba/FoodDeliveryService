@@ -79,7 +79,7 @@ Vue.component("admin-restaurants", {
 						<label style="margin:0" class="full-radio-btn-label" for="showFilters">Filteri <i class="fa fa-angle-down" aria-hidden="true"></i></label>
 					</div>
 					<div class="restaurant-types" id="filters" style="visibility: hidden;
-						opacity: 0;height:0;margin:0;
+						opacity: 0;height:0;margin:0;overflow-y:auto;
 						transition: visibility 0s, opacity 0.5s linear;">
 						<div class="checkbox-btn-container-dark">
 							<div>
@@ -156,7 +156,7 @@ Vue.component("admin-restaurants", {
             if (filters.style.visibility == 'hidden') {
                 filters.style.visibility = 'visible';
                 filters.style.opacity = '1';
-                filters.style.height = "auto";
+                filters.style.height = "30vh";
                 filters.style.margin = "10% 0";
             } else {
                 filters.style.visibility = 'hidden';
