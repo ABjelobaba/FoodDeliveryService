@@ -15,7 +15,7 @@ Vue.component("restaurant-page", {
                 { value: 'approved', text: 'Odobren' },
                 { value: 'waiting', text: 'Čeka obradu' }
             ],
-            logedInRole: 'user'
+            logedInRole: 'manager'
         }
 
     },
@@ -149,7 +149,7 @@ Vue.component("restaurant-page", {
              `,
     mounted() {
         window.scrollTo(0, 0);
-        
+
         function createNavMenu() {
             if (window.location.href.endsWith('restaurantPage')) {
                 if (window.scrollY >= 250) {

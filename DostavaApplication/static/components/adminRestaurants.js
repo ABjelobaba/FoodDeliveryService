@@ -18,9 +18,9 @@ Vue.component("admin-restaurants", {
                 { id: 'four-five', value: '4 - 5' }
             ],
             restaurants: [
-                { id: 1, img: 'images/kfc.jpg', name: 'KFC', type: 'Americka hrana', status: 'OPENED' },
-                { id: 2, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED' },
-                { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }
+                { id: 1, img: 'images/kfc.jpg', name: 'KFC', type: 'Americka hrana', status: 'OPENED', address: 'Knez Mihajlova 7, Beograd', rating: 2.55 },
+                { id: 2, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
+                { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED', address: 'Jevrejska 11, Novi Sad', rating: 4.32 }
 
             ]
         }
@@ -32,7 +32,7 @@ Vue.component("admin-restaurants", {
 			<div class="search-restaurants">
 				<button class="black-btn" style="
 										font-size: 17px;
-										height: 40px;
+										min-height: fit-content;
 										display: inline-block;
 										width: 400px;
 										margin-right: 80px;"

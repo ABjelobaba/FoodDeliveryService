@@ -1,12 +1,12 @@
-Vue.component("available-orders",{
+Vue.component("available-orders", {
     data: function() {
-        return {    
+        return {
             name: '',
             surname: '',
             username: '',
             currentRestaurant: [],
             article: '',
-            order: '' ,
+            order: '',
             selectedOrder: undefined,
             orderStatuses: [
                 { id: 'processing', value: 'Obrada' },
@@ -76,9 +76,9 @@ Vue.component("available-orders",{
                 { id: 6, date: '18:01h', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'waitingDeliverer' }
             ]
         }
-    
+
     },
-    
+
     template: `
     <div>
         <h1 style="text-align: center;">Pregled dostupnih porudžbina

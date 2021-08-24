@@ -1,6 +1,6 @@
-Vue.component("deliverer-orders",{
+Vue.component("deliverer-orders", {
     data: function() {
-        return {   
+        return {
             name: '',
             surname: '',
             username: '',
@@ -79,7 +79,7 @@ Vue.component("deliverer-orders",{
             rect: undefined
         }
     },
-    
+
     template: `
     <div>
         <h1 style="text-align: center;">Pregled porudžbina
@@ -195,15 +195,15 @@ Vue.component("deliverer-orders",{
 
         var b = document.getElementById('filter-btn-do');
         this.rect = b.getBoundingClientRect();
-        document.querySelector('.filter-modal').style.marginLeft = this.rect.left + 'px';
+        document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
 
-        window.addEventListener('resize', function() {
-            var b = document.getElementById('filter-btn-do');
-            if (b != null) {
-                this.rect = b.getBoundingClientRect();
-                document.querySelector('.filter-modal').style.marginLeft = this.rect.left + 'px';
-            }
-        });
+        if (document.body.clientWidth <= 900) {
+
+            document.querySelector('.filter-modal').style.width = 550 + 'px';
+            document.querySelector('.filter-modal').style.marginRight = 'auto';
+
+        }
+
     },
     methods: {
         logOut: function(event) {
@@ -228,18 +228,8 @@ Vue.component("deliverer-orders",{
             this.selectedOrder = undefined;
         },
         confirmDelivery: function(order) {
-            this.selectedOrder = order;
-            this.selectedOrder.status = 'finished';
-            let el;
-            if (target.className == 'fa fa-check-circle-o') {
-                el = target.parentElement.parentElement.parentElement.parentElement;
-                target.parentElement.parentElement.parentElement.remove();
-            } else {
-                el = target.parentElement.parentElement;
-                target.parentElement.remove();
-            }
-
-            el.innerHTML += ('<td><div class="order-status-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Dostavljena</div></td>');
+            order.status = "finished";
+            event.stopPropagation();
         }
     }
 })

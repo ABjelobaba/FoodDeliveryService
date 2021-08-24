@@ -23,17 +23,17 @@
 }
 
 .price-calculation-order-view {
-    float:right; 
-    margin:0 10% 0 0; 
+    float: right;
+    margin: 0 10% 0 0;
     width: 100%;
 }
 
 .pc-order-view {
-    color:white;
-    margin: 0; 
-    width: 80%; 
+    color: white;
+    margin: 0;
+    width: 80%;
     margin-left: 20%;
-    display: inline-flex; 
+    display: inline-flex;
     justify-content: space-between;
     font-weight: normal;
 }
@@ -41,7 +41,7 @@
 .permission-to-deliver-btn {
     border: 1px solid #3F2C3F;
     padding: 5% 4%;
-    margin: 10% 20%;
+    margin: auto;
     color: #3F2C3F;
     font-weight: bold;
     background-color: white;
@@ -57,7 +57,7 @@
 .order-delivered-btn {
     border: 1px solid rgba(75, 83, 92, 1);
     padding: 5% 5%;
-    margin: 10%;
+    margin: auto;
     color: rgba(75, 83, 92, 1);
     font-weight: bold;
     background-color: white;

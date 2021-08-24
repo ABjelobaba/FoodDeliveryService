@@ -91,7 +91,7 @@ Vue.component("user-orders", {
             <i style="text-align: center;" class="fa fa-search"></i>
             <input type="text" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">
         </div>
-        <button class="filter-btn" v-on:click="filterClicked"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
+        <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
     </div>
 
     <div class="filter-div" style="top:250px">
@@ -178,6 +178,17 @@ Vue.component("user-orders", {
     mounted() {
         window.scrollTo(0, 0);
         var today = new Date().toISOString().split('T')[0];
+
+        var b = document.getElementById('filter-btn-do');
+        this.rect = b.getBoundingClientRect();
+        document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+
+        if (document.body.clientWidth <= 900) {
+
+            document.querySelector('.filter-modal').style.width = 550 + 'px';
+            document.querySelector('.filter-modal').style.marginRight = 'auto';
+
+        }
     },
     methods: {
         logOut: function(event) {

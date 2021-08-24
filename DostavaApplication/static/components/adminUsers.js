@@ -117,22 +117,14 @@ Vue.component("admin-users", {
         this.rect = b.getBoundingClientRect();
         document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
 
-        window.addEventListener('resize', function() {
-            var b = document.getElementById('filter-btn-do');
-            if (b != null && document.body.clientWidth > 900) {
-                this.rect = b.getBoundingClientRect();
-                document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
-                if (this.rect.width > 175) {
-                    document.querySelector('.filter-modal').style.width = this.rect.width + 'px';
-                }
+        if (document.body.clientWidth <= 900) {
 
-            } else if (b != null && document.body.clientWidth <= 900) {
+            document.querySelector('.filter-modal').style.width = 550 + 'px';
+            document.querySelector('.filter-modal').style.marginRight = 'auto';
 
-                document.querySelector('.filter-modal').style.width = 505 + 'px';
-                document.querySelector('.filter-modal').style.marginRight = 'auto';
+        }
 
-            }
-        });
+
     },
     methods: {
         logOut: function(event) {

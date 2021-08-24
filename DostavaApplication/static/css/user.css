@@ -38,16 +38,18 @@
     color: rgba(44, 53, 63, 1);
     font-weight: bold;
     background-color: white;
+    display: inherit;
+    min-width: 120px;
+    margin: auto;
 }
 
 .order-status-black {
     border: 1px solid rgba(75, 83, 92, 1);
     padding: 5% 5%;
-    margin: 10%;
+    margin: auto;
     color: rgba(75, 83, 92, 1);
     font-weight: bold;
     background-color: white;
-    min-width: fit-content;
 }
 
 .article-col {
