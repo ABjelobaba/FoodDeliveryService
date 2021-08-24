@@ -1,4 +1,4 @@
-Vue.component("shoppingCart",{
+Vue.component("shopping-cart",{
     data: function() {
         return {     
         }
