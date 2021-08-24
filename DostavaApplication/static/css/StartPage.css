@@ -370,6 +370,7 @@ input[type="checkbox"] {
     border-bottom-style: ridge;
     border-color: grey;
     border-width: 0 0 1px 0;
+    min-width: 200px;
 }
 
 .search button {
@@ -663,4 +664,53 @@ button[name="sort"] {
     cursor: pointer;
     border-top: 0.5px solid rgba(255, 255, 255, 0.089);
     border-bottom: 0.5px solid rgba(255, 255, 255, 0.089);
+}
+
+#smallSearch input {
+    width: 100%;
+    position: relative;
+    font-size: 20px;
+    border-width: 0 0 1px 0;
+    margin: 0;
+    min-width: auto;
+}
+
+#smallSearch {
+    margin: 0;
+}
+
+[name='smallSearch'] {
+    display: none;
+}
+
+#newRestorantSmallView {
+    display: none;
+}
+
+div[name="admin"] {
+    top: 335px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .search-restaurants {
+        flex-direction: column;
+    }
+    #smallSearch {
+        margin: 10% 0;
+    }
+    [name='smallSearch'] {
+        display: block;
+    }
+    #bigSearch {
+        display: none;
+    }
+    .float-left-div {
+        top: 100px;
+    }
+    .float-left-div[name="admin"] {
+        top: 215px;
+    }
+    #newRestorantSmallView {
+        display: block;
+    }
 }

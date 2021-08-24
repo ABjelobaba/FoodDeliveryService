@@ -62,23 +62,36 @@ Vue.component("home", {
 				</div>
 			</div>
 		</div>
-		<div class="white-behind-search">
+		<div class="white-behind-search" id="bigSearch" >
 			<div class="search-restaurants">
 				<i class="fa fa-search"></i>
 				<input type="text" placeholder="Unesi naziv restorana..">
+				<input type="text" placeholder="Unesi lokaciju restorana..">
 				<button class="black-btn">Pretraži</button>
 			</div>
 		</div>
 		
 		<div class="content">
 			<div class="float-left-div" >
+				<div name="smallSearch">
+                    <input v-on:click="showHideSearch()" type="checkbox" id="showSearch" value="showSearch">
+                    <label style="margin:0" class="full-radio-btn-label" for="showSearch">Pretraga <i class="fa fa-search" aria-hidden="true"></i></label>
+                </div>
+				<div class="search-restaurants" id="smallSearch" name="smallSearch" style="visibility: hidden;
+				opacity: 0;height:0; margin:0;
+				transition: visibility 0s, opacity 0.5s linear;">
+
+					<input type="text" placeholder="Naziv..">
+					<input type="text" placeholder="Lokacija..">
+					<button class="black-btn">Pretraži</button>
+				</div>
 				<div >
                     <input v-on:click="showHideFilters()" type="checkbox" id="showFilters" value="showFilters">
                     <label style="margin:0" class="full-radio-btn-label" for="showFilters">Filteri <i class="fa fa-angle-down" aria-hidden="true"></i></label>
                 </div>
 				<div class="restaurant-types" id="filters" style="visibility: hidden;
-				opacity: 0;height:0;
-				transition: visibility 0s, opacity 0.5s linear;">
+					opacity: 0;height:0;margin:0;
+					transition: visibility 0s, opacity 0.5s linear;">
 					<div class="checkbox-btn-container-dark">
 						<div>
 							<input type="checkbox" id="openRestaurantsFilter" name="cuisine" value="openRestaurantsFilter">
@@ -172,53 +185,73 @@ Vue.component("home", {
             }
         },
         showHideFilters: function(event) {
-            if (document.getElementById('filters').style.visibility == 'hidden') {
-                document.getElementById('filters').style.visibility = 'visible';
-                document.getElementById('filters').style.opacity = '1';
-                document.getElementById('filters').style.height = "auto";
+            let filters = document.getElementById('filters');
+            if (filters.style.visibility == 'hidden') {
+                filters.style.visibility = 'visible';
+                filters.style.opacity = '1';
+                filters.style.height = "auto";
+                filters.style.margin = "10% 0";
             } else {
-                document.getElementById('filters').style.visibility = 'hidden';
-                document.getElementById('filters').style.opacity = '0';
-                document.getElementById('filters').style.height = '0';
+                filters.style.visibility = 'hidden';
+                filters.style.opacity = '0';
+                filters.style.height = '0';
+                filters.style.margin = "0";
             }
         },
         sortRestaurants: function(event) {
             if (event.currentTarget.innerText.includes('Naziv')) {
+                let nameSort = document.getElementById('sortByName');
                 if (this.nameSort == '') {
-                    document.getElementById('sortByName').innerHTML = '<label>Naziv</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+                    nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.nameSort = 'desc';
                 } else if (this.nameSort == 'desc') {
-                    document.getElementById('sortByName').innerHTML = '<label>Naziv</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+                    nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
                     this.nameSort = 'asc';
                 } else {
-                    document.getElementById('sortByName').innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.nameSort = '';
                 }
 
             } else if (event.currentTarget.innerText.includes('Lokacija')) {
+                let locationSort = document.getElementById('sortByLocation');
                 if (this.locationSort == '') {
-                    document.getElementById('sortByLocation').innerHTML = '<label>Lokacija</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+                    locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.locationSort = 'desc';
                 } else if (this.locationSort == 'desc') {
-                    document.getElementById('sortByLocation').innerHTML = '<label>Lokacija</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+                    locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
                     this.locationSort = 'asc';
                 } else {
-                    document.getElementById('sortByLocation').innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.locationSort = '';
                 }
 
             } else if (event.currentTarget.innerText.includes('Prosecna ocena')) {
+                let ratingSort = document.getElementById('sortByLocation');
                 if (this.ratingSort == '') {
-                    document.getElementById('sortByRating').innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+                    ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.ratingSort = 'desc';
                 } else if (this.ratingSort == 'desc') {
-                    document.getElementById('sortByRating').innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+                    ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
                     this.ratingSort = 'asc';
                 } else {
-                    document.getElementById('sortByRating').innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.ratingSort = '';
                 }
 
+            }
+        },
+        showHideSearch: function(event) {
+            let smallSearch = document.getElementById('smallSearch');
+            if (smallSearch.style.visibility == 'hidden') {
+                smallSearch.style.visibility = 'visible';
+                smallSearch.style.opacity = '1';
+                smallSearch.style.height = "auto";
+                smallSearch.style.margin = "10% 0";
+            } else {
+                smallSearch.style.visibility = 'hidden';
+                smallSearch.style.opacity = '0';
+                smallSearch.style.height = '0';
+                smallSearch.style.margin = "0";
             }
         }
     }
