@@ -1,7 +1,8 @@
 Vue.component("account", {
     data: function() {
         return {
-            deliveryAddress: ''
+            deliveryAddress: '',
+            logedInRole: ''
         }
     },
 
@@ -72,7 +73,7 @@ Vue.component("account", {
 
     methods: {
         logOut: function(event) {
-            window.location.href = "/#/"
+            window.location.href = "#/"
         },
         restaurantsView: function(event) {
             for (element of document.getElementsByName("user-nav")) {

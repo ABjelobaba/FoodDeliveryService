@@ -9,8 +9,7 @@ Vue.component("logIn-register", {
             passwordLogIn: '',
             name: '',
             surname: '',
-            dateOfBirth: '',
-            mode: "logIn"
+            dateOfBirth: ''
         }
     },
     template: `
@@ -104,32 +103,47 @@ Vue.component("logIn-register", {
                 genderReg = 'FEMALE';
             }
 
+            let error = false;
             if (!this.usernameRegistration) {
                 document.getElementById('usernameErr').innerHTML = "Morate uneti korisničko ime!";
+                error = true;
             }
             if (!this.passwordRegistration) {
                 document.getElementById('passwordErr').innerHTML = "Morate uneti lozinku!";
+                error = true;
             }
             if (this.name[0] < 'A' || this.name[0] > 'Z' || !this.name) {
                 document.getElementById('nameErr').innerHTML = "Morate uneti ime koje počinje velikim slovom!";
+                error = true;
             }
             if (this.surname[0] < 'A' || this.surname[0] > 'Z' || !this.surname) {
                 document.getElementById('surnameErr').innerHTML = "Morate uneti prezime koje počinje velikim slovom!";
+                error = true;
             }
             if (!genderReg) {
                 document.getElementById('genderErr').innerHTML = "Morate izabrati pol!";
+                error = true;
             }
-            if (!dates) {
-                document.getElementById('dateErr').innerHTML = "Morate izabrati datum rođenja!";
+
+            if (!error) {
+                window.location.href = "#/account";
             }
         },
         logInUser: function(event) {
             event.preventDefault();
+
+            let error = false;
             if (!this.usernameLogIn) {
                 document.getElementById('usernameLogInErr').innerHTML = "Morate uneti korisničko ime!";
+                error = true;
             }
             if (!this.passwordLogIn) {
                 document.getElementById('passwordLogInErr').innerHTML = "Morate uneti lozinku!";
+                error = true;
+            }
+
+            if (!error) {
+                window.location.href = "#/account";
             }
         },
         tabClick: function(tabClicked) {
