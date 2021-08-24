@@ -91,7 +91,7 @@ Vue.component("admin-users", {
                     <td>{{user.username}}</td>
                     <td>{{user.points}}</td>
                     <td>
-                        <button class="black-btn" v-if="user.role== 'admin'"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
+                        <button class="black-btn" v-if="user.role=='admin' || user.blocked"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
                         <button class="black-btn" v-else v-on:click="blockUser(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
                     </td>
                 </tr>
