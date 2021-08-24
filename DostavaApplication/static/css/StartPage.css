@@ -527,6 +527,21 @@ input[type="checkbox"] {
     padding-bottom: 10px;
 }
 
+#gold {
+    border-radius: 10%;
+    background-color: gold;
+}
+
+#silver {
+    border-radius: 10%;
+    background-color: silver;
+}
+
+#bronze {
+    border-radius: 10%;
+    background-color: rgb(205, 127, 50);
+}
+
 .restaurants {
     width: 80%;
     margin: auto;
