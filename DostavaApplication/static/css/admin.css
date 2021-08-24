@@ -189,9 +189,9 @@
 
 .filter-div {
     display: none;
-    float: left;
+    float: right;
     position: sticky;
-    top: 240px;
+    top: 250px;
     text-align: center;
     z-index: 1;
 }
@@ -303,7 +303,8 @@
         margin-left: 0;
     }
     .filter-div {
-        top: 295px;
+        float: none;
+        top: 360px;
         width: 100%;
     }
     .filter-modal {

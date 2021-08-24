@@ -28,11 +28,11 @@ Vue.component("admin-users", {
             <i class="fa fa-search"></i>
             <input type="text" style="min-width: 470px" placeholder="Pretraži po imenu, prezimenu ili korisničkom imenu..">
         </div>
-        <button class="filter-btn" v-on:click="filterClicked"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
+        <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
         <button class="new-user-btn" v-on:click="newUserClicked">+ Novi korisnik</button>
     </div>
 
-    <div class="filter-div">
+    <div class="filter-div" >
         <div class="filter-modal">
             <div v-on:click="filterClose" class="close-filter">+</div>
 
@@ -113,6 +113,26 @@ Vue.component("admin-users", {
 `,
     mounted() {
         window.scrollTo(0, 0);
+        var b = document.getElementById('filter-btn-do');
+        this.rect = b.getBoundingClientRect();
+        document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+
+        window.addEventListener('resize', function() {
+            var b = document.getElementById('filter-btn-do');
+            if (b != null && document.body.clientWidth > 900) {
+                this.rect = b.getBoundingClientRect();
+                document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+                if (this.rect.width > 175) {
+                    document.querySelector('.filter-modal').style.width = this.rect.width + 'px';
+                }
+
+            } else if (document.body.clientWidth <= 900) {
+
+                document.querySelector('.filter-modal').style.width = 505 + 'px';
+                document.querySelector('.filter-modal').style.marginRight = 'auto';
+
+            }
+        });
     },
     methods: {
         logOut: function(event) {
@@ -122,7 +142,7 @@ Vue.component("admin-users", {
             if (document.querySelector('.filter-div').style.display == 'none' || document.querySelector('.filter-div').style.display ==
                 '') {
                 document.querySelector('.filter-div').style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-464px';
+                document.querySelector('.table-users').style.top = '-482px';
             } else { this.filterClose(); }
         },
         filterClose: function(event) {
