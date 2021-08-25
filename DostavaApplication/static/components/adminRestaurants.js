@@ -33,14 +33,13 @@ Vue.component("admin-restaurants", {
 
     template: `
 	<div>
-		<div class="white-behind-search" id="bigSearch" style="top:205px">
+		<div class="white-behind-search" id="bigSearch" style="top:181px">
 			<div class="search-restaurants">
 				<button class="black-btn" style="
-										font-size: 17px;
-										min-height: fit-content;
-										display: inline-block;
-										width: 400px;
-										margin-right: 80px;"
+                width: 70%;
+                margin:0;
+                margin-right: 54px;
+                white-space: nowrap;"
 						v-on:click="newRestaurantClicked"
 				>+ Novi restoran</button>
 
@@ -49,13 +48,15 @@ Vue.component("admin-restaurants", {
 					<input style="margin-right:0" type="text" placeholder="Unesi naziv restorana..">
 				</div>
 				<input type="text" placeholder="Unesi lokaciju restorana..">
-				<button class="black-btn">Pretraži</button>
+				<button class="black-btn" style="
+                margin:0;">Pretraži</button>
 				
 			</div>
 		</div>
 		<div class="content">
 			<div class="float-left-div" name="admin">
-				<button class="black-btn" style="
+				<button class="black-btn" style="    width: 100%;
+                                            margin:0;
 											font-size: 17px;
 											min-height: fit-content;
 											margin-bottom: 10%"

@@ -691,7 +691,7 @@ div[name="admin"] {
     top: 335px;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1050px) {
     .search-restaurants {
         flex-direction: column;
     }
@@ -708,7 +708,7 @@ div[name="admin"] {
         top: 100px;
     }
     .float-left-div[name="admin"] {
-        top: 215px;
+        top: 240px;
     }
     #newRestorantSmallView {
         display: block;
