@@ -155,13 +155,13 @@ Vue.component("user-orders", {
 
             <div>
                 <h2>Cena:</h2>
-                <label>Od:</label><input type="number" name="price" id="fromPrice" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">(.00 RSD)<br>
-                <label>Do:</label><input type="number" name="price" id="toPrice" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">(.00 RSD)
+                <label>Od:</label><input type="number" min='0' name="price" id="fromPrice" placeholder="00000">(.00 RSD)<br>
+                <label>Do:</label><input type="number" min='0' name="price" id="toPrice" placeholder="00000">(.00 RSD)
             </div>
             <div>
                 <h2>Datum:</h2>
-                <label>Od:</label><input type="date" name="date" id="fromDate" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma.."><br>
-                <label>Do:</label><input type="date" name="date" id="toDate" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">
+                <label>Od:</label><input type="date" name="date" id="fromDate" ><br>
+                <label>Do:</label><input type="date" name="date" id="toDate" >
             </div> 
         </div>
     </div>
