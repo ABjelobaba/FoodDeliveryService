@@ -76,7 +76,10 @@ Vue.component("restaurant-page", {
         
         <section class="bottom-section-rp">
             <div style="height: fit-content;position: sticky;top: 5em;">
-                <div v-if="logedInRole =='admin' || logedInRole=='manager'">
+                <div v-if="logedInRole =='manager'">
+                    <button v-on:click="showNewArticleWindow()" class="add-article-btn">+ Novi artikal</button>
+                </div>
+                <div v-if="logedInRole =='admin' || logedInRole =='manager'">
                     <input v-on:click="showHideReviews()" type="checkbox" id="viewReviews" value="viewReviews">
                     <label class="full-radio-btn-label" for="viewReviews">Pregled utisaka</label>
                 </div>
@@ -112,9 +115,7 @@ Vue.component("restaurant-page", {
                         <comment-status v-for="c in comments" v-bind:key="c.id" v-bind:comment="c" v-bind:logedInRole="logedInRole"></comment-status>
                     </ul>
                     <h6 id="allReviews">Svi utisci... </h6>
-                </div>
-
-                
+                </div>                
             </div>
         </section>
 
@@ -144,6 +145,54 @@ Vue.component("restaurant-page", {
             </div>
         </div>
 
+        <div class="new-article-view-rp">
+            <div class="selected-item-rp" style="width:500px; margin: auto auto; text-align: center;">
+				<div v-on:click="closeNewArticleWindow" class="close">+</div>
+
+				<div style="display: grid; height: 100%; grid-template-rows: auto auto 50px;" class="firstStep">
+					<div class="login-title" style="margin: auto 0;">
+						<h3 style="color: white; font-weight: bolder;"> DODAJTE NOVI ARTIKAL </h3>
+					</div>
+					
+					<div style="margin: auto 0px;" >
+						<form>
+							<input v-model="restaurantName" type="text" class="login-inputs" placeholder="Naziv artikla">
+							<label class="error" id="restaurantNameErr" name="labels" display="hidden"> </label>
+
+							<label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Slika:</label>
+							<input type="file" class="login-inputs" style="margin: 2px auto 2px;" id="inpFile" v-on:change="fileUploaded">
+							<label class="error" id="fileErr" name="labels" display="hidden"> </label>
+
+							<div class="image-preview" id="imagePreview">
+								<img src="" alt="Image Preview" class="image-preview__image"  style="max-width: 60%;">
+								<span class="image-preview__default-text">Image Preview</span>
+							</div>
+
+							<label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Opis artikla:</label>
+							<div class="radio-btn-container" style="width: 60%;height: 100px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);">
+                                    <textarea class="article-desc-ta" placeholder="Unesite opis artikla..."></textarea>
+                                   
+                                </div>
+							</div>
+                            <!-- <label class="error" id="logoErr" name="labels" display="hidden"> </label> -->
+
+                            <div style="display: inline-flex; justify-content: space-between; width: 60%; margin-left: 20%">
+                                <input v-model="restaurantName" type="text" class="login-inputs" style="margin-right: 10%;"
+                                placeholder="Kolicina (g)">
+                                <input v-model="restaurantName" type="text" class="login-inputs" id="article-price-input"
+                                placeholder="Cena (RSD)">
+                            </div>
+						</form>
+						<br>
+						
+					</div>
+				    	<button v-on:click="nextStep" style="margin-top:10px; width: 25%;" class="log-btn"> 
+							Dodaj
+						</button>
+				</div>
+			</div>
+        </div>
+
 
     </div>
              `,
@@ -167,7 +216,7 @@ Vue.component("restaurant-page", {
         showFoodItem: function() {
             document.querySelector('.article-view-rp').style.display = 'flex';
         },
-        closeFoodItem: function(event) {
+        closeFoodItem: function() {
             document.querySelector('.article-view-rp').style.display = 'none';
         },
         showHideReviews: function(checked) {
@@ -185,6 +234,68 @@ Vue.component("restaurant-page", {
                 document.getElementById('allReviews').style.display = 'block';
                 document.getElementsByClassName('restaurant-reviews-rp')[0].style.height = 'fit-content';
             }
+        },
+        fileUploaded: function(event) {
+            let inpFile = document.getElementById("inpFile");
+            let imagePreviewContainer = document.getElementById("imagePreview");
+            let previewImage = imagePreviewContainer.querySelector(".image-preview__image");
+            let previewDefaultText = imagePreviewContainer.querySelector(".image-preview__default-text");
+
+            let file = inpFile.files[0];
+
+            if (file) {
+                let reader = new FileReader();
+
+                previewDefaultText.style.display = "none";
+                previewImage.style.display = "block";
+
+                reader.addEventListener("load", function() {
+                    previewImage.setAttribute("src", this.result);
+                });
+
+                reader.readAsDataURL(file);
+            } else {
+                previewDefaultText.style.display = null;
+                previewImage.style.display = null;
+                previewImage.setAttribute("src", "");
+            }
+        },
+        nextStep: function(event) {
+            event.preventDefault();
+
+            for (element of document.getElementsByName('labels')) {
+                element.innerHTML = '';
+                element.style.display = 'hidden';
+            }
+
+            let errors = false;
+
+
+            //TO-DO: Dodati proveru za sliku da li je dodata i odabrane kategorije hrane
+
+            if (!errors) {
+                if (document.querySelector('.firstStep').style.display == 'grid') {
+                    if (!this.restaurantName) {
+                        document.getElementById('restaurantNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti naziv artikla!';
+                        errors = true;
+                    } else {
+                        document.querySelector('.firstStep').style.display = 'none';
+                        document.querySelector('.secondStep').style.display = 'grid';
+                    }
+                } else {
+
+                    document.querySelector('.register').style.display = 'none';
+                }
+
+            }
+
+
+        },
+        showNewArticleWindow: function() {
+            document.querySelector('.new-article-view-rp').style.display = 'flex';
+        },
+        closeNewArticleWindow: function() {
+            document.querySelector('.new-article-view-rp').style.display = 'none';
         }
     }
 })

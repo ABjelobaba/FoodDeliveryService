@@ -503,3 +503,54 @@
     transition: 0.5s;
     color: white;
 }
+
+/* Add article */
+
+.add-article-btn {
+    width: 100%;
+    padding: 5%;
+    font-weight: bold;
+    font-size: 17px;
+    color: rgba(44, 53, 63, 1);
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    border: 1px solid rgba(44, 53, 63, 1);
+    margin-top: 2em;
+    background-color: white;
+}
+
+.add-article-btn:hover {
+    background: rgba(44, 53, 63, 0.85);
+    transition: 0.5s;
+    color: white;
+}
+
+
+.new-article-view-rp {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(44, 53, 63, 0.5);
+    z-index: 5;
+    color: white;
+    display: none;
+}
+
+.article-desc-ta {
+    padding: 0;
+    margin: 0;
+    width: 98%;
+    height: 94.33%;
+    resize: none;
+    overflow: auto;
+    background-color: #dddddd;
+    font-size: 1.2em;
+}
+
+#article-price-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #6390A7;
+    opacity: 1;
+  }
