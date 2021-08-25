@@ -1,0 +1,26 @@
+.filter-modal input[name="price"] {
+    width: 70px;
+    min-width: 0;
+    font-size: 17px;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid black;
+}
+
+.filter-modal input[name="date"] {
+    width: 150px;
+    min-width: 0;
+    font-size: 17px;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid black;
+}
+
+.filter-modal label {
+    font-size: 17px;
+    margin-right: 5%;
+}
+
+#advancedSearch-btn-do {
+    margin-right: 10px;
+}

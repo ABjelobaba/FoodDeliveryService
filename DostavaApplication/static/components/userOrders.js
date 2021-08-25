@@ -115,9 +115,12 @@ Vue.component("user-orders", {
     </h1>
     <div class="users-search">
         <div>
-            <i style="text-align: center;" class="fa fa-search"></i>
-            <input type="text" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">
+            <div>
+                <i style="text-align: center;" class="fa fa-search"></i>
+                <input type="text" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma.." >
+            </div>   
         </div>
+        <button class="filter-btn" v-on:click="advancedSearchClicked" id="advancedSearch-btn-do"><i class="fa fa-angle-down fa-lg"></i></button>
         <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
         <div >
             <input v-on:click="undeliveredOrders" type="checkbox" id="undeliveredOrders" value="undeliveredOrders">
@@ -144,8 +147,23 @@ Vue.component("user-orders", {
                 </div>
             </div>
         </div>
+    </div>
 
+    <div class="filter-div" style="top:250px" id="advancedSearch">
+        <div class="filter-modal">
+            <div v-on:click="advancedSearchClose" class="close-filter">+</div>
 
+            <div>
+                <h2>Cena:</h2>
+                <label>Od:</label><input type="number" name="price" id="fromPrice" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">(.00 RSD)<br>
+                <label>Do:</label><input type="number" name="price" id="toPrice" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">(.00 RSD)
+            </div>
+            <div>
+                <h2>Datum:</h2>
+                <label>Od:</label><input type="date" name="date" id="fromDate" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma.."><br>
+                <label>Do:</label><input type="date" name="date" id="toDate" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">
+            </div> 
+        </div>
     </div>
 
     <div class="content" style="display:block" >
@@ -296,8 +314,19 @@ Vue.component("user-orders", {
                 document.querySelector('.table-users').style.top = '-404px';
             } else { this.filterClose(); }
         },
+        advancedSearchClicked: function(event) {
+            if (document.getElementById('advancedSearch').style.display == 'none' || document.getElementById('advancedSearch').style.display ==
+                '') {
+                document.getElementById('advancedSearch').style.display = 'inline-table';
+                document.querySelector('.table-users').style.top = '-404px';
+            } else { this.advancedSearchClose(); }
+        },
         filterClose: function(event) {
             document.querySelector('.filter-div').style.display = 'none';
+            document.querySelector('.table-users').style.top = '0px';
+        },
+        advancedSearchClose: function(event) {
+            document.getElementById('advancedSearch').style.display = 'none';
             document.querySelector('.table-users').style.top = '0px';
         },
         showOrder: function(order) {

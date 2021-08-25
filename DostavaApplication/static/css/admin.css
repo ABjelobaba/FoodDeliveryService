@@ -214,6 +214,7 @@
     cursor: pointer;
     float: right;
     padding: 0 5px;
+    writing-mode: tb;
 }
 
 .registration-success {
@@ -310,7 +311,8 @@
     .filter-modal {
         margin: 10px auto;
     }
-    .filter-btn {
+    #advancedSearch-btn-do {
         margin-top: 10px;
+        margin-right: 0;
     }
 }
