@@ -89,12 +89,13 @@ Vue.component("deliverer-orders", {
                 <i style="text-align: center;" class="fa fa-search"></i>
                 <input type="text" placeholder="Pretraži po nazivu restorana, opsegu cene ili opsegu datuma...">
             </div>
+            <button class="filter-btn" v-on:click="advancedSearchClicked" id="advancedSearch-btn-do"><i class="fa fa-angle-down fa-lg"></i></button>
             <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
             <button class="new-user-btn">Nedostavljane porudžbine</button>
         </div>
         
-        <div class="filter-div" style="top:250px">
-            <div class="filter-modal">
+        <div class="filter-div" style="top:250px" id="filter-div">
+            <div class="filter-modal" id="filter-modal">
                 <div v-on:click="filterClose" class="close-filter">+</div>
     
                 <h2>Status porudžbine</h2>
@@ -114,6 +115,23 @@ Vue.component("deliverer-orders", {
             </div>
         </div>
                     
+
+        <div class="filter-div" style="top:250px" id="advancedSearch">
+            <div class="filter-modal" id="advancedSearch-modal">
+                <div v-on:click="advancedSearchClose" class="close-filter">+</div>
+
+                <div>
+                    <h2>Cena:</h2>
+                    <label>Od:</label><input type="number" name="price" id="fromPrice" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">(.00 RSD)<br>
+                    <label>Do:</label><input type="number" name="price" id="toPrice" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">(.00 RSD)
+                </div>
+                <div>
+                    <h2>Datum:</h2>
+                    <label>Od:</label><input type="date" name="date" id="fromDate" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma.."><br>
+                    <label>Do:</label><input type="date" name="date" id="toDate" placeholder="Pretraži po nazivu restorana, opsegu ocene ili opsegu datuma..">
+                </div> 
+            </div>
+        </div>
 
         <div class="content" style="display:block" >
             <table class="table-users" name="orders">
@@ -195,7 +213,11 @@ Vue.component("deliverer-orders", {
 
         var b = document.getElementById('filter-btn-do');
         this.rect = b.getBoundingClientRect();
-        document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+        document.querySelector('#filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+
+        var a = document.getElementById('advancedSearch-btn-do');
+        this.rect = a.getBoundingClientRect();
+        document.querySelector('#advancedSearch-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
 
         if (document.body.clientWidth <= 900) {
 
@@ -210,15 +232,27 @@ Vue.component("deliverer-orders", {
             window.location.href = "/#/"
         },
         filterClicked: function(event) {
-            if (document.querySelector('.filter-div').style.display == 'none' || document.querySelector('.filter-div').style.display ==
-                '') {
-                document.querySelector('.filter-div').style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-' + (document.querySelector('.filter-modal').getBoundingClientRect().height + 10) + 'px';
-
+            var filter = document.getElementById('filter-div');
+            if (filter.style.display == 'none' || filter.style.display == '') {
+                this.advancedSearchClose();
+                filter.style.display = 'inline-table';
+                document.querySelector('.table-users').style.top = '-' + (document.querySelector('#filter-modal').getBoundingClientRect().height + 10) + 'px';
             } else { this.filterClose(); }
+        },
+        advancedSearchClicked: function(event) {
+            if (document.getElementById('advancedSearch').style.display == 'none' || document.getElementById('advancedSearch').style.display == '') {
+                this.filterClose();
+                document.getElementById('advancedSearch').style.display = 'inline-table';
+                document.querySelector('.table-users').style.top = '-' + (document.querySelector('#advancedSearch-modal').getBoundingClientRect().height + 10) + 'px';
+
+            } else { this.advancedSearchClose(); }
         },
         filterClose: function(event) {
             document.querySelector('.filter-div').style.display = 'none';
+            document.querySelector('.table-users').style.top = '0px';
+        },
+        advancedSearchClose: function(event) {
+            document.getElementById('advancedSearch').style.display = 'none';
             document.querySelector('.table-users').style.top = '0px';
         },
         showOrder: function(order) {
