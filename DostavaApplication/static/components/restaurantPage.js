@@ -15,7 +15,7 @@ Vue.component("restaurant-page", {
                 { value: 'approved', text: 'Odobren' },
                 { value: 'waiting', text: 'Čeka obradu' }
             ],
-            logedInRole: 'manager'
+            logedInRole: 'admin'
         }
 
     },
@@ -138,8 +138,10 @@ Vue.component("restaurant-page", {
                         <img src="images/add-white.png" alt="Add item" class="change-quantity-rp">
                     </div>
                     <div class="add-to-basket-rp">
-                        <a href="#">Dodaj u korpu</a>
+                        <a href="#" v-if="logedInRole != 'admin'">Dodaj u korpu</a>
+                        <a href="#" v-else ><i class="fa fa-trash-o fa-lg" aria-hidden="true"> </i> Obrisi</a>
                     </div>
+                    
                 </div>
             </div>
         </div>

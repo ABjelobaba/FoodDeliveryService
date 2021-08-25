@@ -19,20 +19,32 @@ Vue.component("comment-status", {
             <div class="comment-status-container" v-bind:name="comment.id" v-if="logedInRole == 'admin' || logedInRole == 'manager'">
                 
             </div>
+            <div v-bind:name="comment.id" class="comment-delete" v-if="logedInRole == 'admin'" v-on:click="deleteComment">
+                <div class="comment-status"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></div>    
+            </div>
         </li>
              `,
     mounted() {
         if (this.logedInRole == 'admin' || this.logedInRole == 'manager') {
             if (this.comment.status == "rejected") {
-                document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status"><i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>';
+                if (this.logedInRole == 'admin') {
+                    document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status" style="background-color: transparent;border-left:1px solid rgba(44,53,63,1)"><i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>';
+                } else if (this.logedInRole == 'manager') {
+                    document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status"><i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>';
+                }
             } else if (this.comment.status == "approved") {
-                document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status"><i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
+                if (this.logedInRole == 'admin') {
+                    document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status" style="background-color: transparent;border-left:1px solid rgba(44,53,63,1)"><i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
+                } else if (this.logedInRole == 'manager') {
+                    document.getElementsByName(this.comment.id)[0].innerHTML = '<div class="comment-status"><i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
+                }
+
             } else {
                 if (this.logedInRole == 'admin') {
                     document.getElementsByName(this.comment.id)[0].innerHTML =
-                        '<div class="comment-status" style="background-color: red;border-radius: 0 1em 0 0em">' +
+                        '<div class="comment-status" style="background-color: transparent;border-radius: 0 1em 0 0em;border-left:1px solid rgba(44,53,63,1)">' +
                         '<i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>' +
-                        '<div class="comment-status" style="background-color: green;border-radius: 0em 0em 1em 0em">' +
+                        '<div class="comment-status" style="background-color: transparent;border-radius: 0em 0em 1em 0em;border-left:1px solid rgba(44,53,63,1)">' +
                         '<i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
                 } else if (this.logedInRole == 'manager') {
                     document.getElementsByName(this.comment.id)[0].innerHTML =
@@ -52,7 +64,8 @@ Vue.component("comment-status", {
         },
         approveComment: function() {
 
-        }
+        },
+        deleteComment: function() {}
 
     }
 })
