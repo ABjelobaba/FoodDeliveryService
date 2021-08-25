@@ -191,8 +191,8 @@ Vue.component("user-orders", {
                             <span v-if="hover != order.id + 'r'" >
                                 <i class="fa fa-star" aria-hidden="true" style="color:white"></i> Oceni
                             </span>
-                            <span v-if="hover == order.id + 'r'" style="background-color:rgb(255, 217, 0);color:white" >
-                                <i class="fa fa-star" aria-hidden="true" style="color:white"></i> Oceni
+                            <span v-if="hover == order.id + 'r'" style="color:white" >
+                                <i class="fa fa-star" aria-hidden="true" style="color:white; transition: 0.5s"></i> Oceni
                             </span>
                         
                         </div>
@@ -204,8 +204,8 @@ Vue.component("user-orders", {
                             <span v-if="hover != order.id + 'c'" >
                                 <i class="fa fa-spinner" aria-hidden="true"></i> Obrada
                             </span>
-                            <span v-if="hover == order.id + 'c'" style="color:white;transition: 0.2s;background-color:#5e2121;">
-                                <i class="fa fa-ban" aria-hidden="true" style="color:white"></i> Otkaži
+                            <span v-if="hover == order.id + 'c'" style="color:white;">
+                                <i class="fa fa-ban" aria-hidden="true" style="color:white; transition: 0.5s"></i> Otkaži
                             </span>
                         
                         </div>
