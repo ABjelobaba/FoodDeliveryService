@@ -504,6 +504,14 @@
     color: white;
 }
 
+/* Map */
+#map-rp {
+    height: 200px;
+    width: 100%;
+    margin: 20px auto;
+    box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
 /* Add article */
 
 .add-article-btn {

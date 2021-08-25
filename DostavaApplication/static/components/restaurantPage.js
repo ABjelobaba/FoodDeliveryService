@@ -96,6 +96,7 @@ Vue.component("restaurant-page", {
                         </div>
                     </div>
                 </div>
+                <div id="map-rp"></div>
             </div>
             <div class="right-container-rp">
                 <div class="nav-cart-rp" id="ncart-rp" v-if="logedInRole == 'user'">
@@ -210,6 +211,18 @@ Vue.component("restaurant-page", {
         }
 
         window.addEventListener('scroll', createNavMenu);
+
+
+        const Map = L.map('map-rp').setView([45.256420, 19.811140], 13);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: apiKey
+        }).addTo(Map);
+
+        marker = L.marker([45.256420, 19.811140]).addTo(Map);
     },
 
     methods: {
@@ -298,4 +311,61 @@ Vue.component("restaurant-page", {
             document.querySelector('.new-article-view-rp').style.display = 'none';
         }
     }
-})
+});
+
+
+function simpleReverseGeocoding(lon, lat) {
+    fetch('http://nominatim.openstreetmap.org/reverse?format=json&lon=' + lon + '&lat=' + lat + '&accept-language=sr-Latn').then(function(response) {
+        return response.json();
+    }).then(function(json) {
+        let street = document.getElementById("street");
+        let city = document.getElementById("city");
+        let postcode = document.getElementById("postcode");
+        let number = document.getElementById("number");
+
+        if (json.address.house_number) {
+            number.value = json.address.house_number;
+            number.dispatchEvent(new Event('input'));
+        } else {
+            number.value = '';
+            number.dispatchEvent(new Event('input'));
+        }
+
+        if (json.address.road) {
+            street.value = json.address.road;
+            street.dispatchEvent(new Event('input'));
+        } else {
+            street.value = '';
+            street.dispatchEvent(new Event('input'));
+        }
+
+        if (json.address.city) {
+            city.value = json.address.city;
+            if (city.value.startsWith('Grad')) {
+                city.value = json.address.city.substring(5);
+            } else if (city.value.startsWith('Opština')) {
+                city.value = json.address.city.substring(8);
+            } else if (city.value.startsWith('Gradska opština')) {
+                city.value = json.address.city.substring(16);
+            }
+            city.dispatchEvent(new Event('input'));
+        } else if (json.address.city_district) {
+            city.value = json.address.city_district;
+            city.dispatchEvent(new Event('input'));
+        } else if (json.address.town) {
+            city.value = json.address.town;
+            city.dispatchEvent(new Event('input'));
+        } else {
+            city.value = '';
+            city.dispatchEvent(new Event('input'));
+        }
+
+        if (json.address.postcode) {
+            postcode.value = json.address.postcode;
+            postcode.dispatchEvent(new Event('input'));
+        } else {
+            postcode.value = '';
+            postcode.dispatchEvent(new Event('input'));
+        }
+    });
+}
