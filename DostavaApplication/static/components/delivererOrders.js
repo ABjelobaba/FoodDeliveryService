@@ -73,9 +73,9 @@ Vue.component("deliverer-orders", {
                 },
                 { id: 4, date: '05.06.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 560, status: 'transporting' },
                 { id: 5, date: '20.04.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 1200, status: 'finished' },
-                { id: 6, date: '15.03.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'canceled' }
+                { id: 6, date: '15.03.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'transporting' }
             ],
-            hover: false,
+            hover: '',
             rect: undefined
         }
     },
@@ -164,11 +164,11 @@ Vue.component("deliverer-orders", {
                             </div>
 
                             <div v-else class="order-delivered-btn" v-on:click="confirmDelivery(order)"
-                                @mouseover="hover = true"
-                                @mouseleave="hover = false">
+                                @mouseover="hover = order.id"
+                                @mouseleave="hover = ''">
 
-                            <span v-if="!hover" class="delivery-btn-text"><i class="fa fa-bicycle" aria-hidden="true" id="trans-icon-do"></i> U transportu</span>
-                            <span v-if="hover" class="delivery-btn-confirmation-text" style="transition: 0.2s;"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Dostavljena</span>
+                            <span v-if="hover != order.id" class="delivery-btn-text"><i class="fa fa-bicycle" aria-hidden="true" id="trans-icon-do"></i> U transportu</span>
+                            <span v-if="hover == order.id" class="delivery-btn-confirmation-text" style="transition: 0.2s;"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Dostavljena</span>
                             
                             </div>
                         </td>

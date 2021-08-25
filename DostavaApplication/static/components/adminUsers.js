@@ -9,12 +9,12 @@ Vue.component("admin-users", {
                 { id: 'admin', value: 'Administrator' }
             ],
             users: [
-                { id: '1', role: 'manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: '-', suspicious: false, blocked: false },
-                { id: '2', role: 'deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-', suspicious: true, blocked: false },
-                { id: '3', role: 'admin', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-', suspicious: true, blocked: false },
-                { id: '4', role: 'bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784, suspicious: true, blocked: false },
-                { id: '5', role: 'silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564, suspicious: true, blocked: false },
-                { id: '6', role: 'gold', name: 'Anita', surname: 'Marić', username: 'anita_maric', points: 5486, suspicious: true, blocked: false }
+                { id: '1', role: 'manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: '-', suspicious: false, blocked: false, deleted: true },
+                { id: '2', role: 'deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-', suspicious: true, blocked: false, deleted: false },
+                { id: '3', role: 'admin', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-', suspicious: true, blocked: false, deleted: false },
+                { id: '4', role: 'bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784, suspicious: true, blocked: false, deleted: false },
+                { id: '5', role: 'silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564, suspicious: true, blocked: false, deleted: false },
+                { id: '6', role: 'gold', name: 'Anita', surname: 'Marić', username: 'anita_maric', points: 5486, suspicious: true, blocked: false, deleted: false }
             ]
         }
     },
@@ -73,11 +73,12 @@ Vue.component("admin-users", {
                     <th>Prezime <i class="fa fa-sort"></i></th>
                     <th>Korisnicko ime <i class="fa fa-sort"></i></th>
                     <th>Broj bodova <i class="fa fa-sort"></i></th>
-                    <th>Blokiranje</th>
+                    <th>Blokiraj</th>
+                    <th>Obriši</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="user in users">
+                <tr v-for="user in users" v-if="!user.deleted">
                     <td>
                         <i v-if="user.role == 'manager'" class="fa fa-line-chart fa-lg" aria-hidden="true"></i>
                         <i v-if="user.role == 'deliverer'" class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
@@ -93,6 +94,9 @@ Vue.component("admin-users", {
                     <td>
                         <button class="black-btn" v-if="user.role=='admin' || user.blocked"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
                         <button class="black-btn" v-else v-on:click="blockUser(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
+                    </td>
+                    <td>
+                        <button class="black-btn" v-on:click="deleteUser(user)"><i class="fa fa-trash-o" aria-hidden="true"></i> Obriši</button>
                     </td>
                 </tr>
             </tbody>
@@ -154,6 +158,10 @@ Vue.component("admin-users", {
         blockUser: function(user) {
             user.suspicious = false;
             user.blocked = true;
+        },
+        deleteUser: function(user) {
+            user.deleted = true;
         }
+
     }
 })

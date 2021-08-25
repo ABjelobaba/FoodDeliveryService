@@ -131,7 +131,7 @@ Vue.component("admin-restaurants", {
 				<h1> Restorani u ponudi</h1>
 				<p></p>
 
-				<restaurant-card v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:restaurant="restaurant"></restaurant-card>
+				<restaurant-card v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:restaurant="restaurant" v-bind:logedInRole="'admin'"></restaurant-card>
 
 			</div>
 		</div>
