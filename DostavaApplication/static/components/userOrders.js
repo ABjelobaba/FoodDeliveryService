@@ -121,7 +121,7 @@ Vue.component("user-orders", {
         <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
         <div >
             <input v-on:click="undeliveredOrders" type="checkbox" id="undeliveredOrders" value="undeliveredOrders">
-            <label style="margin:0;padding:3%" class="full-radio-btn-label" for="undeliveredOrders">Nedostavljane porudžbine</label>
+            <label style="padding: 10px 10px;font-size: 15px;" class="full-radio-btn-label" for="undeliveredOrders">Nedostavljane porudžbine</label>
         </div>
     </div>
 
