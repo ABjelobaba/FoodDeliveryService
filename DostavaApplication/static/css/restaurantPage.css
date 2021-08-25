@@ -478,6 +478,7 @@
 }
 
 .bottom-section-rp input[type="checkbox"]:checked+.full-radio-btn-label,
+.users-search input[type="checkbox"]:checked+.full-radio-btn-label,
 .float-left-div input[type="checkbox"]:checked+.full-radio-btn-label {
     background-color: rgba(44, 53, 63, 1);
     transition: 0.5s;
@@ -485,6 +486,7 @@
 }
 
 .bottom-section-rp .full-radio-btn-label,
+.users-search .full-radio-btn-label,
 .float-left-div .full-radio-btn-label {
     padding: 5%;
     font-weight: bold;
@@ -494,12 +496,24 @@
     cursor: pointer;
     display: block;
     border: 1px solid rgba(44, 53, 63, 1);
-    margin-top: 2em;
 }
 
 .bottom-section-rp .full-radio-btn-label:hover,
+.users-search .full-radio-btn-label:hover,
 .float-left-div .full-radio-btn-label:hover {
     background-color: rgba(44, 53, 63, 0.85);
     transition: 0.5s;
     color: white;
+}
+
+@media only screen and (max-width: 1000px) {
+    .full-radio-btn-label {
+        margin: 0;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .full-radio-btn-label {
+        margin: 0 0 0 10px;
+    }
 }

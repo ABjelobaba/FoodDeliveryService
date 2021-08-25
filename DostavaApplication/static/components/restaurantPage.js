@@ -78,7 +78,7 @@ Vue.component("restaurant-page", {
             <div style="height: fit-content;position: sticky;top: 5em;">
                 <div v-if="logedInRole =='admin' || logedInRole=='manager'">
                     <input v-on:click="showHideReviews()" type="checkbox" id="viewReviews" value="viewReviews">
-                    <label class="full-radio-btn-label" for="viewReviews">Pregled utisaka</label>
+                    <label class="full-radio-btn-label" style="margin-top:2rem" for="viewReviews">Pregled utisaka</label>
                 </div>
                 <div class="nav-menu-rp" id="scrollPanel">
                     <h3>Artikli</h3>

@@ -90,7 +90,7 @@
     border: 1px solid #fff;
     padding: 10px 30px;
     font-size: 15px;
-    background-color: rgb(224, 44, 44);
+    background-color: #5e2121;
     position: relative;
     cursor: pointer;
     margin: 20px 15%;
@@ -114,4 +114,21 @@
     font-weight: bold;
     float: right;
     margin: 0 15% 0 0
+}
+
+.order-canceled-btn {
+    border: 1px solid rgba(75, 83, 92, 1);
+    padding: 5% 5%;
+    margin: auto;
+    color: rgba(75, 83, 92, 1);
+    font-weight: bold;
+    background-color: white;
+    min-width: fit-content;
+}
+
+.order-canceled-btn:hover {
+    background-color: #5e2121;
+    border: 1px solid white;
+    transition: 0.5s;
+    color: white;
 }
