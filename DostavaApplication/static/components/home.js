@@ -161,11 +161,13 @@ Vue.component("home", {
                 document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
                 if (this.rect.width > 175) {
                     document.querySelector('.filter-modal').style.width = this.rect.width + 'px';
+                    document.querySelector('.table-users').style.top = '-' + (document.querySelector('.filter-modal').getBoundingClientRect().height + 10) + 'px';
                 }
 
             } else if (b != null && document.body.clientWidth <= 900) {
 
                 document.querySelector('.filter-modal').style.width = 550 + 'px';
+                document.querySelector('.table-users').style.top = '-' + (document.querySelector('.filter-modal').getBoundingClientRect().height + 10) + 'px';
                 document.querySelector('.filter-modal').style.marginRight = 'auto';
 
             }

@@ -134,7 +134,7 @@ Vue.component("admin-users", {
             if (document.querySelector('.filter-div').style.display == 'none' || document.querySelector('.filter-div').style.display ==
                 '') {
                 document.querySelector('.filter-div').style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-482px';
+                document.querySelector('.table-users').style.top = '-' + (document.querySelector('.filter-modal').getBoundingClientRect().height + 10) + 'px';
             } else { this.filterClose(); }
         },
         filterClose: function(event) {
