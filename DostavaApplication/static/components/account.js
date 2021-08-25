@@ -30,6 +30,7 @@ Vue.component("account", {
                     <li><a v-on:click="ordersView" name="user-nav" id="orders">Porudžbine</a></li>
                     <li><a v-on:click="availableOrdersView" name="user-nav" id="available-orders">Dostupne porudžbine</a></li>
                     <li><a v-on:click="deliverersOrdersView" name="user-nav" id="deliverers-orders">Porudžbine</a></li>
+                    <li><a v-on:click="managersOrdersView" name="user-nav" id="managers-orders">Porudžbine</a></li>
                 </ul>
                 
                 
@@ -66,6 +67,8 @@ Vue.component("account", {
             document.getElementById('available-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('allOrders')) {
             document.getElementById('deliverers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('restaurantOrders')) {
+            document.getElementById('managers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         }
 
 
@@ -116,6 +119,13 @@ Vue.component("account", {
             }
             document.getElementById('deliverers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
             window.location.href = "#/account/allOrders";
+        },
+        managersOrdersView: function(event) {
+            for (element of document.getElementsByName("user-nav")) {
+                element.style.backgroundColor = "transparent";
+            }
+            document.getElementById('managers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            window.location.href = "#/account/restaurantOrders";
         }
     }
 })

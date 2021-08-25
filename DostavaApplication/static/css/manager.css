@@ -1,0 +1,16 @@
+.order-prepared-btn {
+    border: 1px solid rgba(75, 83, 92, 1);
+    padding: 5% 5%;
+    margin: auto;
+    color: rgba(75, 83, 92, 1);
+    font-weight: bold;
+    background-color: white;
+    min-width: fit-content;
+}
+
+.order-prepared-btn:hover {
+    background-color: #3F2C3F;
+    border: 1px solid white;
+    transition: 0.5s;
+    color: white;
+}

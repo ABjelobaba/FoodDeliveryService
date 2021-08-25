@@ -1,4 +1,4 @@
-Vue.component("deliverer-orders", {
+Vue.component("manager-orders", {
     data: function() {
         return {
             name: '',
@@ -82,7 +82,7 @@ Vue.component("deliverer-orders", {
 
     template: `
     <div>
-        <h1 style="text-align: center;">Pregled porudžbina
+        <h1 style="text-align: center;">Pregled porudžbina restorana
         </h1>
         <div class="users-search">
             <div>
@@ -90,7 +90,7 @@ Vue.component("deliverer-orders", {
                 <input type="text" placeholder="Pretraži po nazivu restorana, opsegu cene ili opsegu datuma...">
             </div>
             <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
-            <button class="new-user-btn">Nedostavljane porudžbine</button>
+            <button class="new-user-btn">Porudžbine koje čekaju dostavljača</button>
         </div>
         
         <div class="filter-div" style="top:250px">
@@ -99,16 +99,9 @@ Vue.component("deliverer-orders", {
     
                 <h2>Status porudžbine</h2>
                 <div class="checkbox-btn-container-dark" >
-                    <div v-for="status in orderStatuses" v-if="status.id != 'waitingDeliverer'">
+                    <div v-for="status in orderStatuses">
                         <input type="checkbox" v-bind:id="status.id" name="orderStatus" v-bind:value="status.id">
                         <label v-bind:for="status.id">{{status.value}}</label>
-                    </div>
-                </div>
-                <h2>Tip restorana</h2>
-                <div class="checkbox-btn-container-dark">
-                    <div v-for="cuisine in cuisines">
-                        <input type="checkbox" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id>
-                        <label  v-bind:for=cuisine.id>{{cuisine.value}}</label>
                     </div>
                 </div>
             </div>
@@ -140,18 +133,17 @@ Vue.component("deliverer-orders", {
                         </td>
                         <td>{{order.summeryPrice}}.00 RSD</td>
                         <td >
-                            <div class="order-status-black" v-if="order.status != 'transporting'">
+                            <div class="order-status-black" v-if="order.status != 'prep'">
                                 <order-status-cell v-bind:orderStatus="order.status">
                                 </order-status-cell>
                             </div>
 
-                            <div v-else class="order-delivered-btn" v-on:click="confirmDelivery(order)"
+                            <div v-else class="order-prepared-btn" v-on:click="orderPrepared(order)"
                                 @mouseover="hover = true"
                                 @mouseleave="hover = false">
 
-                            <span v-if="!hover" class="delivery-btn-text"><i class="fa fa-bicycle" aria-hidden="true"></i> U transportu</span>
-                            <span v-if="hover" class="delivery-btn-confirmation-text" style="transition: 0.2s;"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Dostavljena</span>
-                            
+                            <span v-if="!hover" class="delivery-btn-text"><i class="fa fa-cutlery" aria-hidden="true"></i> U pripremi</span>
+                            <span v-if="hover" class="delivery-btn-confirmation-text" style="transition: 0.2s;"><i class="fa fa-spinner" aria-hidden="true"></i> Čeka dostavljača</span>
                             </div>
                         </td>
                     </tr>
@@ -213,7 +205,7 @@ Vue.component("deliverer-orders", {
             if (document.querySelector('.filter-div').style.display == 'none' || document.querySelector('.filter-div').style.display ==
                 '') {
                 document.querySelector('.filter-div').style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-404px';
+                document.querySelector('.table-users').style.top = '-254px';
 
             } else { this.filterClose(); }
         },
@@ -227,8 +219,8 @@ Vue.component("deliverer-orders", {
         closeOrderView: function() {
             this.selectedOrder = undefined;
         },
-        confirmDelivery: function(order) {
-            order.status = "finished";
+        orderPrepared: function(order) {
+            order.status = "waitingDeliverer";
             event.stopPropagation();
         }
     }
