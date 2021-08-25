@@ -87,7 +87,7 @@ Vue.component("deliverer-orders", {
         <div class="users-search">
             <div>
                 <i style="text-align: center;" class="fa fa-search"></i>
-                <input type="text" placeholder="Pretraži po nazivu restorana, opsegu cene ili opsegu datuma...">
+                <input type="text" placeholder="Pretraži po nazivu restorana, opsegu cene ili opsegu datuma..." id="search-text-mo">
             </div>
             <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
             <button class="new-user-btn">Nedostavljane porudžbine</button>
