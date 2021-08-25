@@ -14,3 +14,10 @@
     transition: 0.5s;
     color: white;
 }
+
+@media only screen and (max-width: 1300px) {
+    #search-text-mo {
+        font-size: 1.1em;
+    }
+
+}
