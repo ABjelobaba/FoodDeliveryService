@@ -506,13 +506,13 @@
     color: white;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 900px) {
     .full-radio-btn-label {
         margin: 0;
     }
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 900px) {
     .full-radio-btn-label {
         margin: 0 0 0 10px;
     }

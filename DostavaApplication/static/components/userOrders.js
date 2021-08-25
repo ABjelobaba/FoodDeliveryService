@@ -128,8 +128,8 @@ Vue.component("user-orders", {
         </div>
     </div>
 
-    <div class="filter-div" style="top:250px">
-        <div class="filter-modal">
+    <div class="filter-div" style="top:250px" id="filter-div">
+        <div class="filter-modal" id="filter-modal">
             <div v-on:click="filterClose" class="close-filter">+</div>
 
             <h2>Status porudžbine</h2>
@@ -150,7 +150,7 @@ Vue.component("user-orders", {
     </div>
 
     <div class="filter-div" style="top:250px" id="advancedSearch">
-        <div class="filter-modal">
+        <div class="filter-modal" id="advancedSearch-modal">
             <div v-on:click="advancedSearchClose" class="close-filter">+</div>
 
             <div>
@@ -294,7 +294,11 @@ Vue.component("user-orders", {
 
         var b = document.getElementById('filter-btn-do');
         this.rect = b.getBoundingClientRect();
-        document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+        document.querySelector('#filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+
+        var a = document.getElementById('advancedSearch-btn-do');
+        this.rect = a.getBoundingClientRect();
+        document.querySelector('#advancedSearch-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
 
         if (document.body.clientWidth <= 900) {
 
@@ -308,17 +312,19 @@ Vue.component("user-orders", {
             window.location.href = "/#/"
         },
         filterClicked: function(event) {
-            var filter = document.querySelector('.filter-div');
+            var filter = document.getElementById('filter-div');
             if (filter.style.display == 'none' || filter.style.display == '') {
+                this.advancedSearchClose();
                 filter.style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-' + (document.querySelector('.filter-modal').getBoundingClientRect().height + 10) + 'px';
+                document.querySelector('.table-users').style.top = '-' + (document.querySelector('#filter-modal').getBoundingClientRect().height + 10) + 'px';
             } else { this.filterClose(); }
         },
         advancedSearchClicked: function(event) {
-            if (document.getElementById('advancedSearch').style.display == 'none' || document.getElementById('advancedSearch').style.display ==
-                '') {
+            if (document.getElementById('advancedSearch').style.display == 'none' || document.getElementById('advancedSearch').style.display == '') {
+                this.filterClose();
                 document.getElementById('advancedSearch').style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-404px';
+                document.querySelector('.table-users').style.top = '-' + (document.querySelector('#advancedSearch-modal').getBoundingClientRect().height + 10) + 'px';
+
             } else { this.advancedSearchClose(); }
         },
         filterClose: function(event) {

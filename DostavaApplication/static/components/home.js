@@ -154,21 +154,39 @@ Vue.component("home", {
     mounted() {
         window.scrollTo(0, 0);
 
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function(event) {
             var b = document.getElementById('filter-btn-do');
-            if (b != null && document.body.clientWidth > 900) {
-                this.rect = b.getBoundingClientRect();
-                document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
-                if (this.rect.width > 175) {
-                    document.querySelector('.filter-modal').style.width = this.rect.width + 'px';
-                    document.querySelector('.table-users').style.top = '-' + (document.querySelector('.filter-modal').getBoundingClientRect().height + 10) + 'px';
+            var a = document.getElementById('advancedSearch-btn-do');
+            if (b != null && a != null && document.body.clientWidth > 900) {
+                if (document.querySelector('#filter-div').style.display != 'none' && document.querySelector('#filter-div').style.display != '') {
+                    this.rect = b.getBoundingClientRect();
+                    document.querySelector('#filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+                    document.querySelector('.table-users').style.top = '-' + (document.querySelector('#filter-modal').getBoundingClientRect().height + 10) + 'px';
+
+                    if (this.rect.width > 175) {
+                        document.querySelector('#filter-modal').style.width = this.rect.width + 'px';
+                    }
+                } else {
+                    this.rect = a.getBoundingClientRect();
+                    document.querySelector('#advancedSearch-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+                    document.querySelector('.table-users').style.top = '-' + (document.querySelector('#advancedSearch-modal').getBoundingClientRect().height + 10) + 'px';
+
+                    if (this.rect.width > 175) {
+                        document.querySelector('#advancedSearch-modal').style.width = this.rect.width + 'px';
+                    }
                 }
 
-            } else if (b != null && document.body.clientWidth <= 900) {
+            } else if (b != null && a != null && document.body.clientWidth <= 900) {
+                if (document.querySelector('#filter-div').style.display != 'none' && document.querySelector('#filter-div').style.display != '') {
+                    document.querySelector('#filter-modal').style.width = 550 + 'px';
+                    document.querySelector('.table-users').style.top = '-' + (document.querySelector('#filter-modal').getBoundingClientRect().height + 10) + 'px';
+                    document.querySelector('#filter-modal').style.marginRight = 'auto';
+                } else {
+                    document.querySelector('#advancedSearch-modal').style.width = 550 + 'px';
+                    document.querySelector('.table-users').style.top = '-' + (document.querySelector('#advancedSearch-modal').getBoundingClientRect().height + 10) + 'px';
+                    document.querySelector('#advancedSearch-modal').style.marginRight = 'auto';
+                }
 
-                document.querySelector('.filter-modal').style.width = 550 + 'px';
-                document.querySelector('.table-users').style.top = '-' + (document.querySelector('.filter-modal').getBoundingClientRect().height + 10) + 'px';
-                document.querySelector('.filter-modal').style.marginRight = 'auto';
 
             }
         });
