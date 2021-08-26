@@ -2,7 +2,7 @@ Vue.component("account", {
     data: function() {
         return {
             deliveryAddress: '',
-            logedInRole: ''
+            logedInRole: 'user'
         }
     },
 
@@ -25,12 +25,13 @@ Vue.component("account", {
             <nav class="user-nav">
                 <ul id="user-nav-ul">
                     <li><a v-on:click="profileView" name="user-nav" id="profile">Profil</a></li>
-                    <li><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
-                    <li><a v-on:click="restaurantsView" name="user-nav" id="restaurants">Restorani</a></li>
-                    <li><a v-on:click="ordersView" name="user-nav" id="orders">Porudžbine</a></li>
-                    <li><a v-on:click="availableOrdersView" name="user-nav" id="available-orders">Dostupne porudžbine</a></li>
-                    <li><a v-on:click="deliverersOrdersView" name="user-nav" id="deliverers-orders">Porudžbine</a></li>
-                    <li><a v-on:click="suspiciousUsersView" name="user-nav" id="suspicious-users">Sumnjivi korisnici</a></li>
+                    <li><a v-on:click="usersView" v-if="logedInRole == 'admin'" name="user-nav" id="users">Korisnici</a></li>
+                    <li><a v-on:click="restaurantsView" v-if="logedInRole == 'admin'" name="user-nav" id="restaurants">Restorani</a></li>
+                    <li><a v-on:click="ordersView" v-if="logedInRole == 'user'" name="user-nav" id="orders">Porudžbine</a></li>
+                    <li><a v-on:click="availableOrdersView" v-if="logedInRole == 'deliverer'" name="user-nav" id="available-orders">Dostupne porudžbine</a></li>
+                    <li><a v-on:click="deliverersOrdersView" v-if="logedInRole == 'deliverer'" name="user-nav" id="deliverers-orders">Porudžbine</a></li>
+                    <li><a v-on:click="suspiciousUsersView" v-if="logedInRole == 'admin'" name="user-nav" id="suspicious-users">Sumnjivi korisnici</a></li>
+                    <li><a v-on:click="shoppingCartView" v-if="logedInRole == 'user'" name="user-nav" id="shopping-cart" >Korpa (0)</a></li>
                 </ul>
                 
                 
@@ -69,6 +70,8 @@ Vue.component("account", {
             document.getElementById('deliverers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('suspiciousUsers')) {
             document.getElementById('suspicious-users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('cart')) {
+            document.getElementById('shopping-cart').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         }
 
 
@@ -126,6 +129,13 @@ Vue.component("account", {
             }
             document.getElementById('suspicious-users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
             window.location.href = "#/account/suspiciousUsers";
+        },
+        shoppingCartView: function(event) {
+            for (element of document.getElementsByName("user-nav")) {
+                element.style.backgroundColor = "transparent";
+            }
+            document.getElementById('shopping-cart').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            window.location.href = "#/account/cart";
         }
     }
 })

@@ -1,6 +1,7 @@
 @charset "utf-8";
 
 /* Cover photo */
+
 .cover-photo {
     padding: 0;
     margin: 0;
@@ -20,14 +21,13 @@
     object-fit: cover;
 }
 
-
 .shopping-cart-page {
-    height: 100%;
+    height: fit-content;
 }
 
 .cart-items-section {
     width: 70%;
-    margin-top: 10em;
+    margin-top: 3em;
 }
 
 .cart-view {
@@ -35,8 +35,8 @@
     width: 75%;
     height: 100%;
     margin: 0 auto;
-    margin-top: 2.5em;
 }
+
 
 /* Shopping cart */
 
@@ -46,6 +46,7 @@
     font-size: 1em;
     list-style-type: none;
 }
+
 
 /* Cart items */
 
@@ -61,7 +62,7 @@
 
 .shopping-cart-item h2 {
     max-width: 120px;
-    word-wrap:break-word;
+    word-wrap: break-word;
 }
 
 .shopping-cart-item h3 {
@@ -127,14 +128,17 @@
     cursor: pointer;
 }
 
+
 /* Pricing section */
 
 .right-section {
     width: 30%;
     margin: 0;
-    margin-top: 10em;
+    margin-top: 3em;
     height: 100%;
     text-align: center;
+    position: sticky;
+    top: 300px;
 }
 
 #back-to-restaurant-btn {
@@ -159,7 +163,7 @@
 
 .finish-order {
     border-radius: 2%;
-    padding: 3em 1em 3em 1em;
+    padding: 1em 1em 3em 1em;
     box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
     min-width: fit-content;
 }
@@ -182,10 +186,12 @@
 .total-price-value {
     color: #054e72;
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .delivery-text {
     border-bottom: 4px solid black;
+    white-space: nowrap;
 }
 
 .continue-with-order-btn {
@@ -208,4 +214,45 @@
     color: black;
     transition: 0.5s;
     background-color: white;
+}
+
+.finish-order div {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.finish-order div h3 {
+    text-align: left;
+}
+
+.container {
+    text-align: center;
+}
+
+#showBill-div {
+    display: none;
+}
+
+#cart-points {
+    text-align: center;
+}
+
+#small-bill {
+    display: none;
+}
+
+@media only screen and (max-height: 900px) {
+    #showBill-div {
+        display: block;
+    }
+    #bill-div {
+        display: none;
+    }
+    .right-section {
+        top: 275px;
+    }
+    #small-bill {
+        display: block;
+    }
 }

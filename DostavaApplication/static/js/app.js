@@ -18,7 +18,6 @@ const router = new VueRouter({
     routes: [
         { path: '/', name: 'home', component: Home },
         { path: '/restaurants', component: restaurants },
-        { path: '/cart', component: ShoppingCart },
         {
             path: '/account',
             component: Account,
@@ -30,7 +29,8 @@ const router = new VueRouter({
                 { path: 'orders', component: UserOrders },
                 { path: 'allOrders', component: DelivererOrders },
                 { path: 'availableOrders', component: AvailableOrders },
-                { path: 'suspiciousUsers', component: SuspiciousUsers }
+                { path: 'suspiciousUsers', component: SuspiciousUsers },
+                { path: 'cart', component: ShoppingCart }
             ]
         },
         { path: '/restaurantPage', component: RestaurantPage }
