@@ -173,6 +173,8 @@
     position: sticky;
     top: 7em;
     box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
+    background: white;
+    z-index: 20;
 }
 
 .nav-menu-rp h3 {
@@ -494,7 +496,7 @@
     cursor: pointer;
     display: block;
     border: 1px solid rgba(44, 53, 63, 1);
-    margin-top: 2em;
+    margin-top: 1.5em;
 }
 
 .bottom-section-rp .full-radio-btn-label:hover,
@@ -510,6 +512,7 @@
     width: 100%;
     margin: 20px auto;
     box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);
+    z-index: 0;
 }
 
 /* Add article */

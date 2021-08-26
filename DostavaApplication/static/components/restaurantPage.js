@@ -55,7 +55,7 @@ Vue.component("restaurant-page", {
                         <div class="full-address-rp">
                             <p>Bulevar Evrope 45</p>
                             <p>Novi Sad 21000</p>
-                            <p>23, 48</p>
+                            <p>45.256420, 19.811140</p>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@ Vue.component("restaurant-page", {
         <!-- navigacioni meni -->
         
         <section class="bottom-section-rp">
-            <div style="height: fit-content;position: sticky;top: 5em;">
+            <div style="height: 100%;position: sticky;top: 5em;">
                 <div v-if="logedInRole =='manager'">
                     <button v-on:click="showNewArticleWindow()" class="add-article-btn">+ Novi artikal</button>
                 </div>
