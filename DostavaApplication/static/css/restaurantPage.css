@@ -170,8 +170,6 @@
     padding-bottom: 0.5em;
     padding-top: 0.5em;
     height: fit-content;
-    position: sticky;
-    top: 7em;
     box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
     background: white;
     z-index: 20;
@@ -506,7 +504,9 @@
     color: white;
 }
 
+
 /* Map */
+
 #map-rp {
     height: 200px;
     width: 100%;
@@ -514,6 +514,7 @@
     box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);
     z-index: 0;
 }
+
 
 /* Add article */
 
@@ -536,7 +537,6 @@
     transition: 0.5s;
     color: white;
 }
-
 
 .new-article-view-rp {
     position: fixed;
@@ -561,7 +561,8 @@
     font-size: 1.2em;
 }
 
-#article-price-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+#article-price-input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #6390A7;
     opacity: 1;
-  }
+}
