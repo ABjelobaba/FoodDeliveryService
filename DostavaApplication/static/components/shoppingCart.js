@@ -1,7 +1,12 @@
 Vue.component("shopping-cart", {
     data: function() {
         return {
-            userMedal: 'gold'
+            userMedal: 'gold',
+            articles: [
+                { id: 1, name: 'Burger', price: 450, quantity: 1 },
+                { id: 2, name: 'Pomfrit', price: 250, quantity: 1 },
+                { id: 3, name: 'Milk Shake', price: 200, quantity: 2 }
+            ]
         }
 
     },
@@ -19,85 +24,7 @@ Vue.component("shopping-cart", {
 	        <div class="cart-items-section">
 	            <div class="container">
 	                <ul class="cart-items">
-	                    <li class="shopping-cart-item">
-	                        <div class="cart-item-info">
-	                            <h2> <span class="food-quantity"> 1 x</span> Burger</h2>
-	                            <h3> 450,00 RSD </h3>
-	                        </div>
-	                        <img class="food-img" src="images/burger.jpg" alt="Food">
-	                        <div class="remove-item-from-cart">  <h4>+</h4> </div>
-	
-	                        <div class="change-quantity">
-	                            <img src="images/add.png" alt="Add one item">
-	                            <img src="images/remove.png" alt="Remove one item">
-	                        </div>
-	                    </li>
-	                    <li class="shopping-cart-item">
-	                        <div class="cart-item-info">
-	                            <h2> <span class="food-quantity"> 1 x</span> Burger</h2>
-	                            <h3> 450,00 RSD </h3>
-	                        </div>
-	                        <img class="food-img" src="images/burger.jpg" alt="Food">
-	                        <div class="remove-item-from-cart">  <h4>+</h4> </div>
-	
-	                        <div class="change-quantity">
-	                            <img src="images/add.png" alt="Add one item">
-	                            <img src="images/remove.png" alt="Remove one item">
-	                        </div>
-	                    </li>
-	                    <li class="shopping-cart-item">
-	                        <div class="cart-item-info">
-	                            <h2> <span class="food-quantity"> 1 x</span> Burger</h2>
-	                            <h3> 450,00 RSD </h3>
-	                        </div>
-	                        <img class="food-img" src="images/burger.jpg" alt="Food">
-	                        <div class="remove-item-from-cart">  <h4>+</h4> </div>
-	
-	                        <div class="change-quantity">
-	                            <img src="images/add.png" alt="Add one item">
-	                            <img src="images/remove.png" alt="Remove one item">
-	                        </div>
-	                    </li>
-						<li class="shopping-cart-item">
-	                        <div class="cart-item-info">
-	                            <h2> <span class="food-quantity"> 1 x</span> Burger</h2>
-	                            <h3> 450,00 RSD </h3>
-	                        </div>
-	                        <img class="food-img" src="images/burger.jpg" alt="Food">
-	                        <div class="remove-item-from-cart">  <h4>+</h4> </div>
-	
-	                        <div class="change-quantity">
-	                            <img src="images/add.png" alt="Add one item">
-	                            <img src="images/remove.png" alt="Remove one item">
-	                        </div>
-	                    </li>
-						<li class="shopping-cart-item">
-	                        <div class="cart-item-info">
-	                            <h2> <span class="food-quantity"> 1 x</span> Burger</h2>
-	                            <h3> 450,00 RSD </h3>
-	                        </div>
-	                        <img class="food-img" src="images/burger.jpg" alt="Food">
-	                        <div class="remove-item-from-cart">  <h4>+</h4> </div>
-	
-	                        <div class="change-quantity">
-	                            <img src="images/add.png" alt="Add one item">
-	                            <img src="images/remove.png" alt="Remove one item">
-	                        </div>
-	                    </li>
-						<li class="shopping-cart-item">
-	                        <div class="cart-item-info">
-	                            <h2> <span class="food-quantity"> 1 x</span> Burger</h2>
-	                            <h3> 450,00 RSD </h3>
-	                        </div>
-	                        <img class="food-img" src="images/burger.jpg" alt="Food">
-	                        <div class="remove-item-from-cart">  <h4>+</h4> </div>
-	
-	                        <div class="change-quantity">
-	                            <img src="images/add.png" alt="Add one item">
-	                            <img src="images/remove.png" alt="Remove one item">
-	                        </div>
-	                    </li>
-						
+	                    <article-in-cart v-for="article in articles" v-bind:key="article.id" v-bind:article="article"></article-in-cart>
 	                </ul>
 	            </div>
 	        </div>
