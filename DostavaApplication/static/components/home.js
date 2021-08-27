@@ -246,7 +246,7 @@ Vue.component("home", {
                 }
 
             } else if (event.currentTarget.innerText.includes('Prosecna ocena')) {
-                let ratingSort = document.getElementById('sortByLocation');
+                let ratingSort = document.getElementById('sortByRating');
                 if (this.ratingSort == '') {
                     ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.ratingSort = 'desc';

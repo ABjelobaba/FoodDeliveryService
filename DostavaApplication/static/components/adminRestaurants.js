@@ -33,7 +33,7 @@ Vue.component("admin-restaurants", {
 
     template: `
 	<div>
-		<div class="white-behind-search" id="bigSearch" style="top:181px">
+		<div class="white-behind-search" id="bigSearch" style="top:191px">
 			<div class="search-restaurants">
 				<button class="black-btn" style="
                 width: 70%;
@@ -194,7 +194,7 @@ Vue.component("admin-restaurants", {
                 }
 
             } else if (event.currentTarget.innerText.includes('Prosecna ocena')) {
-                let ratingSort = document.getElementById('sortByLocation');
+                let ratingSort = document.getElementById('sortByRating');
                 if (this.ratingSort == '') {
                     ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.ratingSort = 'desc';
