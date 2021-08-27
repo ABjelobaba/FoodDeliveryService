@@ -39,7 +39,7 @@
 }
 
 .refuse-delivery-btn:hover {
-    background-color: #5E3636;
+    background-color: #4E2727;
 }
 
 .approve-delivery-btn {
@@ -48,7 +48,7 @@
 }
 
 .approve-delivery-btn:hover {
-    background-color: #3E4736;
+    background-color: #282F21;
 }
 
 @media only screen and (max-width: 1300px) {
