@@ -1,6 +1,6 @@
 package beans;
 
-public class FoodItem {
+public class FoodItem implements IEntity<String>{
 	public String name;
 	public double price;
 	public FoodType type;
@@ -20,6 +20,7 @@ public class FoodItem {
 		this.quantity = quantity;
 		this.description = description;
 		this.image = image;
+		this.deleted = false;
 	}
 
 	public String getName() {
@@ -84,6 +85,16 @@ public class FoodItem {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	@Override
+	public String getID() {
+		return this.name;
+	}
+
+	@Override
+	public void setID(String id) {
+		this.name = id;
 	}
 	
 }

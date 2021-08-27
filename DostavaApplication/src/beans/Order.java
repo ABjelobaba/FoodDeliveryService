@@ -3,7 +3,7 @@ package beans;
 import java.util.Date;
 import java.util.List;
 
-public class Order {
+public class Order implements IEntity<String>{
 	public String orderID;
 	public List<OrderedItem> orderedItems;
 	public int restaurantID;
@@ -11,7 +11,7 @@ public class Order {
 	public double price;
 	public String customerUsername;
 	public OrderStatus status;
-	
+	public boolean deleted;
 	
 	public Order(List<OrderedItem> orderedItems, int restaurantID, Date orderDate, double price,
 			String customerUsername, OrderStatus status) {
@@ -22,6 +22,7 @@ public class Order {
 		this.price = price;
 		this.customerUsername = customerUsername;
 		this.status = status;
+		this.deleted = false;
 	}
 
 
@@ -92,6 +93,30 @@ public class Order {
 
 	public void setStatus(OrderStatus status) {
 		this.status = status;
+	}
+
+
+	@Override
+	public String getID() {
+		return this.orderID;
+	}
+
+
+	@Override
+	public void setID(String id) {
+		this.orderID = id;
+	}
+
+
+	@Override
+	public boolean isDeleted() {
+		return this.deleted;
+	}
+
+
+	@Override
+	public void setDeleted(boolean value) {
+		this.deleted = value;
 	}
 	
 	
