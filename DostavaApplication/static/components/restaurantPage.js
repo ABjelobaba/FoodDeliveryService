@@ -154,12 +154,13 @@ Vue.component("restaurant-page", {
             <div v-on:click="closeNewArticleWindow" class="close">+</div>
 
             <div style="display: grid; height: 100%; grid-template-rows: auto auto 50px;" class="firstStep">
-                <div class="login-title" style="margin: auto 0;">
-                    <h3 style="color: white; font-weight: bolder;"> DODAJTE NOVI ARTIKAL </h3>
-                </div>
+                <form>
+                    <div class="login-title" style="margin: auto 0;">
+                        <h3 style="color: white; font-weight: bolder;"> DODAJTE NOVI ARTIKAL </h3>
+                    </div>
 
-                <div style="margin: auto 0px;">
-                    <form>
+                    <div style="margin: auto 0px;">
+                    
                         <input v-model="restaurantName" type="text" class="login-inputs" placeholder="Naziv artikla">
                         <label class="error" id="restaurantNameErr" name="labels" display="hidden"> </label>
 
@@ -177,17 +178,17 @@ Vue.component("restaurant-page", {
                             <textarea class="article-desc-ta" placeholder="Unesite opis artikla..."></textarea>
 
                         </div>
-                    </form>
-                </div>
-                <!-- <label class="error" id="logoErr" name="labels" display="hidden"> </label> -->
+                    
+                    </div>
+                    <!-- <label class="error" id="logoErr" name="labels" display="hidden"> </label> -->
 
-                <div style="display: inline-flex; justify-content: space-between; width: 60%; margin-left: 20%">
-                    <input v-model="restaurantName" type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Kolicina (g)">
-                    <input v-model="restaurantName" type="text" class="login-inputs" id="article-price-input" placeholder="Cena (RSD)">
-                </div>
-                
-                <br>
-
+                    <div style="display: inline-flex; justify-content: space-between; width: 60%;">
+                        <input v-model="restaurantName" type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Kolicina (g)">
+                        <input v-model="restaurantName" type="text" class="login-inputs" id="article-price-input" placeholder="Cena (RSD)">
+                    </div>
+                    
+                    <br>
+                </form>
             </div>
             <button v-on:click="nextStep" style="margin-top:10px; width: 25%;" class="log-btn"> 
 							Dodaj
