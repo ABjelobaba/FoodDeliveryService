@@ -15,9 +15,58 @@
     color: white;
 }
 
+.delivery-request-btns {
+    margin-top: 1.5em; 
+    width: 60%; 
+    margin-left: 20%;
+    max-height: fit-content;
+}
+
+.delivery-req-btns {
+    background-color: rgba(44, 53, 63, 1);
+    font-size: 1.1em;
+    width: 34%;
+    padding: 8px 0;
+    border: 1px solid white;
+    color: white;
+    padding: 8px 10px;
+    min-width: fit-content;
+}
+
+.refuse-delivery-btn {
+    background-color: #592C2C;
+    margin-right: 1em;
+}
+
+.refuse-delivery-btn:hover {
+    background-color: #5E3636;
+}
+
+.approve-delivery-btn {
+    background-color: #353F2C;
+    margin-left: 1em;
+}
+
+.approve-delivery-btn:hover {
+    background-color: #3E4736;
+}
+
 @media only screen and (max-width: 1300px) {
     #search-text-mo {
         font-size: 1.1em;
     }
 
+}
+
+@media only screen and (max-width: 400px) {
+    .refuse-delivery-btn {
+        background-color: #592C2C;
+        margin: 10px auto;
+        display: block;
+    }
+    
+    .approve-delivery-btn {
+        background-color: #353F2C;
+        margin: 0 auto;
+    }
 }

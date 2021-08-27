@@ -76,7 +76,12 @@ Vue.component("manager-orders", {
                 { id: 6, date: '15.03.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'KFC', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'canceled' }
             ],
             hover: false,
-            rect: undefined
+            rect: undefined,
+            deliverers: [
+                { id: '4', role: 'deliverer', name: 'Filip', surname: 'Janković', username: 'filipp', points: 0 },
+                { id: '5', role: 'deliverer', name: 'Nemanja', surname: 'Marković', username: 'n_markovic', points: 0 },
+                { id: '6', role: 'deliverer', name: 'Maja', surname: 'Zorić', username: 'maja_z', points: 0 }
+            ]
         }
     },
 
@@ -150,30 +155,50 @@ Vue.component("manager-orders", {
         <div class="register"  style="display:flex;z-index:100" v-if="selectedOrder != undefined">
             <div class="modal" style="height:auto; padding-bottom: 35px;">
             <div v-on:click="closeOrderView" class="close">+</div>
-
-            <div >
-                <div class="order-articles-title-div">
-                    <div class="order-articles-title" >
-                        <p> {{selectedOrder.restaurant.name}} </p>
-                        <p> {{selectedOrder.date}} </p>
+                <div>
+                    <div class="order-articles-title-div">
+                        <div class="order-articles-title" >
+                            <p> {{selectedOrder.restaurant.name}} </p>
+                            <p> {{selectedOrder.date}} </p>
+                        </div>
+                        <div class="order-status-white" style="text-align:right;margin-right:15%">
+                            <order-status-cell v-bind:orderStatus="selectedOrder.status"></order-status-cell>  
+                        </div>
                     </div>
-                    <div class="order-status-white" style="text-align:right;margin-right:15%">
-                        <order-status-cell v-bind:orderStatus="selectedOrder.status"></order-status-cell>  
-                    </div>
-                </div>
-                
-                <div style="margin-top: 7%;" >
-                    <article-in-order v-for="article in selectedOrder.articles" v-bind:key="article.id" v-bind:article="article"></article-in-order>
                     
-                    <div style="border:1px solid white;margin: 5% 10% 2%" ></div>
-                    <div class="price-calculation-order-view">
-                        <p class="pc-order-view">  <span>Dostava</span>   <span>+ 200.00 RSD</span> </p>
-                        <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{selectedOrder.summeryPrice}}.00 RSD</span> </p>
+                    <div style="margin-top: 7%;" >
+                        <article-in-order v-for="article in selectedOrder.articles" v-bind:key="article.id" v-bind:article="article"></article-in-order>
+                        
+                        <div style="border:1px solid white;margin: 5% 10% 2%" ></div>
+                        <div class="price-calculation-order-view">
+                            <p class="pc-order-view">  <span>Dostava</span>   <span>+ 200.00 RSD</span> </p>
+                            <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{selectedOrder.summeryPrice}}.00 RSD</span> </p>
+                        </div>
+                        <button style="margin: 20px 20%;width: -webkit-fill-available; display: none;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
                     </div>
-                    <button style="margin: 20px 20%;width: -webkit-fill-available; display: none;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
                 </div>
             </div>
+        </div>
 
+        <div class="register" style="display:none;z-index:100" v-if="" id="delivery-requests-view">
+            <div class="modal" style="height:auto; padding-bottom: 35px;">
+            <div v-on:click="closeDeliveryRequests" class="close">+</div>
+                <div class="login-title" style="margin: auto 0;">
+                    <h3 style="color: white; font-weight: bolder;"> ZAHTEVI ZA DOSTAVU </h3>
+                </div>
+                <label style="color: white;display: block;margin:15px 0 1em 0;font-weight: bold;">Odaberite dostavljača:</label>
+                <div class="radio-btn-container" style="width: 60%;height: 200px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2); min-width: fit-content">
+                    <div v-for="deliverer in deliverers">
+                        <input type="radio" v-bind:id=deliverer.id v-bind:value=deliverer.id>
+                        <label style="font-size: 1.25em;" class="radio-label" v-bind:for=deliverer.id> <span style="margin-left: 10px;"> {{deliverer.name}} {{deliverer.surname}} </span> 
+                            <span style="margin-left: auto; margin-right: 10px;">{{deliverer.username}}</span></label>
+                    </div>
+                </div>
+
+                <div class="delivery-request-btns">
+                    <button class="delivery-req-btns refuse-delivery-btn">Odbi</button>
+                    <button class="delivery-req-btns approve-delivery-btn">Odobri</button>
+                </div>
             </div>
         </div>
     </div>
@@ -210,14 +235,21 @@ Vue.component("manager-orders", {
             document.querySelector('.table-users').style.top = '0px';
         },
         showOrder: function(order) {
-            this.selectedOrder = order;
+            if (order.status != "waitingDeliverer")
+                this.selectedOrder = order;
+            else
+                document.querySelector('#delivery-requests-view').style.display = 'flex';
+        
         },
         closeOrderView: function() {
             this.selectedOrder = undefined;
         },
         orderPrepared: function(order) {
             order.status = "waitingDeliverer";
-            event.stopPropagation();
+            stopPropagation();
+        },
+        closeDeliveryRequests: function() {
+            document.querySelector('#delivery-requests-view').style.display = 'none';
         }
     }
 })
