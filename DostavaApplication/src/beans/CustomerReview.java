@@ -64,7 +64,12 @@ public class CustomerReview implements IEntity<Integer>{
 
 	@Override
 	public void setID(Integer id) {
-		this.restourantID = id;		
+		this.reviewID = id;		
+	}
+
+	@Override
+	public boolean isEqual(Integer id) {
+		return this.reviewID == id;
 	}
 	
 }

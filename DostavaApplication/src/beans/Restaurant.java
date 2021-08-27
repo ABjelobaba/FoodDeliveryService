@@ -78,5 +78,11 @@ public class Restaurant implements IEntity<Integer>{
 		this.restaurantID = id;
 	}
 
+
+	@Override
+	public boolean isEqual(Integer id) {
+		return this.restaurantID == id;
+	}
+
 	
 }

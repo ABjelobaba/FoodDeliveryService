@@ -96,5 +96,10 @@ public class FoodItem implements IEntity<String>{
 	public void setID(String id) {
 		this.name = id;
 	}
+
+	@Override
+	public boolean isEqual(String id) {
+		return this.name.equals(id);
+	}
 	
 }

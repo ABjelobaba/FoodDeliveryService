@@ -5,4 +5,5 @@ public interface IEntity<ID> {
 	void setID(ID id);
 	boolean isDeleted();
 	void setDeleted(boolean value);
+	boolean isEqual(ID id);
 }

@@ -98,6 +98,11 @@ public class User implements IEntity<String> {
 	public void setID(String id) {
 		this.username = id;
 	}
+
+	@Override
+	public boolean isEqual(String id) {
+		return this.username.equals(id);
+	}
 	
 	
 	

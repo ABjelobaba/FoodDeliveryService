@@ -118,6 +118,12 @@ public class Order implements IEntity<String>{
 	public void setDeleted(boolean value) {
 		this.deleted = value;
 	}
+
+
+	@Override
+	public boolean isEqual(String id) {
+		return this.orderID.equals(id);
+	}
 	
 	
 }
