@@ -51,7 +51,7 @@ Vue.component("manager-orders", {
                     restaurant: {
                         id: 2,
                         img: 'images/mcdonalds.png',
-                        name: "McDonald's",
+                        name: "KFC",
                         type: 'Americka hrana',
                         status: 'OPENED'
                     },
@@ -64,16 +64,16 @@ Vue.component("manager-orders", {
                     restaurant: {
                         id: 3,
                         img: 'images/burgerhouse.jpg',
-                        name: 'Burger House',
+                        name: 'KFC',
                         type: 'Americka hrana',
                         status: 'CLOSED'
                     },
                     summeryPrice: 3590,
                     status: 'waitingDeliverer'
                 },
-                { id: 4, date: '05.06.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 560, status: 'transporting' },
-                { id: 5, date: '20.04.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 1200, status: 'finished' },
-                { id: 6, date: '15.03.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'canceled' }
+                { id: 4, date: '05.06.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'KFC', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 560, status: 'transporting' },
+                { id: 5, date: '20.04.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'KFC', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 1200, status: 'finished' },
+                { id: 6, date: '15.03.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'KFC', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'canceled' }
             ],
             hover: false,
             rect: undefined
@@ -87,7 +87,7 @@ Vue.component("manager-orders", {
         <div class="users-search">
             <div>
                 <i style="text-align: center;" class="fa fa-search"></i>
-                <input type="text" placeholder="Pretraži po nazivu restorana, opsegu cene ili opsegu datuma..." id="search-text-mo">
+                <input type="text" placeholder="Pretraži po opsegu cene ili opsegu datuma..." id="search-text-mo">
             </div>
             <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
             <button class="new-user-btn">Porudžbine koje čekaju dostavljača</button>
@@ -114,7 +114,6 @@ Vue.component("manager-orders", {
                     <tr>
                         <th>Datum <i class="fa fa-sort "></i></th>
                         <th>Kupac <i class="fa fa-sort"></i></th>
-                        <th>Restoran <i class="fa fa-sort "></i></th>
                         <th>Cena <i class="fa fa-sort"></i></th>
                         <th>Status <i class="fa fa-sort"></i></th>
                     </tr>
@@ -127,9 +126,6 @@ Vue.component("manager-orders", {
                                 <h3>Marko Markovic</h3>
                                 <h4>Bulevar Evrope 9, Novi Sad</h4>
                             </div>
-                        </td>
-                        <td>
-                            <restaurant-cell v-bind:restaurant="order.restaurant"></restaurant-cell>
                         </td>
                         <td>{{order.summeryPrice}}.00 RSD</td>
                         <td >
