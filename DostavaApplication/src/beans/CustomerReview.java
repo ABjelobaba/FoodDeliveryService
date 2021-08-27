@@ -1,6 +1,7 @@
 package beans;
 
-public class CustomerReview {
+public class CustomerReview implements IEntity<Integer>{
+	public int reviewID;
 	public String customerUsername;
 	public int restourantID;
 	public String review;
@@ -13,6 +14,7 @@ public class CustomerReview {
 		this.restourantID = restourantID;
 		this.review = review;
 		this.rating = rating;
+		this.deleted = false;
 	}
 
 	public String getCustomerUsername() {
@@ -53,6 +55,21 @@ public class CustomerReview {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	@Override
+	public Integer getID() {
+		return this.reviewID;
+	}
+
+	@Override
+	public void setID(Integer id) {
+		this.reviewID = id;		
+	}
+
+	@Override
+	public boolean isEqual(Integer id) {
+		return this.reviewID == id;
 	}
 	
 }

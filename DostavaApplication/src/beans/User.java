@@ -2,7 +2,7 @@ package beans;
 
 import java.util.Date;
 
-public class User {
+public class User implements IEntity<String> {
 	public String username;
 	public String password;
 	public String name;
@@ -22,6 +22,7 @@ public class User {
 		this.gender = gender;
 		this.birthdate = birthdate;
 		this.role = role;
+		this.deleted = false;
 	}
 
 	public String getUsername() {
@@ -87,5 +88,22 @@ public class User {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
+
+	@Override
+	public String getID() {
+		return this.username;
+	}
+
+	@Override
+	public void setID(String id) {
+		this.username = id;
+	}
+
+	@Override
+	public boolean isEqual(String id) {
+		return this.username.equals(id);
+	}
+	
+	
 	
 }

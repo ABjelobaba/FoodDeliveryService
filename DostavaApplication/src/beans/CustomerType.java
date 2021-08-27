@@ -1,5 +1,5 @@
 package beans;
 
 public enum CustomerType {
-	Gold, Silver, Bronze, Regular;
+	Gold, Silver, Bronze;
 }

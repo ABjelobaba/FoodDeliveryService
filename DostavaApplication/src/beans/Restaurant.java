@@ -2,8 +2,8 @@ package beans;
 
 import java.util.List;
 
-public class Restaurant {
-	public int id;
+public class Restaurant implements IEntity<Integer>{
+	public int restaurantID;
 	public String name;
 	public RestaurantType type;
 	public List<FoodItem> items;
@@ -21,14 +21,10 @@ public class Restaurant {
 		this.open = open;
 		this.location = location;
 		this.logo = logo;
+		this.deleted = false;
 	}
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+
 	public String getName() {
 		return name;
 	}
@@ -70,6 +66,22 @@ public class Restaurant {
 	}
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	@Override
+	public Integer getID() {
+		return this.restaurantID;
+	}
+
+	@Override
+	public void setID(Integer id) {
+		this.restaurantID = id;
+	}
+
+
+	@Override
+	public boolean isEqual(Integer id) {
+		return this.restaurantID == id;
 	}
 
 	
