@@ -28,6 +28,5 @@ public class UserDAO extends JSONStorage<User, String>{
 		return new GsonBuilder()
 		     .registerTypeAdapterFactory(userAdapterFactory)
 	         .create();
-		
 	}
 }
