@@ -3,7 +3,7 @@ const Home = { template: '<home></home>' }
 const restaurants = { template: '<restaurants></restaurants>' }
 const Account = { template: '<account></account>' }
 const AdminRestaurants = { template: '<admin-restaurants></admin-restaurants>' }
-const AdminProfile = { template: '<admin-profile></admin-profile>' }
+const Profile = { template: '<profile></profile>' }
 const AdminUsers = { template: '<admin-users></admin-users>' }
 const RestaurantPage = { template: '<restaurant-page></restaurant-page>' }
 const ShoppingCart = { template: '<shopping-cart></shopping-cart>' }
@@ -24,7 +24,7 @@ const router = new VueRouter({
             children: [
                 { path: '', component: AdminRestaurants },
                 { path: 'restaurants', component: AdminRestaurants },
-                { path: 'profile', component: AdminProfile },
+                { path: 'profile', component: Profile },
                 { path: 'users', component: AdminUsers },
                 { path: 'orders', component: UserOrders },
                 { path: 'allOrders', component: DelivererOrders },

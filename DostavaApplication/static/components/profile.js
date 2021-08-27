@@ -1,4 +1,4 @@
-Vue.component("admin-profile", {
+Vue.component("profile", {
     data: function() {
         return {
             logedInUser: {
