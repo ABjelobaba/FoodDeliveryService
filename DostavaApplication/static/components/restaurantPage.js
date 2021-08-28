@@ -1,6 +1,7 @@
 Vue.component("restaurant-page", {
     data: function() {
         return {
+            restaurantName: 'KFC',
             articles: [
                 { id: 1, img: '', name: 'Burger', composition: 'Zelena salata, paradajz, sir, kiseli krastavac', price: 450 }, {
 
@@ -42,7 +43,7 @@ Vue.component("restaurant-page", {
                     <img class="logo-rp" src="images/kfc-logo.jpg" alt="Restaurant logo">
 
                     <div class="title-and-rating">
-                        <h1 class="restaurant-title-rp">KFC</h1>
+                        <h1 class="restaurant-title-rp">{{restaurantName}}</h1>
                         <div class="rating-rp">
                             <img class="star-rating-rp" src="images/star.png" alt="Rating">
                             <p> <span class="rating-num-rp"> 4.6 </span> (14)</p>
@@ -83,7 +84,7 @@ Vue.component("restaurant-page", {
             </div>
             <div v-if="logedInRole =='admin' || logedInRole =='manager'">
                 <input v-on:click="showHideReviews()" type="checkbox" id="viewReviews" value="viewReviews">
-                <label class="full-radio-btn-label" style="min-width: fit-content;" for="viewReviews">Pregled utisaka</label>
+                <label class="full-radio-btn-label" style="min-width: fit-content;margin:1.5em 0 0 0" for="viewReviews" >Pregled utisaka</label>
             </div>
             <div class="nav-menu-rp" id="scrollPanel">
                 <h3>Artikli</h3>

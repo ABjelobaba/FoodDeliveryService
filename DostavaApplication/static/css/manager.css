@@ -16,8 +16,8 @@
 }
 
 .delivery-request-btns {
-    margin-top: 1.5em; 
-    width: 60%; 
+    margin-top: 1.5em;
+    width: 60%;
     margin-left: 20%;
     max-height: fit-content;
 }
@@ -40,6 +40,7 @@
 
 .refuse-delivery-btn:hover {
     background-color: #4E2727;
+    cursor: pointer;
 }
 
 .approve-delivery-btn {
@@ -49,13 +50,13 @@
 
 .approve-delivery-btn:hover {
     background-color: #282F21;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 1300px) {
     #search-text-mo {
         font-size: 1.1em;
     }
-
 }
 
 @media only screen and (max-width: 400px) {
@@ -64,7 +65,6 @@
         margin: 10px auto;
         display: block;
     }
-    
     .approve-delivery-btn {
         background-color: #353F2C;
         margin: 0 auto;
