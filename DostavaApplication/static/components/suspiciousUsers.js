@@ -24,15 +24,15 @@ Vue.component("suspicious-users", {
     <h1 style="text-align: center;">Pregled sumnjivih korisnika
     </h1>
     <div class="users-search">
-        <div>
+        <div class="search-text-div" >
             <i class="fa fa-search"></i>
             <input type="text" style="min-width: 470px" placeholder="Pretraži po imenu, prezimenu ili korisničkom imenu..">
         </div>
         <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
     </div>
 
-    <div class="filter-div" >
-        <div class="filter-modal" style="position: relative;">
+    <div class="filter-div" id="filter-div">
+        <div class="filter-modal" id="filter-modal" style="position: relative;">
             <div v-on:click="filterClose" class="close-filter" style="position: absolute; right: 0;">+</div>
 
             <h2>Uloge</h2>
@@ -106,7 +106,7 @@ Vue.component("suspicious-users", {
         window.scrollTo(0, 0);
         var b = document.getElementById('filter-btn-do');
         this.rect = b.getBoundingClientRect();
-        document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+        document.querySelector('#filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
 
         if (document.body.clientWidth <= 900) {
 

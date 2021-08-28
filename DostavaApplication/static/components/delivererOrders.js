@@ -85,9 +85,9 @@ Vue.component("deliverer-orders", {
         <h1 style="text-align: center;">Pregled porudžbina
         </h1>
         <div class="users-search">
-            <div>
+            <div class="search-text-div">
                 <i style="text-align: center;" class="fa fa-search"></i>
-                <input type="text" placeholder="Pretraži po nazivu restorana, opsegu cene ili opsegu datuma..." id="search-text-mo">
+                <input type="text" placeholder="Pretraži po nazivu restorana..." id="search-text-mo">
             </div>
             <button class="filter-btn" v-on:click="advancedSearchClicked" id="advancedSearch-btn-do"><i class="fa fa-angle-down fa-lg"></i></button>
             <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
@@ -120,12 +120,12 @@ Vue.component("deliverer-orders", {
             <div class="filter-modal" id="advancedSearch-modal" style="position: relative;">
                 <div v-on:click="advancedSearchClose" class="close-filter" style="position: absolute; right: 0;">+</div>
 
-                <div>
+                <div style="margin:20px">
                     <h2>Cena:</h2>
                     <label>Od:</label><input type="number" min='0' name="price" id="fromPrice" placeholder="00000">(.00 RSD)<br>
                     <label>Do:</label><input type="number" min='0'  name="price" id="toPrice" placeholder="00000">(.00 RSD)
                 </div>
-                <div>
+                <div style="margin:20px">
                     <h2>Datum:</h2>
                     <label>Od:</label><input type="date" name="date" id="fromDate"><br>
                     <label>Do:</label><input type="date" name="date" id="toDate">

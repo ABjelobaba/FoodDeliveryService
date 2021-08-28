@@ -24,7 +24,7 @@ Vue.component("admin-users", {
     <h1 style="text-align: center;">Pregled registrovanih korisnika
     </h1>
     <div class="users-search">
-        <div>
+        <div class="search-text-div">
             <i class="fa fa-search"></i>
             <input type="text" style="min-width: 470px" placeholder="Pretraži po imenu, prezimenu ili korisničkom imenu..">
         </div>
@@ -32,8 +32,8 @@ Vue.component("admin-users", {
         <button class="new-user-btn" v-on:click="newUserClicked">+ Novi korisnik</button>
     </div>
 
-    <div class="filter-div" >
-        <div class="filter-modal" style="position: relative;">
+    <div class="filter-div" id="filter-div">
+        <div class="filter-modal" id="filter-modal" style="position: relative;">
             <div v-on:click="filterClose" class="close-filter" style="position: absolute; right: 0;">+</div>
 
             <h2>Uloge</h2>

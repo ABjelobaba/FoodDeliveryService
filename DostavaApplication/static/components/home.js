@@ -157,8 +157,8 @@ Vue.component("home", {
         window.addEventListener('resize', function(event) {
             var b = document.getElementById('filter-btn-do');
             var a = document.getElementById('advancedSearch-btn-do');
-            if (b != null && a != null && document.body.clientWidth > 900) {
-                if (document.querySelector('#filter-div').style.display != 'none' && document.querySelector('#filter-div').style.display != '') {
+            if ((b != null || a != null) && document.body.clientWidth > 900) {
+                if (b != null && document.querySelector('#filter-div').style.display != 'none' && document.querySelector('#filter-div').style.display != '') {
                     this.rect = b.getBoundingClientRect();
                     document.querySelector('#filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
                     document.querySelector('.table-users').style.top = '-' + (document.querySelector('#filter-modal').getBoundingClientRect().height + 10) + 'px';
@@ -176,8 +176,9 @@ Vue.component("home", {
                     }
                 }
 
-            } else if (b != null && a != null && document.body.clientWidth <= 900) {
-                if (document.querySelector('#filter-div').style.display != 'none' && document.querySelector('#filter-div').style.display != '') {
+            } else if ((b != null || a != null) && document.body.clientWidth <= 900) {
+
+                if (b != null && document.querySelector('#filter-div').style.display != 'none' && document.querySelector('#filter-div').style.display != '') {
                     document.querySelector('#filter-modal').style.width = 550 + 'px';
                     document.querySelector('.table-users').style.top = '-' + (document.querySelector('#filter-modal').getBoundingClientRect().height + 10) + 'px';
                     document.querySelector('#filter-modal').style.marginRight = 'auto';

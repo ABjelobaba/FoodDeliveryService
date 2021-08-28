@@ -298,6 +298,10 @@
     display: block;
 }
 
+.search-text-div {
+    display: flex;
+}
+
 @media only screen and (max-width: 900px) {
     .users-search {
         grid-template-rows: auto;
@@ -321,6 +325,9 @@
     #advancedSearch-btn-do {
         margin-top: 10px;
         margin-right: 0;
+    }
+    .search-text-div {
+        margin-bottom: 10px;
     }
 }
 

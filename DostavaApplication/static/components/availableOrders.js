@@ -83,13 +83,31 @@ Vue.component("available-orders", {
     <div>
         <h1 style="text-align: center;">Pregled dostupnih porudžbina
         </h1>
-        <div class="users-search" style="text-align: center;">
-            <div>
-                <i style="text-align: center;" class="fa fa-search"></i>
-                <input type="text" placeholder="Pretraži po nazivu restorana...">
-            </div>
+        <div class="users-search">
+                <div class="search-text-div">
+                    <i style="text-align: center;" class="fa fa-search"></i>
+                    <input type="text" placeholder="Pretraži po nazivu restorana.." >
+                </div>  
+                <button class="filter-btn" v-on:click="advancedSearchClicked" id="advancedSearch-btn-do"><i class="fa fa-angle-down fa-lg"></i></button>
         </div>
 
+
+        <div class="filter-div" style="top:250px" id="advancedSearch">
+            <div class="filter-modal" id="advancedSearch-modal" style="position: relative;">
+                <div v-on:click="advancedSearchClose" class="close-filter" style="position: absolute; right: 0;">+</div>
+
+                <div style="margin:20px">
+                    <h2>Cena:</h2>
+                    <label>Od:</label><input type="number" min='0' name="price" id="fromPrice" placeholder="00000">(.00 RSD)<br>
+                    <label>Do:</label><input type="number" min='0' name="price" id="toPrice" placeholder="00000">(.00 RSD)
+                </div>
+                <div style="margin:20px">
+                    <h2>Datum:</h2>
+                    <label>Od:</label><input type="date" name="date" id="fromDate" ><br>
+                    <label>Do:</label><input type="date" name="date" id="toDate" >
+                </div> 
+            </div>
+        </div>
 
         <div class="content" style="display:block" >
             <table class="table-users" name="orders">
@@ -155,6 +173,17 @@ Vue.component("available-orders", {
               `,
     mounted() {
         window.scrollTo(0, 0);
+
+        var a = document.getElementById('advancedSearch-btn-do');
+        this.rect = a.getBoundingClientRect();
+        document.querySelector('#advancedSearch-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+
+        if (document.body.clientWidth <= 900) {
+
+            document.querySelector('.filter-modal').style.width = 550 + 'px';
+            document.querySelector('.filter-modal').style.marginRight = 'auto';
+
+        }
     },
     methods: {
         logOut: function(event) {
@@ -165,6 +194,17 @@ Vue.component("available-orders", {
         },
         closeOrderView: function() {
             this.selectedOrder = undefined;
+        },
+        advancedSearchClose: function(event) {
+            document.getElementById('advancedSearch').style.display = 'none';
+            document.querySelector('.table-users').style.top = '0px';
+        },
+        advancedSearchClicked: function(event) {
+            if (document.getElementById('advancedSearch').style.display == 'none' || document.getElementById('advancedSearch').style.display == '') {
+                document.getElementById('advancedSearch').style.display = 'inline-table';
+                document.querySelector('.table-users').style.top = '-' + (document.querySelector('#advancedSearch-modal').getBoundingClientRect().height + 10) + 'px';
+
+            } else { this.advancedSearchClose(); }
         }
     }
 })

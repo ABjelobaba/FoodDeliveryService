@@ -81,15 +81,16 @@ Vue.component("manager-previous-orders", {
         <h1 style="text-align: center;">Pregled porudžbina restorana
         </h1>
         <div class="users-search">
-            <div>
+            <div class="search-text-div">
                 <i style="text-align: center;" class="fa fa-search"></i>
                 <input type="text" placeholder="Pretraži po opsegu cene ili opsegu datuma..." id="search-text-mo">
             </div>
+            <button class="filter-btn" v-on:click="advancedSearchClicked" id="advancedSearch-btn-do"><i class="fa fa-angle-down fa-lg"></i></button>
             <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
         </div>
         
-        <div class="filter-div" style="top:250px">
-            <div class="filter-modal" style="position: relative;">
+        <div class="filter-div" id="filter-div" style="top:250px">
+            <div class="filter-modal" id="filter-modal" style="position: relative;">
                 <div v-on:click="filterClose" class="close-filter" style="position: absolute; right: 0;">+</div>
     
                 <h2>Status porudžbine</h2>
@@ -102,6 +103,23 @@ Vue.component("manager-previous-orders", {
             </div>
         </div>
                     
+
+        <div class="filter-div" style="top:250px" id="advancedSearch">
+            <div class="filter-modal" id="advancedSearch-modal" style="position: relative;">
+                <div v-on:click="advancedSearchClose" class="close-filter" style="position: absolute; right: 0;">+</div>
+
+                <div style="margin:20px">
+                    <h2>Cena:</h2>
+                    <label>Od:</label><input type="number" min='0' name="price" id="fromPrice" placeholder="00000">(.00 RSD)<br>
+                    <label>Do:</label><input type="number" min='0' name="price" id="toPrice" placeholder="00000">(.00 RSD)
+                </div>
+                <div style="margin:20px">
+                    <h2>Datum:</h2>
+                    <label>Od:</label><input type="date" name="date" id="fromDate" ><br>
+                    <label>Do:</label><input type="date" name="date" id="toDate" >
+                </div> 
+            </div>
+        </div>
 
         <div class="content" style="display:block" >
             <table class="table-users" name="orders">
@@ -168,7 +186,11 @@ Vue.component("manager-previous-orders", {
 
         var b = document.getElementById('filter-btn-do');
         this.rect = b.getBoundingClientRect();
-        document.querySelector('.filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+        document.querySelector('#filter-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
+
+        var a = document.getElementById('advancedSearch-btn-do');
+        this.rect = a.getBoundingClientRect();
+        document.querySelector('#advancedSearch-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
 
         if (document.body.clientWidth <= 900) {
 
@@ -183,20 +205,32 @@ Vue.component("manager-previous-orders", {
             window.location.href = "/#/"
         },
         filterClicked: function(event) {
-            if (document.querySelector('.filter-div').style.display == 'none' || document.querySelector('.filter-div').style.display ==
-                '') {
-                document.querySelector('.filter-div').style.display = 'inline-table';
-                document.querySelector('.table-users').style.top = '-154px';
-
+            var filter = document.getElementById('filter-div');
+            if (filter.style.display == 'none' || filter.style.display == '') {
+                this.advancedSearchClose();
+                filter.style.display = 'inline-table';
+                document.querySelector('.table-users').style.top = '-' + (document.querySelector('#filter-modal').getBoundingClientRect().height + 10) + 'px';
             } else { this.filterClose(); }
+        },
+        advancedSearchClicked: function(event) {
+            if (document.getElementById('advancedSearch').style.display == 'none' || document.getElementById('advancedSearch').style.display == '') {
+                this.filterClose();
+                document.getElementById('advancedSearch').style.display = 'inline-table';
+                document.querySelector('.table-users').style.top = '-' + (document.querySelector('#advancedSearch-modal').getBoundingClientRect().height + 10) + 'px';
+
+            } else { this.advancedSearchClose(); }
         },
         filterClose: function(event) {
             document.querySelector('.filter-div').style.display = 'none';
             document.querySelector('.table-users').style.top = '0px';
         },
+        advancedSearchClose: function(event) {
+            document.getElementById('advancedSearch').style.display = 'none';
+            document.querySelector('.table-users').style.top = '0px';
+        },
         showOrder: function(order) {
             this.selectedOrder = order;
-        
+
         },
         closeOrderView: function() {
             this.selectedOrder = undefined;
