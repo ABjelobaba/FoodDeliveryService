@@ -87,7 +87,7 @@ Vue.component("manager-orders", {
 
     template: `
     <div>
-        <h1 style="text-align: center;">Pregled porudžbina restorana
+        <h1 style="text-align: center;">Pregled aktuelnih porudžbina restorana
         </h1>
         <div class="users-search">
             <div>
@@ -99,8 +99,8 @@ Vue.component("manager-orders", {
         </div>
         
         <div class="filter-div" style="top:250px">
-            <div class="filter-modal">
-                <div v-on:click="filterClose" class="close-filter">+</div>
+            <div class="filter-modal" style="position: relative;">
+                <div v-on:click="filterClose" class="close-filter" style="position: absolute; right: 0;">+</div>
     
                 <h2>Status porudžbine</h2>
                 <div class="checkbox-btn-container-dark" >

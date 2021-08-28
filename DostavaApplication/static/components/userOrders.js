@@ -129,8 +129,8 @@ Vue.component("user-orders", {
     </div>
 
     <div class="filter-div" style="top:250px" id="filter-div">
-        <div class="filter-modal" id="filter-modal">
-            <div v-on:click="filterClose" class="close-filter">+</div>
+        <div class="filter-modal" id="filter-modal" style="position: relative;">
+            <div v-on:click="filterClose" class="close-filter" style="position: absolute; right: 0;">+</div>
 
             <h2>Status porudžbine</h2>
             <div class="checkbox-btn-container-dark">
@@ -150,8 +150,8 @@ Vue.component("user-orders", {
     </div>
 
     <div class="filter-div" style="top:250px" id="advancedSearch">
-        <div class="filter-modal" id="advancedSearch-modal">
-            <div v-on:click="advancedSearchClose" class="close-filter">+</div>
+        <div class="filter-modal" id="advancedSearch-modal" style="position: relative;">
+            <div v-on:click="advancedSearchClose" class="close-filter" style="position: absolute; right: 0;">+</div>
 
             <div>
                 <h2>Cena:</h2>
@@ -258,7 +258,7 @@ Vue.component("user-orders", {
                             <span v-if="hover != order.id + 'c'" >
                                 <i class="fa fa-spinner" aria-hidden="true"></i> Obrada
                             </span>
-                            <span v-if="hover == order.id + 'c'" style="color:white;transition: 0.2s;background-color:#5e2121;">
+                            <span v-if="hover == order.id + 'c'" style="color:white;transition: 0.2s;">
                                 <i class="fa fa-ban" aria-hidden="true" style="color:white"></i> Otkaži
                             </span>
                         

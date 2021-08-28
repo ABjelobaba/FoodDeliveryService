@@ -89,8 +89,8 @@ Vue.component("manager-previous-orders", {
         </div>
         
         <div class="filter-div" style="top:250px">
-            <div class="filter-modal">
-                <div v-on:click="filterClose" class="close-filter">+</div>
+            <div class="filter-modal" style="position: relative;">
+                <div v-on:click="filterClose" class="close-filter" style="position: absolute; right: 0;">+</div>
     
                 <h2>Status porudžbine</h2>
                 <div class="checkbox-btn-container-dark" >

@@ -516,12 +516,6 @@
     }
 }
 
-@media only screen and (min-width: 900px) {
-    .full-radio-btn-label {
-        margin: 0 0 0 10px;
-    }
-}
-
 /* Map */
 
 #map-rp {

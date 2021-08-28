@@ -32,8 +32,8 @@ Vue.component("suspicious-users", {
     </div>
 
     <div class="filter-div" >
-        <div class="filter-modal">
-            <div v-on:click="filterClose" class="close-filter">+</div>
+        <div class="filter-modal" style="position: relative;">
+            <div v-on:click="filterClose" class="close-filter" style="position: absolute; right: 0;">+</div>
 
             <h2>Uloge</h2>
             <div class="checkbox-btn-container-dark" style="text-align: left;">
