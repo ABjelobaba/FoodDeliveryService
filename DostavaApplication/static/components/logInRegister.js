@@ -29,10 +29,8 @@ Vue.component("logIn-register", {
 					<div style="margin-top: 20px;" >
 						<form>
 							<input v-model="usernameRegistration" type="text" class="login-inputs" placeholder="Korisničko ime">
-							<label class="error" id="usernameErr" name="labels" display="hidden"> </label>
 	
 							<input v-model="passwordRegistration" type="password" class="login-inputs" placeholder="Lozinka">
-							<label class="error" id="passwordErr" name="labels" display="hidden"> </label>
 	
 							<input v-model="name" type="text" class="login-inputs" placeholder="Ime">
 							<label class="error" id="nameErr" name="labels" display="hidden"> </label>
@@ -42,16 +40,15 @@ Vue.component("logIn-register", {
 	
 							<select v-model="gender" class="login-inputs-select">
 								<option selected disabled>Odaberite pol..</option>
-								<option>MUŠKO</option>
-								<option>ŽENSKO</option>
+								<option>Muško</option>
+								<option>Žensko</option>
 							</select>
-							<label class="error" id="genderErr" name="labels" display="hidden"> </label>
 	
 							<label style="color: white;display: block;margin:15px 0 0 0">Datum rođenja:</label>
-							<input type="date" class="login-inputs" style="margin-top: 1px;" id="date_input">
-							<label class="error" id="dateErr" name="labels" display="hidden"> </label>
+							<input type="date" v-model="dateOfBirth" class="login-inputs" style="margin-top: 1px;" id="date_input">
 	
 							<button v-on:click="registerUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
+							<label class="error" id="emptyFieldsError" name="labels" display="hidden"> </label>
 						</form>
 					</div>
 				</div>
@@ -96,22 +93,24 @@ Vue.component("logIn-register", {
         registerUser: function(event) {
             event.preventDefault();
 
-            let genderReg;
-            if (this.gender === 'MUŠKO') {
-                genderReg = 'MALE';
-            } else if (this.gender === 'ŽENSKO') {
-                genderReg = 'FEMALE';
+            for (element of document.getElementsByName('labels')) {
+                element.innerHTML = '';
+                element.style.display = 'hidden';
+            }
+
+            let genderEnum;
+            if (this.gender === 'Muško') {
+                genderEnum = 'Male';
+            } else if (this.gender === 'Žensko') {
+                genderEnum = 'Female';
             }
 
             let error = false;
-            if (!this.usernameRegistration) {
-                document.getElementById('usernameErr').innerHTML = "Morate uneti korisničko ime!";
+            if (!this.usernameRegistration || !this.passwordRegistration || !genderEnum || !this.dateOfBirth) {
+                document.getElementById('emptyFieldsError').innerHTML = "Sva polja moraju biti popunjena!";
                 error = true;
             }
-            if (!this.passwordRegistration) {
-                document.getElementById('passwordErr').innerHTML = "Morate uneti lozinku!";
-                error = true;
-            }
+
             if (this.name[0] < 'A' || this.name[0] > 'Z' || !this.name) {
                 document.getElementById('nameErr').innerHTML = "Morate uneti ime koje počinje velikim slovom!";
                 error = true;
@@ -120,13 +119,28 @@ Vue.component("logIn-register", {
                 document.getElementById('surnameErr').innerHTML = "Morate uneti prezime koje počinje velikim slovom!";
                 error = true;
             }
-            if (!genderReg) {
-                document.getElementById('genderErr').innerHTML = "Morate izabrati pol!";
-                error = true;
-            }
 
             if (!error) {
-                window.location.href = "#/account";
+
+                let registrationDTO = {
+                    name: this.name,
+                    surname: this.surname,
+                    username: this.usernameRegistration,
+                    password: this.passwordRegistration,
+                    gender: genderEnum,
+                    role: 'Customer'
+                }
+
+                axios
+                    .post('/user/register', JSON.stringify(registrationDTO))
+                    .then(response => {
+                        if (response.data == null || response.data == "") {
+                            document.getElementById('emptyFieldsError').innerHTML = "Neuspešna registracija!";
+                        } else {
+                            window.location.href = "#/account";
+                        }
+                    })
+
             }
         },
         logInUser: function(event) {

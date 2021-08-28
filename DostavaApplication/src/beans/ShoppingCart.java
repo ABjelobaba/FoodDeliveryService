@@ -1,11 +1,19 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart {
 	public List<OrderedItem> orderedItems;
 	public String customerUsername;
 	public double totalPrice;
+	
+	public ShoppingCart(String customerUsername) {
+		super();
+		this.orderedItems = new ArrayList<OrderedItem>();
+		this.customerUsername = customerUsername;
+		this.totalPrice = 0;
+	}
 	
 	public ShoppingCart(List<OrderedItem> orderedItems, String customerUsername, double totalPrice) {
 		super();

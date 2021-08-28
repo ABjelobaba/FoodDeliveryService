@@ -21,7 +21,7 @@ Vue.component("restaurant-page", {
                 { value: 'rejected ', text: 'Odbijen ' }, { value: 'approved ', text: 'Odobren ' },
                 { value: 'waiting ', text: 'Čeka obradu ' }
             ],
-            logedInRole: 'admin'
+            loggedInRole: 'admin'
         }
     },
     template: `
@@ -79,10 +79,10 @@ Vue.component("restaurant-page", {
 
     <div class="bottom-section-rp">
         <div style="position: sticky;top: 65px;text-align: right;align-self: start;">
-            <div v-if="logedInRole =='manager'">
+            <div v-if="loggedInRole =='manager'">
                 <button v-on:click="showNewArticleWindow()" class="add-article-btn">+ Novi artikal</button>
             </div>
-            <div v-if="logedInRole =='admin' || logedInRole =='manager'">
+            <div v-if="loggedInRole =='admin' || loggedInRole =='manager'">
                 <input v-on:click="showHideReviews()" type="checkbox" id="viewReviews" value="viewReviews">
                 <label class="full-radio-btn-label" style="min-width: fit-content;margin:1.5em 0 0 0" for="viewReviews" >Pregled utisaka</label>
             </div>
@@ -102,7 +102,7 @@ Vue.component("restaurant-page", {
             <div id="map-rp"></div>
         </div>
         <div class="right-container-rp">
-            <div class="nav-cart-rp" id="ncart-rp" v-if="logedInRole == 'user'">
+            <div class="nav-cart-rp" id="ncart-rp" v-if="loggedInRole == 'user'">
                 <a> Korpa (0)</a>
             </div>
 
@@ -116,7 +116,7 @@ Vue.component("restaurant-page", {
             <div class="restaurant-reviews-rp">
                 <h1>Utisci</h1>
                 <ul class="user-reviews-list-rp">
-                    <comment-status v-for="c in comments" v-bind:key="c.id" v-bind:comment="c" v-bind:logedInRole="logedInRole"></comment-status>
+                    <comment-status v-for="c in comments" v-bind:key="c.id" v-bind:comment="c" v-bind:loggedInRole="loggedInRole"></comment-status>
                 </ul>
                 <h6 id="allReviews">Svi utisci... </h6>
             </div>
@@ -143,7 +143,7 @@ Vue.component("restaurant-page", {
                     <img src="images/add-white.png" alt="Add item" class="change-quantity-rp">
                 </div>
                 <div class="add-to-basket-rp">
-                    <a href="#" v-if="logedInRole != 'admin'">Dodaj u korpu</a>
+                    <a href="#" v-if="loggedInRole != 'admin'">Dodaj u korpu</a>
                     <a href="#" v-else ><i class="fa fa-trash-o fa-lg" aria-hidden="true"> </i> Obrisi</a>
                 </div>
                 

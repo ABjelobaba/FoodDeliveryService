@@ -1,5 +1,5 @@
 Vue.component("restaurant-card", {
-    props: ['restaurant', 'logedInRole'],
+    props: ['restaurant', 'loggedInRole'],
     data: function() {
         return {}
     },
@@ -23,7 +23,7 @@ Vue.component("restaurant-card", {
 				<div  style="margin:5%">Zatvoren objekat</div>
 			</div>
 		</div>
-		<div class="comment-delete" v-on:click="deleteRestaurant" v-if="logedInRole == 'admin'">
+		<div class="comment-delete" v-on:click="deleteRestaurant" v-if="loggedInRole == 'admin'">
                 <div class="comment-status" style="background-color:rgba(44,53,63,1);" ><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></div>    
             </div>
 	</div>

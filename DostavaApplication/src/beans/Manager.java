@@ -8,6 +8,7 @@ public class Manager extends User {
 	public Manager(String username, String password, String name, String surname, Gender gender, Date birthdate,
 			Role role) {
 		super(username, password, name, surname, gender, birthdate, role);
+		this.restaurant = null;
 	}
 
 	public Restaurant getRestaurant() {

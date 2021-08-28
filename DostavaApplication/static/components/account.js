@@ -2,7 +2,7 @@ Vue.component("account", {
     data: function() {
         return {
             deliveryAddress: '',
-            logedInRole: 'admin'
+            loggedInRole: 'admin'
         }
     },
 
@@ -25,18 +25,18 @@ Vue.component("account", {
             <nav class="user-nav">
                 <ul id="user-nav-ul">
                     <li><a v-on:click="profileView" name="user-nav" id="profile">Profil</a></li>
-                    <li v-if="logedInRole == 'admin'"><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
-                    <li v-if="logedInRole == 'admin'"><a v-on:click="restaurantsView" name="user-nav" id="restaurants">Restorani</a></li>
-                    <li v-if="logedInRole == 'user'"><a v-on:click="ordersView" name="user-nav" id="orders">Porudžbine</a></li>
-                    <li v-if="logedInRole == 'deliverer'"><a v-on:click="availableOrdersView" name="user-nav" id="available-orders">Dostupne porudžbine</a></li>
-                    <li v-if="logedInRole == 'deliverer'"><a v-on:click="deliverersOrdersView" name="user-nav" id="deliverers-orders">Porudžbine</a></li>
-                    <li v-if="logedInRole == 'admin'"><a v-on:click="suspiciousUsersView" name="user-nav" id="suspicious-users">Sumnjivi korisnici</a></li>
-                    <li v-if="logedInRole == 'manager'"><a v-on:click="managersOrdersView" name="user-nav" id="managers-orders"> Aktuelne porudžbine</a></li>
-                    <li v-if="logedInRole == 'manager'"><a v-on:click="managersPreviousOrdersView" name="user-nav" id="managers-prev-orders"> Prethodne porudžbine</a></li>
-                    <li v-if="logedInRole == 'manager'"><a v-on:click="restaurantCustomersView" name="user-nav" id="restaurant-customer-list">Kupci</a></li>
+                    <li v-if="loggedInRole == 'admin'"><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
+                    <li v-if="loggedInRole == 'admin'"><a v-on:click="restaurantsView" name="user-nav" id="restaurants">Restorani</a></li>
+                    <li v-if="loggedInRole == 'user'"><a v-on:click="ordersView" name="user-nav" id="orders">Porudžbine</a></li>
+                    <li v-if="loggedInRole == 'deliverer'"><a v-on:click="availableOrdersView" name="user-nav" id="available-orders">Dostupne porudžbine</a></li>
+                    <li v-if="loggedInRole == 'deliverer'"><a v-on:click="deliverersOrdersView" name="user-nav" id="deliverers-orders">Porudžbine</a></li>
+                    <li v-if="loggedInRole == 'admin'"><a v-on:click="suspiciousUsersView" name="user-nav" id="suspicious-users">Sumnjivi korisnici</a></li>
+                    <li v-if="loggedInRole == 'manager'"><a v-on:click="managersOrdersView" name="user-nav" id="managers-orders"> Aktuelne porudžbine</a></li>
+                    <li v-if="loggedInRole == 'manager'"><a v-on:click="managersPreviousOrdersView" name="user-nav" id="managers-prev-orders"> Prethodne porudžbine</a></li>
+                    <li v-if="loggedInRole == 'manager'"><a v-on:click="restaurantCustomersView" name="user-nav" id="restaurant-customer-list">Kupci</a></li>
                 </ul>
                 <ul id="user-nav-ul" style="margin: 80px 7% 20px 0;">
-                    <li v-if="logedInRole == 'user'"><a v-on:click="shoppingCartView" name="user-nav" id="shopping-cart" >Korpa (0)</a></li>
+                    <li v-if="loggedInRole == 'user'"><a v-on:click="shoppingCartView" name="user-nav" id="shopping-cart" >Korpa (0)</a></li>
                 </ul>
                 
             </nav>
@@ -50,6 +50,7 @@ Vue.component("account", {
 	`,
     mounted() {
         window.scrollTo(0, 0);
+
 
         if (window.location.href.split('?').length == 2) {
             let query = window.location.href.split('?');

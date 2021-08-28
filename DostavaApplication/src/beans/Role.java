@@ -1,5 +1,5 @@
 package beans;
 
 public enum Role {
-	Administrator, Manager, DeliveryPerson, Customer;
+	Administrator, Manager, Deliverer, Customer;
 }

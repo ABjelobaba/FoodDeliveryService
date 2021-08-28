@@ -1,7 +1,7 @@
 Vue.component("home", {
     data: function() {
         return {
-            logedInUser: '',
+            loggedInUser: '',
             deliveryAddress: '',
             cuisines: [
                 { id: 'italian', value: 'Italijanska' },
@@ -40,8 +40,8 @@ Vue.component("home", {
 			<ul class="nav-navbar">
 				<li><a href="#/"><img class="logo-img" src="images/logo_transparent.png"></a></li>
 				<span class="main-nav">
-					<li v-if="logedInUser == ''" v-on:click="register"><a class="btn" >Prijavi se/Registruj se</a></li>
-					<li v-if="logedInUser != ''" style="display:flex;align-items: center;margin-left: 4%;" v-on:click="register"><a class="btn" style="border: 0;padding: 0;">
+					<li v-if="loggedInUser == '' || loggedInUser == undefined" v-on:click="register"><a class="btn" >Prijavi se/Registruj se</a></li>
+					<li v-if="loggedInUser != '' && loggedInUser != undefined" style="display:flex;align-items: center;margin-left: 4%;" v-on:click="register"><a class="btn" style="border: 0;padding: 0;">
 						<i class="fa fa-user-circle-o fa-2x"></i></a>
 					</li>
 				</span>
@@ -154,6 +154,14 @@ Vue.component("home", {
     mounted() {
         window.scrollTo(0, 0);
 
+        axios
+            .get("user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    this.loggedInUser = response.data;
+                }
+            })
+
         window.addEventListener('resize', function(event) {
             var b = document.getElementById('filter-btn-do');
             var a = document.getElementById('advancedSearch-btn-do');
@@ -220,6 +228,7 @@ Vue.component("home", {
             }
         },
         sortRestaurants: function(event) {
+            let neki = this.loggedInUser;
             if (event.currentTarget.innerText.includes('Naziv')) {
                 let nameSort = document.getElementById('sortByName');
                 if (this.nameSort == '') {

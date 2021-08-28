@@ -1,7 +1,7 @@
 const apiKey = 'pk.eyJ1IjoibGVha2FsbWFyIiwiYSI6ImNrc2pkNDVjYjExMDMyb21ieWp4cGoxMnIifQ.grYjuwulOL83SVRPz6M8_A';
-const Home = { template: '<home></home>' }
+const Home = { template: '<home ></home>' }
 const restaurants = { template: '<restaurants></restaurants>' }
-const Account = { template: '<account></account>' }
+const Account = { template: '<account ></account>' }
 const AdminRestaurants = { template: '<admin-restaurants></admin-restaurants>' }
 const Profile = { template: '<profile></profile>' }
 const AdminUsers = { template: '<admin-users></admin-users>' }

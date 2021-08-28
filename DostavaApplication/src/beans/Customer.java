@@ -1,5 +1,6 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,10 @@ public class Customer extends User {
 	public Customer(String username, String password, String name, String surname, Gender gender, Date birthdate,
 			Role role) {
 		super(username, password, name, surname, gender, birthdate, role);
+		this.allOrders = new ArrayList<Order>();
+		this.cart = new ShoppingCart(username);
+		this.totalPoints = 0;
+		this.category = new CustomerCategory();
 	}
 
 	public List<Order> getAllOrders() {

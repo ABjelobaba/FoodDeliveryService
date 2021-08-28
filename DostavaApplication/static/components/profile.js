@@ -1,7 +1,7 @@
 Vue.component("profile", {
     data: function() {
         return {
-            logedInUser: {
+            loggedInUser: {
                 name: 'Lea',
                 surname: 'Kalmar',
                 username: 'lea_kalmar',
@@ -23,15 +23,15 @@ Vue.component("profile", {
 
         <div class="float-left-div" style="position:relative; top:0;">
             <div class="restaurant-types">
-                <img v-if="logedInUser.medal == 'gold'" class="user-img" src="images/gold.png" alt="User">
-                <img v-if="logedInUser.medal == 'silver'" class="user-img" src="images/silver.png" alt="User">
-                <img v-if="logedInUser.medal == 'bronze'" class="user-img" src="images/bronze.png" alt="User">
-                <h2 style="text-align: center; margin:0">{{logedInUser.name}} {{logedInUser.surname}}</h2>
+                <img v-if="loggedInUser.medal == 'gold'" class="user-img" src="images/gold.png" alt="User">
+                <img v-if="loggedInUser.medal == 'silver'" class="user-img" src="images/silver.png" alt="User">
+                <img v-if="loggedInUser.medal == 'bronze'" class="user-img" src="images/bronze.png" alt="User">
+                <h2 style="text-align: center; margin:0">{{loggedInUser.name}} {{loggedInUser.surname}}</h2>
             </div>
 
-            <div class="restaurant-types" v-bind:id="logedInUser.medal">
+            <div class="restaurant-types" v-bind:id="loggedInUser.medal">
                 <h3 style="text-align: center; margin:0 0 5% 0">Sakupljeni bodovi</h3>
-                <h2 style="text-align: center; margin:0">{{logedInUser.points}}</h2>
+                <h2 style="text-align: center; margin:0">{{loggedInUser.points}}</h2>
             </div>
         </div>
 
@@ -40,7 +40,7 @@ Vue.component("profile", {
                 <h3>Adresa za dostavu</h3>
                 <form>
                     <div class="inputs-div">
-                        <input v-model="logedInUser.address" type="text" class="profile-change-input" style="width:auto" >
+                        <input v-model="loggedInUser.address" type="text" class="profile-change-input" style="width:auto" >
                         <label class="error" id="nameErr" name="labels" display="hidden"> </label>
                     </div>
 
@@ -55,21 +55,21 @@ Vue.component("profile", {
 
                     <div class="inputs-div">
                         <label class="input-label">Ime:</label>
-                        <input v-model="logedInUser.name" type="text" class="profile-change-input" >
+                        <input v-model="loggedInUser.name" type="text" class="profile-change-input" >
                         <label class="error" id="nameErr" name="labels" display="hidden"> </label>
                     </div>
                     <div class="inputs-div">
                         <label class="input-label">Prezime:</label>
-                        <input v-model="logedInUser.surname" type="text" class="profile-change-input" placeholder="Prezime">
+                        <input v-model="loggedInUser.surname" type="text" class="profile-change-input" placeholder="Prezime">
                         <label class="error" id="surnameErr" name="labels" display="hidden"> </label>
                     </div>
                     <div class="inputs-div">
                         <label class="input-label">Korisnicko ime:</label>
-                        <input disabled v-model="logedInUser.username" type="text" class="profile-change-disabled" placeholder="Korisničko ime">
+                        <input disabled v-model="loggedInUser.username" type="text" class="profile-change-disabled" placeholder="Korisničko ime">
                     </div>
                     <div class="inputs-div">
                         <label class="input-label">Pol:</label>
-                        <select v-model="logedInUser.gender" class="profile-change-select">
+                        <select v-model="loggedInUser.gender" class="profile-change-select">
                                 <option hidden>Odaberite pol..</option>
                                 <option>MUŠKO</option>
                                 <option>ŽENSKO</option>
@@ -78,7 +78,7 @@ Vue.component("profile", {
                     </div>
                     <div class="inputs-div">
                         <label class="input-label">Datum rođenja:</label>
-                        <input v-model="logedInUser.birthDate" type="date" class="profile-change-input" style="margin-top: 1px;" id="date_input">
+                        <input v-model="loggedInUser.birthDate" type="date" class="profile-change-input" style="margin-top: 1px;" id="date_input">
                         <label class="error" id="dateErr" name="labels" display="hidden"> </label>
                     </div>
 
