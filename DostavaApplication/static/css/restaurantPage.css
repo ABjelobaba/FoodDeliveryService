@@ -170,9 +170,9 @@
     padding-bottom: 0.5em;
     padding-top: 0.5em;
     height: fit-content;
-    position: sticky;
-    top: 7em;
     box-shadow: 5px 10px 15px 0 rgba(5, 5, 5, 0.5);
+    background: white;
+    z-index: 20;
 }
 
 .nav-menu-rp h3 {
@@ -498,6 +498,7 @@
     cursor: pointer;
     display: block;
     border: 1px solid rgba(44, 53, 63, 1);
+    margin-top: 1.5em;
 }
 
 .bottom-section-rp .full-radio-btn-label:hover,
@@ -519,4 +520,66 @@
     .full-radio-btn-label {
         margin: 0 0 0 10px;
     }
+}
+
+/* Map */
+
+#map-rp {
+    height: 200px;
+    width: 100%;
+    margin: 20px auto;
+    box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);
+    z-index: 0;
+}
+
+
+/* Add article */
+
+.add-article-btn {
+    width: 100%;
+    padding: 5%;
+    font-weight: bold;
+    font-size: 17px;
+    color: rgba(44, 53, 63, 1);
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    border: 1px solid rgba(44, 53, 63, 1);
+    margin-top: 2em;
+    background-color: white;
+}
+
+.add-article-btn:hover {
+    background: rgba(44, 53, 63, 0.85);
+    transition: 0.5s;
+    color: white;
+}
+
+.new-article-view-rp {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(44, 53, 63, 0.5);
+    z-index: 5;
+    color: white;
+    display: none;
+}
+
+.article-desc-ta {
+    padding: 0;
+    margin: 0;
+    width: 98%;
+    height: 94.33%;
+    resize: none;
+    overflow: auto;
+    background-color: #dddddd;
+    font-size: 1.2em;
+}
+
+#article-price-input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #6390A7;
+    opacity: 1;
 }

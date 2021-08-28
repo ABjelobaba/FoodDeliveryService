@@ -11,6 +11,9 @@ const UserOrders = { template: '<user-orders></user-orders>' }
 const DelivererOrders = { template: '<deliverer-orders></deliverer-orders>' }
 const AvailableOrders = { template: '<available-orders></available-orders>' }
 const SuspiciousUsers = { template: '<suspicious-users></suspicious-users>' }
+const ManagerOrders = { template: '<manager-orders></manager-orders>' }
+const ManagerPreviousOrders = { template: '<manager-previous-orders></manager-previous-orders>' }
+const RestaurantCustomers = { template: '<restaurant-customers></restaurant-customers>' }
 
 
 const router = new VueRouter({
@@ -30,7 +33,11 @@ const router = new VueRouter({
                 { path: 'allOrders', component: DelivererOrders },
                 { path: 'availableOrders', component: AvailableOrders },
                 { path: 'suspiciousUsers', component: SuspiciousUsers },
-                { path: 'cart', component: ShoppingCart }
+                { path: 'cart', component: ShoppingCart },
+                { path: 'restaurantOrders', component: ManagerOrders },
+                { path: 'restaurantPreviousOrders', component: ManagerPreviousOrders },
+                { path: 'customers', component: RestaurantCustomers }
+
             ]
         },
         { path: '/restaurantPage', component: RestaurantPage }

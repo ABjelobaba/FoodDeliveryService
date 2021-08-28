@@ -31,6 +31,9 @@ Vue.component("account", {
                     <li v-if="logedInRole == 'deliverer'"><a v-on:click="availableOrdersView" name="user-nav" id="available-orders">Dostupne porudžbine</a></li>
                     <li v-if="logedInRole == 'deliverer'"><a v-on:click="deliverersOrdersView" name="user-nav" id="deliverers-orders">Porudžbine</a></li>
                     <li v-if="logedInRole == 'admin'"><a v-on:click="suspiciousUsersView" name="user-nav" id="suspicious-users">Sumnjivi korisnici</a></li>
+                    <li v-if="logedInRole == 'manager'"><a v-on:click="managersOrdersView" name="user-nav" id="managers-orders"> Aktuelne porudžbine</a></li>
+                    <li v-if="logedInRole == 'manager'"><a v-on:click="managersPreviousOrdersView" name="user-nav" id="managers-prev-orders"> Prethodne porudžbine</a></li>
+                    <li v-if="logedInRole == 'manager'"><a v-on:click="restaurantCustomersView" name="user-nav" id="restaurant-customer-list">Kupci</a></li>
                 </ul>
                 <ul id="user-nav-ul" style="margin: 80px 7% 20px 0;">
                     <li v-if="logedInRole == 'user'"><a v-on:click="shoppingCartView" name="user-nav" id="shopping-cart" >Korpa (0)</a></li>
@@ -73,6 +76,12 @@ Vue.component("account", {
             document.getElementById('suspicious-users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('cart')) {
             document.getElementById('shopping-cart').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('restaurantOrders')) {
+            document.getElementById('managers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('restaurantPreviousOrders')) {
+            document.getElementById('managers-prev-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('customers')) {
+            document.getElementById('restaurant-customer-list').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         }
 
 
@@ -137,6 +146,27 @@ Vue.component("account", {
             }
             document.getElementById('shopping-cart').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
             window.location.href = "#/account/cart";
+        },
+        managersOrdersView: function(event) {
+            for (element of document.getElementsByName("user-nav")) {
+                element.style.backgroundColor = "transparent";
+            }
+            document.getElementById('managers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            window.location.href = "#/account/restaurantOrders";
+        },
+        managersPreviousOrdersView: function(event) {
+            for (element of document.getElementsByName("user-nav")) {
+                element.style.backgroundColor = "transparent";
+            }
+            document.getElementById('managers-prev-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            window.location.href = "#/account/restaurantPreviousOrders";
+        },
+        restaurantCustomersView: function(event) {
+            for (element of document.getElementsByName("user-nav")) {
+                element.style.backgroundColor = "transparent";
+            }
+            document.getElementById('restaurant-customer-list').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            window.location.href = "#/account/customers";
         }
     }
 })
