@@ -189,7 +189,7 @@ Vue.component("manager-orders", {
                 <label style="color: white;display: block;margin:15px 0 1em 0;font-weight: bold;">Odaberite dostavljača:</label>
                 <div class="radio-btn-container" style="width: 60%;height: 200px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2); min-width: fit-content">
                     <div v-for="deliverer in deliverers">
-                        <input type="radio" v-bind:id=deliverer.id v-bind:value=deliverer.id>
+                        <input type="radio" v-bind:id=deliverer.id name="contact" v-bind:value=deliverer.id>
                         <label style="font-size: 1.25em;" class="radio-label" v-bind:for=deliverer.id> <span style="margin-left: 10px;"> {{deliverer.name}} {{deliverer.surname}} </span> 
                             <span style="margin-left: auto; margin-right: 10px;">{{deliverer.username}}</span></label>
                     </div>
