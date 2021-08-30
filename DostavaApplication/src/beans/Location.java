@@ -1,9 +1,9 @@
 package beans;
 
 public class Location {
-	public double longitude;
-	public double latitude;
-	public Address address;
+	private double longitude;
+	private double latitude;
+	private Address address;
 	
 	public Location(double longitude, double latitude, Address address) {
 		super();

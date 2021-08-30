@@ -3,14 +3,14 @@ package beans;
 import java.util.List;
 
 public class Restaurant implements IEntity<Integer>{
-	public int restaurantID;
-	public String name;
-	public RestaurantType type;
-	public List<FoodItem> items;
-	public boolean open;
-	public Location location;
-	public String logo;
-	public boolean deleted;
+	private int restaurantID;
+	private String name;
+	private RestaurantType type;
+	private List<FoodItem> items;
+	private boolean open;
+	private Location location;
+	private String logo;
+	private boolean deleted;
 	
 	public Restaurant(String name, RestaurantType type, List<FoodItem> items, boolean open, Location location,
 			String logo) {

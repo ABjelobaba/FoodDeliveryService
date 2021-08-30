@@ -4,14 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 public class Order implements IEntity<String>{
-	public String orderID;
-	public List<OrderedItem> orderedItems;
-	public int restaurantID;
-	public Date orderDate;
-	public double price;
-	public String customerUsername;
-	public OrderStatus status;
-	public boolean deleted;
+	private String orderID;
+	private List<OrderedItem> orderedItems;
+	private int restaurantID;
+	private Date orderDate;
+	private double price;
+	private String customerUsername;
+	private OrderStatus status;
+	private boolean deleted;
 	
 	public Order(List<OrderedItem> orderedItems, int restaurantID, Date orderDate, double price,
 			String customerUsername, OrderStatus status) {

@@ -1,14 +1,14 @@
 package beans;
 
 public class FoodItem implements IEntity<String>{
-	public String name;
-	public double price;
-	public FoodType type;
-	public int restaurantID;
-	public int quantity;
-	public String description;
-	public String image;
-	public boolean deleted;
+	private String name;
+	private double price;
+	private FoodType type;
+	private int restaurantID;
+	private int quantity;
+	private String description;
+	private String image;
+	private boolean deleted;
 	
 	public FoodItem(String name, double price, FoodType type, int restaurantID, int quantity, String description,
 			String image) {

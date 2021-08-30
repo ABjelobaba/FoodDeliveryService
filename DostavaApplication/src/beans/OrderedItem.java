@@ -1,8 +1,8 @@
 package beans;
 
 public class OrderedItem {
-	public FoodItem item;
-	public int amount;
+	private FoodItem item;
+	private int amount;
 	
 	public OrderedItem(FoodItem item, int amount) {
 		super();

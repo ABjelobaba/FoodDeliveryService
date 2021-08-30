@@ -1,9 +1,9 @@
 package beans;
 
 public class Address {
-	public String streetAddress;
-	public String city;
-	public int zipCode;
+	private String streetAddress;
+	private String city;
+	private int zipCode;
 	
 	public Address(String streetAddress, String city, int zipCode) {
 		super();

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart {
-	public List<OrderedItem> orderedItems;
-	public String customerUsername;
-	public double totalPrice;
+	private List<OrderedItem> orderedItems;
+	private String customerUsername;
+	private double totalPrice;
 	
 	public ShoppingCart(String customerUsername) {
 		super();
