@@ -11,8 +11,8 @@ import beans.CustomerReview;
 
 public class CustomerReviewDAO extends JSONStorage<CustomerReview, Integer> {
 
-	public CustomerReviewDAO(String path) {
-		super(path, new TypeToken<List<CustomerReview>>(){}.getType(), new Gson());
+	public CustomerReviewDAO(String fileLocation) {
+		super(fileLocation, new TypeToken<List<CustomerReview>>(){}.getType(), new Gson());
 	}
 	
 	public int generateID() throws JsonSyntaxException, IOException  {
