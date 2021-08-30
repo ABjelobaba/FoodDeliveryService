@@ -22,6 +22,11 @@ public class Application {
 		UserService userService = new UserService(userDAO);
 		UserController userController = new UserController(userService);
 		
+		RestaurantDAO restaurantDAO = new RestaurantDAO("./files/restaurants.json");
+		RestaurantService restaurantService = new RestaurantService(restaurantDAO);
+		RestaurantController restaurantController = new RestaurantController(restaurantService);
+		
+		
 		
 		get("/test", (req, res) -> {
 			return "Works";

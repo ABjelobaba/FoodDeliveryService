@@ -17,17 +17,7 @@ Vue.component("admin-restaurants", {
                 { id: 'three-four', value: '3 - 4' },
                 { id: 'four-five', value: '4 - 5' }
             ],
-            restaurants: [
-                { id: 1, img: 'images/kfc.jpg', name: 'KFC', type: 'Americka hrana', status: 'OPENED', address: 'Knez Mihajlova 7, Beograd', rating: 2.55 },
-                { id: 2, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
-                { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED', address: 'Jevrejska 11, Novi Sad', rating: 4.32 },
-                { id: 4, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
-                { id: 5, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
-                { id: 6, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
-                { id: 7, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
-                { id: 8, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 }
-
-            ]
+            restaurants: null
         }
     },
 
@@ -131,7 +121,10 @@ Vue.component("admin-restaurants", {
 				<h1> Restorani u ponudi</h1>
 				<p></p>
 
-				<restaurant-card v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:restaurant="restaurant" v-bind:loggedInRole="'admin'"></restaurant-card>
+                <a v-for="restaurant in restaurants" v-on:click="openRestaurantPage(restaurant)">
+                    <restaurant-card v-bind:key="restaurant.id" style="cursor: pointer;"
+                        v-bind:restaurant="restaurant" v-bind:loggedInRole="'admin'"></restaurant-card>
+                </a>
 
 			</div>
 		</div>
@@ -143,6 +136,14 @@ Vue.component("admin-restaurants", {
 	`,
     mounted() {
         window.scrollTo(0, 0);
+
+        axios
+			.get('/restaurants/getAllRestaurants')
+			.then(response => {
+				if (response.data != null) {
+					this.restaurants = response.data;
+				}
+		    });
     },
 
     methods: {
@@ -221,6 +222,9 @@ Vue.component("admin-restaurants", {
                 smallSearch.style.height = '0';
                 smallSearch.style.margin = "0";
             }
+        },
+        openRestaurantPage: function(restaurant) {
+            window.location.href = "#/restaurant?id=" + restaurant.restaurantID;
         }
     }
 });

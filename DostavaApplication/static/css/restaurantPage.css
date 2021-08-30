@@ -60,7 +60,7 @@
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 5%;
     max-height: 180px;
-    position: relative;
+    position: absolute;
     left: 12.3%;
     top: 60px;
     margin: 17px 0;
@@ -73,7 +73,6 @@
     height: 7em;
     border-radius: 5%;
     opacity: 100%;
-    border: 2px solid black;
 }
 
 .rating-rp {
@@ -103,18 +102,17 @@
 .top-info-rp {
     display: flex;
     position: relative;
-    left: -15em;
 }
 
 .restaurant-title-rp {
     margin: 0;
-    padding: 0.2em 4.5em 1.2em 0;
+    padding: 0.2em 0.5em 1.2em 0;
     word-wrap: break-word;
-    max-width: 10em;
+    max-width: 7em;
 }
 
 .restaurant-status-rp {
-    margin: 0.5em 0.5em 0 0;
+    margin: 0.5em 0.5em 0 auto;
     padding: 0.3em 0.5em 0.5em 0.5em;
     background-color: rgba(44, 67, 77, 0.281);
     height: 1.2em;
@@ -149,6 +147,7 @@
 
 .full-address-rp {
     margin-top: 0.2em;
+    margin-left: 4em;
 }
 
 .bottom-section-rp {

@@ -11,8 +11,8 @@ import beans.Restaurant;
 
 public class RestaurantDAO extends JSONStorage<Restaurant, Integer> {
 
-	public RestaurantDAO(String path) {
-		super(path, new TypeToken<List<Restaurant>>(){}.getType(), new Gson());
+	public RestaurantDAO(String fileLocation) {
+		super(fileLocation, new TypeToken<List<Restaurant>>(){}.getType(), new Gson());
 	}
 	
 	public int generateID() throws JsonSyntaxException, IOException  {

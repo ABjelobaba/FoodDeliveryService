@@ -12,8 +12,8 @@ import beans.Order;
 
 public class OrderDAO extends JSONStorage<Order, String> {
 
-	public OrderDAO(String path) {
-		super(path, new TypeToken<List<Order>>(){}.getType(), new Gson());
+	public OrderDAO(String fileLocation) {
+		super(fileLocation, new TypeToken<List<Order>>(){}.getType(), new Gson());
 	}
 	
 	public String generateID() throws JsonSyntaxException, IOException  {
