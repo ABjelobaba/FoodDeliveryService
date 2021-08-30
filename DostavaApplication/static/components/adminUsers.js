@@ -3,18 +3,32 @@ Vue.component("admin-users", {
         return {
             mode: '',
             roles: [
-                { id: 'manager', value: 'Menadžer' },
-                { id: 'customer', value: 'Kupac' },
-                { id: 'deliverer', value: 'Dostavljač' },
-                { id: 'admin', value: 'Administrator' }
+                { id: 'Manager', value: 'Menadžer' },
+                { id: 'Customer', value: 'Kupac' },
+                { id: 'Deliverer', value: 'Dostavljač' },
+                { id: 'Administrator', value: 'Administrator' }
+            ],
+            types: [
+                { id: 'Silver', value: 'Srebrni' },
+                { id: 'Bronze', value: 'Bronzani' },
+                { id: 'Gold', value: 'Zlatni' }
             ],
             users: [
-                { id: '1', role: 'manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: '-', suspicious: false, blocked: false, deleted: true },
-                { id: '2', role: 'deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-', suspicious: true, blocked: false, deleted: false },
-                { id: '3', role: 'admin', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-', suspicious: true, blocked: false, deleted: false },
-                { id: '4', role: 'bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784, suspicious: true, blocked: false, deleted: false },
-                { id: '5', role: 'silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564, suspicious: true, blocked: false, deleted: false },
-                { id: '6', role: 'gold', name: 'Anita', surname: 'Marić', username: 'anita_maric', points: 5486, suspicious: true, blocked: false, deleted: false }
+                { id: '1', role: 'Manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: '-', suspicious: false, blocked: false, deleted: true },
+                { id: '2', role: 'Deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-', suspicious: true, blocked: false, deleted: false },
+                { id: '3', role: 'Administrator', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-', suspicious: true, blocked: false, deleted: false },
+                { id: '4', role: 'Customer', medal: 'Bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784, suspicious: true, blocked: false, deleted: false },
+                { id: '5', role: 'Customer', medal: 'Silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564, suspicious: true, blocked: false, deleted: false },
+                { id: '6', role: 'Customer', medal: 'Gold', name: 'Anita', surname: 'Marić', username: 'anita_maric', points: 5486, suspicious: true, blocked: false, deleted: false }
+            ],
+            searchText: '',
+            searchResults: [
+                { id: '1', role: 'Manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: '-', suspicious: false, blocked: false, deleted: true },
+                { id: '2', role: 'Deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-', suspicious: true, blocked: false, deleted: false },
+                { id: '3', role: 'Administrator', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-', suspicious: true, blocked: false, deleted: false },
+                { id: '4', role: 'Customer', medal: 'Bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784, suspicious: true, blocked: false, deleted: false },
+                { id: '5', role: 'Customer', medal: 'Silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564, suspicious: true, blocked: false, deleted: false },
+                { id: '6', role: 'Customer', medal: 'Gold', name: 'Anita', surname: 'Marić', username: 'anita_maric', points: 5486, suspicious: true, blocked: false, deleted: false }
             ]
         }
     },
@@ -26,7 +40,7 @@ Vue.component("admin-users", {
     <div class="users-search">
         <div class="search-text-div">
             <i class="fa fa-search"></i>
-            <input type="text" style="min-width: 470px" placeholder="Pretraži po imenu, prezimenu ili korisničkom imenu..">
+            <input type="text" style="min-width: 470px" placeholder="Pretraži po imenu, prezimenu ili korisničkom imenu.." v-on:keyup="searchUser" v-model="searchText">
         </div>
         <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
         <button class="new-user-btn" v-on:click="newUserClicked">+ Novi korisnik</button>
@@ -39,24 +53,16 @@ Vue.component("admin-users", {
             <h2>Uloge</h2>
             <div class="checkbox-btn-container-dark" style="text-align: left;">
                 <div v-for="role in roles">
-                    <input type="checkbox" v-bind:id="role.id" name="role" v-bind:value="role.id">
+                    <input type="checkbox" v-bind:id="role.id" name="role" v-bind:value="role.id" v-on:change="filterChanged">
                     <label v-bind:for="role.id">{{role.value}}</label>
                 </div>
             </div>
 
             <h2>Tip kupca</h2>
             <div class="checkbox-btn-container-dark" >
-                <div>
-                    <input type="checkbox" id="gold" name="role" value="gold">
-                    <label for="gold">Zlatni</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="silver" name="role" value="silver">
-                    <label for="silver">Srebrni</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="bronze" name="role" value="bronze">
-                    <label for="bronze">Bronzani</label>
+                <div v-for="type in types"> 
+                    <input type="checkbox" v-bind:id="type.id" name="type" v-bind:value="type.id" v-on:change="filterChanged">
+                    <label v-bind:for="type.id">{{type.value}}</label>
                 </div>
             </div>
         </div>
@@ -78,14 +84,14 @@ Vue.component("admin-users", {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="user in users" v-if="!user.deleted">
+                <tr v-for="user in searchResults" v-if="!user.deleted">
                     <td>
-                        <i v-if="user.role == 'manager'" class="fa fa-line-chart fa-lg" aria-hidden="true"></i>
-                        <i v-if="user.role == 'deliverer'" class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
-                        <i v-if="user.role == 'admin'" class="fa fa-cog fa-lg" aria-hidden="true"></i>
-                        <i v-if="user.role == 'gold'" style="color:gold" class="fa fa-user fa-lg" aria-hidden="true"></i>
-                        <i v-if="user.role == 'silver'" style="color:silver" class="fa fa-user fa-lg" aria-hidden="true"></i>
-                        <i v-if="user.role == 'bronze'" style="color:#cd7f32" class="fa fa-user fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'Manager'" class="fa fa-line-chart fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'Deliverer'" class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'Administrator'" class="fa fa-cog fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'Customer' && user.medal == 'Gold'" style="color:gold" class="fa fa-user fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'Customer' && user.medal == 'Silver'" style="color:silver" class="fa fa-user fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'Customer' && user.medal == 'Bronze'" style="color:#cd7f32" class="fa fa-user fa-lg" aria-hidden="true"></i>
                         </td>
                     <td>{{user.name}}</td>
                     <td>{{user.surname}}</td>
@@ -161,7 +167,29 @@ Vue.component("admin-users", {
         },
         deleteUser: function(user) {
             user.deleted = true;
-        }
+        },
+        searchUser: function(event) {
+            if (this.searchText != '' && this.searchText.trim().lenght != 0) {
 
+                let searchParts = this.searchText.trim().split(' ');
+
+                this.searchResults = [];
+                for (user of this.users) {
+                    let matches = true;
+                    for (let i = 0; i < searchParts.length; i++) {
+                        if (!user.name.includes(searchParts[i]) && !user.surname.includes(searchParts[i]) && !user.username.includes(searchParts[i])) {
+                            matches = false;
+                            break;
+                        }
+                    }
+                    if (matches) {
+                        this.searchResults.push(user);
+                    }
+                }
+
+            } else {
+                this.searchResults = this.users;
+            }
+        }
     }
-})
+});
