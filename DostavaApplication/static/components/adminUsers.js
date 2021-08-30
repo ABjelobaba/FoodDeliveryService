@@ -8,7 +8,9 @@ Vue.component("admin-users", {
                 { id: 'deliverer', value: 'Dostavljač' },
                 { id: 'admin', value: 'Administrator' }
             ],
-            users: ''
+            users: '',
+            selectedUser: '',
+            question: ''
         }
     },
     created: function() {
@@ -99,7 +101,7 @@ Vue.component("admin-users", {
                     </td>
                     <td>
                         <button class="black-btn" v-if="user.role=='Administrator' || user.blocked"  disabled ><i class="fa fa-trash-o" aria-hidden="true"></i> Obrisi</button>
-                        <button class="black-btn" v-else v-on:click="deleteUser(user)"><i class="fa fa-trash-o" aria-hidden="true"></i> Obriši</button>
+                        <button class="black-btn" v-else v-on:click="askToDelete(user)"><i class="fa fa-trash-o" aria-hidden="true"></i> Obriši</button>
                     </td>
                 </tr>
             </tbody>
@@ -109,6 +111,8 @@ Vue.component("admin-users", {
 
     <new-user v-if="mode == 'newUser'" v-on:closeRegistration="newUserClose"></new-user>
     <success></success>
+    <question :question="question" v-on:answer="answer"></question>
+    
 </div>
 `,
     mounted() {
@@ -162,8 +166,28 @@ Vue.component("admin-users", {
             user.suspicious = false;
             user.blocked = true;
         },
-        deleteUser: function(user) {
-            user.deleted = true;
+        askToDelete: function(user) {
+            this.question = "Da li ste sigurni da želite da obrišete korisnika '" + user.username + "'?";
+            this.selectedUser = user;
+            document.querySelector("#question").style.display = "flex";
+        },
+        answer: function(receivedAnswer) {
+            document.querySelector("#question").style.display = "none";
+            if (receivedAnswer == 'yes') {
+                this.deleteUser();
+            } else {
+                this.selectedUser = '';
+            }
+        },
+        deleteUser: function() {
+            axios
+                .delete("user/" + this.selectedUser.username)
+                .then(response => {
+                    if (response.data != null) {
+                        this.users = response.data;
+                    }
+
+                })
         }
 
     }

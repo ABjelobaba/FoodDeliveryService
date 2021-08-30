@@ -11,6 +11,7 @@ import utils.RuntimeTypeAdapterFactory;
 
 import static spark.Spark.post;
 import static spark.Spark.get;
+import static spark.Spark.delete;
 
 
 public class UserController {
@@ -121,6 +122,18 @@ public class UserController {
 			} catch(Exception e) {
 				e.printStackTrace();
 				return "";
+			}
+		});
+
+		delete("/user/:username", (req, res) -> {
+			res.type("application/json"); 
+
+			try {
+				userService.deleteUser(gs.fromJson(req.params("username"), String.class));
+				return gs.toJson(userService.getAll());
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
 			}
 		});
 	}

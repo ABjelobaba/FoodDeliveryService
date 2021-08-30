@@ -76,4 +76,8 @@ public class UserService {
         return (List<User>) userDAO.getAll();
     }
 
+	public void deleteUser(String username) throws JsonSyntaxException, IOException {
+		userDAO.delete(userDAO.getByID(username));
+	}
+
 }
