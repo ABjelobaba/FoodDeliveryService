@@ -190,6 +190,56 @@ Vue.component("admin-users", {
             } else {
                 this.searchResults = this.users;
             }
+        },
+        filterChanged: function(event) {
+            this.searchResults = [];
+            var cbType = document.getElementsByName('type');
+            var cbRole = document.getElementsByName('role');
+            var cbCheckedType = [];
+            for (var i = 0; i < cbType.length; i++) {
+                if (cbType[i].checked) {
+                    cbCheckedType.push(cbType[i].defaultValue);
+                }
+            }
+            var cbCheckedRole = [];
+            for (var i = 0; i < cbRole.length; i++) {
+                if (cbRole[i].checked) {
+                    cbCheckedRole.push(cbRole[i].defaultValue);
+                }
+            }
+
+            if (cbCheckedType.length != 0 && cbCheckedRole.length == 0) {
+                document.getElementById('Customer').checked = true;
+            }
+            if (cbCheckedRole.length == 0 && cbCheckedType.length == 0) {
+                this.searchResults = this.users;
+                return;
+            }
+
+            for (user of this.users) {
+                for (cb of cbCheckedRole) {
+                    if ((user.role === cb && cb != 'Customer') || cbCheckedRole.length == 0) {
+                        this.searchResults.push(user);
+                    }
+                }
+
+                if (cbCheckedRole.includes('Customer') || cbCheckedRole.length == 0) {
+                    if (user.role === "Customer") {
+                        if (cbCheckedType.length == 0) {
+                            this.searchResults.push(user);
+                        }
+                        for (cb of cbCheckedType) {
+                            if (user.medal === cb) {
+                                this.searchResults.push(user);
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+
         }
     }
 });
