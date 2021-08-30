@@ -77,7 +77,7 @@ Vue.component("profile", {
                     </div>
                     <div class="inputs-div">
                         <label class="input-label">Datum rođenja:</label>
-                        <input v-model="loggedInUser.birthDate" type="date" class="profile-change-input" style="margin-top: 1px;" id="date_input">
+                        <input v-model="loggedInUser.birthdate" type="date" class="profile-change-input" style="margin-top: 1px;" id="date_input">
                     </div>
 
                     
