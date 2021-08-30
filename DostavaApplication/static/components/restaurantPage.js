@@ -1,6 +1,7 @@
 Vue.component("restaurant-page", {
     data: function() {
         return {
+            articleName: null,
             articles: [
                 { id: 1, img: '', name: 'Burger', composition: 'Zelena salata, paradajz, sir, kiseli krastavac', price: 450 }, {
 
@@ -31,6 +32,19 @@ Vue.component("restaurant-page", {
             ]
         }
     },
+    updated: function() {
+        
+
+        const Map = L.map('map-rp').setView([this.restaurant.location.longitude, this.restaurant.location.latitude], 13);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: apiKey
+        }).addTo(Map);
+        marker = L.marker([this.restaurant.location.longitude, this.restaurant.location.latitude]).addTo(Map); 
+    },
     template: `
 <div class="restourant-page-div">
     <div class="nav-rp" id="navmenu-rp" style="visibility: collapse;">
@@ -47,7 +61,7 @@ Vue.component("restaurant-page", {
 
             <div class="restaurant-info-rp">
                 <div class="top-info-rp">
-                    <img class="logo-rp" src="images/kfc-logo.jpg" alt="Restaurant logo">
+                    <img class="logo-rp" v-bind:src="restaurant.logo" alt="Restaurant logo">
 
                     <div class="title-and-rating">
                         <h1 class="restaurant-title-rp">{{restaurant.name}}</h1>
@@ -65,9 +79,9 @@ Vue.component("restaurant-page", {
                     <h3 v-for="restaurantType in restaurantTypes" v-if="restaurantType.id == restaurant.type">{{restaurantType.value}}</h3>
 
                     <div class="full-address-rp">
-                        <p>Bulevar Evrope 45</p>
-                        <p>Novi Sad 21000</p>
-                        <p>45.256420, 19.811140</p>
+                        <p>{{restaurant.location.address.streetAddress}}</p>
+                        <p>{{restaurant.location.address.city}} {{restaurant.location.address.zipCode}}</p>
+                        <p>{{restaurant.location.longitude}}, {{restaurant.location.latitude}}</p>
                     </div>
                 </div>
             </div>
@@ -214,17 +228,19 @@ Vue.component("restaurant-page", {
     mounted() {
         window.scrollTo(0, 0);
 
+        let id;
         axios
             .get('/restaurant/' + this.$route.query.id)
             .then(response => { 
                 this.restaurant = response.data;
+                id = this.$route.query.id;
             })
 
 
 
 
         function createNavMenu() {
-            if (window.location.href.endsWith('restaurantPage')) {
+            if (window.location.href.endsWith('restaurant?id=' + id)) {
                 if (window.scrollY >= 250) { document.getElementById('navmenu-rp').style.visibility = 'visible'; } else {
                     document.getElementById('navmenu-rp').style.visibility = 'collapse';
                 }
@@ -233,15 +249,7 @@ Vue.component("restaurant-page", {
         window.addEventListener('scroll', createNavMenu);
 
         
-        const Map = L.map('map-rp').setView([45.2458839, 19.8429298], 13);
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: apiKey
-        }).addTo(Map);
-        marker = L.marker([45.2458839, 19.8429298]).addTo(Map);
+        
 
     },
     methods: {
@@ -305,49 +313,3 @@ Vue.component("restaurant-page", {
         closeNewArticleWindow: function() { document.querySelector('.new-article-view-rp').style.display = 'none'; }
     }
 });
-
-function simpleReverseGeocoding(lon,
-    lat) {
-    fetch('http://nominatim.openstreetmap.org/reverse?format=json&lon=' + lon + '&lat=' + lat + '&accept-language=sr-Latn').then(function(response) { return response.json(); }).then(function(json) {
-        let street = document.getElementById("street");
-        let
-            city = document.getElementById("city");
-        let postcode = document.getElementById("postcode");
-        let number = document.getElementById("number");
-        if (json.address.house_number) {
-            number.value = json.address.house_number;
-            number.dispatchEvent(new Event('input'));
-        } else {
-            number.value = '';
-            number.dispatchEvent(new Event('input'));
-        }
-        if (json.address.road) {
-            street.value = json.address.road;
-            street.dispatchEvent(new Event('input'));
-        } else {
-            street.value = '';
-            street.dispatchEvent(new Event('input'));
-        }
-        if (json.address.city) {
-            city.value = json.address.city;
-            if (city.value.startsWith('Grad')) { city.value = json.address.city.substring(5); } else if (city.value.startsWith('Opština')) { city.value = json.address.city.substring(8); } else if (city.value.startsWith('Gradska opština')) { city.value = json.address.city.substring(16); }
-            city.dispatchEvent(new Event('input'));
-        } else if (json.address.city_district) {
-            city.value = json.address.city_district;
-            city.dispatchEvent(new Event('input'));
-        } else if (json.address.town) {
-            city.value = json.address.town;
-            city.dispatchEvent(new Event('input'));
-        } else {
-            city.value = '';
-            city.dispatchEvent(new Event('input'));
-        }
-        if (json.address.postcode) {
-            postcode.value = json.address.postcode;
-            postcode.dispatchEvent(new Event('input'));
-        } else {
-            postcode.value = '';
-            postcode.dispatchEvent(new Event('input'));
-        }
-    });
-}
