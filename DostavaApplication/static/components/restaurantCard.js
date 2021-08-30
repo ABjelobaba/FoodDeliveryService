@@ -1,16 +1,25 @@
 Vue.component("restaurant-card", {
     props: ['restaurant', 'loggedInRole'],
     data: function() {
-        return {}
+        return {
+			restaurantTypes: [
+                { id: 'Italian', value: 'Italijanska hrana' },
+                { id: 'Chinese', value: 'Kineska hrana' },
+                { id: 'Barbecue', value: 'Roštilj' },
+                { id: 'Mexican', value: 'Meksička hrana' },
+                { id: 'American', value: 'Američka hrana' }
+            ]
+		}
     },
 
     template: `
 	<div class="restaurants-col" v-bind:name="restaurant.status">
-		<img v-bind:src="restaurant.img">
+		<img style="width: 150px; height: 130px;" v-bind:src="restaurant.logo">
 		<div class="restaurant-info">
 			<h3>{{restaurant.name}}</h3>
-			<p>{{restaurant.type}}</p>
-			<p>{{restaurant.address}}</p>
+			<p v-for="restaurantType in restaurantTypes" v-if="restaurantType.id == restaurant.type"> {{restaurantType.value}} </p>
+			<p>{{restaurant.location.address.streetAddress}}</p>
+			<p>{{restaurant.location.address.city}}</p>
 			
 		</div>
 		<div style="width: 100%;
@@ -18,8 +27,8 @@ Vue.component("restaurant-card", {
 			flex-direction: column;
 			align-items: center;">
 		
-			<i class="fa fa-star" aria-hidden="true" style="margin:10% 0 0 0;text-align:right"> {{restaurant.rating}}</i>
-			<div class="closed-restaurant" style="width:auto" v-if="restaurant.status === 'CLOSED'">
+			<i class="fa fa-star" aria-hidden="true" style="margin:10% 0 0 0;text-align:right"> {{restaurant.rating}}0.0</i>
+			<div class="closed-restaurant" style="width:auto" v-if="!restaurant.open">
 				<div  style="margin:5%">Zatvoren objekat</div>
 			</div>
 		</div>
