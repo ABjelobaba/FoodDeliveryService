@@ -1,20 +1,19 @@
 Vue.component("profile", {
     data: function() {
         return {
-            loggedInUser: {
-                name: 'Lea',
-                surname: 'Kalmar',
-                username: 'lea_kalmar',
-                gender: 'ŽENSKO',
-                medal: 'bronze',
-                birthDate: "1999-04-23",
-                role: 'user',
-                points: 3456,
-                address: 'Zelengorska 27, Subotica'
-            },
+            loggedInUser: '',
             oldPassword: '',
             newPassword: ''
         }
+    },
+    created: function() {
+        axios
+            .get("user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    this.loggedInUser = response.data;
+                }
+            })
     },
     template: `
 <div>
@@ -23,20 +22,21 @@ Vue.component("profile", {
 
         <div class="float-left-div" style="position:relative; top:0;">
             <div class="restaurant-types">
+                <img v-if="loggedInUser.medal == undefined" class="user-img" src="images/user-img.png" alt="User">
                 <img v-if="loggedInUser.medal == 'gold'" class="user-img" src="images/gold.png" alt="User">
                 <img v-if="loggedInUser.medal == 'silver'" class="user-img" src="images/silver.png" alt="User">
                 <img v-if="loggedInUser.medal == 'bronze'" class="user-img" src="images/bronze.png" alt="User">
                 <h2 style="text-align: center; margin:0">{{loggedInUser.name}} {{loggedInUser.surname}}</h2>
             </div>
 
-            <div class="restaurant-types" v-bind:id="loggedInUser.medal">
+            <div class="restaurant-types" v-bind:id="loggedInUser.medal" v-if="loggedInUser.role == 'Customer'">
                 <h3 style="text-align: center; margin:0 0 5% 0">Sakupljeni bodovi</h3>
                 <h2 style="text-align: center; margin:0">{{loggedInUser.points}}</h2>
             </div>
         </div>
 
         <div style="width:100%">
-            <div class="user-info">
+            <div class="user-info" v-if="loggedInUser.role == 'Customer'">
                 <h3>Adresa za dostavu</h3>
                 <form>
                     <div class="inputs-div">
@@ -71,8 +71,8 @@ Vue.component("profile", {
                         <label class="input-label">Pol:</label>
                         <select v-model="loggedInUser.gender" class="profile-change-select">
                                 <option hidden>Odaberite pol..</option>
-                                <option>MUŠKO</option>
-                                <option>ŽENSKO</option>
+                                <option value="Male">MUŠKO</option>
+                                <option value="Female">ŽENSKO</option>
                             </select>
                         <label class="error" id="genderErr" name="labels" display="hidden"> </label>
                     </div>
