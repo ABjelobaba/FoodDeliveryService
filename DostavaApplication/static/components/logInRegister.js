@@ -109,11 +109,11 @@ Vue.component("logIn-register", {
                 error = true;
             }
 
-            if (this.name[0] < 'A' || this.name[0] > 'Z' || !this.name) {
+            if (this.name[0] != this.name[0].toUpperCase()) {
                 document.getElementById('nameErr').innerHTML = "Morate uneti ime koje počinje velikim slovom!";
                 error = true;
             }
-            if (this.surname[0] < 'A' || this.surname[0] > 'Z' || !this.surname) {
+            if (this.surname[0] != this.surname[0].toUpperCase()) {
                 document.getElementById('surnameErr').innerHTML = "Morate uneti prezime koje počinje velikim slovom!";
                 error = true;
             }
