@@ -112,5 +112,16 @@ public class UserController {
 				return "";
 			}
 		});
+
+		get("/user/getAll", (req, res) -> {
+			res.type("application/json");
+			
+			try {
+				return gs.toJson(userService.getAll());
+			} catch(Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
 	}
 }

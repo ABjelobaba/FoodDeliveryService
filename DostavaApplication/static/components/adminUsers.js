@@ -8,15 +8,17 @@ Vue.component("admin-users", {
                 { id: 'deliverer', value: 'Dostavljač' },
                 { id: 'admin', value: 'Administrator' }
             ],
-            users: [
-                { id: '1', role: 'manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: '-', suspicious: false, blocked: false, deleted: true },
-                { id: '2', role: 'deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-', suspicious: true, blocked: false, deleted: false },
-                { id: '3', role: 'admin', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-', suspicious: true, blocked: false, deleted: false },
-                { id: '4', role: 'bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784, suspicious: true, blocked: false, deleted: false },
-                { id: '5', role: 'silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564, suspicious: true, blocked: false, deleted: false },
-                { id: '6', role: 'gold', name: 'Anita', surname: 'Marić', username: 'anita_maric', points: 5486, suspicious: true, blocked: false, deleted: false }
-            ]
+            users: ''
         }
+    },
+    created: function() {
+        axios
+            .get("user/getAll")
+            .then(response => {
+                if (response.data != null) {
+                    this.users = response.data;
+                }
+            })
     },
     template: `
 <div>
@@ -80,23 +82,24 @@ Vue.component("admin-users", {
             <tbody>
                 <tr v-for="user in users" v-if="!user.deleted">
                     <td>
-                        <i v-if="user.role == 'manager'" class="fa fa-line-chart fa-lg" aria-hidden="true"></i>
-                        <i v-if="user.role == 'deliverer'" class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
-                        <i v-if="user.role == 'admin'" class="fa fa-cog fa-lg" aria-hidden="true"></i>
-                        <i v-if="user.role == 'gold'" style="color:gold" class="fa fa-user fa-lg" aria-hidden="true"></i>
-                        <i v-if="user.role == 'silver'" style="color:silver" class="fa fa-user fa-lg" aria-hidden="true"></i>
-                        <i v-if="user.role == 'bronze'" style="color:#cd7f32" class="fa fa-user fa-lg" aria-hidden="true"></i>
+                        <i v-if="user.role == 'Manager'" class="fa fa-line-chart fa-lg" aria-hidden="true"></i>
+                        <i v-else-if="user.role == 'Deliverer'" class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
+                        <i v-else-if="user.role == 'Administrator'" class="fa fa-cog fa-lg" aria-hidden="true"></i>
+                        <i v-else-if="user.category.type == 'Gold'" style="color:gold" class="fa fa-user fa-lg" aria-hidden="true"></i>
+                        <i v-else-if="user.category.type == 'Silver'" style="color:silver" class="fa fa-user fa-lg" aria-hidden="true"></i>
+                        <i v-else-if="user.category.type == 'Bronze'" style="color:#cd7f32" class="fa fa-user fa-lg" aria-hidden="true"></i>
                         </td>
                     <td>{{user.name}}</td>
                     <td>{{user.surname}}</td>
                     <td>{{user.username}}</td>
-                    <td>{{user.points}}</td>
+                    <td>{{user.totalPoints}}</td>
                     <td>
-                        <button class="black-btn" v-if="user.role=='admin' || user.blocked"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
+                        <button class="black-btn" v-if="user.role=='Administrator' || user.blocked"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
                         <button class="black-btn" v-else v-on:click="blockUser(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
                     </td>
                     <td>
-                        <button class="black-btn" v-on:click="deleteUser(user)"><i class="fa fa-trash-o" aria-hidden="true"></i> Obriši</button>
+                        <button class="black-btn" v-if="user.role=='Administrator' || user.blocked"  disabled ><i class="fa fa-trash-o" aria-hidden="true"></i> Obrisi</button>
+                        <button class="black-btn" v-else v-on:click="deleteUser(user)"><i class="fa fa-trash-o" aria-hidden="true"></i> Obriši</button>
                     </td>
                 </tr>
             </tbody>

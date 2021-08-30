@@ -1,6 +1,7 @@
 package services;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.google.gson.JsonSyntaxException;
 
@@ -70,5 +71,9 @@ public class UserService {
 		}
 		return loggedUser;
 	}
+
+    public List<User> getAll() throws JsonSyntaxException, IOException{
+        return (List<User>) userDAO.getAll();
+    }
 
 }

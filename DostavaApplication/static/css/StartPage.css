@@ -695,6 +695,10 @@ div[name="admin"] {
     top: 335px;
 }
 
+.navbar-link {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
 @media only screen and (max-width: 1050px) {
     .search-restaurants {
         flex-direction: column;
