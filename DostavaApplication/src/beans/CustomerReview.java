@@ -1,12 +1,12 @@
 package beans;
 
 public class CustomerReview implements IEntity<Integer>{
-	public int reviewID;
-	public String customerUsername;
-	public int restourantID;
-	public String review;
-	public int rating;
-	public boolean deleted;
+	private int reviewID;
+	private String customerUsername;
+	private int restourantID;
+	private String review;
+	private int rating;
+	private boolean deleted;
 	
 	public CustomerReview(String customerUsername, int restourantID, String review, int rating) {
 		super();

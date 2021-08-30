@@ -1,9 +1,9 @@
 package beans;
 
 public class CustomerCategory {
-	public CustomerType type;
-	public int discount;
-	public int pointsRequired;
+	private CustomerType type;
+	private int discount;
+	private int pointsRequired;
 	
 	public CustomerCategory() {
 		super();
