@@ -74,16 +74,16 @@ Vue.component("profile", {
                                 <option value="Male">MUŠKO</option>
                                 <option value="Female">ŽENSKO</option>
                             </select>
-                        <label class="error" id="genderErr" name="labels" display="hidden"> </label>
                     </div>
                     <div class="inputs-div">
                         <label class="input-label">Datum rođenja:</label>
                         <input v-model="loggedInUser.birthDate" type="date" class="profile-change-input" style="margin-top: 1px;" id="date_input">
-                        <label class="error" id="dateErr" name="labels" display="hidden"> </label>
                     </div>
 
-                    <button style=" margin: 20px auto;width:280px" class="black-btn"> Potvrdi</button>
+                    
                 </form>
+                <label class="error" id="userDataErr" name="labels" display="hidden"> </label>
+                <button style=" margin: 20px auto;width:280px" class="black-btn" v-on:click="editProfile"> Potvrdi</button>
 
             </div>
 
@@ -94,33 +94,99 @@ Vue.component("profile", {
                     <div class="inputs-div">
                         <label class="input-label">Trenutna lozinka:</label>
                         <input v-model="oldPassword" type="password" class="profile-change-input" placeholder="Lozinka">
-                        <label class="error" id="passwordErr" name="labels" display="hidden"> </label>
                     </div>
 
                     <div class="inputs-div">
                         <label class="input-label">Nova lozinka:</label>
                         <input v-model="newPassword" type="password" class="profile-change-input" placeholder="Lozinka">
-                        <label class="error" id="passwordErr" name="labels" display="hidden"> </label>
                     </div>
 
-                    <label style="display: block;margin: 20px auto;color:grey">Vaša lozinka mora biti 
-                        najmanje 8 znakova <br>duga  i sadržati najmanje jedan broj, jedno <br> veliko i jedno malo slovo.</label>
-
-
-                    <button style="margin: 20px auto;width:280px" class="black-btn"> Potvrdi</button>
                 </form>
+                <label class="error" id="passwordErr" name="labels" display="hidden"> </label>
+                <button style="margin: 20px auto;width:280px" class="black-btn" v-on:click="changePassword"> Potvrdi</button>
             </div>
 
         </div>
     </div>
+    <success :text="'Uspešna izmena vaših podataka!'" id="dataSuccess"></success>
+    <success :text="'Uspešna izmena lozinke!'" id="passwordSuccess"></success>
 </div>
 `,
     mounted() {
         window.scrollTo(0, 0);
     },
     methods: {
-        logOut: function(event) {
-            window.location.href = "/#/"
+        editProfile: function(event) {
+            for (element of document.getElementsByName('labels')) {
+                element.innerHTML = '';
+                element.style.display = 'hidden';
+            }
+
+            let error = false;
+            if (this.loggedInUser.name[0] < 'A' || this.loggedInUser.name[0] > 'Z' || !this.loggedInUser.name) {
+                document.getElementById('nameErr').innerHTML = "Morate uneti ime koje počinje velikim slovom!";
+                error = true;
+            }
+            if (this.loggedInUser.surname[0] < 'A' || this.loggedInUser.surname[0] > 'Z' || !this.loggedInUser.surname) {
+                document.getElementById('surnameErr').innerHTML = "Morate uneti prezime koje počinje velikim slovom!";
+                error = true;
+            }
+
+            if (!error) {
+                this.loggedInUser.type = this.loggedInUser.role;
+                axios
+                    .post("/user/editProfile", JSON.stringify(this.loggedInUser))
+                    .then(response => {
+                        if (response.data != null && response.data != "") {
+                            document.querySelector('#dataSuccess').style.display = 'flex';
+                            let checkMark = document.querySelector('#dataSuccess #checkMark');
+                            checkMark.innerHTML = "&#xf10c";
+
+                            setTimeout(function() {
+                                checkMark.innerHTML = "&#xf05d";
+                            }, 500);
+
+                            setTimeout(function() {
+                                document.querySelector('#dataSuccess').style.display = 'none ';
+                            }, 1500);
+                        } else {
+                            this.oldPassword = '';
+                            this.newPassword = '';
+                            document.getElementById('userDataErr').innerHTML = "Neuspešna izmena podataka!";
+                        }
+                    })
+            }
+
+        },
+        changePassword: function(event) {
+            for (element of document.getElementsByName('labels')) {
+                element.innerHTML = '';
+                element.style.display = 'hidden';
+            }
+            axios
+                .post("/user/changePassword", JSON.stringify({ oldPassword: this.oldPassword, newPassword: this.newPassword }))
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        this.oldPassword = '';
+                        this.newPassword = '';
+
+                        document.querySelector('#passwordSuccess').style.display = 'flex';
+                        let checkMark = document.querySelector('#passwordSuccess #checkMark');
+                        checkMark.innerHTML = "&#xf10c";
+
+                        setTimeout(function() {
+                            checkMark.innerHTML = "&#xf05d";
+                        }, 500);
+
+                        setTimeout(function() {
+                            document.querySelector('#passwordSuccess').style.display = 'none';
+                        }, 1500);
+                    } else {
+                        this.oldPassword = '';
+                        this.newPassword = '';
+                        document.getElementById('passwordErr').innerHTML = "Neuspešna izmena lozinke!";
+                    }
+                })
         }
     }
 })
