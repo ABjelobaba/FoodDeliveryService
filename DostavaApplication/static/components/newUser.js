@@ -2,12 +2,12 @@ Vue.component("new-user", {
     props: ['mode'],
     data: function() {
         return {
-            gender: 'Odaberite pol..',
+            gender: '',
             name: '',
             surname: '',
             username: '',
             password: '',
-            role: 'Odaberite ulogu korisnika..',
+            role: '',
             dateOfBirth: ''
         }
     },
@@ -25,9 +25,9 @@ Vue.component("new-user", {
                 <div style="margin-top: 20px;" >
                     <form>
                         <select v-model="role" class="login-inputs-select" id="selectRole">
-                            <option selected disabled>Odaberite ulogu korisnika..</option>
-                            <option value="deliverer">Dostavljač</option>
-                            <option value="manager">Menadžer</option>
+                            <option selected disabled value="">Odaberite ulogu korisnika..</option>
+                            <option value="Deliverer">Dostavljač</option>
+                            <option value="Manager">Menadžer</option>
                         </select>
                         <label class="error" id="roleErr" name="labels" display="hidden"> </label>
 
@@ -44,9 +44,9 @@ Vue.component("new-user", {
                         <label class="error" id="surnameErr" name="labels" display="hidden"> </label>
 
                         <select v-model="gender" class="login-inputs-select">
-                            <option selected disabled>Odaberite pol..</option>
-                            <option value="male">Muško</option>
-                            <option value="female">Žensko</option>
+                            <option selected disabled value="">Odaberite pol..</option>
+                            <option value="Male">Muško</option>
+                            <option value="Female">Žensko</option>
                         </select>
                         <label class="error" id="genderErr" name="labels" display="hidden"> </label>
 
@@ -55,6 +55,7 @@ Vue.component("new-user", {
                         <label class="error" id="dateErr" name="labels" display="hidden"> </label>
 
                         <button v-on:click="registerUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
+                        <label class="error" id="emptyFieldsError" name="labels" display="hidden"> </label>
                     </form>
                 </div>
             </div>
@@ -80,44 +81,46 @@ Vue.component("new-user", {
                 element.style.display = 'hidden';
             }
 
-            let errors = false;
-
-            if (this.role === 'Odaberite ulogu korisnika..') {
-                document.getElementById('roleErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate odabrati ulogu!';
-                errors = true;
-            }
-            if (!this.username) {
-                document.getElementById('usernameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti korisničko ime!';
-                errors = true;
-            }
-            if (!this.password) {
-                document.getElementById('passwordErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti lozinku!';
-                errors = true;
-            }
-            if (this.gender === 'Odaberite pol..') {
-                document.getElementById('genderErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate izabrati pol!';
-                errors = true;
+            let error = false;
+            if (!this.username || !this.password || this.gender == "" || !this.dateOfBirth || this.role == "") {
+                document.getElementById('emptyFieldsError').innerHTML = "Sva polja moraju biti popunjena!";
+                error = true;
             }
 
-            if (this.dateOfBirth > new Date()) {
-                document.getElementById('dateErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate izabrati datum rođenja!';
-                errors = true;
+            if (this.name[0] < 'A' || this.name[0] > 'Z' || !this.name) {
+                document.getElementById('nameErr').innerHTML = "Morate uneti ime koje počinje velikim slovom!";
+                error = true;
+            }
+            if (this.surname[0] < 'A' || this.surname[0] > 'Z' || !this.surname) {
+                document.getElementById('surnameErr').innerHTML = "Morate uneti prezime koje počinje velikim slovom!";
+                error = true;
             }
 
-            if (!errors) {
-                document.querySelector('.register').style.display = 'none';
-                document.querySelector('.registration-success').style.display = 'flex';
-                let checkMark = document.getElementById('checkMark');
-                checkMark.innerHTML = "&#xf10c";
+            if (!error) {
 
-                setTimeout(function() {
-                    checkMark.innerHTML = "&#xf05d";
-                }, 500);
+                let registrationDTO = {
+                    name: this.name,
+                    surname: this.surname,
+                    username: this.username,
+                    password: this.password,
+                    gender: this.gender,
+                    birthdate: this.dateOfBirth,
+                    role: this.role
+                }
 
-                setTimeout(function() {
-                    document.querySelector('.registration-success').style.display = 'none';
-                }, 1100);
+                axios
+                    .post('/user/register', JSON.stringify(registrationDTO))
+                    .then(response => {
+                        if (response.data == null || response.data == "") {
+                            document.getElementById('emptyFieldsError').innerHTML = "Neuspešna registracija!";
+                        } else {
+                            this.$emit('closeRegistration');
+                        }
+                    })
+
             }
+
+
 
 
         }
