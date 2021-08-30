@@ -3,6 +3,7 @@ package controllers;
 import com.google.gson.Gson;
 
 import beans.User;
+import dto.LogInDTO;
 import dto.RegistrationDTO;
 import services.UserService;
 import spark.Session;
@@ -30,16 +31,26 @@ public class UserController {
 			try {
 				User user = userService.register(gs.fromJson(req.body(), RegistrationDTO.class));
 				if (user != null) {
-					Session session = req.session(true);
-					User isLoggedIn = session.attribute("user");
-					if (isLoggedIn == null) {
-						session.attribute("user", user);
-					}
-					
-				} else {
-					return "";
-				}
-				return gs.toJson(user);
+					Session session = req.session();
+					session.attribute("user", user);
+				} 
+				return (user != null) ? gs.toJson(user) : "";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		post("/user/logIn", (req, res) -> {
+			res.type("application/json");
+			
+			try {
+				User user = userService.logIn(gs.fromJson(req.body(), LogInDTO.class));
+				if (user != null) {			
+					Session session = req.session();
+					session.attribute("user", user);				
+				} 
+				return (user != null) ? gs.toJson(user) : "";
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";

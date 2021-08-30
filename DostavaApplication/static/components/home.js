@@ -41,7 +41,7 @@ Vue.component("home", {
 				<li><a href="#/"><img class="logo-img" src="images/logo_transparent.png"></a></li>
 				<span class="main-nav">
 					<li v-if="loggedInUser == '' || loggedInUser == undefined" v-on:click="register"><a class="btn" >Prijavi se/Registruj se</a></li>
-					<li v-if="loggedInUser != '' && loggedInUser != undefined" style="display:flex;align-items: center;margin-left: 4%;" v-on:click="register"><a class="btn" style="border: 0;padding: 0;">
+					<li v-if="loggedInUser != '' && loggedInUser != undefined" style="display:flex;align-items: center;margin-left: 4%;" v-on:click="viewProfile"><a class="btn" style="border: 0;padding: 0;background-color: transparent;">
 						<i class="fa fa-user-circle-o fa-2x"></i></a>
 					</li>
 				</span>
@@ -283,6 +283,9 @@ Vue.component("home", {
                 smallSearch.style.height = '0';
                 smallSearch.style.margin = "0";
             }
+        },
+        viewProfile: function(event) {
+            window.location.href = "#/account/profile";
         }
     }
 })

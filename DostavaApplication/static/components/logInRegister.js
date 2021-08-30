@@ -16,7 +16,7 @@ Vue.component("logIn-register", {
 	<div class="register">
 			<div class="modal" style="height: auto">
 				<div class="tab">
-					<button v-on:click="tabClick('logIn')">Uloguj se</button>
+					<button v-on:click="tabClick('logIn')">Prijavi se</button>
 					<button v-on:click="tabClick('register')">Registruj se</button>
 				</div>
 				<div v-on:click="registrationClose" class="close">+</div>
@@ -61,12 +61,10 @@ Vue.component("logIn-register", {
 					<div style="margin-top: 20px;" >
 						<form>
 							<input v-model="usernameLogIn" type="text" class="login-inputs" placeholder="Korisničko ime">
-							<label class="error" id="usernameLogInErr" name="labels" display="hidden"> </label>
-	
 							<input v-model="passwordLogIn" type="password" class="login-inputs" placeholder="Lozinka">
-							<label class="error" id="passwordLogInErr" name="labels" display="hidden"> </label>
 	
 							<button v-on:click="logInUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
+							<label class="error" id="logInErr" name="labels" display="hidden"> </label>
 						</form>
 					</div>
 				</div>
@@ -135,7 +133,7 @@ Vue.component("logIn-register", {
                     .post('/user/register', JSON.stringify(registrationDTO))
                     .then(response => {
                         if (response.data == null || response.data == "") {
-                            document.getElementById('emptyFieldsError').innerHTML = "Neuspešna registracija!";
+                            document.getElementById('emptyFieldsError').innerHTML = "Korisničko ime je zauzeto!";
                         } else {
                             window.location.href = "#/account";
                         }
@@ -147,17 +145,26 @@ Vue.component("logIn-register", {
             event.preventDefault();
 
             let error = false;
-            if (!this.usernameLogIn) {
-                document.getElementById('usernameLogInErr').innerHTML = "Morate uneti korisničko ime!";
-                error = true;
-            }
-            if (!this.passwordLogIn) {
-                document.getElementById('passwordLogInErr').innerHTML = "Morate uneti lozinku!";
+            if (!this.usernameLogIn || !this.passwordLogIn) {
+                document.getElementById('logInErr').innerHTML = "Morate popuniti sva polja!";
                 error = true;
             }
 
             if (!error) {
-                window.location.href = "#/account";
+                let logInDTO = {
+                    username: this.usernameLogIn,
+                    password: this.passwordLogIn
+                }
+
+                axios
+                    .post('/user/logIn', JSON.stringify(logInDTO))
+                    .then(response => {
+                        if (response.data == null || response.data == "") {
+                            document.getElementById('logInErr').innerHTML = "Neispravno korisničko ime ili lozinka!";
+                        } else {
+                            window.location.href = "#/account";
+                        }
+                    })
             }
         },
         tabClick: function(tabClicked) {

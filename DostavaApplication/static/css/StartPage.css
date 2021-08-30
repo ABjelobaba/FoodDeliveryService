@@ -482,6 +482,10 @@ input[type="checkbox"] {
     color: white;
 }
 
+.login-inputs-select:focus {
+    border-width: 1px;
+}
+
 .close {
     position: absolute;
     top: 0;

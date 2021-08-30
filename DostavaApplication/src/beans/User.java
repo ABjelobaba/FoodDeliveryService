@@ -3,14 +3,14 @@ package beans;
 import java.util.Date;
 
 public class User implements IEntity<String> {
-	public String username;
-	public String password;
-	public String name;
-	public String surname;
-	public Gender gender;
-	public Date birthdate;
-	public Role role;
-	public boolean deleted;
+	private String username;
+	private String password;
+	private String name;
+	private String surname;
+	private Gender gender;
+	private Date birthdate;
+	private Role role;
+	private boolean deleted;
 	
 	public User(String username, String password, String name, String surname, Gender gender, Date birthdate,
 			Role role) {
