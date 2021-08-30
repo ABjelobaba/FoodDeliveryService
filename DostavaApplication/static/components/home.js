@@ -17,17 +17,7 @@ Vue.component("home", {
                 { id: 'three-four', value: '3 - 4' },
                 { id: 'four-five', value: '4 - 5' }
             ],
-            restaurants: [
-                { id: 1, img: 'images/kfc.jpg', name: 'KFC', type: 'Americka hrana', status: 'OPENED', address: 'Knez Mihajlova 7, Beograd', rating: 2.55 },
-                { id: 2, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
-                { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED', address: 'Jevrejska 11, Novi Sad', rating: 4.32 },
-                { id: 4, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
-                { id: 5, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
-                { id: 6, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
-                { id: 7, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 },
-                { id: 8, img: 'images/mcdonalds.png', name: "McDonald's", type: 'Americka hrana', status: 'OPENED', address: 'Zelengorska 27, Subotica', rating: 1.95 }
-
-            ],
+            restaurants: null,
             nameSort: '',
             locationSort: '',
             ratingSort: ''
@@ -153,6 +143,14 @@ Vue.component("home", {
 	`,
     mounted() {
         window.scrollTo(0, 0);
+
+        axios
+			.get('/restaurants/getAllRestaurants')
+			.then(response => {
+				if (response.data != null) {
+					this.restaurants = response.data;
+				}
+		});
 
         axios
             .get("user/getLoggedInUser")
