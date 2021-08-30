@@ -22,30 +22,29 @@ Vue.component("profile", {
 
         <div class="float-left-div" style="position:relative; top:0;">
             <div class="restaurant-types">
-                <img v-if="loggedInUser.medal == undefined" class="user-img" src="images/user-img.png" alt="User">
-                <img v-if="loggedInUser.medal == 'gold'" class="user-img" src="images/gold.png" alt="User">
-                <img v-if="loggedInUser.medal == 'silver'" class="user-img" src="images/silver.png" alt="User">
-                <img v-if="loggedInUser.medal == 'bronze'" class="user-img" src="images/bronze.png" alt="User">
+                <img v-if="loggedInUser.category == undefined" class="user-img" src="images/user-img.png" alt="User">
+                <img v-else-if="loggedInUser.category.type == 'Gold'" class="user-img" src="images/gold.png" alt="User">
+                <img v-else-if="loggedInUser.category.type == 'Silver'" class="user-img" src="images/silver.png" alt="User">
+                <img v-else="loggedInUser.category.type == 'Bronze'" class="user-img" src="images/bronze.png" alt="User">
                 <h2 style="text-align: center; margin:0">{{loggedInUser.name}} {{loggedInUser.surname}}</h2>
             </div>
 
-            <div class="restaurant-types" v-bind:id="loggedInUser.medal" v-if="loggedInUser.role == 'Customer'">
+            <div class="restaurant-types" v-bind:id="loggedInUser.category.type" v-if="loggedInUser.role == 'Customer'">
                 <h3 style="text-align: center; margin:0 0 5% 0">Sakupljeni bodovi</h3>
-                <h2 style="text-align: center; margin:0">{{loggedInUser.points}}</h2>
+                <h2 style="text-align: center; margin:0">{{loggedInUser.totalPoints}}</h2>
             </div>
         </div>
 
         <div style="width:100%">
             <div class="user-info" v-if="loggedInUser.role == 'Customer'">
                 <h3>Adresa za dostavu</h3>
-                <form>
-                    <div class="inputs-div">
-                        <input v-model="loggedInUser.address" type="text" class="profile-change-input" style="width:auto" >
-                        <label class="error" id="nameErr" name="labels" display="hidden"> </label>
-                    </div>
 
-                    <button style=" margin: 20px auto;width:280px" class="black-btn"> Potvrdi</button>
-                </form>
+                <div class="inputs-div">
+                    <input v-model="loggedInUser.deliveryAddress" type="text" class="profile-change-input" style="width:auto" placeholder="Unesi adresu.." >
+                    <label class="error" id="nameErr" name="labels" display="hidden"> </label>
+                </div>
+
+                <button style=" margin: 20px auto;width:280px" class="black-btn" v-on:click="changeAddress"> Potvrdi</button>
 
             </div>
 
@@ -185,6 +184,30 @@ Vue.component("profile", {
                         this.oldPassword = '';
                         this.newPassword = '';
                         document.getElementById('passwordErr').innerHTML = "Neuspešna izmena lozinke!";
+                    }
+                })
+        },
+        changeAddress: function() {
+            this.loggedInUser.type = this.loggedInUser.role;
+            axios
+                .post("/user/editProfile", JSON.stringify(this.loggedInUser))
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        document.querySelector('#dataSuccess').style.display = 'flex';
+                        let checkMark = document.querySelector('#dataSuccess #checkMark');
+                        checkMark.innerHTML = "&#xf10c";
+
+                        setTimeout(function() {
+                            checkMark.innerHTML = "&#xf05d";
+                        }, 500);
+
+                        setTimeout(function() {
+                            document.querySelector('#dataSuccess').style.display = 'none ';
+                        }, 1500);
+                    } else {
+                        this.oldPassword = '';
+                        this.newPassword = '';
+                        document.getElementById('userDataErr').innerHTML = "Neuspešna izmena podataka!";
                     }
                 })
         }

@@ -530,17 +530,17 @@ input[type="checkbox"] {
     padding-bottom: 10px;
 }
 
-#gold {
+#Gold {
     border-radius: 10%;
     background-color: gold;
 }
 
-#silver {
+#Silver {
     border-radius: 10%;
     background-color: silver;
 }
 
-#bronze {
+#Bronze {
     border-radius: 10%;
     background-color: rgb(205, 127, 50);
 }
