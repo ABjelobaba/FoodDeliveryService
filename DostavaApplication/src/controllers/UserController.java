@@ -1,6 +1,7 @@
 package controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import beans.User;
 import dto.RegistrationDTO;
@@ -12,7 +13,7 @@ import static spark.Spark.get;
 
 
 public class UserController {
-	private static Gson gs = new Gson();
+	private static Gson gs = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
 	public UserController(UserService userService) {
 		
