@@ -56,5 +56,15 @@ public class UserController {
 				return "";
 			}
 		});
+
+		get("/user/logOut", (req, res) -> {
+			res.type("application/json");
+
+			Session session = req.session();
+			if (session.attribute("user") != null) {
+				session.invalidate();
+			}
+			return "";
+		});
 	}
 }

@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import beans.Administrator;
 import beans.Customer;
 import beans.Deliverer;
 import beans.Manager;
@@ -23,7 +24,8 @@ public class UserDAO extends JSONStorage<User, String>{
 		RuntimeTypeAdapterFactory<User> userAdapterFactory = RuntimeTypeAdapterFactory.of(User.class)
 	        .registerSubtype(Customer.class)
 	        .registerSubtype(Deliverer.class)
-	        .registerSubtype(Manager.class);
+	        .registerSubtype(Manager.class)
+			.registerSubtype(Administrator.class);
 		
 		return new GsonBuilder()
 		     .registerTypeAdapterFactory(userAdapterFactory)
