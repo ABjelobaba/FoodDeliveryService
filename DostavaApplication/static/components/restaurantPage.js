@@ -1,7 +1,6 @@
 Vue.component("restaurant-page", {
     data: function() {
         return {
-            restaurantName: 'KFC',
             articles: [
                 { id: 1, img: '', name: 'Burger', composition: 'Zelena salata, paradajz, sir, kiseli krastavac', price: 450 }, {
 
@@ -21,7 +20,15 @@ Vue.component("restaurant-page", {
                 { value: 'rejected ', text: 'Odbijen ' }, { value: 'approved ', text: 'Odobren ' },
                 { value: 'waiting ', text: 'Čeka obradu ' }
             ],
-            loggedInRole: 'admin'
+            loggedInRole: 'manager',
+            restaurant: "",
+            restaurantTypes: [
+                { id: 'Italian', value: 'italijanska hrana' },
+                { id: 'Chinese', value: 'kineska hrana' },
+                { id: 'Barbecue', value: 'roštilj' },
+                { id: 'Mexican', value: 'meksička hrana' },
+                { id: 'American', value: 'američka hrana' }
+            ]
         }
     },
     template: `
@@ -43,18 +50,19 @@ Vue.component("restaurant-page", {
                     <img class="logo-rp" src="images/kfc-logo.jpg" alt="Restaurant logo">
 
                     <div class="title-and-rating">
-                        <h1 class="restaurant-title-rp">{{restaurantName}}</h1>
+                        <h1 class="restaurant-title-rp">{{restaurant.name}}</h1>
                         <div class="rating-rp">
                             <img class="star-rating-rp" src="images/star.png" alt="Rating">
                             <p> <span class="rating-num-rp"> 4.6 </span> (14)</p>
                         </div>
                     </div>
 
-                    <p class="restaurant-status-rp">Otvoren</p>
+                    <p class="restaurant-status-rp" v-if="restaurant.open">Otvoren</p>
+                    <p class="restaurant-status-rp" v-else>Zatvoren</p>
                 </div>
 
                 <div class="bottom-info-rp">
-                    <h3>američka hrana</h3>
+                    <h3 v-for="restaurantType in restaurantTypes" v-if="restaurantType.id == restaurant.type">{{restaurantType.value}}</h3>
 
                     <div class="full-address-rp">
                         <p>Bulevar Evrope 45</p>
@@ -163,8 +171,8 @@ Vue.component("restaurant-page", {
 
                     <div style="margin: auto 0px;">
                     
-                        <input v-model="restaurantName" type="text" class="login-inputs" placeholder="Naziv artikla">
-                        <label class="error" id="restaurantNameErr" name="labels" display="hidden"> </label>
+                        <input v-model="articleName" type="text" class="login-inputs" placeholder="Naziv artikla">
+                        <label class="error" id="articleNameErr" name="labels" display="hidden"> </label>
 
                         <label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Slika:</label>
                         <input type="file" class="login-inputs" style="margin: 2px auto 2px;" id="inpFile" v-on:change="fileUploaded">
@@ -185,8 +193,8 @@ Vue.component("restaurant-page", {
                     <!-- <label class="error" id="logoErr" name="labels" display="hidden"> </label> -->
 
                     <div style="display: inline-flex; justify-content: space-between; width: 60%;">
-                        <input v-model="restaurantName" type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Kolicina (g)">
-                        <input v-model="restaurantName" type="text" class="login-inputs" id="article-price-input" placeholder="Cena (RSD)">
+                        <input type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Kolicina (g)">
+                        <input type="text" class="login-inputs" id="article-price-input" placeholder="Cena (RSD)">
                     </div>
                     
                     <br>
@@ -206,6 +214,15 @@ Vue.component("restaurant-page", {
     mounted() {
         window.scrollTo(0, 0);
 
+        axios
+            .get('/restaurant/' + this.$route.query.id)
+            .then(response => { 
+                this.restaurant = response.data;
+            })
+
+
+
+
         function createNavMenu() {
             if (window.location.href.endsWith('restaurantPage')) {
                 if (window.scrollY >= 250) { document.getElementById('navmenu-rp').style.visibility = 'visible'; } else {
@@ -214,7 +231,9 @@ Vue.component("restaurant-page", {
             }
         }
         window.addEventListener('scroll', createNavMenu);
-        const Map = L.map('map-rp').setView([45.256420, 19.811140], 13);
+
+        
+        const Map = L.map('map-rp').setView([45.2458839, 19.8429298], 13);
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
             maxZoom: 18,
             id: 'mapbox/streets-v11',
@@ -222,7 +241,8 @@ Vue.component("restaurant-page", {
             zoomOffset: -1,
             accessToken: apiKey
         }).addTo(Map);
-        marker = L.marker([45.256420, 19.811140]).addTo(Map);
+        marker = L.marker([45.2458839, 19.8429298]).addTo(Map);
+
     },
     methods: {
         showFoodItem: function() { document.querySelector('.article-view-rp').style.display = 'flex'; },
@@ -271,8 +291,8 @@ Vue.component("restaurant-page", {
             let errors = false; //TO-DO: Dodati proveru za sliku da li je dodata i odabrane kategorije hrane
             if (!errors) {
                 if (document.querySelector('.firstStep').style.display == 'grid') {
-                    if (!this.restaurantName) {
-                        document.getElementById('restaurantNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i>Morate uneti naziv artikla!';
+                    if (!this.articleName) {
+                        document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i>Morate uneti naziv artikla!';
                         errors = true;
                     } else {
                         document.querySelector('.firstStep').style.display = 'none';

@@ -121,7 +121,10 @@ Vue.component("admin-restaurants", {
 				<h1> Restorani u ponudi</h1>
 				<p></p>
 
-				<restaurant-card v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:restaurant="restaurant" v-bind:loggedInRole="'admin'"></restaurant-card>
+                <a v-for="restaurant in restaurants" v-on:click="openRestaurantPage(restaurant)">
+                    <restaurant-card v-bind:key="restaurant.id" style="cursor: pointer;"
+                        v-bind:restaurant="restaurant" v-bind:loggedInRole="'admin'"></restaurant-card>
+                </a>
 
 			</div>
 		</div>
@@ -140,7 +143,7 @@ Vue.component("admin-restaurants", {
 				if (response.data != null) {
 					this.restaurants = response.data;
 				}
-		});
+		    });
     },
 
     methods: {
@@ -219,6 +222,9 @@ Vue.component("admin-restaurants", {
                 smallSearch.style.height = '0';
                 smallSearch.style.margin = "0";
             }
+        },
+        openRestaurantPage: function(restaurant) {
+            window.location.href = "#/restaurant?id=" + restaurant.restaurantID;
         }
     }
 });

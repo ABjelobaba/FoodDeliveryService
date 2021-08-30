@@ -150,7 +150,7 @@ Vue.component("home", {
 				if (response.data != null) {
 					this.restaurants = response.data;
 				}
-		});
+		    });
 
         axios
             .get("user/getLoggedInUser")

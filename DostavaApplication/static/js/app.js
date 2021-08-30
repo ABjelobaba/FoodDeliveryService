@@ -40,7 +40,7 @@ const router = new VueRouter({
 
             ]
         },
-        { path: '/restaurantPage', component: RestaurantPage }
+        { path: '/restaurant', component: RestaurantPage }
     ]
 });
 

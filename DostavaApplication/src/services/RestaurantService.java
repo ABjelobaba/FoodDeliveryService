@@ -18,4 +18,8 @@ public class RestaurantService {
 	public ArrayList<Restaurant> getAll() throws JsonSyntaxException, IOException {
 		return (ArrayList<Restaurant>) restaurantDAO.getAllNotDeleted();
 	}
+	
+	public Restaurant getRestaurantById(int id) throws JsonSyntaxException, IOException {
+		return restaurantDAO.getByID(id);
+	}
 }
