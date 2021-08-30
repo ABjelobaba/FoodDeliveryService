@@ -131,7 +131,10 @@ Vue.component("home", {
 				<h1> Restorani u ponudi</h1>
 				<p></p>
 
-				<restaurant-card v-for="restaurant in restaurants" v-bind:key="restaurant.id" v-bind:restaurant="restaurant"></restaurant-card>
+				<a v-for="restaurant in restaurants" v-on:click="openRestaurantPage(restaurant)">
+                    <restaurant-card v-bind:key="restaurant.id" style="cursor: pointer;"
+                        v-bind:restaurant="restaurant"></restaurant-card>
+                </a>
 
 			</div>
 		</div>
@@ -281,6 +284,9 @@ Vue.component("home", {
                 smallSearch.style.height = '0';
                 smallSearch.style.margin = "0";
             }
+        },
+        openRestaurantPage: function(restaurant) {
+            window.location.href = "#/restaurant?id=" + restaurant.restaurantID;
         }
     }
 })

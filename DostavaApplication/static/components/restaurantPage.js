@@ -1,7 +1,6 @@
 Vue.component("restaurant-page", {
     data: function() {
         return {
-            articleName: null,
             articles: [
                 { id: 1, img: '', name: 'Burger', composition: 'Zelena salata, paradajz, sir, kiseli krastavac', price: 450 }, {
 
@@ -29,12 +28,17 @@ Vue.component("restaurant-page", {
                 { id: 'Barbecue', value: 'roštilj' },
                 { id: 'Mexican', value: 'meksička hrana' },
                 { id: 'American', value: 'američka hrana' }
-            ]
+            ],
+            address: null,
+            streetAddress: null,
+            city: null,
+            zipCode: null,
+            longitude: null,
+            latitude: null,
+            articleName: null
         }
     },
     updated: function() {
-        
-
         const Map = L.map('map-rp').setView([this.restaurant.location.longitude, this.restaurant.location.latitude], 13);
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
             maxZoom: 18,
@@ -79,9 +83,9 @@ Vue.component("restaurant-page", {
                     <h3 v-for="restaurantType in restaurantTypes" v-if="restaurantType.id == restaurant.type">{{restaurantType.value}}</h3>
 
                     <div class="full-address-rp">
-                        <p>{{restaurant.location.address.streetAddress}}</p>
-                        <p>{{restaurant.location.address.city}} {{restaurant.location.address.zipCode}}</p>
-                        <p>{{restaurant.location.longitude}}, {{restaurant.location.latitude}}</p>
+                        <p>{{streetAddress}}</p>
+                        <p>{{city}} {{zipCode}}</p>
+                        <p>{{longitude}}, {{latitude}}</p>
                     </div>
                 </div>
             </div>
@@ -234,6 +238,11 @@ Vue.component("restaurant-page", {
             .then(response => { 
                 this.restaurant = response.data;
                 id = this.$route.query.id;
+                this.streetAddress = response.data.location.address.streetAddress;
+                this.city = response.data.location.address.city;
+                this.zipCode = response.data.location.address.zipCode;
+                this.longitude = response.data.location.longitude;
+                this.latitude = response.data.location.latitude;
             })
 
 
