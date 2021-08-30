@@ -1,20 +1,19 @@
 Vue.component("profile", {
     data: function() {
         return {
-            loggedInUser: {
-                name: 'Lea',
-                surname: 'Kalmar',
-                username: 'lea_kalmar',
-                gender: 'ŽENSKO',
-                medal: 'bronze',
-                birthDate: "1999-04-23",
-                role: 'user',
-                points: 3456,
-                address: 'Zelengorska 27, Subotica'
-            },
+            loggedInUser: '',
             oldPassword: '',
             newPassword: ''
         }
+    },
+    created: function() {
+        axios
+            .get("user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    this.loggedInUser = response.data;
+                }
+            })
     },
     template: `
 <div>
@@ -23,20 +22,21 @@ Vue.component("profile", {
 
         <div class="float-left-div" style="position:relative; top:0;">
             <div class="restaurant-types">
+                <img v-if="loggedInUser.medal == undefined" class="user-img" src="images/user-img.png" alt="User">
                 <img v-if="loggedInUser.medal == 'gold'" class="user-img" src="images/gold.png" alt="User">
                 <img v-if="loggedInUser.medal == 'silver'" class="user-img" src="images/silver.png" alt="User">
                 <img v-if="loggedInUser.medal == 'bronze'" class="user-img" src="images/bronze.png" alt="User">
                 <h2 style="text-align: center; margin:0">{{loggedInUser.name}} {{loggedInUser.surname}}</h2>
             </div>
 
-            <div class="restaurant-types" v-bind:id="loggedInUser.medal">
+            <div class="restaurant-types" v-bind:id="loggedInUser.medal" v-if="loggedInUser.role == 'Customer'">
                 <h3 style="text-align: center; margin:0 0 5% 0">Sakupljeni bodovi</h3>
                 <h2 style="text-align: center; margin:0">{{loggedInUser.points}}</h2>
             </div>
         </div>
 
         <div style="width:100%">
-            <div class="user-info">
+            <div class="user-info" v-if="loggedInUser.role == 'Customer'">
                 <h3>Adresa za dostavu</h3>
                 <form>
                     <div class="inputs-div">
@@ -71,19 +71,19 @@ Vue.component("profile", {
                         <label class="input-label">Pol:</label>
                         <select v-model="loggedInUser.gender" class="profile-change-select">
                                 <option hidden>Odaberite pol..</option>
-                                <option>MUŠKO</option>
-                                <option>ŽENSKO</option>
+                                <option value="Male">MUŠKO</option>
+                                <option value="Female">ŽENSKO</option>
                             </select>
-                        <label class="error" id="genderErr" name="labels" display="hidden"> </label>
                     </div>
                     <div class="inputs-div">
                         <label class="input-label">Datum rođenja:</label>
                         <input v-model="loggedInUser.birthDate" type="date" class="profile-change-input" style="margin-top: 1px;" id="date_input">
-                        <label class="error" id="dateErr" name="labels" display="hidden"> </label>
                     </div>
 
-                    <button style=" margin: 20px auto;width:280px" class="black-btn"> Potvrdi</button>
+                    
                 </form>
+                <label class="error" id="userDataErr" name="labels" display="hidden"> </label>
+                <button style=" margin: 20px auto;width:280px" class="black-btn" v-on:click="editProfile"> Potvrdi</button>
 
             </div>
 
@@ -94,33 +94,99 @@ Vue.component("profile", {
                     <div class="inputs-div">
                         <label class="input-label">Trenutna lozinka:</label>
                         <input v-model="oldPassword" type="password" class="profile-change-input" placeholder="Lozinka">
-                        <label class="error" id="passwordErr" name="labels" display="hidden"> </label>
                     </div>
 
                     <div class="inputs-div">
                         <label class="input-label">Nova lozinka:</label>
                         <input v-model="newPassword" type="password" class="profile-change-input" placeholder="Lozinka">
-                        <label class="error" id="passwordErr" name="labels" display="hidden"> </label>
                     </div>
 
-                    <label style="display: block;margin: 20px auto;color:grey">Vaša lozinka mora biti 
-                        najmanje 8 znakova <br>duga  i sadržati najmanje jedan broj, jedno <br> veliko i jedno malo slovo.</label>
-
-
-                    <button style="margin: 20px auto;width:280px" class="black-btn"> Potvrdi</button>
                 </form>
+                <label class="error" id="passwordErr" name="labels" display="hidden"> </label>
+                <button style="margin: 20px auto;width:280px" class="black-btn" v-on:click="changePassword"> Potvrdi</button>
             </div>
 
         </div>
     </div>
+    <success :text="'Uspešna izmena vaših podataka!'" id="dataSuccess"></success>
+    <success :text="'Uspešna izmena lozinke!'" id="passwordSuccess"></success>
 </div>
 `,
     mounted() {
         window.scrollTo(0, 0);
     },
     methods: {
-        logOut: function(event) {
-            window.location.href = "/#/"
+        editProfile: function(event) {
+            for (element of document.getElementsByName('labels')) {
+                element.innerHTML = '';
+                element.style.display = 'hidden';
+            }
+
+            let error = false;
+            if (this.loggedInUser.name[0] < 'A' || this.loggedInUser.name[0] > 'Z' || !this.loggedInUser.name) {
+                document.getElementById('nameErr').innerHTML = "Morate uneti ime koje počinje velikim slovom!";
+                error = true;
+            }
+            if (this.loggedInUser.surname[0] < 'A' || this.loggedInUser.surname[0] > 'Z' || !this.loggedInUser.surname) {
+                document.getElementById('surnameErr').innerHTML = "Morate uneti prezime koje počinje velikim slovom!";
+                error = true;
+            }
+
+            if (!error) {
+                this.loggedInUser.type = this.loggedInUser.role;
+                axios
+                    .post("/user/editProfile", JSON.stringify(this.loggedInUser))
+                    .then(response => {
+                        if (response.data != null && response.data != "") {
+                            document.querySelector('#dataSuccess').style.display = 'flex';
+                            let checkMark = document.querySelector('#dataSuccess #checkMark');
+                            checkMark.innerHTML = "&#xf10c";
+
+                            setTimeout(function() {
+                                checkMark.innerHTML = "&#xf05d";
+                            }, 500);
+
+                            setTimeout(function() {
+                                document.querySelector('#dataSuccess').style.display = 'none ';
+                            }, 1500);
+                        } else {
+                            this.oldPassword = '';
+                            this.newPassword = '';
+                            document.getElementById('userDataErr').innerHTML = "Neuspešna izmena podataka!";
+                        }
+                    })
+            }
+
+        },
+        changePassword: function(event) {
+            for (element of document.getElementsByName('labels')) {
+                element.innerHTML = '';
+                element.style.display = 'hidden';
+            }
+            axios
+                .post("/user/changePassword", JSON.stringify({ oldPassword: this.oldPassword, newPassword: this.newPassword }))
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        this.oldPassword = '';
+                        this.newPassword = '';
+
+                        document.querySelector('#passwordSuccess').style.display = 'flex';
+                        let checkMark = document.querySelector('#passwordSuccess #checkMark');
+                        checkMark.innerHTML = "&#xf10c";
+
+                        setTimeout(function() {
+                            checkMark.innerHTML = "&#xf05d";
+                        }, 500);
+
+                        setTimeout(function() {
+                            document.querySelector('#passwordSuccess').style.display = 'none';
+                        }, 1500);
+                    } else {
+                        this.oldPassword = '';
+                        this.newPassword = '';
+                        document.getElementById('passwordErr').innerHTML = "Neuspešna izmena lozinke!";
+                    }
+                })
         }
     }
 })

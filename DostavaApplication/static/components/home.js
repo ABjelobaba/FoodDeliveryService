@@ -33,7 +33,15 @@ Vue.component("home", {
             ratingSort: ''
         }
     },
-
+    created: function() {
+        axios
+            .get("user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    this.loggedInUser = response.data;
+                }
+            })
+    },
     template: `
 	<div>
 		<div class="navigation-area">
@@ -153,14 +161,6 @@ Vue.component("home", {
 	`,
     mounted() {
         window.scrollTo(0, 0);
-
-        axios
-            .get("user/getLoggedInUser")
-            .then(response => {
-                if (response.data != null) {
-                    this.loggedInUser = response.data;
-                }
-            })
 
         window.addEventListener('resize', function(event) {
             var b = document.getElementById('filter-btn-do');

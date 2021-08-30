@@ -9,6 +9,7 @@ import beans.Deliverer;
 import beans.Manager;
 import beans.User;
 import dao.UserDAO;
+import dto.ChangePasswordDTO;
 import dto.LogInDTO;
 import dto.RegistrationDTO;
 
@@ -54,6 +55,20 @@ public class UserService {
 			registeredUser = null;
 		}
 		return registeredUser;
+	}
+
+	public void editProfile(User editedUser) throws JsonSyntaxException, IOException {
+		userDAO.update(editedUser);
+	}
+
+	public User changePassword(User user, ChangePasswordDTO changePasswordForm) throws JsonSyntaxException, IOException {
+		User loggedUser = null;
+		if(user.getPassword().equals(changePasswordForm.getOldPassword())){
+			user.setPassword(changePasswordForm.getNewPassword());
+			userDAO.update(user);
+			loggedUser = user;
+		}
+		return loggedUser;
 	}
 
 }
