@@ -30,7 +30,8 @@ Vue.component("restaurant-page", {
             articleType: null,
             articleQuantity: null,
             articleDescription: null,
-            articleImage: null
+            articleImage: null,
+            selectedArticle: undefined
         }
     },
     updated: function() {
@@ -130,7 +131,9 @@ Vue.component("restaurant-page", {
             <div class="articles-rp">
                 <h1>Artikli</h1>
                 <ul class="article-list-rp">
-                    <article-in-restaurant v-for="article in restaurant.items" v-bind:key="article.id" v-bind:article="article"></article-in-restaurant>
+                    <a v-for="article in restaurant.items" v-on:click="showArticle(article)">
+                        <article-in-restaurant v-bind:key="article.id" v-bind:article="article"></article-in-restaurant>
+                    </a>
                 </ul>
             </div>
 
@@ -144,18 +147,18 @@ Vue.component("restaurant-page", {
         </div>
     </div>
 
-    <div class="article-view-rp">
+    <div class="article-view-rp" v-if="selectedArticle != undefined">
         <div class="selected-item-rp">
             <div class="item-img-av-rp">
-                <img src="images/burger.jpg" alt="Food">
-                <a href="#" class="close-window-btn-rp" v-on:click="closeFoodItem">+</a>
+                <img v-bind:src="selectedArticle.image" alt="Food">
+                <a href="#" class="close-window-btn-rp" v-on:click="closeArticle">+</a>
             </div>
             <div class="title-price-rp">
-                <h2>Burger</h2>
-                <h3> 450,00 RSD </h3>
+                <h2>{{selectedArticle.name}}</h2>
+                <h3> {{selectedArticle.price}}.00 RSD </h3>
             </div>
             <p class="description-av-rp">
-                Zelena salata, paradajz, sir, kiseli krastavac 
+                {{selectedArticle.description}}
             </p>
             <div class="av-buttons-rp">
                 <div class="cq-buttons-rp">
@@ -257,8 +260,12 @@ Vue.component("restaurant-page", {
 
     },
     methods: {
-        showFoodItem: function() { document.querySelector('.article-view-rp').style.display = 'flex'; },
-        closeFoodItem: function() { document.querySelector('.article-view-rp').style.display = 'none'; },
+        showArticle: function(article) { 
+            this.selectedArticle = article;
+        },
+        closeArticle: function() { 
+            this.selectedArticle = undefined;
+        },
         showHideReviews: function(checked) {
             let cb = document.getElementById('viewReviews');
             if (cb.checked) {
