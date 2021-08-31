@@ -3,14 +3,21 @@ Vue.component("admin-users", {
         return {
             mode: '',
             roles: [
-                { id: 'manager', value: 'Menadžer' },
-                { id: 'customer', value: 'Kupac' },
-                { id: 'deliverer', value: 'Dostavljač' },
-                { id: 'admin', value: 'Administrator' }
+                { id: 'Manager', value: 'Menadžer' },
+                { id: 'Customer', value: 'Kupac' },
+                { id: 'Deliverer', value: 'Dostavljač' },
+                { id: 'Administrator', value: 'Administrator' }
+            ],
+            types: [
+                { id: 'Silver', value: 'Srebrni' },
+                { id: 'Bronze', value: 'Bronzani' },
+                { id: 'Gold', value: 'Zlatni' }
             ],
             users: '',
             selectedUser: '',
-            question: ''
+            question: '',
+            searchText: '',
+            searchResults: ''
         }
     },
     created: function() {
@@ -19,6 +26,7 @@ Vue.component("admin-users", {
             .then(response => {
                 if (response.data != null) {
                     this.users = response.data;
+                    this.searchResults = response.data;
                 }
             })
     },
@@ -30,7 +38,7 @@ Vue.component("admin-users", {
     <div class="users-search">
         <div class="search-text-div">
             <i class="fa fa-search"></i>
-            <input type="text" style="min-width: 470px" placeholder="Pretraži po imenu, prezimenu ili korisničkom imenu..">
+            <input type="text" style="min-width: 470px" placeholder="Pretraži po imenu, prezimenu ili korisničkom imenu.." v-on:keyup="searchUser" v-model="searchText">
         </div>
         <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
         <button class="new-user-btn" v-on:click="newUserClicked">+ Novi korisnik</button>
@@ -43,24 +51,16 @@ Vue.component("admin-users", {
             <h2>Uloge</h2>
             <div class="checkbox-btn-container-dark" style="text-align: left;">
                 <div v-for="role in roles">
-                    <input type="checkbox" v-bind:id="role.id" name="role" v-bind:value="role.id">
+                    <input type="checkbox" v-bind:id="role.id" name="role" v-bind:value="role.id" v-on:change="filterChanged">
                     <label v-bind:for="role.id">{{role.value}}</label>
                 </div>
             </div>
 
             <h2>Tip kupca</h2>
             <div class="checkbox-btn-container-dark" >
-                <div>
-                    <input type="checkbox" id="gold" name="role" value="gold">
-                    <label for="gold">Zlatni</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="silver" name="role" value="silver">
-                    <label for="silver">Srebrni</label>
-                </div>
-                <div>
-                    <input type="checkbox" id="bronze" name="role" value="bronze">
-                    <label for="bronze">Bronzani</label>
+                <div v-for="type in types"> 
+                    <input type="checkbox" v-bind:id="type.id" name="type" v-bind:value="type.id" v-on:change="filterChanged">
+                    <label v-bind:for="type.id">{{type.value}}</label>
                 </div>
             </div>
         </div>
@@ -73,16 +73,16 @@ Vue.component("admin-users", {
             <thead>
                 <tr>
                     <th>Uloga</th>
-                    <th>Ime <i class="fa fa-sort "></i></th>
-                    <th>Prezime <i class="fa fa-sort"></i></th>
-                    <th>Korisnicko ime <i class="fa fa-sort"></i></th>
-                    <th>Broj bodova <i class="fa fa-sort"></i></th>
+                    <th v-on:click="sortByName" id="name-th">Ime <i class="fa fa-sort "></i></th>
+                    <th v-on:click="sortBySurname" id="surname-th">Prezime <i class="fa fa-sort"></i></th>
+                    <th v-on:click="sortByUsername" id="username-th">Korisničko ime <i class="fa fa-sort"></i></th>
+                    <th v-on:click="sortByPoints" id="points-th">Broj bodova <i class="fa fa-sort"></i></th>
                     <th>Blokiraj</th>
                     <th>Obriši</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="user in users" v-if="!user.deleted">
+                <tr v-for="user in searchResults" v-if="!user.deleted">
                     <td>
                         <i v-if="user.role == 'Manager'" class="fa fa-line-chart fa-lg" aria-hidden="true"></i>
                         <i v-else-if="user.role == 'Deliverer'" class="fa fa-bicycle fa-lg" aria-hidden="true"></i>
@@ -188,7 +188,155 @@ Vue.component("admin-users", {
                     }
 
                 })
-        }
+        },
+        searchUser: function(event) {
+            if (this.searchText != '' && this.searchText.trim().lenght != 0) {
 
+                let searchParts = this.searchText.trim().split(' ');
+
+                this.searchResults = [];
+                for (user of this.users) {
+                    let matches = true;
+                    for (let i = 0; i < searchParts.length; i++) {
+                        if (!user.name.includes(searchParts[i]) && !user.surname.includes(searchParts[i]) && !user.username.includes(searchParts[i])) {
+                            matches = false;
+                            break;
+                        }
+                    }
+                    if (matches) {
+                        this.searchResults.push(user);
+                    }
+                }
+
+            } else {
+                this.searchResults = this.users;
+            }
+        },
+        filterChanged: function(event) {
+            this.searchResults = [];
+            var cbType = document.getElementsByName('type');
+            var cbRole = document.getElementsByName('role');
+            var cbCheckedType = [];
+            for (var i = 0; i < cbType.length; i++) {
+                if (cbType[i].checked) {
+                    cbCheckedType.push(cbType[i].defaultValue);
+                }
+            }
+            var cbCheckedRole = [];
+            for (var i = 0; i < cbRole.length; i++) {
+                if (cbRole[i].checked) {
+                    cbCheckedRole.push(cbRole[i].defaultValue);
+                }
+            }
+
+            if (cbCheckedType.length != 0 && cbCheckedRole.length == 0) {
+                document.getElementById('Customer').checked = true;
+            }
+            if (cbCheckedRole.length == 0 && cbCheckedType.length == 0) {
+                this.searchResults = this.users;
+                return;
+            }
+
+            for (user of this.users) {
+                for (cb of cbCheckedRole) {
+                    if ((user.role === cb && cb != 'Customer') || cbCheckedRole.length == 0) {
+                        this.searchResults.push(user);
+                    }
+                }
+
+                if (cbCheckedRole.includes('Customer') || cbCheckedRole.length == 0) {
+                    if (user.role === "Customer") {
+                        if (cbCheckedType.length == 0) {
+                            this.searchResults.push(user);
+                        }
+                        for (cb of cbCheckedType) {
+                            if (user.category.type === cb) {
+                                this.searchResults.push(user);
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        },
+        sortByName: function() {
+            let nameTH = document.querySelector('#name-th');
+            if (nameTH.innerHTML.includes('sort-asc')) {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) });
+                nameTH.innerHTML = 'Ime <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            } else {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) }).reverse();
+                nameTH.innerHTML = 'Ime <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('name');
+        },
+        sortBySurname: function() {
+            let surnameTH = document.querySelector('#surname-th');
+            if (surnameTH.innerHTML.includes('sort-asc')) {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.surname.localeCompare(b.surname) });
+                surnameTH.innerHTML = 'Prezime <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            } else {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.surname.localeCompare(b.surname) }).reverse();
+                surnameTH.innerHTML = 'Prezime <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('surname');
+        },
+        sortByUsername: function() {
+            let usernameTH = document.querySelector('#username-th');
+            if (usernameTH.innerHTML.includes('sort-asc')) {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.username.localeCompare(b.username) });
+                usernameTH.innerHTML = 'Korisničko ime <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            } else {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.username.localeCompare(b.username) }).reverse();
+                usernameTH.innerHTML = 'Korisničko ime <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('username');
+        },
+        sortByPoints: function() {
+            let pointsTH = document.querySelector('#points-th');
+            if (pointsTH.innerHTML.includes('sort-asc')) {
+                this.searchResults = this.searchResults.sort(function(a, b) {
+                    if (a.totalPoints == undefined) {
+                        return 1;
+                    } else if (b.totalPoints == undefined) {
+                        return -1;
+                    } else {
+                        return b.totalPoints - a.totalPoints
+                    }
+                });
+                pointsTH.innerHTML = 'Broj bodova <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            } else {
+                this.searchResults = this.searchResults.sort(function(a, b) {
+                    if (a.totalPoints == undefined) {
+                        return 1;
+                    } else if (b.totalPoints == undefined) {
+                        return -1;
+                    } else {
+                        return b.totalPoints - a.totalPoints
+                    }
+                }).reverse();
+                pointsTH.innerHTML = 'Broj bodova <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('points');
+        },
+        resetOtherSorts: function(activeSort) {
+            if (activeSort != "name") {
+                let nameTH = document.querySelector('#name-th');
+                nameTH.innerHTML = 'Ime <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "surname") {
+                let surnameTH = document.querySelector('#surname-th');
+                surnameTH.innerHTML = 'Prezime <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "username") {
+                let usernameTH = document.querySelector('#username-th');
+                usernameTH.innerHTML = 'Korisničko ime <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "points") {
+                let pointsTH = document.querySelector('#points-th');
+                pointsTH.innerHTML = 'Broj bodova <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+        }
     }
-})
+});
