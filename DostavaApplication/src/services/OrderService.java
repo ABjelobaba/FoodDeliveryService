@@ -17,8 +17,9 @@ public class OrderService {
 		this.orderDAO = orderDAO;
 	}
 
-    public Order createOrder(ShoppingCart cart) throws JsonSyntaxException, IOException {
-        Order order = new Order(cart.getOrderedItems(), cart.getRestaurantID(), new Date(), cart.getTotalPrice(), cart.getCustomerUsername(), OrderStatus.Processing);
+    public Order createOrder(ShoppingCart cart, String string) throws JsonSyntaxException, IOException {
+        Order order = new Order(cart.getOrderedItems(), cart.getRestaurantID(), new Date(), 
+							cart.getTotalPrice(), cart.getCustomerUsername(), OrderStatus.Processing,string);
 		orderDAO.save(order);
 		return order;
     }

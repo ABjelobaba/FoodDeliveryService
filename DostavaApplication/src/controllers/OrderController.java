@@ -4,6 +4,7 @@ import static spark.Spark.post;
 
 import com.google.gson.Gson;
 
+import beans.Customer;
 import beans.Order;
 import beans.ShoppingCart;
 import services.OrderService;
@@ -20,9 +21,9 @@ public class OrderController {
 			try {
                 Session session = req.session();
                 ShoppingCart cart = session.attribute("cart");
-                String userName = cart.getCustomerUsername();
-                Order order = orderService.createOrder(cart);
-                session.attribute("cart", new ShoppingCart(userName));
+                Customer customer = session.attribute("user");
+                Order order = orderService.createOrder(cart, gs.fromJson(req.body(), String.class));
+                session.attribute("cart", new ShoppingCart(customer.getUsername()));
 				return gs.toJson(order);
 			} catch (Exception e) {
 				e.printStackTrace();

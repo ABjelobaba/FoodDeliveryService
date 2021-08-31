@@ -2,7 +2,6 @@ package controllers;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
-import static spark.Spark.delete;
 
 
 import com.google.gson.Gson;
@@ -79,6 +78,31 @@ public class CartController {
                 cart = cartService.deleteItem(cart,gs.fromJson(req.body(), OrderedItem.class));
 				session.attribute("cart", cart);
 				return gs.toJson(cart);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		post("/cart/searchAddress", (req, res) -> {
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+				session.attribute("address", gs.fromJson(req.body(), String.class));
+				return "ok";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		get("/cart/searchAddress", (req, res) -> {
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+				return session.attribute("address");
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";

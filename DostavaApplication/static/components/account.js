@@ -4,7 +4,8 @@ Vue.component("account", {
             deliveryAddress: '',
             loggedInUser: '',
             mode: '',
-            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 }
+            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 },
+            showAddressContainer: true
         }
     },
     created: function() {
@@ -20,13 +21,22 @@ Vue.component("account", {
     },
     updated: function() {
 
+        if (this.showAddressContainer == true && window.location.href.includes('account')) {
+            document.querySelector('#user-nav-ul').style.marginTop = '0';
+            document.querySelector('#user-nav-ul-second').style.marginTop = '0';
+        } else if (window.location.href.includes('account')) {
+            document.querySelector('#user-nav-ul-second').style.margin = '80px 7% 20px 0';
+        }
+
         if (window.location.href.endsWith('restaurants')) {
             document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('users')) {
             document.getElementById('users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('profile')) {
+            this.showAddressContainer = false;
             document.getElementById('profile').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('orders')) {
+            this.showAddressContainer = false;
             document.getElementById('orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('restaurants')) {
             document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
@@ -37,6 +47,7 @@ Vue.component("account", {
         } else if (window.location.href.endsWith('suspiciousUsers')) {
             document.getElementById('suspicious-users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('cart')) {
+            this.showAddressContainer = false;
             document.getElementById('shopping-cart').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('restaurantOrders')) {
             document.getElementById('managers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
@@ -56,7 +67,7 @@ Vue.component("account", {
                     <a v-on:click="logOut" class="btn">Odjavi se</a>
                 </span>
                 <div class="address-container">
-                    <div class="entered-address" v-if="deliveryAddress != ''">
+                    <div class="entered-address" v-if="showAddressContainer">
                         <i class="fa fa-map-marker fa-lg" ></i>
                         <label>{{deliveryAddress}}</label>
                     </div>
@@ -104,12 +115,7 @@ Vue.component("account", {
         }
 
 
-        if (this.deliveryAddress != '') {
-            document.querySelector('#user-nav-ul').style.marginTop = '0';
-            document.querySelector('#user-nav-ul-second').style.marginTop = '0';
-        } else {
-            document.querySelector('#user-nav-ul-second').style.margin = '80px 7% 20px 0';
-        }
+
     },
 
     methods: {

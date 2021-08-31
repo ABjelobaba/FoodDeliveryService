@@ -1,15 +1,12 @@
 package services;
 
 import beans.*;
-import dao.RestaurantDAO;
 import dto.CartItemDTO;
 
 public class CartService {
     
-    private RestaurantDAO restaurantDAO;
 	
-	public CartService(RestaurantDAO restaurantDAO) {
-		this.restaurantDAO = restaurantDAO;
+	public CartService() {
 	}
     
     public ShoppingCart addArticle(ShoppingCart cart, CartItemDTO cartItemDTO) {

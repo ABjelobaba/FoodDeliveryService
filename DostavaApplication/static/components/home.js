@@ -156,12 +156,12 @@ Vue.component("home", {
         window.scrollTo(0, 0);
 
         axios
-			.get('/restaurants/getAllRestaurants')
-			.then(response => {
-				if (response.data != null) {
-					this.restaurants = response.data;
-				}
-		    });
+            .get('/restaurants/getAllRestaurants')
+            .then(response => {
+                if (response.data != null) {
+                    this.restaurants = response.data;
+                }
+            });
 
         axios
             .get("user/getLoggedInUser")
@@ -216,7 +216,14 @@ Vue.component("home", {
         },
         order: function(event) {
             if (this.deliveryAddress.match(/[\p{Letter}\s]+ [0-9]+,[\p{Letter}\s]+/gu)) {
-                window.location.href = "#/account?" + this.deliveryAddress;
+
+                axios
+                    .post('/cart/searchAddress', JSON.stringify(this.deliveryAddress))
+                    .then(response => {
+                        if (response.data != null && response.data != "") {
+                            window.location.href = "#/account?" + this.deliveryAddress;
+                        }
+                    })
             } else {
                 document.getElementById('addressErr').innerHTML = "Adresa mora biti u obliku 'Knez Mihajlova 7, Beograd'!";
                 document.getElementById('addressErr').style.color = 'red';

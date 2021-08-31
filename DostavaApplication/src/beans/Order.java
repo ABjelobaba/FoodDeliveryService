@@ -12,9 +12,10 @@ public class Order implements IEntity<String>{
 	private String customerUsername;
 	private OrderStatus status;
 	private boolean deleted;
+	private String address;
 	
 	public Order(List<OrderedItem> orderedItems, int restaurantID, Date orderDate, double price,
-			String customerUsername, OrderStatus status) {
+			String customerUsername, OrderStatus status, String address) {
 		super();
 		this.orderedItems = orderedItems;
 		this.restaurantID = restaurantID;
@@ -23,6 +24,7 @@ public class Order implements IEntity<String>{
 		this.customerUsername = customerUsername;
 		this.status = status;
 		this.deleted = false;
+		this.address = address;
 	}
 
 
@@ -95,6 +97,13 @@ public class Order implements IEntity<String>{
 		this.status = status;
 	}
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	@Override
 	public String getID() {
