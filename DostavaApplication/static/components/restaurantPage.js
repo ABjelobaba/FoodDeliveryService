@@ -32,7 +32,8 @@ Vue.component("restaurant-page", {
             articleQuantity: null,
             articleDescription: null,
             articleImage: null,
-            selectedArticle: undefined
+            selectedArticle: undefined,
+            selectedArticleQuantity: 1
         }
     },
     created: function() {
@@ -179,12 +180,12 @@ Vue.component("restaurant-page", {
             </p>
             <div class="av-buttons-rp">
                 <div class="cq-buttons-rp">
-                    <img src="images/remove-white.png" alt="Remove item" class="change-quantity-rp">
-                    <h5>1</h5>
-                    <img src="images/add-white.png" alt="Add item" class="change-quantity-rp">
+                    <img src="images/remove-white.png" alt="Remove item" v-on:click="decreaseQuantity" class="change-quantity-rp">
+                    <h5>{{selectedArticleQuantity}}</h5>
+                    <img src="images/add-white.png" alt="Add item" v-on:click="increaseQuantity" class="change-quantity-rp">
                 </div>
                 <div class="add-to-basket-rp">
-                    <a href="#" v-if="loggedInUser.role != 'Administrator'">Dodaj u korpu</a>
+                    <a href="#" v-if="loggedInUser.role != 'Administrator'" >Dodaj u korpu</a>
                     <a href="#" v-else><i class="fa fa-trash-o fa-lg" aria-hidden="true"> </i> Obrisi</a>
                 </div>
 
@@ -274,7 +275,9 @@ Vue.component("restaurant-page", {
             document.querySelector('.register').style.display = 'flex';
         },
         showArticle: function(article) {
-            if (this.loggedInUser != '' && this.loggedInUser != undefined) { this.selectedArticle = article; } else {
+            if (this.loggedInUser != '' && this.loggedInUser != undefined) {
+                this.selectedArticle = article;
+            } else {
                 document.querySelector('.registration-success').style.display = 'flex';
                 let checkMark = document.getElementById('checkMark');
                 checkMark.innerHTML = "&#xf06a";
@@ -283,7 +286,10 @@ Vue.component("restaurant-page", {
                 }, 2000);
             }
         },
-        closeArticle: function() { this.selectedArticle = undefined; },
+        closeArticle: function() {
+            this.selectedArticle = undefined;
+            this.selectedArticleQuantity = 1;
+        },
         showHideReviews: function(checked) {
             let cb = document.getElementById('viewReviews');
             if (cb.checked) {
@@ -377,6 +383,14 @@ Vue.component("restaurant-page", {
         },
         closeNewArticleWindow: function() {
             document.querySelector('.new-article-view-rp').style.display = 'none';
+        },
+        decreaseQuantity: function() {
+            if (this.selectedArticleQuantity != 1) {
+                this.selectedArticleQuantity = this.selectedArticleQuantity - 1;
+            }
+        },
+        increaseQuantity: function() {
+            this.selectedArticleQuantity = this.selectedArticleQuantity + 1;
         }
     }
 });
