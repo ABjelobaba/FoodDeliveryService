@@ -2,7 +2,8 @@ Vue.component("account", {
     data: function() {
         return {
             deliveryAddress: '',
-            loggedInUser: ''
+            loggedInUser: '',
+            mode: ''
         }
     },
     created: function() {
@@ -15,6 +16,33 @@ Vue.component("account", {
                     window.location.href = '#/';
                 }
             })
+    },
+    updated: function() {
+        if (window.location.href.endsWith('restaurants')) {
+            document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('users')) {
+            document.getElementById('users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('profile')) {
+            document.getElementById('profile').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('orders')) {
+            document.getElementById('orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('restaurants')) {
+            document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('availableOrders')) {
+            document.getElementById('available-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('allOrders')) {
+            document.getElementById('deliverers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('suspiciousUsers')) {
+            document.getElementById('suspicious-users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('cart')) {
+            document.getElementById('shopping-cart').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('restaurantOrders')) {
+            document.getElementById('managers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('restaurantPreviousOrders')) {
+            document.getElementById('managers-prev-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('customers')) {
+            document.getElementById('restaurant-customer-list').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        }
     },
     template: `
 	<div class="page">
@@ -68,31 +96,7 @@ Vue.component("account", {
             document.getElementById('user-nav-ul').style.marginTop = '2px';
         }
 
-        if (window.location.href.endsWith('restaurants')) {
-            document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('users')) {
-            document.getElementById('users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('profile')) {
-            document.getElementById('profile').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('orders')) {
-            document.getElementById('orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('restaurants')) {
-            document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('availableOrders')) {
-            document.getElementById('available-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('allOrders')) {
-            document.getElementById('deliverers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('suspiciousUsers')) {
-            document.getElementById('suspicious-users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('cart')) {
-            document.getElementById('shopping-cart').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('restaurantOrders')) {
-            document.getElementById('managers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('restaurantPreviousOrders')) {
-            document.getElementById('managers-prev-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        } else if (window.location.href.endsWith('customers')) {
-            document.getElementById('restaurant-customer-list').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
-        }
+
 
 
     },
