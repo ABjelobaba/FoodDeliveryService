@@ -27,7 +27,7 @@ public class Application {
 		RestaurantController restaurantController = new RestaurantController(restaurantService);
 
 		
-		CartService cartService = new CartService();
+		CartService cartService = new CartService(restaurantDAO);
 		CartController cartController = new CartController(cartService);
 		
 		

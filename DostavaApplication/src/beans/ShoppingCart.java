@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart {
+	private int restaurantID;
 	private List<OrderedItem> orderedItems;
 	private String customerUsername;
 	private double totalPrice;
 	
 	public ShoppingCart(String customerUsername) {
 		super();
+		this.restaurantID = -1;
 		this.orderedItems = new ArrayList<OrderedItem>();
 		this.customerUsername = customerUsername;
 		this.totalPrice = 0;
@@ -39,6 +41,13 @@ public class ShoppingCart {
 	}
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+
+	public int getRestaurantID() {
+		return restaurantID;
+	}
+	public void setRestaurantID(int restaurantID) {
+		this.restaurantID = restaurantID;
 	}
 	
 }

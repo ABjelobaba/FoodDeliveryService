@@ -33,7 +33,8 @@ Vue.component("restaurant-page", {
             articleDescription: null,
             articleImage: null,
             selectedArticle: undefined,
-            selectedArticleQuantity: 1
+            selectedArticleQuantity: 1,
+            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 }
         }
     },
     created: function() {
@@ -41,6 +42,13 @@ Vue.component("restaurant-page", {
             .then(response => {
                 if (response.data != null) {
                     this.loggedInUser = response.data;
+                }
+            })
+
+        axios.get("cart")
+            .then(response => {
+                if (response.data != null) {
+                    this.cart = response.data;
                 }
             })
     },
@@ -108,7 +116,7 @@ Vue.component("restaurant-page", {
                 <ul style="margin-top: 60px; width: 100%; box-sizing: border-box;">
                     <!-- <li><a name="user-nav" id="profile">Narudžbine</a></li> -->
                     <!-- <div style=" width: 100%; text-align: right;">
-                            <li><a>Korpa (0)</a></li>
+                            <li><a>Korpa ( {{cart.orderedItems.length}} )</a></li>
                         </div> -->
                 </ul>
             </nav>
@@ -143,7 +151,7 @@ Vue.component("restaurant-page", {
         </div>
         <div class="right-container-rp">
             <div class="nav-cart-rp" id="ncart-rp" v-if="loggedInUser.role == 'Customer'">
-                <a> Korpa (0)</a>
+                <a> Korpa ( {{cart.orderedItems.length}} )</a>
             </div>
 
             <div class="articles-rp">
@@ -185,7 +193,7 @@ Vue.component("restaurant-page", {
                     <img src="images/add-white.png" alt="Add item" v-on:click="increaseQuantity" class="change-quantity-rp">
                 </div>
                 <div class="add-to-basket-rp">
-                    <a href="#" v-if="loggedInUser.role != 'Administrator'" >Dodaj u korpu</a>
+                    <a href="#" v-if="loggedInUser.role != 'Administrator'" v-on:click="addToCart" >Dodaj u korpu</a>
                     <a href="#" v-else><i class="fa fa-trash-o fa-lg" aria-hidden="true"> </i> Obrisi</a>
                 </div>
 
@@ -277,6 +285,11 @@ Vue.component("restaurant-page", {
         showArticle: function(article) {
             if (this.loggedInUser != '' && this.loggedInUser != undefined) {
                 this.selectedArticle = article;
+                for (orderItem of this.cart.orderedItems) {
+                    if (orderItem.item.name === article.name) {
+                        this.selectedArticleQuantity = orderItem.amount;
+                    }
+                }
             } else {
                 document.querySelector('.registration-success').style.display = 'flex';
                 let checkMark = document.getElementById('checkMark');
@@ -391,6 +404,24 @@ Vue.component("restaurant-page", {
         },
         increaseQuantity: function() {
             this.selectedArticleQuantity = this.selectedArticleQuantity + 1;
+        },
+        addToCart: function() {
+            axios
+                .post(
+                    '/cart/addArticle',
+                    JSON.stringify({
+                        restaurantID: this.restaurant.restaurantID,
+                        item: this.selectedArticle,
+                        quantity: this.selectedArticleQuantity
+                    })
+                )
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        this.cart = response.data;
+                        this.closeArticle();
+                    }
+                })
+
         }
     }
 });
