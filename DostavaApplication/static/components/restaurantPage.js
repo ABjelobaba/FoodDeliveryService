@@ -1,16 +1,17 @@
 Vue.component("restaurant-page", {
     data: function() {
         return {
+            loggedInUser: '',
             comments: [
-                { id: 1, rating: 5.0, text: ' Odlicna hrana, brza dostava ', userName: 'Nikola ', status: 'rejected ' },
-                { id: 2, rating: 4.0, text: 'Dobra hrana,velike porcije ', userName: 'Marko ', status: 'approved ' },
-                { id: 3, rating: 3.0, text: 'Okej hrana ', userName: 'Marija ', status: ' waiting ' }
+                { id: 1, rating: 5.0, text: 'Odlična hrana, brza dostava', userName: 'Nikola', status: 'rejected' },
+                { id: 2, rating: 4.0, text: 'Dobra hrana,velike porcije', userName: 'Marko', status: 'approved' },
+                { id: 3, rating: 3.0, text: 'Okej hrana', userName: 'Marija', status: 'waiting' }
             ],
             review_states: [
-                { value: 'rejected ', text: 'Odbijen ' }, { value: 'approved ', text: 'Odobren ' },
-                { value: 'waiting ', text: 'Čeka obradu ' }
+                { value: 'rejected', text: 'Odbijen' },
+                { value: 'approved', text: 'Odobren' },
+                { value: 'waiting', text: ' Čeka obradu' }
             ],
-            loggedInRole: 'manager',
             restaurant: "",
             restaurantTypes: [
                 { id: 'Italian', value: 'italijanska hrana' },
@@ -34,29 +35,45 @@ Vue.component("restaurant-page", {
             selectedArticle: undefined
         }
     },
+    created: function() {
+        axios.get("user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    this.loggedInUser = response.data;
+                }
+            })
+    },
     updated: function() {
-        const Map = L.map('map-rp').setView([this.restaurant.location.longitude, this.restaurant.location.latitude], 13);
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: apiKey
-        }).addTo(Map);
-        marker = L.marker([this.restaurant.location.longitude, this.restaurant.location.latitude]).addTo(Map); 
+        var container = L.DomUtil.get('map-rp');
+        if (container != null) {
+            container._leaflet_id = null;
+        }
+
+        if (this.restaurant != '' && this.restaurant != undefined) {
+            const Map = L.map('map-rp').setView([this.restaurant.location.longitude,
+                this.restaurant.location.latitude
+            ], 13);
+            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', { maxZoom: 18, id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, accessToken: apiKey }).addTo(Map);
+            marker
+                = L.marker([this.restaurant.location.longitude, this.restaurant.location.latitude]).addTo(Map);
+        }
+
+
     },
     template: `
 <div class="restourant-page-div">
     <div class="nav-rp" id="navmenu-rp" style="visibility: collapse;">
         <a href="#/"><img class="logo-img" style="top:20px" src="images/logo_transparent.png"></a>
-        <a class="btn" style="float:right;top:30px">Odjavi se</a>
+        <a v-if="loggedInUser == '' || loggedInUser == undefined" v-on:click="register" class="btn" style="float:right;top:30px">Prijavi se/Registruj se</a>
+        <a v-else class="btn" style="float:right;top:30px">Odjavi se</a>
     </div>
 
     <section class="top-section-rp">
         <div class="top-part-rp">
             <div class="top-menu-rp">
                 <a href="#/"><img class="logo-img" style="top:20px" src="images/logo_transparent.png"></a>
-                <a class="btn" style="float:right;top:30px">Odjavi se</a>
+                <a v-if="loggedInUser == '' || loggedInUser == undefined" v-on:click="register" class="btn" style="float:right;top:30px">Prijavi se/Registruj se</a>
+                <a v-else class="btn" style="float:right;top:30px">Odjavi se</a>
             </div>
 
             <div class="restaurant-info-rp">
@@ -101,12 +118,12 @@ Vue.component("restaurant-page", {
 
     <div class="bottom-section-rp">
         <div style="position: sticky;top: 65px;text-align: right;align-self: start;">
-            <div v-if="loggedInRole =='manager'">
+            <div v-if="loggedInUser.role =='Manager'">
                 <button v-on:click="showNewArticleWindow()" class="add-article-btn">+ Novi artikal</button>
             </div>
-            <div v-if="loggedInRole =='admin' || loggedInRole =='manager'">
+            <div v-if="loggedInUser.role =='Administrator' || loggedInUser.role =='Manager'">
                 <input v-on:click="showHideReviews()" type="checkbox" id="viewReviews" value="viewReviews">
-                <label class="full-radio-btn-label" style="min-width: fit-content;margin:1.5em 0 0 0" for="viewReviews" >Pregled utisaka</label>
+                <label class="full-radio-btn-label" style="min-width: fit-content;margin:1.5em 0 0 0" for="viewReviews">Pregled utisaka</label>
             </div>
             <div class="nav-menu-rp" id="scrollPanel">
                 <h3>Artikli</h3>
@@ -124,7 +141,7 @@ Vue.component("restaurant-page", {
             <div id="map-rp"></div>
         </div>
         <div class="right-container-rp">
-            <div class="nav-cart-rp" id="ncart-rp" v-if="loggedInRole == 'user'">
+            <div class="nav-cart-rp" id="ncart-rp" v-if="loggedInUser.role == 'Customer'">
                 <a> Korpa (0)</a>
             </div>
 
@@ -140,7 +157,7 @@ Vue.component("restaurant-page", {
             <div class="restaurant-reviews-rp">
                 <h1>Utisci</h1>
                 <ul class="user-reviews-list-rp">
-                    <comment-status v-for="c in comments" v-bind:key="c.id" v-bind:comment="c" v-bind:loggedInRole="loggedInRole"></comment-status>
+                    <comment-status v-for="c in comments" v-bind:key="c.id" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role"></comment-status>
                 </ul>
                 <h6 id="allReviews">Svi utisci... </h6>
             </div>
@@ -167,10 +184,10 @@ Vue.component("restaurant-page", {
                     <img src="images/add-white.png" alt="Add item" class="change-quantity-rp">
                 </div>
                 <div class="add-to-basket-rp">
-                    <a href="#" v-if="loggedInRole != 'admin'">Dodaj u korpu</a>
-                    <a href="#" v-else ><i class="fa fa-trash-o fa-lg" aria-hidden="true"> </i> Obrisi</a>
+                    <a href="#" v-if="loggedInUser.role != 'Administrator'">Dodaj u korpu</a>
+                    <a href="#" v-else><i class="fa fa-trash-o fa-lg" aria-hidden="true"> </i> Obrisi</a>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -186,7 +203,7 @@ Vue.component("restaurant-page", {
                     </div>
 
                     <div style="margin: auto 0px;">
-                    
+
                         <input v-model="articleName" type="text" class="login-inputs" placeholder="Naziv artikla">
                         <label class="error" id="articleNameErr" name="labels" display="hidden"> </label>
 
@@ -203,7 +220,7 @@ Vue.component("restaurant-page", {
                         <div class="radio-btn-container" style="width: 60%;height: 100px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);">
                             <textarea v-model="articleDescription" class="article-desc-ta" placeholder="Unesite opis artikla..."></textarea>
                         </div>
-                    
+
                     </div>
                     <!-- <label class="error" id="logoErr" name="labels" display="hidden"> </label> -->
 
@@ -212,7 +229,7 @@ Vue.component("restaurant-page", {
                         <input v-model="articlePrice" type="text" class="login-inputs" id="article-price-input" placeholder="Cena (RSD)">
                     </div>
                     <label class="error" id="articleQPErr" name="labels" display="hidden"> </label>
-                    
+
                     <br>
                 </form>
             </div>
@@ -222,50 +239,51 @@ Vue.component("restaurant-page", {
 
         </div>
     </div>
+    <success :text="'Neophodno je da se prijavite kako bi naručili željene proizvode!'"></success>
+    <logIn-register></logIn-register>
 </div>
 
 
-</div>
 `,
     mounted() {
         window.scrollTo(0, 0);
-
         let id;
-        axios
-            .get('/restaurant/' + this.$route.query.id)
-            .then(response => { 
-                this.restaurant = response.data;
-                id = this.$route.query.id;
-                this.streetAddress = response.data.location.address.streetAddress;
-                this.city = response.data.location.address.city;
-                this.zipCode = response.data.location.address.zipCode;
-                this.longitude = response.data.location.longitude;
-                this.latitude = response.data.location.latitude;
-            })
-
-
-
+        axios.get('/restaurant/' + this.$route.query.id).then(response => {
+            this.restaurant = response.data;
+            id = this.$route.query.id;
+            this.streetAddress = response.data.location.address.streetAddress;
+            this.city = response.data.location.address.city;
+            this.zipCode = response.data.location.address.zipCode;
+            this.longitude = response.data.location.longitude;
+            this.latitude = response.data.location.latitude;
+        })
 
         function createNavMenu() {
             if (window.location.href.endsWith('restaurant?id=' + id)) {
-                if (window.scrollY >= 250) { document.getElementById('navmenu-rp').style.visibility = 'visible'; } else {
+                if (window.scrollY >= 250) {
+                    document.getElementById('navmenu-rp').style.visibility = 'visible';
+                } else {
                     document.getElementById('navmenu-rp').style.visibility = 'collapse';
                 }
             }
         }
         window.addEventListener('scroll', createNavMenu);
-
-        
-        
-
     },
     methods: {
-        showArticle: function(article) { 
-            this.selectedArticle = article;
+        register: function(event) {
+            document.querySelector('.register').style.display = 'flex';
         },
-        closeArticle: function() { 
-            this.selectedArticle = undefined;
+        showArticle: function(article) {
+            if (this.loggedInUser != '' && this.loggedInUser != undefined) { this.selectedArticle = article; } else {
+                document.querySelector('.registration-success').style.display = 'flex';
+                let checkMark = document.getElementById('checkMark');
+                checkMark.innerHTML = "&#xf06a";
+                setTimeout(function() {
+                    document.querySelector('.registration-success').style.display = 'none';
+                }, 2000);
+            }
         },
+        closeArticle: function() { this.selectedArticle = undefined; },
         showHideReviews: function(checked) {
             let cb = document.getElementById('viewReviews');
             if (cb.checked) {
@@ -284,10 +302,12 @@ Vue.component("restaurant-page", {
         },
         fileUploaded: function(event) {
             let inpFile = document.getElementById("inpFile");
-            let imagePreviewContainer = document.getElementById("imagePreview");
+            let
+                imagePreviewContainer = document.getElementById("imagePreview");
             let previewImage = imagePreviewContainer.querySelector(".image-preview__image");
             let previewDefaultText = imagePreviewContainer.querySelector(".image-preview__default-text");
-            let file = inpFile.files[0];
+            let file =
+                inpFile.files[0];
             if (file) {
                 let reader = new FileReader();
                 previewDefaultText.style.display = "none";
@@ -296,8 +316,7 @@ Vue.component("restaurant-page", {
                 reader.readAsDataURL(file);
             } else {
                 previewDefaultText.style.display = null;
-                previewImage.style.display =
-                    null;
+                previewImage.style.display = null;
                 previewImage.setAttribute("src", "");
             }
         },
@@ -307,54 +326,57 @@ Vue.component("restaurant-page", {
                 element.innerHTML = '';
                 element.style.display = 'hidden';
             }
-            let errors = false; //TO-DO: Dodati proveru za sliku da li je dodata i odabrane kategorije hrane
+            let errors = false;
 
+            //TO-DO: Dodati proveru za sliku da li je dodata i odabrane kategorije hrane 
             if (!this.articleName) {
-                document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti naziv artikla!';
+                document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i>Morate uneti naziv artikla!';
                 errors = true;
-            } 
-
+            }
             var reg = /[0-9]+/;
             if (!reg.test(this.articlePrice)) {
-                document.getElementById('articleQPErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> I količina i cena moraju biti brojčane vrednosti!';
+                document.getElementById('articleQPErr ').innerHTML = ' <i class = "fa fa-exclamation-circle" ></i> I količina i cena moraju biti brojčane vrednosti!';
                 errors = true;
             }
             if (this.articleQuantity) {
-               if (!reg.test(this.articleQuantity)) {
-                document.getElementById('articleQPErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> I količina i cena moraju biti brojčane vrednosti!';
-                errors = true;
-               }
+                if (!reg.test(this.articleQuantity)) {
+                    document.getElementById('articleQPErr').innerHTML = '<i class="fa fa-exclamation-circle"></i > I količina i cena moraju biti brojčane vrednosti!';
+                    errors = true;
+                }
             }
             if (!this.articlePrice) {
-                document.getElementById('articleQPErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Cena mora biti uneta!';
+                document.getElementById('articleQPErr ').innerHTML = ' < i class = "fa fa-exclamation-circle" > < /i> Cena mora biti uneta!';
                 errors = true;
-            } 
-
+            }
             if (!errors) {
                 let articleDTO = {
                     name: this.articleName,
                     price: this.articlePrice,
-                    type: 'Food',//this.articleType,
+                    type: 'Food',
+                    //this.articleType, 
                     restaurantID: this.restaurant.restaurantID,
                     quantity: this.articleQuantity,
                     description: this.articleDescription,
-                    image: 'images/burger.jpg'//fix
+                    image: 'images/burger.jpg'
+                        //fix 
                 }
-
                 axios
                     .post('/restaurant/addArticle', JSON.stringify(articleDTO))
                     .then(response => {
                         if (response.data == null || response.data == "") {
                             document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Već postoji artikal sa unetim nazivom!';
                         } else {
-                            document.querySelector('.new-article-view-rp').style.display = 'none';
+                            document.querySelector('.new - article - view - rp ').style.display = 'none ';
                             location.reload();
                         }
                     })
             }
-
         },
-        showNewArticleWindow: function() { document.querySelector('.new-article-view-rp').style.display = 'flex'; },
-        closeNewArticleWindow: function() { document.querySelector('.new-article-view-rp').style.display = 'none'; }
+        showNewArticleWindow: function() {
+            document.querySelector('.new - article - view - rp ').style.display = 'flex ';
+        },
+        closeNewArticleWindow: function() {
+            document.querySelector('.new-article-view-rp').style.display = 'none';
+        }
     }
 });

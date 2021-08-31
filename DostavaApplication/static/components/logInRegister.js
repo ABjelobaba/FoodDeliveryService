@@ -165,7 +165,7 @@ Vue.component("logIn-register", {
                         } else if (response.data === true) {
                             document.getElementById('logInErr').innerHTML = "Vaš nalog je blokiran. Trenutno niste u mogućnosti pristupiti nalogu.";
                         } else {
-                            window.location.href = "#/account";
+                            document.location.reload(true);
                         }
                     })
             }
