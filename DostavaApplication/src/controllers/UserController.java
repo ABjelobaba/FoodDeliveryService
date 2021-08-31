@@ -136,5 +136,16 @@ public class UserController {
 				return null;
 			}
 		});
+
+		get("/user/getSuspiciousUsers", (req, res) -> {
+			res.type("application/json");
+			
+			try {
+				return gs.toJson(userService.getSuspiciousUsers());
+			} catch(Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
 	}
 }

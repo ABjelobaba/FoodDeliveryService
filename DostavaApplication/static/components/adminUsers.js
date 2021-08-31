@@ -104,6 +104,9 @@ Vue.component("admin-users", {
                         <button class="black-btn" v-else v-on:click="askToDelete(user)"><i class="fa fa-trash-o" aria-hidden="true"></i> Obriši</button>
                     </td>
                 </tr>
+                <tr v-if="searchResults.length == 0">
+                    <td colspan="6"><h3  style="text-align:center" >Nema treženih korisnika</h3></td>
+                </tr>
             </tbody>
 
         </table>

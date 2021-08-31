@@ -1,6 +1,9 @@
 package services;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gson.JsonSyntaxException;
@@ -8,6 +11,9 @@ import com.google.gson.JsonSyntaxException;
 import beans.Customer;
 import beans.Deliverer;
 import beans.Manager;
+import beans.Order;
+import beans.OrderStatus;
+import beans.Role;
 import beans.User;
 import dao.UserDAO;
 import dto.ChangePasswordDTO;
@@ -78,6 +84,29 @@ public class UserService {
 
 	public void deleteUser(String username) throws JsonSyntaxException, IOException {
 		userDAO.delete(userDAO.getByID(username));
+	}
+
+	public List<User> getSuspiciousUsers() throws JsonSyntaxException, IOException {
+		List<User> suspiciouUsers = new ArrayList<User>();
+		Calendar c = Calendar.getInstance();
+		c.setTime(new java.util.Date());
+		c.add(Calendar.DATE, -31);
+		Date lastMonth = (Date) c.getTime();
+
+		for(User user: userDAO.getAll() ){
+			if(user.getRole() == Role.Customer){
+				int numberCanceledOrders = 0;
+				for(Order order: ((Customer)user).getAllOrders()){
+					if(order.getStatus() == OrderStatus.Cancelled && order.getOrderDate().after(lastMonth)){
+						numberCanceledOrders++;
+					}
+				}
+				if(numberCanceledOrders > 5){
+					suspiciouUsers.add(user);
+				}
+			}
+		}
+		return suspiciouUsers;
 	}
 
 }
