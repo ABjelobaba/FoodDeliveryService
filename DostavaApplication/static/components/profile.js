@@ -134,7 +134,7 @@ Vue.component("profile", {
             if (!error) {
                 this.loggedInUser.type = this.loggedInUser.role;
                 axios
-                    .post("/user/editProfile", JSON.stringify(this.loggedInUser))
+                    .put("/user/editProfile", JSON.stringify(this.loggedInUser))
                     .then(response => {
                         if (response.data != null && response.data != "") {
                             document.querySelector('#dataSuccess').style.display = 'flex';
@@ -163,7 +163,7 @@ Vue.component("profile", {
                 element.style.display = 'hidden';
             }
             axios
-                .post("/user/changePassword", JSON.stringify({ oldPassword: this.oldPassword, newPassword: this.newPassword }))
+                .put("/user/changePassword", JSON.stringify({ oldPassword: this.oldPassword, newPassword: this.newPassword }))
                 .then(response => {
                     if (response.data != null && response.data != "") {
                         this.oldPassword = '';
@@ -190,7 +190,7 @@ Vue.component("profile", {
         changeAddress: function() {
             this.loggedInUser.type = this.loggedInUser.role;
             axios
-                .post("/user/editProfile", JSON.stringify(this.loggedInUser))
+                .put("/user/editProfile", JSON.stringify(this.loggedInUser))
                 .then(response => {
                     if (response.data != null && response.data != "") {
                         document.querySelector('#dataSuccess').style.display = 'flex';

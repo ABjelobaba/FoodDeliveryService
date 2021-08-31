@@ -97,7 +97,7 @@ Vue.component("admin-users", {
                     <td>{{user.totalPoints}}</td>
                     <td>
                         <button class="black-btn" v-if="user.role=='Administrator' || user.blocked"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
-                        <button class="black-btn" v-else v-on:click="blockUser(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
+                        <button class="black-btn" v-else v-on:click="askToBlock(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
                     </td>
                     <td>
                         <button class="black-btn" v-if="user.role=='Administrator' || user.blocked"  disabled ><i class="fa fa-trash-o" aria-hidden="true"></i> Obrisi</button>
@@ -165,19 +165,26 @@ Vue.component("admin-users", {
             }
             this.mode = '';
         },
-        blockUser: function(user) {
-            user.suspicious = false;
-            user.blocked = true;
+        askToBlock: function(user) {
+            this.mode = 'block';
+            this.question = "Da li ste sigurni da želite da blokirate korisnika '" + user.username + "'?";
+            this.selectedUser = user;
+            document.querySelector("#question").style.display = "flex";
         },
         askToDelete: function(user) {
+            this.mode = 'delete';
             this.question = "Da li ste sigurni da želite da obrišete korisnika '" + user.username + "'?";
             this.selectedUser = user;
             document.querySelector("#question").style.display = "flex";
         },
         answer: function(receivedAnswer) {
             document.querySelector("#question").style.display = "none";
-            if (receivedAnswer == 'yes') {
+            if (receivedAnswer == 'yes' && this.mode == 'delete') {
+                this.mode = '';
                 this.deleteUser();
+            } else if (receivedAnswer == 'yes' && this.mode == 'block') {
+                this.mode = '';
+                this.blockUser();
             } else {
                 this.selectedUser = '';
             }
@@ -188,6 +195,18 @@ Vue.component("admin-users", {
                 .then(response => {
                     if (response.data != null) {
                         this.users = response.data;
+                        this.searchResults = response.data;
+                    }
+
+                })
+        },
+        blockUser: function(user) {
+            axios
+                .put("user/" + this.selectedUser.username)
+                .then(response => {
+                    if (response.data != null) {
+                        this.users = response.data;
+                        this.searchResults = response.data;
                     }
 
                 })

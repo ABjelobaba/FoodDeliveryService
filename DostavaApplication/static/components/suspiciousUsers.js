@@ -87,7 +87,7 @@ Vue.component("suspicious-users", {
                     <td>{{user.totalPoints}}</td>
                     <td>
                         <button class="black-btn" v-if="user.role=='Administrator' || user.blocked"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
-                        <button class="black-btn" v-else v-on:click="blockUser(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
+                        <button class="black-btn" v-else v-on:click="askToBlock(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
                     </td>
                 </tr>
                 <tr v-if="searchResults.length == 0">
@@ -130,19 +130,26 @@ Vue.component("suspicious-users", {
             document.querySelector('.filter-div').style.display = 'none';
             document.querySelector('.table-users').style.top = '0px';
         },
-        blockUser: function(user) {
-            user.suspicious = false;
-            user.blocked = true;
+        askToBlock: function(user) {
+            this.mode = 'block';
+            this.question = "Da li ste sigurni da želite da blokirate korisnika '" + user.username + "'?";
+            this.selectedUser = user;
+            document.querySelector("#question").style.display = "flex";
         },
         askToDelete: function(user) {
+            this.mode = 'delete';
             this.question = "Da li ste sigurni da želite da obrišete korisnika '" + user.username + "'?";
             this.selectedUser = user;
             document.querySelector("#question").style.display = "flex";
         },
         answer: function(receivedAnswer) {
             document.querySelector("#question").style.display = "none";
-            if (receivedAnswer == 'yes') {
+            if (receivedAnswer == 'yes' && this.mode == 'delete') {
+                this.mode = '';
                 this.deleteUser();
+            } else if (receivedAnswer == 'yes' && this.mode == 'block') {
+                this.mode = '';
+                this.blockUser();
             } else {
                 this.selectedUser = '';
             }
@@ -153,6 +160,18 @@ Vue.component("suspicious-users", {
                 .then(response => {
                     if (response.data != null) {
                         this.users = response.data;
+                        this.searchResults = response.data;
+                    }
+
+                })
+        },
+        blockUser: function(user) {
+            axios
+                .put("user/" + this.selectedUser.username)
+                .then(response => {
+                    if (response.data != null) {
+                        this.users = response.data;
+                        this.searchResults = response.data;
                     }
 
                 })
@@ -183,49 +202,26 @@ Vue.component("suspicious-users", {
         filterChanged: function(event) {
             this.searchResults = [];
             var cbType = document.getElementsByName('type');
-            var cbRole = document.getElementsByName('role');
             var cbCheckedType = [];
             for (var i = 0; i < cbType.length; i++) {
                 if (cbType[i].checked) {
                     cbCheckedType.push(cbType[i].defaultValue);
                 }
             }
-            var cbCheckedRole = [];
-            for (var i = 0; i < cbRole.length; i++) {
-                if (cbRole[i].checked) {
-                    cbCheckedRole.push(cbRole[i].defaultValue);
-                }
-            }
 
-            if (cbCheckedType.length != 0 && cbCheckedRole.length == 0) {
-                document.getElementById('Customer').checked = true;
-            }
-            if (cbCheckedRole.length == 0 && cbCheckedType.length == 0) {
+            if (cbCheckedType.length == 0) {
                 this.searchResults = this.users;
                 return;
             }
 
             for (user of this.users) {
-                for (cb of cbCheckedRole) {
-                    if ((user.role === cb && cb != 'Customer') || cbCheckedRole.length == 0) {
-                        this.searchResults.push(user);
-                    }
-                }
-
-                if (cbCheckedRole.includes('Customer') || cbCheckedRole.length == 0) {
-                    if (user.role === "Customer") {
-                        if (cbCheckedType.length == 0) {
+                if (user.role === "Customer") {
+                    for (cb of cbCheckedType) {
+                        if (user.category.type === cb) {
                             this.searchResults.push(user);
                         }
-                        for (cb of cbCheckedType) {
-                            if (user.category.type === cb) {
-                                this.searchResults.push(user);
-                            }
-                        }
                     }
-
                 }
-
             }
         },
         sortByName: function() {

@@ -11,6 +11,7 @@ public class User implements IEntity<String> {
 	private Date birthdate;
 	private Role role;
 	private boolean deleted;
+	private boolean blocked;
 	
 	public User(String username, String password, String name, String surname, Gender gender, Date birthdate,
 			Role role) {
@@ -23,6 +24,7 @@ public class User implements IEntity<String> {
 		this.birthdate = birthdate;
 		this.role = role;
 		this.deleted = false;
+		this.blocked = false;
 	}
 
 	public String getUsername() {
@@ -87,6 +89,14 @@ public class User implements IEntity<String> {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
 	}
 
 	@Override

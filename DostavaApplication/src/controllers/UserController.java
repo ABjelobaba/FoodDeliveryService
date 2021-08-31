@@ -12,6 +12,7 @@ import utils.RuntimeTypeAdapterFactory;
 import static spark.Spark.post;
 import static spark.Spark.get;
 import static spark.Spark.delete;
+import static spark.Spark.put;
 
 
 public class UserController {
@@ -82,7 +83,7 @@ public class UserController {
 			return "";
 		});
 
-		post("/user/editProfile", (req, res) -> {
+		put("/user/editProfile", (req, res) -> {
 			res.type("application/json");
 			
 			try {
@@ -97,7 +98,7 @@ public class UserController {
 			}
 		});
 
-		post("/user/changePassword", (req, res) -> {
+		put("/user/changePassword", (req, res) -> {
 			res.type("application/json");
 			
 			try {
@@ -145,6 +146,18 @@ public class UserController {
 			} catch(Exception e) {
 				e.printStackTrace();
 				return "";
+			}
+		});
+
+		put("/user/:username", (req, res) -> {
+			res.type("application/json"); 
+
+			try {
+				userService.blockUser(gs.fromJson(req.params("username"), String.class));
+				return gs.toJson(userService.getAll());
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
 			}
 		});
 	}

@@ -109,4 +109,10 @@ public class UserService {
 		return suspiciouUsers;
 	}
 
+	public void blockUser(String username) throws JsonSyntaxException, IOException {
+		User blockedUser = userDAO.getByID(username);
+		blockedUser.setBlocked(true);
+		userDAO.update(blockedUser);
+	}
+
 }
