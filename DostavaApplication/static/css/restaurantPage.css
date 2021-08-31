@@ -569,6 +569,7 @@
     overflow: auto;
     background-color: #dddddd;
     font-size: 1.2em;
+    color: black;
 }
 
 #article-price-input::placeholder {
