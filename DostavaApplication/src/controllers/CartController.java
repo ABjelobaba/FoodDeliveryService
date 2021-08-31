@@ -2,9 +2,12 @@ package controllers;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.delete;
+
 
 import com.google.gson.Gson;
 
+import beans.OrderedItem;
 import beans.ShoppingCart;
 import dto.CartItemDTO;
 import services.CartService;
@@ -29,6 +32,51 @@ public class CartController {
                 Session session = req.session();
                 ShoppingCart cart = session.attribute("cart");
                 cart = cartService.addArticle(cart, gs.fromJson(req.body(), CartItemDTO.class));
+				session.attribute("cart", cart);
+				return gs.toJson(cart);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		post("/cart/increaseQuantity", (req, res) -> {
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                ShoppingCart cart = session.attribute("cart");
+                cart = cartService.increaseQuantity(cart,gs.fromJson(req.body(), OrderedItem.class));
+				session.attribute("cart", cart);
+				return gs.toJson(cart);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		post("/cart/decreaseQuantity", (req, res) -> {
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                ShoppingCart cart = session.attribute("cart");
+                cart = cartService.decreaseQuantity(cart,gs.fromJson(req.body(), OrderedItem.class));
+				session.attribute("cart", cart);
+				return gs.toJson(cart);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		post("/cart/deleteItem", (req, res) -> {
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                ShoppingCart cart = session.attribute("cart");
+                cart = cartService.deleteItem(cart,gs.fromJson(req.body(), OrderedItem.class));
 				session.attribute("cart", cart);
 				return gs.toJson(cart);
 			} catch (Exception e) {

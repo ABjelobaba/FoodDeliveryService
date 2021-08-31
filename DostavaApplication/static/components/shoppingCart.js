@@ -24,7 +24,7 @@ Vue.component("shopping-cart", {
 	        <div class="cart-items-section">
 	            <div class="container">
 	                <ul class="cart-items">
-	                    <article-in-cart v-for="article in cart.orderedItems" v-bind:key="article.item.name" v-bind:article="article"></article-in-cart>
+	                    <article-in-cart v-on:updateCart="updateCart" v-for="article in cart.orderedItems" v-bind:key="article.item.name" v-bind:article="article"></article-in-cart>
 	                </ul>
 	            </div>
 	        </div>
@@ -135,6 +135,9 @@ Vue.component("shopping-cart", {
                         window.location.href = "#/account/orders";
                     }
                 })
+        },
+        updateCart: function(cart) {
+            this.cart = cart;
         }
     }
 })

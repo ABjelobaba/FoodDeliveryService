@@ -32,5 +32,40 @@ public class CartService {
         return cart;
     }
 
+    public ShoppingCart increaseQuantity(ShoppingCart cart, OrderedItem item) {
+        for(OrderedItem oi: cart.getOrderedItems()){
+            if(oi.getItem().isEqual(item.getItem().getID())){
+                cart.getOrderedItems().remove(oi);
+                oi.setAmount(oi.getAmount() + 1);
+                cart.getOrderedItems().add(oi);
+                cart.setTotalPrice(cart.getTotalPrice() + oi.getItem().getPrice());
+                break;
+            }
+        }
+        return cart;
+    }
 
+    public ShoppingCart decreaseQuantity(ShoppingCart cart, OrderedItem item) {
+        for(OrderedItem oi: cart.getOrderedItems()){
+            if(oi.getItem().isEqual(item.getItem().getID())){
+                cart.getOrderedItems().remove(oi);
+                oi.setAmount(oi.getAmount() - 1);
+                cart.getOrderedItems().add(oi);
+                cart.setTotalPrice(cart.getTotalPrice() - oi.getItem().getPrice());
+                break;
+            }
+        }
+        return cart;
+    }
+
+    public ShoppingCart deleteItem(ShoppingCart cart, OrderedItem item) {
+        for(OrderedItem oi: cart.getOrderedItems()){
+            if(oi.getItem().isEqual(item.getItem().getID())){
+                cart.setTotalPrice(cart.getTotalPrice() - (oi.getItem().getPrice() * oi.getAmount()));
+                cart.getOrderedItems().remove(oi);
+                break;
+            }
+        }
+        return cart;
+    }
 }
