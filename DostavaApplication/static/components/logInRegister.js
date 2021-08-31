@@ -160,8 +160,10 @@ Vue.component("logIn-register", {
                 axios
                     .post('/user/logIn', JSON.stringify(logInDTO))
                     .then(response => {
-                        if (response.data == null || response.data == "") {
+                        if (response.data === "") {
                             document.getElementById('logInErr').innerHTML = "Neispravno korisničko ime ili lozinka!";
+                        } else if (response.data === true) {
+                            document.getElementById('logInErr').innerHTML = "Vaš nalog je blokiran. Trenutno niste u mogućnosti pristupiti nalogu.";
                         } else {
                             window.location.href = "#/account";
                         }

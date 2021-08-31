@@ -66,7 +66,7 @@ public class UserController {
 					Session session = req.session();
 					session.attribute("user", user);				
 				} 
-				return (user != null) ? gs.toJson(user) : "";
+				return (user != null) ? user.isBlocked() : "";
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";
