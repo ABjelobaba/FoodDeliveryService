@@ -116,7 +116,7 @@ Vue.component("restaurant-page", {
                 <ul style="margin-top: 60px; width: 100%; box-sizing: border-box;">
                     <!-- <li><a name="user-nav" id="profile">Narudžbine</a></li> -->
                     <!-- <div style=" width: 100%; text-align: right;">
-                            <li><a>Korpa ( {{cart.orderedItems.length}} )</a></li>
+                            <li><a v-on:click="openCart">Korpa ( {{cart.orderedItems.length}} )</a></li>
                         </div> -->
                 </ul>
             </nav>
@@ -151,7 +151,7 @@ Vue.component("restaurant-page", {
         </div>
         <div class="right-container-rp">
             <div class="nav-cart-rp" id="ncart-rp" v-if="loggedInUser.role == 'Customer'">
-                <a> Korpa ( {{cart.orderedItems.length}} )</a>
+                <a v-on:click="openCart"> Korpa ( {{cart.orderedItems.length}} )</a>
             </div>
 
             <div class="articles-rp">
@@ -422,6 +422,9 @@ Vue.component("restaurant-page", {
                     }
                 })
 
+        },
+        openCart: function() {
+            window.location.href = '#/account/cart';
         }
     }
 });
