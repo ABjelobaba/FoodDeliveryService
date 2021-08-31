@@ -1,16 +1,6 @@
 Vue.component("restaurant-page", {
     data: function() {
         return {
-            articles: [
-                { id: 1, img: '', name: 'Burger', composition: 'Zelena salata, paradajz, sir, kiseli krastavac', price: 450 }, {
-
-                    id: 2,
-                    img: '',
-                    name: 'Burger',
-                    composition: 'Zelena salata, paradajz,sir,kiseli krastavac ',
-                    price: 450
-                }
-            ],
             comments: [
                 { id: 1, rating: 5.0, text: ' Odlicna hrana, brza dostava ', userName: 'Nikola ', status: 'rejected ' },
                 { id: 2, rating: 4.0, text: 'Dobra hrana,velike porcije ', userName: 'Marko ', status: 'approved ' },
@@ -35,7 +25,13 @@ Vue.component("restaurant-page", {
             zipCode: null,
             longitude: null,
             latitude: null,
-            articleName: null
+            articleName: null,
+            articlePrice: null,
+            articleType: null,
+            articleQuantity: null,
+            articleDescription: null,
+            articleImage: null,
+            selectedArticle: undefined
         }
     },
     updated: function() {
@@ -135,7 +131,9 @@ Vue.component("restaurant-page", {
             <div class="articles-rp">
                 <h1>Artikli</h1>
                 <ul class="article-list-rp">
-                    <article-in-restaurant v-for="article in articles" v-bind:key="article.id" v-bind:article="article"></article-in-restaurant>
+                    <a v-for="article in restaurant.items" v-on:click="showArticle(article)">
+                        <article-in-restaurant v-bind:key="article.id" v-bind:article="article"></article-in-restaurant>
+                    </a>
                 </ul>
             </div>
 
@@ -149,18 +147,18 @@ Vue.component("restaurant-page", {
         </div>
     </div>
 
-    <div class="article-view-rp">
+    <div class="article-view-rp" v-if="selectedArticle != undefined">
         <div class="selected-item-rp">
             <div class="item-img-av-rp">
-                <img src="images/burger.jpg" alt="Food">
-                <a href="#" class="close-window-btn-rp" v-on:click="closeFoodItem">+</a>
+                <img v-bind:src="selectedArticle.image" alt="Food">
+                <a href="#" class="close-window-btn-rp" v-on:click="closeArticle">+</a>
             </div>
             <div class="title-price-rp">
-                <h2>Burger</h2>
-                <h3> 450,00 RSD </h3>
+                <h2>{{selectedArticle.name}}</h2>
+                <h3> {{selectedArticle.price}}.00 RSD </h3>
             </div>
             <p class="description-av-rp">
-                Zelena salata, paradajz, sir, kiseli krastavac 
+                {{selectedArticle.description}}
             </p>
             <div class="av-buttons-rp">
                 <div class="cq-buttons-rp">
@@ -181,7 +179,7 @@ Vue.component("restaurant-page", {
         <div class="selected-item-rp" style="width:500px; margin: auto auto; text-align: center;">
             <div v-on:click="closeNewArticleWindow" class="close">+</div>
 
-            <div style="display: grid; height: 100%; grid-template-rows: auto auto 50px;" class="firstStep">
+            <div style="display: grid; height: 100%; grid-template-rows: auto auto;" class="firstStep">
                 <form>
                     <div class="login-title" style="margin: auto 0;">
                         <h3 style="color: white; font-weight: bolder;"> DODAJTE NOVI ARTIKAL </h3>
@@ -197,29 +195,29 @@ Vue.component("restaurant-page", {
                         <label class="error" id="fileErr" name="labels" display="hidden"> </label>
 
                         <div class="image-preview" id="imagePreview">
-                            <img src="" alt="Image Preview" class="image-preview__image" style="max-width: 60%;">
+                            <img id="imgPreview" src="" alt="Image Preview" class="image-preview__image" style="max-width: 60%;">
                             <span class="image-preview__default-text">Image Preview</span>
                         </div>
 
                         <label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Opis artikla:</label>
                         <div class="radio-btn-container" style="width: 60%;height: 100px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);">
-                            <textarea class="article-desc-ta" placeholder="Unesite opis artikla..."></textarea>
-
+                            <textarea v-model="articleDescription" class="article-desc-ta" placeholder="Unesite opis artikla..."></textarea>
                         </div>
                     
                     </div>
                     <!-- <label class="error" id="logoErr" name="labels" display="hidden"> </label> -->
 
                     <div style="display: inline-flex; justify-content: space-between; width: 60%;">
-                        <input type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Kolicina (g)">
-                        <input type="text" class="login-inputs" id="article-price-input" placeholder="Cena (RSD)">
+                        <input v-model="articleQuantity" type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Kolicina (g)">
+                        <input v-model="articlePrice" type="text" class="login-inputs" id="article-price-input" placeholder="Cena (RSD)">
                     </div>
+                    <label class="error" id="articleQPErr" name="labels" display="hidden"> </label>
                     
                     <br>
                 </form>
             </div>
-            <button v-on:click="nextStep" style="margin-top:10px; width: 25%;" class="log-btn"> 
-							Dodaj
+            <button v-on:click="addNewArticle" style="margin-top:5px; width: 25%;" class="log-btn"> 
+				Dodaj
 			</button>
 
         </div>
@@ -262,8 +260,12 @@ Vue.component("restaurant-page", {
 
     },
     methods: {
-        showFoodItem: function() { document.querySelector('.article-view-rp').style.display = 'flex'; },
-        closeFoodItem: function() { document.querySelector('.article-view-rp').style.display = 'none'; },
+        showArticle: function(article) { 
+            this.selectedArticle = article;
+        },
+        closeArticle: function() { 
+            this.selectedArticle = undefined;
+        },
         showHideReviews: function(checked) {
             let cb = document.getElementById('viewReviews');
             if (cb.checked) {
@@ -299,24 +301,58 @@ Vue.component("restaurant-page", {
                 previewImage.setAttribute("src", "");
             }
         },
-        nextStep: function(event) {
+        addNewArticle: function(event) {
             event.preventDefault();
             for (element of document.getElementsByName('labels')) {
                 element.innerHTML = '';
                 element.style.display = 'hidden';
             }
             let errors = false; //TO-DO: Dodati proveru za sliku da li je dodata i odabrane kategorije hrane
-            if (!errors) {
-                if (document.querySelector('.firstStep').style.display == 'grid') {
-                    if (!this.articleName) {
-                        document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i>Morate uneti naziv artikla!';
-                        errors = true;
-                    } else {
-                        document.querySelector('.firstStep').style.display = 'none';
-                        document.querySelector('.secondStep').style.display = 'grid';
-                    }
-                } else { document.querySelector('.register').style.display = 'none'; }
+
+            if (!this.articleName) {
+                document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti naziv artikla!';
+                errors = true;
+            } 
+
+            var reg = /[0-9]+/;
+            if (!reg.test(this.articlePrice)) {
+                document.getElementById('articleQPErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> I količina i cena moraju biti brojčane vrednosti!';
+                errors = true;
             }
+            if (this.articleQuantity) {
+               if (!reg.test(this.articleQuantity)) {
+                document.getElementById('articleQPErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> I količina i cena moraju biti brojčane vrednosti!';
+                errors = true;
+               }
+            }
+            if (!this.articlePrice) {
+                document.getElementById('articleQPErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Cena mora biti uneta!';
+                errors = true;
+            } 
+
+            if (!errors) {
+                let articleDTO = {
+                    name: this.articleName,
+                    price: this.articlePrice,
+                    type: 'Food',//this.articleType,
+                    restaurantID: this.restaurant.restaurantID,
+                    quantity: this.articleQuantity,
+                    description: this.articleDescription,
+                    image: 'images/burger.jpg'//fix
+                }
+
+                axios
+                    .post('/restaurant/addArticle', JSON.stringify(articleDTO))
+                    .then(response => {
+                        if (response.data == null || response.data == "") {
+                            document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Već postoji artikal sa unetim nazivom!';
+                        } else {
+                            document.querySelector('.new-article-view-rp').style.display = 'none';
+                            location.reload();
+                        }
+                    })
+            }
+
         },
         showNewArticleWindow: function() { document.querySelector('.new-article-view-rp').style.display = 'flex'; },
         closeNewArticleWindow: function() { document.querySelector('.new-article-view-rp').style.display = 'none'; }
