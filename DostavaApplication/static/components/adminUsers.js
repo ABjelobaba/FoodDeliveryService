@@ -14,18 +14,18 @@ Vue.component("admin-users", {
                 { id: 'Gold', value: 'Zlatni' }
             ],
             users: [
-                { id: '1', role: 'Manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: '-', suspicious: false, blocked: false, deleted: true },
-                { id: '2', role: 'Deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-', suspicious: true, blocked: false, deleted: false },
-                { id: '3', role: 'Administrator', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-', suspicious: true, blocked: false, deleted: false },
+                { id: '1', role: 'Manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: 0, suspicious: false, blocked: false, deleted: true },
+                { id: '2', role: 'Deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: 0, suspicious: true, blocked: false, deleted: false },
+                { id: '3', role: 'Administrator', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: 0, suspicious: true, blocked: false, deleted: false },
                 { id: '4', role: 'Customer', medal: 'Bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784, suspicious: true, blocked: false, deleted: false },
                 { id: '5', role: 'Customer', medal: 'Silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564, suspicious: true, blocked: false, deleted: false },
                 { id: '6', role: 'Customer', medal: 'Gold', name: 'Anita', surname: 'Marić', username: 'anita_maric', points: 5486, suspicious: true, blocked: false, deleted: false }
             ],
             searchText: '',
             searchResults: [
-                { id: '1', role: 'Manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: '-', suspicious: false, blocked: false, deleted: true },
-                { id: '2', role: 'Deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: '-', suspicious: true, blocked: false, deleted: false },
-                { id: '3', role: 'Administrator', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: '-', suspicious: true, blocked: false, deleted: false },
+                { id: '1', role: 'Manager', name: 'Nikolina', surname: 'Stanković', username: 'nikolina_stankovic', points: 0, suspicious: false, blocked: false, deleted: true },
+                { id: '2', role: 'Deliverer', name: 'Petar', surname: 'Brankov', username: 'petar_brankov', points: 0, suspicious: true, blocked: false, deleted: false },
+                { id: '3', role: 'Administrator', name: 'Darko', surname: 'Horvat', username: 'darko_horvat', points: 0, suspicious: true, blocked: false, deleted: false },
                 { id: '4', role: 'Customer', medal: 'Bronze', name: 'Ivana', surname: 'Kolar', username: 'ivana_kolar', points: 1784, suspicious: true, blocked: false, deleted: false },
                 { id: '5', role: 'Customer', medal: 'Silver', name: 'Stefan', surname: 'Vuković', username: 'stefan_vukovic', points: 2564, suspicious: true, blocked: false, deleted: false },
                 { id: '6', role: 'Customer', medal: 'Gold', name: 'Anita', surname: 'Marić', username: 'anita_maric', points: 5486, suspicious: true, blocked: false, deleted: false }
@@ -75,10 +75,10 @@ Vue.component("admin-users", {
             <thead>
                 <tr>
                     <th>Uloga</th>
-                    <th>Ime <i class="fa fa-sort "></i></th>
-                    <th>Prezime <i class="fa fa-sort"></i></th>
-                    <th>Korisnicko ime <i class="fa fa-sort"></i></th>
-                    <th>Broj bodova <i class="fa fa-sort"></i></th>
+                    <th v-on:click="sortByName" id="name-th">Ime <i class="fa fa-sort "></i></th>
+                    <th v-on:click="sortBySurname" id="surname-th">Prezime <i class="fa fa-sort"></i></th>
+                    <th v-on:click="sortByUsername" id="username-th">Korisničko ime <i class="fa fa-sort"></i></th>
+                    <th v-on:click="sortByPoints" id="points-th">Broj bodova <i class="fa fa-sort"></i></th>
                     <th>Blokiraj</th>
                     <th>Obriši</th>
                 </tr>
@@ -229,7 +229,7 @@ Vue.component("admin-users", {
                             this.searchResults.push(user);
                         }
                         for (cb of cbCheckedType) {
-                            if (user.medal === cb) {
+                            if (user.category.type === cb) {
                                 this.searchResults.push(user);
                             }
                         }
@@ -238,8 +238,68 @@ Vue.component("admin-users", {
                 }
 
             }
-
-
+        },
+        sortByName: function() {
+            let nameTH = document.querySelector('#name-th');
+            if (nameTH.innerHTML.includes('sort-asc')) {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) });
+                nameTH.innerHTML = 'Ime <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            } else {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) }).reverse();
+                nameTH.innerHTML = 'Ime <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('name');
+        },
+        sortBySurname: function() {
+            let surnameTH = document.querySelector('#surname-th');
+            if (surnameTH.innerHTML.includes('sort-asc')) {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.surname.localeCompare(b.surname) });
+                surnameTH.innerHTML = 'Prezime <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            } else {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.surname.localeCompare(b.surname) }).reverse();
+                surnameTH.innerHTML = 'Prezime <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('surname');
+        },
+        sortByUsername: function() {
+            let usernameTH = document.querySelector('#username-th');
+            if (usernameTH.innerHTML.includes('sort-asc')) {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.username.localeCompare(b.username) });
+                usernameTH.innerHTML = 'Korisničko ime <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            } else {
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.username.localeCompare(b.username) }).reverse();
+                usernameTH.innerHTML = 'Korisničko ime <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('username');
+        },
+        sortByPoints: function() {
+            let pointsTH = document.querySelector('#points-th');
+            if (pointsTH.innerHTML.includes('sort-asc')) {
+                this.searchResults = this.searchResults.sort(function(a, b) { return b.points - a.points });
+                pointsTH.innerHTML = 'Broj bodova <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            } else {
+                this.searchResults = this.searchResults.sort(function(a, b) { return b.points - a.points }).reverse();
+                pointsTH.innerHTML = 'Broj bodova <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('points');
+        },
+        resetOtherSorts: function(activeSort) {
+            if (activeSort != "name") {
+                let nameTH = document.querySelector('#name-th');
+                nameTH.innerHTML = 'Ime <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "surname") {
+                let surnameTH = document.querySelector('#surname-th');
+                surnameTH.innerHTML = 'Prezime <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "username") {
+                let usernameTH = document.querySelector('#username-th');
+                usernameTH.innerHTML = 'Korisničko ime <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "points") {
+                let pointsTH = document.querySelector('#points-th');
+                pointsTH.innerHTML = 'Broj bodova <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
         }
     }
 });
