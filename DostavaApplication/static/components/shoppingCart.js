@@ -128,7 +128,13 @@ Vue.component("shopping-cart", {
             window.location.href = "#/restaurant?id=" + this.cart.restaurantID;
         },
         createOrder: function() {
-
+            axios
+                .post('/order/create')
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        window.location.href = "#/account/orders";
+                    }
+                })
         }
     }
 })

@@ -8,6 +8,7 @@
     display: flex;
     font-size: 18px;
     margin: 80px 0% 20px 7%;
+    align-items: flex-end;
 }
 
 .user-nav ul li a {
