@@ -1,30 +1,30 @@
 Vue.component("shopping-cart", {
     data: function() {
         return {
-            userMedal: 'gold',
+            loggedInUser: '',
             articles: [
                 { id: 1, name: 'Burger', price: 450, quantity: 1 },
                 { id: 2, name: 'Pomfrit', price: 250, quantity: 1 },
                 { id: 3, name: 'Milk Shake', price: 200, quantity: 2 }
-            ]
+            ],
+            cart: ''
         }
 
     },
-
     template: `
     <div class="shopping-cart-page">
 		
 		<h1 style="text-align:center">Vaša korpa</h1>
 
-		<div class="users-search" id="cart-points" >
-			<h2> <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> Vaši bodovi nakon poručivanja : 1230 + <b style="color:#054e72">120</b> = 1350</h2>
+		<div class="users-search" style="padding:0" id="cart-points" >
+			<h2> <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> Vaši bodovi nakon poručivanja : {{loggedInUser.totalPoints}} + <b style="color:#054e72">120</b> = 1350</h2>
 		</div>
 
 	    <div class="cart-view">
 	        <div class="cart-items-section">
 	            <div class="container">
 	                <ul class="cart-items">
-	                    <article-in-cart v-for="article in articles" v-bind:key="article.id" v-bind:article="article"></article-in-cart>
+	                    <article-in-cart v-for="article in cart.orderedItems" v-bind:key="article.item.name" v-bind:article="article"></article-in-cart>
 	                </ul>
 	            </div>
 	        </div>
@@ -39,7 +39,7 @@ Vue.component("shopping-cart", {
 				transition: visibility 0s, opacity 0.5s linear;">
 					<div>
 						<h3>Ukupna cena artikala</h3>
-						<h3 style="white-space: nowrap;">1350,00 RSD </h3>
+						<h3 style="white-space: nowrap;">{{cart.totalPrice}},00 RSD </h3>
 					</div>
 					<div >
 						<h3>Dostava</h3>
@@ -47,10 +47,10 @@ Vue.component("shopping-cart", {
 					</div>
 					<div >
 						<h3>Ukupna cena artikala</h3>
-						<h3 class="total-price-value">1550,00 RSD </h3>
+						<h3 class="total-price-value">{{cart.totalPrice + 200}},00 RSD </h3>
 					</div>
 						
-					<a class="continue-with-order-btn" href="#">Završi narudžbinu</a>
+					<a class="continue-with-order-btn" v-on:click="createOrder">Završi narudžbinu</a>
 				</div>
 				<div class="finish-order" id="bill-div">
 					<div style="display:block" id="billTitle">
@@ -71,7 +71,7 @@ Vue.component("shopping-cart", {
 						
 					<a class="continue-with-order-btn" href="#">Završi narudžbinu</a>
 				</div>
-				<a id="back-to-restaurant-btn" href="#">Niste završili sa narudžbinom?</a>
+				<a id="back-to-restaurant-btn" v-on:click="goBack">Niste završili sa narudžbinom?</a>
 			</div>
 			
 	    </div>
@@ -80,14 +80,28 @@ Vue.component("shopping-cart", {
     mounted() {
         window.scrollTo(0, 0);
 
-        var points = document.querySelector('#cart-points');
-        if (this.userMedal == 'gold') {
-            points.style.backgroundColor = 'gold';
-        } else if (this.userMedal == 'silver') {
-            points.style.backgroundColor = 'silver';
-        } else {
-            points.style.backgroundColor = 'rgb(205, 127, 50)'
-        }
+        axios.get("user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    this.loggedInUser = response.data;
+                    var points = document.querySelector('#cart-points');
+                    if (this.loggedInUser.category.type == 'Gold') {
+                        points.style.backgroundColor = 'gold';
+                    } else if (this.loggedInUser.category.type == 'Silver') {
+                        points.style.backgroundColor = 'silver';
+                    } else {
+                        points.style.backgroundColor = 'rgb(205, 127, 50)'
+                    }
+                }
+            })
+
+        axios.get("cart")
+            .then(response => {
+                if (response.data != null) {
+                    this.cart = response.data;
+                }
+            })
+
     },
 
     methods: {
@@ -109,6 +123,12 @@ Vue.component("shopping-cart", {
                 filters.style.margin = "auto";
                 filters.style.padding = "0";
             }
+        },
+        goBack: function() {
+            window.location.href = "#/restaurant?id=" + this.cart.restaurantID;
+        },
+        createOrder: function() {
+
         }
     }
 })

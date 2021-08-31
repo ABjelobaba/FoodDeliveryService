@@ -3,8 +3,8 @@ Vue.component("article-in-cart", {
     template: `
 	<li class="shopping-cart-item">
 	    <div class="cart-item-info">
-	        <h2> <span class="food-quantity"> {{article.quantity}} x</span> {{article.name}}</h2>
-	        <h3> {{article.price}},00 RSD </h3>
+	        <h2> <span class="food-quantity"> {{article.amount}} x</span> {{article.item.name}}</h2>
+	        <h3> {{article.item.price}},00 RSD </h3>
 	    </div>
 	    <img class="food-img" src="images/burger.jpg" alt="Food">
 	    <div class="remove-item-from-cart">  <h4>+</h4> </div>

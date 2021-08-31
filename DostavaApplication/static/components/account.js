@@ -3,7 +3,8 @@ Vue.component("account", {
         return {
             deliveryAddress: '',
             loggedInUser: '',
-            mode: ''
+            mode: '',
+            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 }
         }
     },
     created: function() {
@@ -14,6 +15,12 @@ Vue.component("account", {
                     this.loggedInUser = response.data;
                 } else {
                     window.location.href = '#/';
+                }
+            })
+        axios.get("cart")
+            .then(response => {
+                if (response.data != null) {
+                    this.cart = response.data;
                 }
             })
     },
@@ -73,8 +80,8 @@ Vue.component("account", {
                     <li v-if="loggedInUser.role == 'Manager'"><a v-on:click="managersPreviousOrdersView" name="user-nav" id="managers-prev-orders"> Prethodne porudžbine</a></li>
                     <li v-if="loggedInUser.role == 'Manager'"><a v-on:click="restaurantCustomersView" name="user-nav" id="restaurant-customer-list">Kupci</a></li>
                 </ul>
-                <ul id="user-nav-ul" style="margin: 80px 7% 20px 0;">
-                    <li v-if="loggedInUser.role == 'Customer'"><a v-on:click="shoppingCartView" name="user-nav" id="shopping-cart" >Korpa (0)</a></li>
+                <ul id="user-nav-ul" style="margin: 80px 7% 20px 0;" v-if="loggedInUser.role == 'Customer'">
+                    <li ><a v-on:click="shoppingCartView" name="user-nav" id="shopping-cart" >Korpa ( {{cart.orderedItems.length}} )</a></li>
                 </ul>
                 
             </nav>

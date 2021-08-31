@@ -30,6 +30,10 @@ public class Application {
 		CartService cartService = new CartService(restaurantDAO);
 		CartController cartController = new CartController(cartService);
 		
+		OrderDAO orderDAO = new OrderDAO("./files/orders.json");
+		OrderService orderService = new OrderService(orderDAO);
+		OrderController ordereController = new OrderController(orderService);
+		
 		
 		
 		get("/test", (req, res) -> {
