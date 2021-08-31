@@ -64,7 +64,11 @@ public class UserController {
 				User user = userService.logIn(gs.fromJson(req.body(), LogInDTO.class));
 				if (user != null) {			
 					Session session = req.session();
-					session.attribute("user", user);				
+					session.attribute("user", user);
+					
+					if(user.getRole() == Role.Customer){
+						session.attribute("cart", new ShoppingCart(user.getUsername()));
+					}
 				} 
 				return (user != null) ? user.isBlocked() : "";
 			} catch (Exception e) {
