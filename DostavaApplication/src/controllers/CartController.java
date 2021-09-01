@@ -106,7 +106,8 @@ public class CartController {
 
 			try {
                 Session session = req.session();
-				return  gs.toJson(session.attribute("address"));
+				String s = session.attribute("address");
+				return  s == null ? "":s;
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";

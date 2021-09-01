@@ -12,6 +12,12 @@ Vue.component("shopping-cart", {
         }
 
     },
+    updated: function() {
+        if (document.getElementById('accountAddress') != null) {
+            if (document.getElementById('cartAddress') != null)
+                document.getElementById('cartAddress').style.display = 'none';
+        }
+    },
     template: `
     <div class="shopping-cart-page">
 		
@@ -32,7 +38,7 @@ Vue.component("shopping-cart", {
 	        </div>
 	
 			<div class="right-section">
-			<div class="address-container" >
+			<div class="address-container" id="cartAddress">
 			<div class="entered-address" style="border:1px solid black;box-shadow:none;margin-bottom:35px" >
 				<i class="fa fa-map-marker fa-2x" style="color:black"></i>
 				<input placeholder="Unesite adresu.." class="deliveryAddress" v-model="deliveryAddress"></input>
@@ -66,7 +72,7 @@ Vue.component("shopping-cart", {
 					</div>
 					<div>
 						<h3>Ukupna cena artikala</h3>
-						<h3 style="white-space: nowrap;">1350,00 RSD </h3>
+						<h3 style="white-space: nowrap;">{{cart.totalPrice}},00 RSD </h3>
 					</div>
 					<div >
 						<h3>Dostava</h3>
@@ -74,7 +80,7 @@ Vue.component("shopping-cart", {
 					</div>
 					<div >
 						<h3>Ukupna cena artikala</h3>
-						<h3 class="total-price-value">1550,00 RSD </h3>
+						<h3 class="total-price-value">{{cart.totalPrice + 200}},00 RSD </h3>
 					</div>
 						
 					<a class="continue-with-order-btn" href="#">Završi narudžbinu</a>
@@ -120,6 +126,8 @@ Vue.component("shopping-cart", {
                 }
             })
 
+
+
     },
 
     methods: {
@@ -144,7 +152,11 @@ Vue.component("shopping-cart", {
         },
         goBack: function() {
             if (this.cart.restaurantID == -1) {
-                window.location.href = "#/";
+                if (this.deliveryAddress == '' || this.deliveryAddress == undefined) {
+                    window.location.href = "#/";
+                } else {
+                    window.location.href = "#/account?" + this.deliveryAddress.replace(' ', '%20');
+                }
             } else {
                 window.location.href = "#/restaurant?id=" + this.cart.restaurantID;
             }
@@ -167,6 +179,8 @@ Vue.component("shopping-cart", {
                             window.location.reload(true);
                         }
                     })
+
+
             }
 
         },

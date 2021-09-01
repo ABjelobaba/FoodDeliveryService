@@ -29,8 +29,22 @@ Vue.component("home", {
             .then(response => {
                 if (response.data != null) {
                     this.loggedInUser = response.data;
+                    this.deliveryAddress = this.loggedInUser.deliveryAddress;
                 }
             })
+
+
+    },
+    updated: function() {
+        if (this.loggedInUser != '' && this.loggedInUser != undefined) {
+            axios
+                .get("cart/getAddress")
+                .then(response => {
+                    if (response.data != null) {
+                        this.deliveryAddress = response.data;
+                    }
+                })
+        }
     },
     template: `
 	<div>
@@ -48,8 +62,9 @@ Vue.component("home", {
 
 		<div class="home-img">
 			<div class="greet">
-				<h1>Naruči dostavu!</h1>
-				<div class="address">
+				<h1 v-if="loggedInUser.role == 'Customer'">Naruči dostavu!</h1>
+				<h1 v-else>Dobrodošli nazad!</h1>
+				<div class="address" v-if="loggedInUser.role == 'Customer'">
 					<h2>Adresa za dostavu:</h2>
 					<div class="search">
 						<i class="fa fa-search fa-lg"></i>

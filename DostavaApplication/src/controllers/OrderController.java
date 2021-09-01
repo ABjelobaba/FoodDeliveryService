@@ -26,6 +26,7 @@ public class OrderController {
                 session.attribute("cart", new ShoppingCart(customer.getUsername()));
 				customer = orderService.calculatePoints(customer,cart);
                 session.attribute("user", customer);
+				session.attribute("address","");
 				return gs.toJson(order);
 			} catch (Exception e) {
 				e.printStackTrace();
