@@ -59,12 +59,12 @@ Vue.component("restaurant-page", {
         }
 
         if (this.restaurant != '' && this.restaurant != undefined) {
-            const Map = L.map('map-rp').setView([this.restaurant.location.longitude,
-                this.restaurant.location.latitude
+            const Map = L.map('map-rp').setView([this.restaurant.location.latitude,
+                this.restaurant.location.longitude
             ], 13);
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', { maxZoom: 18, id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, accessToken: apiKey }).addTo(Map);
             marker
-                = L.marker([this.restaurant.location.longitude, this.restaurant.location.latitude]).addTo(Map);
+                = L.marker([this.restaurant.location.latitude, this.restaurant.location.longitude]).addTo(Map);
         }
 
 
@@ -107,7 +107,7 @@ Vue.component("restaurant-page", {
                     <div class="full-address-rp">
                         <p>{{streetAddress}}</p>
                         <p>{{city}} {{zipCode}}</p>
-                        <p>{{longitude}}, {{latitude}}</p>
+                        <p>{{latitude}}, {{longitude}}</p>
                     </div>
                 </div>
             </div>
