@@ -53,6 +53,11 @@ public class OrderService {
 		return (int) (order.getPrice()/1000*133);
 	}
 
+    public void cancelOrder(Customer customer, String orderID) throws JsonSyntaxException, IOException {
+		Order order = getByID(customer, orderID);
+		order.setStatus(OrderStatus.Cancelled);
+		userDAO.update(customer);
+    }
 
 	private Order getByID(Customer customer, String orderID){
 		Order foundOrder = null;
@@ -63,5 +68,13 @@ public class OrderService {
 			}
 		}
 		return foundOrder;
+	}
+
+    public Customer cancelledOrderPoints(Customer customer, String orderID) throws JsonSyntaxException, IOException {
+		double price = getByID(customer, orderID).getPrice();
+		int lostPoints = (int) (price/1000*133*4);
+		customer.setTotalPoints((int)(customer.getTotalPoints() - lostPoints));
+		userDAO.update(customer);
+		return customer;
     }
 }
