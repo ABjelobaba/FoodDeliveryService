@@ -312,9 +312,10 @@ Vue.component("user-orders", {
         },
         invalidate: function() {
             this.toDate = '';
-            this.today = '';
+            this.toPrice = '';
             this.fromDate = '';
             this.fromPrice = '';
+            this.filerOrder();
         },
         findOrder: function() {
 
@@ -341,127 +342,146 @@ Vue.component("user-orders", {
             }
 
             //SEARCH
-            let searchParts = this.searchText.trim().split(' ');
-            for (i = 0; i < searchParts.length; i++) {
-                for (j = 1; j < tr.length; j++) {
-                    td = tr[j].getElementsByTagName("td")[1];
-                    label = td.getElementsByTagName("label")[0];
-                    if (label.innerText.toLocaleLowerCase().includes(searchParts[i].toLocaleLowerCase())) {
-                        tr[j].style.display = "";
-                    } else {
-                        tr[j].style.display = "none";
-                    }
-                }
-            }
+            searchFunction(this.searchText, tr);
 
             //FILTER - STATUS
-
-            for (j = 1; j < tr.length; j++) {
-                show = false;
-                for (i = 0; i < checkedStatus.length; i++) {
-                    if (tr[j].style.display != "none") {
-                        td = tr[j].getElementsByTagName("td")[3];
-                        if (checkedStatus[i] == "Dostavljena") {
-                            if (td.innerText.includes(checkedStatus[i]) || td.innerText.includes("Oceni")) {
-                                show = true;
-                            }
-                        } else if (td.innerText.includes(checkedStatus[i])) {
-                            show = true;
-                        }
-                    }
-                }
-                if (!show && checkedStatus.length != 0) {
-                    tr[j].style.display = 'none';
-                } else if (tr[j].style.display != 'none') {
-                    tr[j].style.display = '';
-                }
-            }
+            filterStatusFunction(checkedStatus, tr);
 
             //FILTER - CUISINE
-            for (j = 1; j < tr.length; j++) {
-                show = false;
-                for (i = 0; i < checkedCuisine.length; i++) {
-                    if (tr[j].style.display != "none") {
-                        td = tr[j].getElementsByTagName("td")[1];
-                        label = td.getElementsByTagName("label")[1];
-                        if (label.innerText.includes(checkedCuisine[i])) {
-                            show = true;
-                        }
-                    }
-                }
-                if (!show && checkedCuisine.length != 0) {
-                    tr[j].style.display = 'none';
-                } else if (tr[j].style.display != 'none') {
-                    tr[j].style.display = '';
-                }
-            }
+            filterCuisineFunction(checkedCuisine, tr);
 
             //PRICE
-            for (j = 1; j < tr.length; j++) {
-                show = false;
-
-                if (tr[j].style.display != "none") {
-                    td = tr[j].getElementsByTagName("td")[2];
-                    price = parseInt(td.innerText);
-                    if (this.fromPrice != '' && this.toPrice != '') {
-                        if (this.fromPrice <= price && price <= this.toPrice) {
-                            show = true;
-                        }
-                    } else if (this.fromPrice != '' && this.toPrice == '') {
-                        if (this.fromPrice <= price) {
-                            show = true;
-                        }
-                    } else if (this.fromPrice == '' && this.toPrice != '') {
-                        if (price <= this.toPrice) {
-                            show = true;
-                        }
-                    } else {
-                        show = true;
-                    }
-
-                }
-
-                if (!show) {
-                    tr[j].style.display = 'none';
-                } else if (tr[j].style.display != 'none') {
-                    tr[j].style.display = '';
-                }
-            }
+            filterPriceFunction(this.fromPrice, this.toPrice, tr);
 
             //DATE
-            for (j = 1; j < tr.length; j++) {
-                show = false;
-
-                if (tr[j].style.display != "none") {
-                    td = tr[j].getElementsByTagName("td")[0];
-                    date = new Date(td.innerText);
-                    from = new Date(this.fromDate);
-                    to = new Date(this.toDate);
-                    if (this.fromDate != '' && this.toDate != '') {
-                        if (from <= date && date <= to) {
-                            show = true;
-                        }
-                    } else if (this.fromDate != '' && this.toDate == '') {
-                        if (from <= date) {
-                            show = true;
-                        }
-                    } else if (this.fromDate == '' && this.toDate != '') {
-                        if (date <= to) {
-                            show = true;
-                        }
-                    } else {
-                        show = true;
-                    }
-
-                }
-
-                if (!show) {
-                    tr[j].style.display = 'none';
-                } else if (tr[j].style.display != 'none') {
-                    tr[j].style.display = '';
-                }
-            }
+            filterDateFunction(this.fromDate, this.toDate, tr);
 
         }
     }
 })
+
+function filterDateFunction(fromDate, toDate, tableRows) {
+    for (j = 1; j < tableRows.length; j++) {
+        show = false;
+
+        if (tableRows[j].style.display != "none") {
+            td = tableRows[j].getElementsByTagName("td")[0];
+            date = new Date(td.innerText);
+            from = new Date(fromDate);
+            to = new Date(toDate);
+            if (fromDate != '' && toDate != '') {
+                if (from <= date && date <= to) {
+                    show = true;
+                }
+            } else if (fromDate != '' && toDate == '') {
+                if (from <= date) {
+                    show = true;
+                }
+            } else if (fromDate == '' && toDate != '') {
+                if (date <= to) {
+                    show = true;
+                }
+            } else {
+                show = true;
+            }
+
+        }
+
+        if (!show) {
+            tableRows[j].style.display = 'none';
+        } else if (tableRows[j].style.display != 'none') {
+            tableRows[j].style.display = '';
+        }
+    }
+}
+
+function filterPriceFunction(fromPrice, toPrice, tableRows) {
+    for (j = 1; j < tableRows.length; j++) {
+        show = false;
+
+        if (tableRows[j].style.display != "none") {
+            td = tableRows[j].getElementsByTagName("td")[2];
+            price = parseInt(td.innerText);
+            if (fromPrice != '' && toPrice != '') {
+                if (fromPrice <= price && price <= toPrice) {
+                    show = true;
+                }
+            } else if (fromPrice != '' && toPrice == '') {
+                if (fromPrice <= price) {
+                    show = true;
+                }
+            } else if (fromPrice == '' && toPrice != '') {
+                if (price <= toPrice) {
+                    show = true;
+                }
+            } else {
+                show = true;
+            }
+
+        }
+
+        if (!show) {
+            tableRows[j].style.display = 'none';
+        } else if (tableRows[j].style.display != 'none') {
+            tableRows[j].style.display = '';
+        }
+    }
+}
+
+function filterCuisineFunction(checkedCuisines, tableRows) {
+    for (j = 1; j < tableRows.length; j++) {
+        show = false;
+        for (i = 0; i < checkedCuisines.length; i++) {
+            if (tableRows[j].style.display != "none") {
+                td = tableRows[j].getElementsByTagName("td")[1];
+                label = td.getElementsByTagName("label")[1];
+                if (label.innerText.includes(checkedCuisines[i])) {
+                    show = true;
+                }
+            }
+        }
+        if (!show && checkedCuisines.length != 0) {
+            tableRows[j].style.display = 'none';
+        } else if (tableRows[j].style.display != 'none') {
+            tableRows[j].style.display = '';
+        }
+    }
+}
+
+function filterStatusFunction(checkedStatuses, tableRows) {
+    for (j = 1; j < tableRows.length; j++) {
+        show = false;
+        for (i = 0; i < checkedStatuses.length; i++) {
+            if (tableRows[j].style.display != "none") {
+                td = tableRows[j].getElementsByTagName("td")[3];
+                if (checkedStatuses[i] == "Dostavljena") {
+                    if (td.innerText.includes(checkedStatuses[i]) || td.innerText.includes("Oceni")) {
+                        show = true;
+                    }
+                } else if (td.innerText.includes(checkedStatuses[i])) {
+                    show = true;
+                }
+            }
+        }
+        if (!show && checkedStatuses.length != 0) {
+            tableRows[j].style.display = 'none';
+        } else if (tableRows[j].style.display != 'none') {
+            tableRows[j].style.display = '';
+        }
+    }
+}
+
+function searchFunction(searchTxt, tableRows) {
+    let searchParts = searchTxt.trim().split(' ');
+    for (i = 0; i < searchParts.length; i++) {
+        for (j = 1; j < tableRows.length; j++) {
+            td = tableRows[j].getElementsByTagName("td")[1];
+            label = td.getElementsByTagName("label")[0];
+            if (label.innerText.toLocaleLowerCase().includes(searchParts[i].toLocaleLowerCase())) {
+                tableRows[j].style.display = "";
+            } else {
+                tableRows[j].style.display = "none";
+            }
+        }
+    }
+}
