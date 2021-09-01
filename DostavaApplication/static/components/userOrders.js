@@ -3,16 +3,6 @@ Vue.component("user-orders", {
         return {
             mode: 'all',
             modalMode: '',
-            gender: 'Odaberite pol..',
-            name: '',
-            surname: '',
-            username: '',
-            password: '',
-            role: 'Odaberite ulogu korisnika..',
-            dateOfBirth: '',
-            currentRestaurant: [],
-            article: '',
-            order: '',
             selectedOrder: undefined,
             orderStatuses: [
                 { id: 'processing', value: 'Obrada' },
