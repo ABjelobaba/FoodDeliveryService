@@ -55,7 +55,13 @@ Vue.component("view-order", {
 
     methods: {
         cancelOrder: function(order) {
-            order.status = "canceled";
+            axios
+                .put("order/cancel/" + order.orderID)
+                .then(response => {
+                    if (response.data != null) {
+                        order.status = "Cancelled";
+                    }
+                })
             event.stopPropagation();
         }
 
