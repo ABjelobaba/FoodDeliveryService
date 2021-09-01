@@ -1,9 +1,7 @@
 package services;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import com.google.gson.JsonSyntaxException;
@@ -73,7 +71,12 @@ public class OrderService {
     public Customer cancelledOrderPoints(Customer customer, String orderID) throws JsonSyntaxException, IOException {
 		double price = getByID(customer, orderID).getPrice();
 		int lostPoints = (int) (price/1000*133*4);
-		customer.setTotalPoints((int)(customer.getTotalPoints() - lostPoints));
+		int remainingPoints = (int)(customer.getTotalPoints() - lostPoints);
+		if(remainingPoints < 0){
+			customer.setTotalPoints(0);
+		}else{
+			customer.setTotalPoints(remainingPoints);
+		}
 		userDAO.update(customer);
 		return customer;
     }

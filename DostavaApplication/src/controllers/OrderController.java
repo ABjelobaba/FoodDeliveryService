@@ -4,8 +4,6 @@ import static spark.Spark.post;
 import static spark.Spark.get;
 import static spark.Spark.put;
 
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
