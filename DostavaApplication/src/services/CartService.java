@@ -63,6 +63,9 @@ public class CartService {
                 break;
             }
         }
+        if(cart.getOrderedItems().size() == 0){
+            cart.setRestaurantID(-1);
+        }
         return cart;
     }
 

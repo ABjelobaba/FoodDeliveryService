@@ -143,7 +143,11 @@ Vue.component("shopping-cart", {
             }
         },
         goBack: function() {
-            window.location.href = "#/restaurant?id=" + this.cart.restaurantID;
+            if (this.cart.restaurantID == -1) {
+                window.location.href = "#/";
+            } else {
+                window.location.href = "#/restaurant?id=" + this.cart.restaurantID;
+            }
         },
         createOrder: function() {
             if (this.deliveryAddress == '' || this.deliveryAddress == undefined) {
