@@ -18,6 +18,7 @@ Vue.component("restaurant-cell", {
 	<div class="order-restaurant">
         <img v-bind:src="restaurant.logo">
         <label>{{restaurant.name}}</label>
+        <label hidden>{{restaurant.type}}</label>
     </div>
 	`
 });

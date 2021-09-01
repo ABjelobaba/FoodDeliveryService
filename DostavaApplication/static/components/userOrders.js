@@ -5,22 +5,28 @@ Vue.component("user-orders", {
             modalMode: '',
             selectedOrder: undefined,
             orderStatuses: [
-                { id: 'processing', value: 'Obrada' },
-                { id: 'prep', value: 'U pripremi' },
-                { id: 'waitingDeliverer', value: 'Čeka dostavljača' },
-                { id: 'transporting', value: 'U transportu' },
-                { id: 'finished', value: 'Dostavljena' },
-                { id: 'canceled', value: 'Otkazana' }
+                { id: 'Processing', value: 'Obrada' },
+                { id: 'InPreparation', value: 'U pripremi' },
+                { id: 'WaitingForDelivery', value: 'Čeka dostavljača' },
+                { id: 'InTransport', value: 'U transportu' },
+                { id: 'Delivered', value: 'Dostavljena' },
+                { id: 'Cancelled', value: 'Otkazana' }
             ],
             cuisines: [
-                { id: 'italian', value: 'Italijanska' },
-                { id: 'chinese', value: 'Kineska' },
-                { id: 'barbecue', value: 'Rostilj' },
-                { id: 'american', value: 'Americka hrana' },
-                { id: 'sweets', value: 'Poslastice' }
+                { id: 'Italian', value: 'Italijanska' },
+                { id: 'Chinese', value: 'Kineska' },
+                { id: 'Barbecue', value: 'Rostilj' },
+                { id: 'American', value: 'Americka hrana' },
+                { id: 'Sweets', value: 'Poslastice' }
             ],
             orders: [],
+            searchResults: [],
             hover: '',
+            searchText: '',
+            fromPrice: '',
+            toPrice: '',
+            fromDate: '',
+            toDate: '',
             comment: 'za ostavljanje ocene boolean, nije izmenjeno'
         }
     },
@@ -30,6 +36,7 @@ Vue.component("user-orders", {
             .then(response => {
                 if (response.data != null) {
                     this.orders = response.data.allOrders;
+                    this.searchResults = response.data.allOrders;
                 } else {
                     window.location.href = '#/';
                 }
@@ -44,7 +51,7 @@ Vue.component("user-orders", {
     <div class="users-search">
             <div class="search-text-div">
                 <i style="text-align: center;" class="fa fa-search"></i>
-                <input type="text" placeholder="Pretraži po nazivu restorana.." >
+                <input type="text" placeholder="Pretraži po nazivu restorana.." v-model="searchText" v-on:keyup="findOrder">
             </div>  
         <button class="filter-btn" v-on:click="advancedSearchClicked" id="advancedSearch-btn-do"><i class="fa fa-angle-down fa-lg"></i></button>
         <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do" style="white-space: nowrap;"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
@@ -61,15 +68,15 @@ Vue.component("user-orders", {
             <h2>Status porudžbine</h2>
             <div class="checkbox-btn-container-dark">
                 <div v-for="status in orderStatuses">
-                    <input type="checkbox" v-bind:id="status.id" name="orderStatus" v-bind:value="status.id">
+                    <input type="checkbox" v-bind:id="status.id" name="orderStatus" v-bind:value="status.value" v-on:change="findOrder">
                     <label v-bind:for="status.id">{{status.value}}</label>
                 </div>
             </div>
             <h2>Tip restorana</h2>
             <div class="checkbox-btn-container-dark">
                 <div v-for="cuisine in cuisines">
-                    <input type="checkbox" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id>
-                    <label  v-bind:for=cuisine.id>{{cuisine.value}}</label>
+                    <input type="checkbox" v-bind:id="cuisine.id" name="cuisine" v-bind:value="cuisine.id" v-on:change="findOrder">
+                    <label  v-bind:for="cuisine.id">{{cuisine.value}}</label>
                 </div>
             </div>
         </div>
@@ -81,14 +88,17 @@ Vue.component("user-orders", {
 
             <div style="margin:20px">
                 <h2>Cena:</h2>
-                <label>Od:</label><input type="number" min='0' name="price" id="fromPrice" placeholder="00000">(.00 RSD)<br>
-                <label>Do:</label><input type="number" min='0' name="price" id="toPrice" placeholder="00000">(.00 RSD)
+                <label>Od:</label><input type="number" min='0' name="price" id="fromPrice" placeholder="00000" v-model="fromPrice" v-on:change="findOrder" v-on:keyup="findOrder">(.00 RSD)<br>
+                <label>Do:</label><input type="number" min='0' name="price" id="toPrice" placeholder="00000" v-model="toPrice" v-on:change="findOrder" v-on:keyup="findOrder">(.00 RSD)
             </div>
             <div style="margin:20px">
                 <h2>Datum:</h2>
-                <label>Od:</label><input type="date" name="date" id="fromDate" ><br>
-                <label>Do:</label><input type="date" name="date" id="toDate" >
+                <label>Od:</label><input type="date" name="date" id="fromDate" v-model="fromDate" v-on:change="findOrder"><br>
+                <label>Do:</label><input type="date" name="date" id="toDate" v-model="toDate" v-on:change="findOrder">
             </div> 
+            <div>
+                <button class="filter-btn" v-on:click="invalidate" id="filter-btn-do" style="white-space: nowrap;float:none">Poništi</button>
+            </div>
         </div>
     </div>
 
@@ -103,7 +113,7 @@ Vue.component("user-orders", {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="order in orders" v-on:click="showOrder(order)">
+                <tr v-for="order in searchResults" v-on:click="showOrder(order)">
                     <td>{{order.orderDate}}</td>
                     <td>
                         <restaurant-cell v-bind:restaurantID="order.restaurantID"></restaurant-cell>
@@ -147,7 +157,7 @@ Vue.component("user-orders", {
             </tbody>
         </table>
 
-        <table class="table-users" name="orders" id="undeliveredOrders" v-if="mode=='undelivered'">
+        <table class="table-users" name="orders" id="undeliveredOrdersTable" v-if="mode=='undelivered'">
             <thead>
                 <tr>
                     <th>Datum <i class="fa fa-sort "></i></th>
@@ -157,7 +167,7 @@ Vue.component("user-orders", {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="order in orders" v-on:click="showOrder(order)" v-if="order.status != 'Delivered' && order.status != 'Cancelled'">
+                <tr v-for="order in searchResults" v-on:click="showOrder(order)" v-if="order.status != 'Delivered' && order.status != 'Cancelled'">
                     <td>{{order.orderDate}}</td>
                     <td>
                         <restaurant-cell v-bind:restaurantID="order.restaurantID"></restaurant-cell>
@@ -298,6 +308,159 @@ Vue.component("user-orders", {
         },
         rateClose: function(event) {
             this.modalMode = "";
+
+        },
+        invalidate: function() {
+            this.toDate = '';
+            this.today = '';
+            this.fromDate = '';
+            this.fromPrice = '';
+        },
+        findOrder: function() {
+
+            table = document.getElementById("allOrders");
+            if (table == null) {
+                table = document.getElementById("undeliveredOrdersTable");
+            }
+            tr = table.getElementsByTagName("tr");
+
+            checkboxes = document.getElementsByName("orderStatus");
+            let checkedStatus = [];
+            for (c of checkboxes) {
+                if (c.checked) {
+                    checkedStatus.push(c.value);
+                }
+            }
+
+            checkboxes = document.getElementsByName("cuisine");
+            let checkedCuisine = [];
+            for (c of checkboxes) {
+                if (c.checked) {
+                    checkedCuisine.push(c.value);
+                }
+            }
+
+            //SEARCH
+            let searchParts = this.searchText.trim().split(' ');
+            for (i = 0; i < searchParts.length; i++) {
+                for (j = 1; j < tr.length; j++) {
+                    td = tr[j].getElementsByTagName("td")[1];
+                    label = td.getElementsByTagName("label")[0];
+                    if (label.innerText.toLocaleLowerCase().includes(searchParts[i].toLocaleLowerCase())) {
+                        tr[j].style.display = "";
+                    } else {
+                        tr[j].style.display = "none";
+                    }
+                }
+            }
+
+            //FILTER - STATUS
+
+            for (j = 1; j < tr.length; j++) {
+                show = false;
+                for (i = 0; i < checkedStatus.length; i++) {
+                    if (tr[j].style.display != "none") {
+                        td = tr[j].getElementsByTagName("td")[3];
+                        if (checkedStatus[i] == "Dostavljena") {
+                            if (td.innerText.includes(checkedStatus[i]) || td.innerText.includes("Oceni")) {
+                                show = true;
+                            }
+                        } else if (td.innerText.includes(checkedStatus[i])) {
+                            show = true;
+                        }
+                    }
+                }
+                if (!show && checkedStatus.length != 0) {
+                    tr[j].style.display = 'none';
+                } else if (tr[j].style.display != 'none') {
+                    tr[j].style.display = '';
+                }
+            }
+
+            //FILTER - CUISINE
+            for (j = 1; j < tr.length; j++) {
+                show = false;
+                for (i = 0; i < checkedCuisine.length; i++) {
+                    if (tr[j].style.display != "none") {
+                        td = tr[j].getElementsByTagName("td")[1];
+                        label = td.getElementsByTagName("label")[1];
+                        if (label.innerText.includes(checkedCuisine[i])) {
+                            show = true;
+                        }
+                    }
+                }
+                if (!show && checkedCuisine.length != 0) {
+                    tr[j].style.display = 'none';
+                } else if (tr[j].style.display != 'none') {
+                    tr[j].style.display = '';
+                }
+            }
+
+            //PRICE
+            for (j = 1; j < tr.length; j++) {
+                show = false;
+
+                if (tr[j].style.display != "none") {
+                    td = tr[j].getElementsByTagName("td")[2];
+                    price = parseInt(td.innerText);
+                    if (this.fromPrice != '' && this.toPrice != '') {
+                        if (this.fromPrice <= price && price <= this.toPrice) {
+                            show = true;
+                        }
+                    } else if (this.fromPrice != '' && this.toPrice == '') {
+                        if (this.fromPrice <= price) {
+                            show = true;
+                        }
+                    } else if (this.fromPrice == '' && this.toPrice != '') {
+                        if (price <= this.toPrice) {
+                            show = true;
+                        }
+                    } else {
+                        show = true;
+                    }
+
+                }
+
+                if (!show) {
+                    tr[j].style.display = 'none';
+                } else if (tr[j].style.display != 'none') {
+                    tr[j].style.display = '';
+                }
+            }
+
+            //DATE
+            for (j = 1; j < tr.length; j++) {
+                show = false;
+
+                if (tr[j].style.display != "none") {
+                    td = tr[j].getElementsByTagName("td")[0];
+                    date = new Date(td.innerText);
+                    from = new Date(this.fromDate);
+                    to = new Date(this.toDate);
+                    if (this.fromDate != '' && this.toDate != '') {
+                        if (from <= date && date <= to) {
+                            show = true;
+                        }
+                    } else if (this.fromDate != '' && this.toDate == '') {
+                        if (from <= date) {
+                            show = true;
+                        }
+                    } else if (this.fromDate == '' && this.toDate != '') {
+                        if (date <= to) {
+                            show = true;
+                        }
+                    } else {
+                        show = true;
+                    }
+
+                }
+
+                if (!show) {
+                    tr[j].style.display = 'none';
+                } else if (tr[j].style.display != 'none') {
+                    tr[j].style.display = '';
+                }
+            }
 
         }
     }
