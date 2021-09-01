@@ -19,84 +19,28 @@ Vue.component("user-orders", {
                 { id: 'american', value: 'Americka hrana' },
                 { id: 'sweets', value: 'Poslastice' }
             ],
-            orders: [{
-                    id: 1,
-                    date: '21.08.2021.',
-                    restaurant: {
-                        id: 1,
-                        img: 'images/kfc.jpg',
-                        name: 'KFC',
-                        type: 'Americka hrana',
-                        status: 'OPENED'
-                    },
-                    summeryPrice: 1235,
-                    status: 'processing',
-                    articles: [{
-                        id: 1,
-                        name: 'Burger',
-                        quantity: 2
-                    }, {
-                        id: 2,
-                        name: 'Pomfrit',
-                        quantity: 2
-                    }],
-                    comment: false
-                },
-                {
-                    id: 2,
-                    date: '17.08.2021.',
-                    restaurant: {
-                        id: 2,
-                        img: 'images/mcdonalds.png',
-                        name: "McDonald's",
-                        type: 'Americka hrana',
-                        status: 'OPENED'
-                    },
-                    summeryPrice: 1200,
-                    status: 'prep',
-                    comment: false
-                },
-                {
-                    id: 3,
-                    date: '11.07.2021.',
-                    restaurant: {
-                        id: 3,
-                        img: 'images/burgerhouse.jpg',
-                        name: 'Burger House',
-                        type: 'Americka hrana',
-                        status: 'CLOSED'
-                    },
-                    summeryPrice: 3590,
-                    status: 'processing',
-                    comment: true
-                },
-                {
-                    id: 4,
-                    date: '05.06.2021.',
-                    restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' },
-                    summeryPrice: 560,
-                    status: 'transporting',
-                    comment: true
-                },
-                {
-                    id: 5,
-                    date: '20.04.2021.',
-                    restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' },
-                    summeryPrice: 1200,
-                    status: 'finished',
-                    comment: false
-                },
-                {
-                    id: 6,
-                    date: '15.03.2021.',
-                    restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' },
-                    summeryPrice: 2560,
-                    status: 'canceled',
-                    comment: true
-                }
-            ],
-            hover: ''
+            orders: [],
+            hover: '',
+            comment: 'za ostavljanje ocene boolean, nije izmenjeno'
         }
+    },
+    created: function() {
+        axios
+            .get("user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    axios
+                        .get("order/" + response.data.username)
+                        .then(response => {
+                            if (response.data != null) {
+                                this.orders = response.data;
+                            }
+                        })
+                } else {
+                    window.location.href = '#/';
+                }
+            })
+
     },
     template: `
 <div>
@@ -166,33 +110,33 @@ Vue.component("user-orders", {
             </thead>
             <tbody>
                 <tr v-for="order in orders" v-on:click="showOrder(order)">
-                    <td>{{order.date}}</td>
+                    <td>{{order.orderDate}}</td>
                     <td>
-                        <restaurant-cell v-bind:restaurant="order.restaurant"></restaurant-cell>
+                        <restaurant-cell v-bind:restaurantID="order.restaurantID"></restaurant-cell>
                     </td>
-                    <td>{{order.summeryPrice}}.00 RSD</td>
+                    <td>{{order.price}}.00 RSD</td>
                     <td >
-                        <div v-if="order.status == 'finished' && !order.comment" class="order-rate-btn"  v-on:click="openRateModal(order)"
-                            @mouseover="hover = order.id + 'r'"
+                        <div v-if="order.status == 'Delivered' && !order.comment" class="order-rate-btn"  v-on:click="openRateModal(order)"
+                            @mouseover="hover = order.orderID + 'r'"
                             @mouseleave="hover = ''">
 
-                            <span v-if="hover != order.id + 'r'" >
+                            <span v-if="hover != order.orderID + 'r'" >
                                 <i class="fa fa-star" aria-hidden="true" style="color:white"></i> Oceni
                             </span>
-                            <span v-if="hover == order.id + 'r'" style="color:white" >
+                            <span v-if="hover == order.orderID + 'r'" style="color:white" >
                                 <i class="fa fa-star" aria-hidden="true" style="color:white; transition: 0.5s"></i> Oceni
                             </span>
                         
                         </div>
 
-                        <div v-else-if="order.status == 'processing'" class="order-canceled-btn"  v-on:click="cancelOrder(order)"
-                            @mouseover="hover = order.id + 'c'"
+                        <div v-else-if="order.status == 'Processing'" class="order-canceled-btn"  v-on:click="cancelOrder(order)"
+                            @mouseover="hover = order.orderID + 'c'"
                             @mouseleave="hover = ''">
 
-                            <span v-if="hover != order.id + 'c'" >
+                            <span v-if="hover != order.orderID + 'c'" >
                                 <i class="fa fa-spinner" aria-hidden="true"></i> Obrada
                             </span>
-                            <span v-if="hover == order.id + 'c'" style="color:white;">
+                            <span v-if="hover == order.orderID + 'c'" style="color:white;">
                                 <i class="fa fa-ban" aria-hidden="true" style="color:white; transition: 0.5s"></i> Otkaži
                             </span>
                         
@@ -219,34 +163,34 @@ Vue.component("user-orders", {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="order in orders" v-on:click="showOrder(order)" v-if="order.status != 'finished' && order.status != 'canceled'">
-                    <td>{{order.date}}</td>
+                <tr v-for="order in orders" v-on:click="showOrder(order)" v-if="order.status != 'Delivered' && order.status != 'Cancelled'">
+                    <td>{{order.orderDate}}</td>
                     <td>
-                        <restaurant-cell v-bind:restaurant="order.restaurant"></restaurant-cell>
+                        <restaurant-cell v-bind:restaurantID="order.restaurantID"></restaurant-cell>
                     </td>
-                    <td>{{order.summeryPrice}}.00 RSD</td>
+                    <td>{{order.price}}.00 RSD</td>
                     <td >
-                        <div v-if="order.status == 'finished' && !order.comment" class="order-rate-btn"  v-on:click="openRateModal(order)"
-                            @mouseover="hover = order.id + 'r'"
+                        <div v-if="order.status == 'Delivered' && !order.comment" class="order-rate-btn"  v-on:click="openRateModal(order)"
+                            @mouseover="hover = order.orderID + 'r'"
                             @mouseleave="hover = ''">
 
-                            <span v-if="hover != order.id + 'r'" >
+                            <span v-if="hover != order.orderID + 'r'" >
                                <i class="fa fa-star" aria-hidden="true" style="color:white"></i> Oceni
                             </span>
-                            <span v-if="hover == order.id + 'r'"  style="color:white;background-color:rgb(197, 168, 1);">
+                            <span v-if="hover == order.orderID + 'r'"  style="color:white;background-color:rgb(197, 168, 1);">
                                 <i class="fa fa-star" aria-hidden="true" style="color:white"></i> Oceni
                             </span>
                         
                         </div>
 
-                        <div v-else-if="order.status == 'processing'" class="order-canceled-btn"  v-on:click="cancelOrder(order)"
-                            @mouseover="hover = order.id + 'c'"
+                        <div v-else-if="order.status == 'Processing'" class="order-canceled-btn"  v-on:click="cancelOrder(order)"
+                            @mouseover="hover = order.orderID + 'c'"
                             @mouseleave="hover = ''">
 
-                            <span v-if="hover != order.id + 'c'" >
+                            <span v-if="hover != order.orderID + 'c'" >
                                 <i class="fa fa-spinner" aria-hidden="true"></i> Obrada
                             </span>
-                            <span v-if="hover == order.id + 'c'" style="color:white;transition: 0.2s;">
+                            <span v-if="hover == order.orderID + 'c'" style="color:white;transition: 0.2s;">
                                 <i class="fa fa-ban" aria-hidden="true" style="color:white"></i> Otkaži
                             </span>
                         
@@ -339,7 +283,7 @@ Vue.component("user-orders", {
             }
         },
         cancelOrder: function(order) {
-            order.status = "canceled";
+            order.status = "Cancelled";
             event.stopPropagation();
         },
         openRateModal: function(order) {

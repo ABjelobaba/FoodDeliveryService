@@ -2,7 +2,12 @@ package controllers;
 
 import static spark.Spark.post;
 
+import java.util.List;
+
+import static spark.Spark.get;
+
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import beans.Customer;
 import beans.Order;
@@ -11,7 +16,7 @@ import services.OrderService;
 import spark.Session;
 
 public class OrderController {
-    private static Gson gs = new Gson();
+    private static Gson gs = new GsonBuilder().setDateFormat("dd MMM yyyy").create();
 
 	public OrderController(OrderService orderService) {
 
@@ -32,6 +37,12 @@ public class OrderController {
 				e.printStackTrace();
 				return "";
 			}
+		});
+
+		get("/order/:username", (req, res) -> {
+			res.type("application/json");
+			List<Order> orders = orderService.getOrdersByUser(req.params("username"));
+			return gs.toJson(orders);
 		});
     }
 }

@@ -5,6 +5,7 @@ import static spark.Spark.post;
 
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import beans.OrderedItem;
 import beans.ShoppingCart;
@@ -13,7 +14,7 @@ import services.CartService;
 import spark.Session;
 
 public class CartController {
-	private static Gson gs = new Gson();
+	private static Gson gs = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
     public CartController(CartService cartService){
 

@@ -2,8 +2,17 @@ Vue.component("rate-restaurant", {
     props: ['selectedOrder'],
     data: function() {
         return {
-
+            restaurant: ''
         }
+    },
+    created: function() {
+        axios.
+        get('/restaurant/' + this.selectedOrder.restaurantID)
+            .then(response => {
+                if (response.data != null) {
+                    this.restaurant = response.data;
+                }
+            })
     },
     template: `
 <div>
@@ -14,8 +23,8 @@ Vue.component("rate-restaurant", {
             <div>
                 <div class="order-articles-title-div">
                     <div class="order-articles-title">
-                        <p> {{selectedOrder.restaurant.name}} </p>
-                        <p> {{selectedOrder.date}} </p>
+                        <p> {{restaurant.name}} </p>
+                        <p> {{selectedOrder.orderDate}} </p>
                     </div>
                 </div>
 
@@ -35,7 +44,7 @@ Vue.component("rate-restaurant", {
 
                     <label>Komentar:</label>
                     <textarea placeholder="Unesite vas komentar.."></textarea>
-                    <button v-if="selectedOrder.status =='finished' && !selectedOrder.comment" v-on:click="$emit('orderRated')" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
+                    <button v-if="selectedOrder.status =='Delivered' && !selectedOrder.comment" v-on:click="$emit('orderRated')" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
                 </div>
             </div>
 

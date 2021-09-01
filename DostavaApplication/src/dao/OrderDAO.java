@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
@@ -13,7 +13,7 @@ import beans.Order;
 public class OrderDAO extends JSONStorage<Order, String> {
 
 	public OrderDAO(String fileLocation) {
-		super(fileLocation, new TypeToken<List<Order>>(){}.getType(), new Gson());
+		super(fileLocation, new TypeToken<List<Order>>(){}.getType(),new GsonBuilder().setDateFormat("dd MMM yyyy").create());
 	}
 	
 	public String generateID() throws JsonSyntaxException, IOException  {
