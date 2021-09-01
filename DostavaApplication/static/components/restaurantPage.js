@@ -127,7 +127,7 @@ Vue.component("restaurant-page", {
 
     <div class="bottom-section-rp">
         <div style="position: sticky;top: 65px;text-align: right;align-self: start;">
-            <div v-if="loggedInUser.role =='Manager'">
+            <div v-if="loggedInUser.role == 'Manager'">
                 <button v-on:click="showNewArticleWindow()" class="add-article-btn">+ Novi artikal</button>
             </div>
             <div v-if="loggedInUser.role =='Administrator' || loggedInUser.role =='Manager'">
@@ -218,7 +218,7 @@ Vue.component("restaurant-page", {
 
                         <label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Slika:</label>
                         <input type="file" class="login-inputs" style="margin: 2px auto 2px;" id="inpFile" v-on:change="fileUploaded">
-                        <label class="error" id="fileErr" name="labels" display="hidden"> </label>
+                        <label class="error" id="articleImageErr" name="labels" display="hidden"> </label>
 
                         <div class="image-preview" id="imagePreview">
                             <img id="imgPreview" src="" alt="Image Preview" class="image-preview__image" style="max-width: 60%;">
@@ -231,7 +231,6 @@ Vue.component("restaurant-page", {
                         </div>
 
                     </div>
-                    <!-- <label class="error" id="logoErr" name="labels" display="hidden"> </label> -->
 
                     <div style="display: inline-flex; justify-content: space-between; width: 60%;">
                         <input v-model="articleQuantity" type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Kolicina (g)">
@@ -347,24 +346,29 @@ Vue.component("restaurant-page", {
             }
             let errors = false;
 
-            //TO-DO: Dodati proveru za sliku da li je dodata i odabrane kategorije hrane 
             if (!this.articleName) {
                 document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i>Morate uneti naziv artikla!';
                 errors = true;
             }
+
+            if(document.getElementById("inpFile").value == "") {
+                document.getElementById('articleImageErr').innerHTML = '<i class="fa fa-exclamation-circle"></i>Morate odabrati sliku!';
+                errors = true;
+            }
+
             var reg = /[0-9]+/;
             if (!reg.test(this.articlePrice)) {
-                document.getElementById('articleQPErr ').innerHTML = ' <i class = "fa fa-exclamation-circle" ></i> I količina i cena moraju biti brojčane vrednosti!';
+                document.getElementById('articleQPErr').innerHTML = ' <i class = "fa fa-exclamation-circle" ></i> I količina i cena moraju biti brojčane vrednosti!';
                 errors = true;
             }
             if (this.articleQuantity) {
                 if (!reg.test(this.articleQuantity)) {
-                    document.getElementById('articleQPErr').innerHTML = '<i class="fa fa-exclamation-circle"></i > I količina i cena moraju biti brojčane vrednosti!';
+                    document.getElementById('articleQPErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> I količina i cena moraju biti brojčane vrednosti!';
                     errors = true;
                 }
             }
             if (!this.articlePrice) {
-                document.getElementById('articleQPErr ').innerHTML = ' < i class = "fa fa-exclamation-circle" > < /i> Cena mora biti uneta!';
+                document.getElementById('articleQPErr').innerHTML = ' <i class = "fa fa-exclamation-circle"> </i> Cena mora biti uneta!';
                 errors = true;
             }
             if (!errors) {
@@ -385,14 +389,14 @@ Vue.component("restaurant-page", {
                         if (response.data == null || response.data == "") {
                             document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Već postoji artikal sa unetim nazivom!';
                         } else {
-                            document.querySelector('.new - article - view - rp ').style.display = 'none ';
+                            document.querySelector('.new-article-view-rp').style.display = 'none ';
                             location.reload();
                         }
                     })
             }
         },
         showNewArticleWindow: function() {
-            document.querySelector('.new - article - view - rp ').style.display = 'flex ';
+            document.querySelector('.new-article-view-rp').style.display = 'flex';
         },
         closeNewArticleWindow: function() {
             document.querySelector('.new-article-view-rp').style.display = 'none';
