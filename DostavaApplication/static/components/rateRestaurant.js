@@ -2,7 +2,8 @@ Vue.component("rate-restaurant", {
     props: ['selectedOrder'],
     data: function() {
         return {
-            restaurant: ''
+            restaurant: '',
+            commentText: ''
         }
     },
     created: function() {
@@ -30,26 +31,36 @@ Vue.component("rate-restaurant", {
 
                 <div class="rating-div">
                     <div class="rating">
-                        <input type="radio" name="star" id="star1">
+                        <input type="radio" name="star" id="star1" value="5">
                         <label for="star1"></label>
-                        <input type="radio" name="star" id="star2">
+                        <input type="radio" name="star" id="star2" value="4">
                         <label for="star2"></label>
-                        <input type="radio" name="star" id="star3">
+                        <input type="radio" name="star" id="star3" value="3">
                         <label for="star3"></label>
-                        <input type="radio" name="star" id="star4">
+                        <input type="radio" name="star" id="star4" value="2">
                         <label for="star4"></label>
-                        <input type="radio" name="star" id="star5">
+                        <input type="radio" name="star" id="star5" value="1">
                         <label for="star5"></label>
                     </div>
 
                     <label>Komentar:</label>
-                    <textarea placeholder="Unesite vas komentar.."></textarea>
-                    <button v-if="selectedOrder.status =='Delivered' && !selectedOrder.comment" v-on:click="$emit('orderRated')" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
+                    <textarea placeholder="Unesite vaš komentar.." v-model="commentText"></textarea>
+                    <button v-if="selectedOrder.status =='Delivered' && !selectedOrder.comment" v-on:click="rate" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
+                    <label class="error" style="color:#ee2929" id="error" name="labels" display="hidden"> </label>
                 </div>
             </div>
 
         </div>
     </div>
 </div> `,
-    methods: {}
+    methods: {
+        rate: function() {
+            let stars = document.querySelector("input[type='radio'][name='star']:checked");
+            if (stars != null || (this.commentText != '' && this.commentText != undefined)) {
+                this.$emit('orderRated');
+            } else {
+                document.getElementById('error').innerHTML = "Popunite jedno od navedenih polja kako bi podelili vaše mišljenje o restoranu sa drugima!";
+            }
+        }
+    }
 })
