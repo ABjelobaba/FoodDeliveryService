@@ -172,13 +172,16 @@ Vue.component("home", {
             .then(response => {
                 if (response.data != null) {
                     this.loggedInUser = response.data;
-                    axios
-                        .get("cart/getAddress")
-                        .then(response => {
-                            if (response.data != null) {
-                                this.deliveryAddress = response.data;
-                            }
-                        })
+                    if (this.loggedInUser.deliveryAddress == '') {
+                        axios
+                            .get("cart/getAddress")
+                            .then(response => {
+                                if (response.data != null) {
+                                    this.deliveryAddress = response.data;
+                                }
+                            })
+                    }
+
                 }
             })
 
