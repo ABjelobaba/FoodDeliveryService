@@ -29,7 +29,7 @@ public class UserDAO extends JSONStorage<User, String>{
 		
 		return new GsonBuilder()
 		     .registerTypeAdapterFactory(userAdapterFactory)
-			 .setDateFormat("yyyy-MM-dd")
+			 .setDateFormat("MM-dd-yyyy HH:mm")
 	         .create();
 	}
 }

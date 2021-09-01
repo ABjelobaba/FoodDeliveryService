@@ -126,7 +126,7 @@ Vue.component("logIn-register", {
                     username: this.usernameRegistration,
                     password: this.passwordRegistration,
                     gender: genderEnum,
-                    birthdate: this.dateOfBirth,
+                    birthdate: new Date(this.dateOfBirth).toJSON(),
                     role: 'Customer'
                 }
 
