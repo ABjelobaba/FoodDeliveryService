@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.google.gson.JsonSyntaxException;
 
+import beans.Customer;
 import beans.Order;
 import beans.OrderStatus;
 import beans.ShoppingCart;
@@ -23,4 +24,10 @@ public class OrderService {
 		orderDAO.save(order);
 		return order;
     }
+
+	public Customer calculatePoints(Customer customer, ShoppingCart cart) {
+		int totalPoints = customer.getTotalPoints();
+		customer.setTotalPoints((int)(totalPoints + cart.getPoints()));
+		return customer;
+	}
 }

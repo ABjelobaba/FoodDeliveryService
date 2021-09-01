@@ -24,6 +24,8 @@ public class OrderController {
                 Customer customer = session.attribute("user");
                 Order order = orderService.createOrder(cart, gs.fromJson(req.body(), String.class));
                 session.attribute("cart", new ShoppingCart(customer.getUsername()));
+				customer = orderService.calculatePoints(customer,cart);
+                session.attribute("user", customer);
 				return gs.toJson(order);
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -8,6 +8,7 @@ public class ShoppingCart {
 	private List<OrderedItem> orderedItems;
 	private String customerUsername;
 	private double totalPrice;
+	private int points;
 	
 	public ShoppingCart(String customerUsername) {
 		super();
@@ -15,6 +16,7 @@ public class ShoppingCart {
 		this.orderedItems = new ArrayList<OrderedItem>();
 		this.customerUsername = customerUsername;
 		this.totalPrice = 0;
+		this.points = 0;
 	}
 	
 	public ShoppingCart(List<OrderedItem> orderedItems, String customerUsername, double totalPrice) {
@@ -48,6 +50,14 @@ public class ShoppingCart {
 	}
 	public void setRestaurantID(int restaurantID) {
 		this.restaurantID = restaurantID;
+	}
+
+	public int getPoints(){
+		return points;
+	}
+
+	public void setPoints(int points){
+		this.points = points;
 	}
 	
 }

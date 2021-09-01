@@ -18,7 +18,7 @@ Vue.component("shopping-cart", {
 		<h1 style="text-align:center">Vaša korpa</h1>
 
 		<div class="users-search" style="padding:0" id="cart-points" >
-			<h2> <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> Vaši bodovi nakon poručivanja : {{loggedInUser.totalPoints}} + <b style="color:#054e72">120</b> = 1350</h2>
+			<h2> <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> Vaši bodovi nakon poručivanja : {{loggedInUser.totalPoints}} + <b style="color:#054e72">{{cart.points}}</b> = {{loggedInUser.totalPoints + cart.points}}</h2>
 		</div>
 		
 	    <div class="cart-view">
@@ -90,7 +90,7 @@ Vue.component("shopping-cart", {
     mounted() {
         window.scrollTo(0, 0);
 
-        axios.get("user/getLoggedInUser")
+        axios.get("/user/getLoggedInUser")
             .then(response => {
                 if (response.data != null) {
                     this.loggedInUser = response.data;
@@ -106,14 +106,14 @@ Vue.component("shopping-cart", {
                 }
             })
 
-        axios.get("cart")
+        axios.get("/cart")
             .then(response => {
                 if (response.data != null) {
                     this.cart = response.data;
                 }
             })
 
-        axios.get("cart/searchAddress")
+        axios.get("/cart/getAddress")
             .then(response => {
                 if (response.data != null) {
                     this.deliveryAddress = response.data;
