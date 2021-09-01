@@ -114,5 +114,14 @@ public class UserService {
 		blockedUser.setBlocked(true);
 		userDAO.update(blockedUser);
 	}
+	
+	public List<User> getAllFreeManagers() throws JsonSyntaxException, IOException{
+    	List<User> users = new ArrayList<User>();	//TODO: check if they're free
+    	for (User user : getAll()) {
+    		if (user.getRole().equals(Role.Manager))
+    			users.add(user);
+    	}
+    	return users;
+    }
 
 }

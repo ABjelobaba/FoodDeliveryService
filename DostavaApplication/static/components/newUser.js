@@ -68,7 +68,7 @@ Vue.component("new-user", {
         document.getElementById("date_input").setAttribute('max', today);
 
         if (this.mode == "newUser") {
-            this.role = "manager";
+            this.role = "Manager";
             document.getElementById('selectRole').setAttribute('disabled', true);
         }
     },

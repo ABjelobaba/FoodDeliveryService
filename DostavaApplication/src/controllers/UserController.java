@@ -160,5 +160,16 @@ public class UserController {
 				return null;
 			}
 		});
+		
+		get("/user/getAllFreeManagers", (req, res) -> {
+			res.type("application/json");
+			
+			try {
+				return gs.toJson(userService.getAllFreeManagers());
+			} catch(Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
 	}
 }

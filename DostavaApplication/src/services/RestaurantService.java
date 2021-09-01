@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import com.google.gson.JsonSyntaxException;
 
+import beans.Address;
 import beans.FoodItem;
+import beans.Location;
 import beans.Restaurant;
 import dto.FoodItemDTO;
+import dto.RestaurantDTO;
 import dao.RestaurantDAO;
 
 public class RestaurantService {
@@ -23,6 +26,19 @@ public class RestaurantService {
 	
 	public Restaurant getRestaurantById(int id) throws JsonSyntaxException, IOException {
 		return restaurantDAO.getByID(id);
+	}
+	
+	public Restaurant createRestaurant(RestaurantDTO newRestaurantForm) throws JsonSyntaxException, IOException {
+		Location location = new Location(newRestaurantForm.getLongitude(), newRestaurantForm.getLatitude(), 
+				new Address(newRestaurantForm.getStreetAddress(), newRestaurantForm.getCity(), 
+						newRestaurantForm.getZipCode()));
+		Restaurant newRestaurant =  new Restaurant(newRestaurantForm.getName(), newRestaurantForm.getType(), 
+				null, true, location, newRestaurantForm.getLogo());
+		
+		newRestaurant.setID(restaurantDAO.generateID());
+		
+		return restaurantDAO.save(newRestaurant);
+		
 	}
 
 	public FoodItem createFoodItem(FoodItemDTO foodItemForm) throws JsonSyntaxException, IOException {
