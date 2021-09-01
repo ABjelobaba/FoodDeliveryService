@@ -49,6 +49,7 @@ public class UserController {
 				if (user != null) {
 					Session session = req.session();
 					session.attribute("user", user);
+					session.attribute("cart", new ShoppingCart(user.getUsername()));
 				} 
 				return (user != null) ? gs.toJson(user) : "";
 			} catch (Exception e) {

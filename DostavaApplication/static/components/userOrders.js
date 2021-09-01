@@ -29,13 +29,7 @@ Vue.component("user-orders", {
             .get("user/getLoggedInUser")
             .then(response => {
                 if (response.data != null) {
-                    axios
-                        .get("order/" + response.data.username)
-                        .then(response => {
-                            if (response.data != null) {
-                                this.orders = response.data;
-                            }
-                        })
+                    this.orders = response.data.allOrders;
                 } else {
                     window.location.href = '#/';
                 }
@@ -283,7 +277,13 @@ Vue.component("user-orders", {
             }
         },
         cancelOrder: function(order) {
-            order.status = "Cancelled";
+            axios
+                .put("order/cancel/" + order.orderID)
+                .then(response => {
+                    if (response.data != null) {
+                        order.status = "Cancelled";
+                    }
+                })
             event.stopPropagation();
         },
         openRateModal: function(order) {
