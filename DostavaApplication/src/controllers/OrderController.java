@@ -1,10 +1,10 @@
 package controllers;
 
 import static spark.Spark.post;
+import static spark.Spark.get;
+import static spark.Spark.put;
 
 import java.util.List;
-
-import static spark.Spark.get;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,8 +28,8 @@ public class OrderController {
                 ShoppingCart cart = session.attribute("cart");
                 Customer customer = session.attribute("user");
                 Order order = orderService.createOrder(cart, gs.fromJson(req.body(), String.class));
+				customer = orderService.addOrder(customer,order);
                 session.attribute("cart", new ShoppingCart(customer.getUsername()));
-				customer = orderService.calculatePoints(customer,cart);
                 session.attribute("user", customer);
 				session.attribute("address","");
 				return gs.toJson(order);
@@ -39,10 +39,20 @@ public class OrderController {
 			}
 		});
 
-		get("/order/:username", (req, res) -> {
+		put("/order/cancel/:orderID", (req, res) -> {
 			res.type("application/json");
-			List<Order> orders = orderService.getOrdersByUser(req.params("username"));
-			return gs.toJson(orders);
+
+			try {
+                Session session = req.session();
+                Customer customer = session.attribute("user");
+				orderService.cancelOrder(customer, req.params("orderID"));
+				customer = orderService.cancelledOrderPoints(customer, req.params("orderID"));
+                session.attribute("user", customer);
+				return gs.toJson(customer);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
 		});
     }
 }
