@@ -12,12 +12,6 @@ Vue.component("shopping-cart", {
         }
 
     },
-    updated: function() {
-        if (document.getElementById('accountAddress') != null) {
-            if (document.getElementById('cartAddress') != null)
-                document.getElementById('cartAddress').style.display = 'none';
-        }
-    },
     template: `
     <div class="shopping-cart-page">
 		
@@ -83,7 +77,7 @@ Vue.component("shopping-cart", {
 						<h3 class="total-price-value">{{cart.totalPrice + 200}},00 RSD </h3>
 					</div>
 						
-					<a class="continue-with-order-btn" href="#">Završi narudžbinu</a>
+					<a class="continue-with-order-btn" v-on:click="createOrder">Završi narudžbinu</a>
 				</div>
 				<a id="back-to-restaurant-btn" v-on:click="goBack">Niste završili sa narudžbinom?</a>
 			</div>
@@ -156,6 +150,7 @@ Vue.component("shopping-cart", {
                     window.location.href = "#/";
                 } else {
                     window.location.href = "#/account?" + this.deliveryAddress.replace(' ', '%20');
+                    window.location.reload(true);
                 }
             } else {
                 window.location.href = "#/restaurant?id=" + this.cart.restaurantID;
@@ -170,6 +165,8 @@ Vue.component("shopping-cart", {
                 setTimeout(function() {
                     document.querySelector('.registration-success').style.display = 'none';
                 }, 2000);
+            } else if (this.cart.orderedItems.length == 0) {
+                this.goBack();
             } else {
                 axios
                     .post('/order/create', JSON.stringify(this.deliveryAddress))
