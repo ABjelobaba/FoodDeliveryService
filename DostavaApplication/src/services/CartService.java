@@ -63,6 +63,15 @@ public class CartService {
                 break;
             }
         }
+        if(cart.getOrderedItems().size() == 0){
+            cart.setRestaurantID(-1);
+        }
         return cart;
+    }
+
+    public ShoppingCart calculatePoints(ShoppingCart cart) {
+		double newPoints = cart.getTotalPrice()/1000*133;
+		cart.setPoints((int)newPoints);
+		return cart;
     }
 }

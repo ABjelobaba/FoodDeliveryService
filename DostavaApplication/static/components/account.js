@@ -4,8 +4,7 @@ Vue.component("account", {
             deliveryAddress: '',
             loggedInUser: '',
             mode: '',
-            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 },
-            showAddressContainer: true
+            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 }
         }
     },
     created: function() {
@@ -21,7 +20,7 @@ Vue.component("account", {
     },
     updated: function() {
 
-        if (this.showAddressContainer == true && window.location.href.includes('account')) {
+        if (this.deliveryAddress != '' && this.deliveryAddress != undefined && window.location.href.includes('account')) {
             document.querySelector('#user-nav-ul').style.marginTop = '0';
             document.querySelector('#user-nav-ul-second').style.marginTop = '0';
         } else if (window.location.href.includes('account')) {
@@ -33,10 +32,8 @@ Vue.component("account", {
         } else if (window.location.href.endsWith('users')) {
             document.getElementById('users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('profile')) {
-            this.showAddressContainer = false;
             document.getElementById('profile').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('orders')) {
-            this.showAddressContainer = false;
             document.getElementById('orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('restaurants')) {
             document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
@@ -47,7 +44,6 @@ Vue.component("account", {
         } else if (window.location.href.endsWith('suspiciousUsers')) {
             document.getElementById('suspicious-users').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('cart')) {
-            this.showAddressContainer = false;
             document.getElementById('shopping-cart').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('restaurantOrders')) {
             document.getElementById('managers-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
@@ -55,6 +51,11 @@ Vue.component("account", {
             document.getElementById('managers-prev-orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('customers')) {
             document.getElementById('restaurant-customer-list').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        }
+
+        if (document.getElementById('accountAddress') != null) {
+            if (document.getElementById('cartAddress') != null)
+                document.getElementById('cartAddress').style.display = 'none';
         }
     },
     template: `
@@ -67,14 +68,14 @@ Vue.component("account", {
                     <a v-on:click="logOut" class="btn">Odjavi se</a>
                 </span>
                 <div class="address-container">
-                    <div class="entered-address" v-if="showAddressContainer">
+                    <div class="entered-address" id="accountAddress" v-if="deliveryAddress != '' && deliveryAddress != undefined">
                         <i class="fa fa-map-marker fa-lg" ></i>
                         <label>{{deliveryAddress}}</label>
                     </div>
                 </div>
             </div>
             <nav class="user-nav">
-                <ul id="user-nav-ul">
+                <ul id="user-nav-ul" v-if="deliveryAddress=='' || deliveryAddress==undefined">
                     <li><a v-on:click="profileView" name="user-nav" id="profile">Profil</a></li>
                     <li v-if="loggedInUser.role == 'Administrator'"><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
                     <li v-if="loggedInUser.role == 'Administrator'"><a v-on:click="restaurantsView" name="user-nav" id="restaurants">Restorani</a></li>
@@ -86,6 +87,7 @@ Vue.component("account", {
                     <li v-if="loggedInUser.role == 'Manager'"><a v-on:click="managersPreviousOrdersView" name="user-nav" id="managers-prev-orders"> Prethodne porudžbine</a></li>
                     <li v-if="loggedInUser.role == 'Manager'"><a v-on:click="restaurantCustomersView" name="user-nav" id="restaurant-customer-list">Kupci</a></li>
                 </ul>
+                <ul id="user-nav-ul" v-else></ul>
                 <ul id="user-nav-ul-second" >
                     <li ><a v-if="loggedInUser.role == 'Customer'" v-on:click="shoppingCartView" name="user-nav" id="shopping-cart" >Korpa ( {{cart.orderedItems.length}} )</a></li>
                 </ul>
@@ -111,9 +113,18 @@ Vue.component("account", {
         if (window.location.href.split('?').length == 2) {
             let query = window.location.href.split('?');
             this.deliveryAddress = query[1].replace('%20', ' ');
+            this.deliveryAddress = this.deliveryAddress.replace('%20', ' ');
             this.deliveryAddress = this.deliveryAddress.replace(',%20', ', ');
         }
 
+        if ((this.deliveryAddress == '' || this.deliveryAddress == undefined) && window.location.href.includes('cart')) {
+            axios.get("/cart/getAddress")
+                .then(response => {
+                    if (response.data != null) {
+                        this.deliveryAddress = response.data;
+                    }
+                })
+        }
 
 
     },

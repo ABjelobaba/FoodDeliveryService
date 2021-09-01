@@ -1,6 +1,7 @@
 .user-nav {
     display: flex;
     justify-content: space-between;
+    height: fit-content;
 }
 
 .user-nav ul {
@@ -9,6 +10,7 @@
     font-size: 18px;
     margin: 80px 0% 20px 7%;
     align-items: flex-end;
+    height: fit-content;
 }
 
 .user-nav ul li a {
@@ -124,7 +126,7 @@
 .users-search {
     background-color: white;
     position: sticky;
-    top: 181px;
+    top: 191px;
     padding: 0 120px;
     padding: 0 5%;
     width: -webkit-fill-available;

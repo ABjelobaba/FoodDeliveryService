@@ -31,6 +31,7 @@ public class CartController {
                 Session session = req.session();
                 ShoppingCart cart = session.attribute("cart");
                 cart = cartService.addArticle(cart, gs.fromJson(req.body(), CartItemDTO.class));
+                cart = cartService.calculatePoints(cart);
 				session.attribute("cart", cart);
 				return gs.toJson(cart);
 			} catch (Exception e) {
@@ -46,6 +47,7 @@ public class CartController {
                 Session session = req.session();
                 ShoppingCart cart = session.attribute("cart");
                 cart = cartService.increaseQuantity(cart,gs.fromJson(req.body(), OrderedItem.class));
+                cart = cartService.calculatePoints(cart);
 				session.attribute("cart", cart);
 				return gs.toJson(cart);
 			} catch (Exception e) {
@@ -61,6 +63,7 @@ public class CartController {
                 Session session = req.session();
                 ShoppingCart cart = session.attribute("cart");
                 cart = cartService.decreaseQuantity(cart,gs.fromJson(req.body(), OrderedItem.class));
+                cart = cartService.calculatePoints(cart);
 				session.attribute("cart", cart);
 				return gs.toJson(cart);
 			} catch (Exception e) {
@@ -76,6 +79,7 @@ public class CartController {
                 Session session = req.session();
                 ShoppingCart cart = session.attribute("cart");
                 cart = cartService.deleteItem(cart,gs.fromJson(req.body(), OrderedItem.class));
+                cart = cartService.calculatePoints(cart);
 				session.attribute("cart", cart);
 				return gs.toJson(cart);
 			} catch (Exception e) {
@@ -96,13 +100,14 @@ public class CartController {
 				return "";
 			}
 		});
-
-		get("/cart/searchAddress", (req, res) -> {
+		
+		get("/cart/getAddress", (req, res) -> {
 			res.type("application/json");
 
 			try {
                 Session session = req.session();
-				return session.attribute("address");
+				String s = session.attribute("address");
+				return  s == null ? "":s;
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";

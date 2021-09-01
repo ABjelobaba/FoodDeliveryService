@@ -18,7 +18,7 @@ Vue.component("shopping-cart", {
 		<h1 style="text-align:center">Vaša korpa</h1>
 
 		<div class="users-search" style="padding:0" id="cart-points" >
-			<h2> <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> Vaši bodovi nakon poručivanja : {{loggedInUser.totalPoints}} + <b style="color:#054e72">120</b> = 1350</h2>
+			<h2> <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> Vaši bodovi nakon poručivanja : {{loggedInUser.totalPoints}} + <b style="color:#054e72">{{cart.points}}</b> = {{loggedInUser.totalPoints + cart.points}}</h2>
 		</div>
 		
 	    <div class="cart-view">
@@ -32,7 +32,7 @@ Vue.component("shopping-cart", {
 	        </div>
 	
 			<div class="right-section">
-			<div class="address-container" >
+			<div class="address-container" id="cartAddress">
 			<div class="entered-address" style="border:1px solid black;box-shadow:none;margin-bottom:35px" >
 				<i class="fa fa-map-marker fa-2x" style="color:black"></i>
 				<input placeholder="Unesite adresu.." class="deliveryAddress" v-model="deliveryAddress"></input>
@@ -66,7 +66,7 @@ Vue.component("shopping-cart", {
 					</div>
 					<div>
 						<h3>Ukupna cena artikala</h3>
-						<h3 style="white-space: nowrap;">1350,00 RSD </h3>
+						<h3 style="white-space: nowrap;">{{cart.totalPrice}},00 RSD </h3>
 					</div>
 					<div >
 						<h3>Dostava</h3>
@@ -74,10 +74,10 @@ Vue.component("shopping-cart", {
 					</div>
 					<div >
 						<h3>Ukupna cena artikala</h3>
-						<h3 class="total-price-value">1550,00 RSD </h3>
+						<h3 class="total-price-value">{{cart.totalPrice + 200}},00 RSD </h3>
 					</div>
 						
-					<a class="continue-with-order-btn" href="#">Završi narudžbinu</a>
+					<a class="continue-with-order-btn" v-on:click="createOrder">Završi narudžbinu</a>
 				</div>
 				<a id="back-to-restaurant-btn" v-on:click="goBack">Niste završili sa narudžbinom?</a>
 			</div>
@@ -90,7 +90,7 @@ Vue.component("shopping-cart", {
     mounted() {
         window.scrollTo(0, 0);
 
-        axios.get("user/getLoggedInUser")
+        axios.get("/user/getLoggedInUser")
             .then(response => {
                 if (response.data != null) {
                     this.loggedInUser = response.data;
@@ -106,19 +106,21 @@ Vue.component("shopping-cart", {
                 }
             })
 
-        axios.get("cart")
+        axios.get("/cart")
             .then(response => {
                 if (response.data != null) {
                     this.cart = response.data;
                 }
             })
 
-        axios.get("cart/searchAddress")
+        axios.get("/cart/getAddress")
             .then(response => {
                 if (response.data != null) {
                     this.deliveryAddress = response.data;
                 }
             })
+
+
 
     },
 
@@ -143,7 +145,16 @@ Vue.component("shopping-cart", {
             }
         },
         goBack: function() {
-            window.location.href = "#/restaurant?id=" + this.cart.restaurantID;
+            if (this.cart.restaurantID == -1) {
+                if (this.deliveryAddress == '' || this.deliveryAddress == undefined) {
+                    window.location.href = "#/";
+                } else {
+                    window.location.href = "#/account?" + this.deliveryAddress.replace(' ', '%20');
+                    window.location.reload(true);
+                }
+            } else {
+                window.location.href = "#/restaurant?id=" + this.cart.restaurantID;
+            }
         },
         createOrder: function() {
             if (this.deliveryAddress == '' || this.deliveryAddress == undefined) {
@@ -154,6 +165,8 @@ Vue.component("shopping-cart", {
                 setTimeout(function() {
                     document.querySelector('.registration-success').style.display = 'none';
                 }, 2000);
+            } else if (this.cart.orderedItems.length == 0) {
+                this.goBack();
             } else {
                 axios
                     .post('/order/create', JSON.stringify(this.deliveryAddress))
@@ -163,6 +176,8 @@ Vue.component("shopping-cart", {
                             window.location.reload(true);
                         }
                     })
+
+
             }
 
         },
