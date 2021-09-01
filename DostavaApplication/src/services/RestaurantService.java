@@ -35,6 +35,8 @@ public class RestaurantService {
 		Restaurant newRestaurant =  new Restaurant(newRestaurantForm.getName(), newRestaurantForm.getType(), 
 				null, true, location, newRestaurantForm.getLogo());
 		
+		//TODO: assign restaurant to manager
+		
 		newRestaurant.setID(restaurantDAO.generateID());
 		
 		return restaurantDAO.save(newRestaurant);

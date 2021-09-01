@@ -11,9 +11,10 @@ public class RestaurantDTO {
 	private String streetAddress;
 	private String city;
 	private int zipCode;
+	private String managerUsername;
 	
 	public RestaurantDTO(String name, RestaurantType type, String logo, double longitude, double latitude,
-			String streetAddress, String city, int zipCode) {
+			String streetAddress, String city, int zipCode, String managerUsername) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -23,6 +24,7 @@ public class RestaurantDTO {
 		this.streetAddress = streetAddress;
 		this.city = city;
 		this.zipCode = zipCode;
+		this.managerUsername = managerUsername;
 	}
 
 	public String getName() {
@@ -88,6 +90,13 @@ public class RestaurantDTO {
 	public void setZipCode(int zipCode) {
 		this.zipCode = zipCode;
 	}
-	
+
+	public String getManagerUsername() {
+		return managerUsername;
+	}
+
+	public void setManagerUsername(String managerUsername) {
+		this.managerUsername = managerUsername;
+	}
 	
 }

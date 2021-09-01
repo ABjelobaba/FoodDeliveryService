@@ -16,8 +16,8 @@ Vue.component("new-restaurant", {
             houseNumber: '',
             city: '',
             postcode: '',
-            latitude: 0,
-            longitude: 0,
+            latitude: null,
+            longitude: null,
             restaurantType: '',
             restaurantLogo: '',
             restaurantManager: null
@@ -135,8 +135,8 @@ Vue.component("new-restaurant", {
 						<form>
 							<div class="radio-btn-container" >
                                 <div v-for="manager in managers">
-                                    <input type="radio" v-bind:id="manager.username"	name="contact" v-bind:value="manager.username">
-                                    <label class="radio-label" v-bind:for="manager.username">{{manager.name}} {{manager.surname}}</label>
+                                    <input type="radio" v-bind:id="manager.username" name="contact" v-bind:value="manager.username">
+                                    <label class="radio-label" v-bind:for="manager.username" v-on:click="selectManager(manager)">{{manager.name}} {{manager.surname}}</label>
                                 </div>
                             </div>
 						</form>
@@ -175,6 +175,7 @@ Vue.component("new-restaurant", {
         }).addTo(Map);
 
         var marker;
+        var ref = this;
         Map.on('click', function(e) {
             var coordinate = e.latlng;
             var lon = coordinate.lng;
@@ -183,7 +184,8 @@ Vue.component("new-restaurant", {
             if (marker != undefined) {
                 Map.removeLayer(marker);
             }
-
+            ref.longitude = lon;
+            ref.latitude = lat;
             marker = L.marker([lat, lon]).addTo(Map);
         });
 
@@ -224,6 +226,9 @@ Vue.component("new-restaurant", {
                         this.postcode.value = json[0].address.postcode;
                         Map.setView([parseInt(json[0].lat) + 0.15, parseInt(json[0].lon) + 0.65], 9);
                         marker = L.marker([json[0].lat, json[0].lon]).addTo(Map);
+
+                        ref.longitude = json[0].lon;
+                        ref.latitude = json[0].lat;
                     }
                 })
             }
@@ -260,6 +265,9 @@ Vue.component("new-restaurant", {
                 previewImage.style.display = null;
                 previewImage.setAttribute("src", "");
             }
+        },
+        selectManager: function(manager) {
+            this.restaurantManager = manager;
         },
         nextStep: function(event) {
             event.preventDefault();
@@ -314,27 +322,22 @@ Vue.component("new-restaurant", {
                 
             } else {
 
-                if (this.managers)
-                    for (i in this.managers) {
-                        if (document.getElementById(this.managers[i].username).checked) {
-                            this.restaurantManager = this.managers[i];
-                    }
-                    if (!this.restaurantManager) {
-                        document.getElementById('restaurantManagerErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Restoran mora imati menadžera!';
-                        errors = true;
-                    }
+                if (!this.restaurantManager) {
+                    document.getElementById('restaurantManagerErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Restoran mora imati menadžera!';
+                    errors = true;
                 }
-
+                
                 if (!errors) {
                     let restaurantDTO = {
                         name: this.restaurantName,
                         type: this.restaurantType,
                         logo: this.restaurantLogo,
-                        longitude: this.longitude,
-                        latitude: this.latitude,
+                        longitude: Math.round((this.longitude + Number.EPSILON) * 1000000) / 1000000,
+                        latitude: Math.round((this.latitude + Number.EPSILON) * 1000000) / 1000000,
                         streetAddress: this.street + ' ' + this.houseNumber,
                         city: this.city,
-                        zipCode: this.postcode
+                        zipCode: this.postcode,
+                        manager: this.restaurantManager
                     }
     
                     axios

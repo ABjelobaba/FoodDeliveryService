@@ -116,7 +116,7 @@ public class UserService {
 	}
 	
 	public List<User> getAllFreeManagers() throws JsonSyntaxException, IOException{
-    	List<User> users = new ArrayList<User>();	//TODO: check if they're free
+    	List<User> users = new ArrayList<User>();	//TODO: check if managers are free
     	for (User user : getAll()) {
     		if (user.getRole().equals(Role.Manager))
     			users.add(user);
