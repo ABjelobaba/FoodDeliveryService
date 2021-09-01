@@ -337,9 +337,6 @@ Vue.component("admin-restaurants", {
 
             this.finalResults = this.searchResults.filter(x => this.filteredResults.includes(x));
 
-        },
-        filterChanged: function(event) {
-            
         }
     }
 });
