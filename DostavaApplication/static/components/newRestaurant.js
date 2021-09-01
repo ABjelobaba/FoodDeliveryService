@@ -3,27 +3,34 @@ Vue.component("new-restaurant", {
         return {
             mode: 'dd',
             searchText: '',
+            cuisines: [
+                { id: 'American', value: 'Američka' },
+                { id: 'Barbecue', value: 'Roštilj' },
+                { id: 'Chinese', value: 'Kineska' },
+                { id: 'Italian', value: 'Italijanska' },
+                { id: 'Mexican', value: 'Meksička' }
+            ],
+            managers: null,
             restaurantName: '',
             street: '',
             houseNumber: '',
             city: '',
             postcode: '',
-            latitude: 0,
-            longitude: 0,
-            cuisines: [
-                { id: 'newItalian', value: 'Italijanska' },
-                { id: 'newChinese', value: 'Kineska' },
-                { id: 'newBarbecue', value: 'Rostilj' },
-                { id: 'newAmerican', value: 'Americka hrana' },
-                { id: 'newSweets', value: 'Poslastice' }
-            ],
-            managers: [
-                { id: 1, name: 'Petar', surname: 'Petrović' },
-                { id: 2, name: 'Zoran', surname: 'Dimitrov' },
-                { id: 3, name: 'Sara', surname: 'Ilić' },
-                { id: 4, name: 'Marija', surname: 'Nikolov' }
-            ]
+            latitude: null,
+            longitude: null,
+            restaurantType: '',
+            restaurantLogo: '',
+            restaurantManager: null
         }
+    },
+    created: function() {
+        axios
+            .get("/user/getAllFreeManagers")
+            .then(response => {
+                if (response.data != null) {
+                    this.managers = response.data;
+                }
+            })
     },
     template: `
 	<div class="register" style="z-index:100" >
@@ -44,10 +51,10 @@ Vue.component("new-restaurant", {
 
 							<label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Logo:</label>
 							<input type="file" class="login-inputs" style="margin: 2px auto 2px;" id="inpFile" v-on:change="fileUploaded">
-							<label class="error" id="fileErr" name="labels" display="hidden"> </label>
+							<label class="error" id="restaurantLogoErr" name="labels" display="hidden"> </label>
 
 							<div class="image-preview" id="imagePreview">
-								<img src="" alt="Image Preview" class="image-preview__image">
+								<img style="max-width: 60%;" src="" alt="Image Preview" class="image-preview__image">
 								<span class="image-preview__default-text">Image Preview</span>
 							</div>
 
@@ -58,7 +65,7 @@ Vue.component("new-restaurant", {
                                     <label  class="radio-label" name="cuisine" v-bind:for=cuisine.id>{{cuisine.value}}</label>
                                 </div>
 							</div>
-							<label class="error" id="logoErr" name="labels" display="hidden"> </label>
+							<label style="margin-top: -8px;" class="error" id="restaurantTypeErr" name="labels" display="hidden"> </label>
 
 						</form>
 						<br>
@@ -118,7 +125,7 @@ Vue.component("new-restaurant", {
 						<p>Odaberite nadležnog menadžera restora.</p>
 					</div>
 
-					<div class="search" style="margin: auto 5%;width:auto;">
+					<div class="search" style="margin: 1% 10%;width:auto;">
 							<i class="fa fa-search fa-lg" style="color:white"></i>
 							<input style="color: white;margin: 0 0 0 10px;" v-model="searchText" type="text" placeholder="Pretraži po imenu i prezimenu..">
 						</div>
@@ -128,12 +135,14 @@ Vue.component("new-restaurant", {
 						<form>
 							<div class="radio-btn-container" >
                                 <div v-for="manager in managers">
-                                    <input type="radio" v-bind:id="manager.id"	name="contact" v-bind:value="manager.id">
-                                    <label class="radio-label" v-bind:for="manager.id">{{manager.name}} {{manager.surname}}</label>
+                                    <input type="radio" v-bind:id="manager.username" name="contact" v-bind:value="manager.username">
+                                    <label class="radio-label" v-bind:for="manager.username" v-on:click="selectManager(manager)">{{manager.name}} {{manager.surname}}</label>
                                 </div>
                             </div>
 						</form>
 					</div>
+                    <label style="margin-top: -8px;" class="error" id="restaurantManagerErr" name="labels" display="hidden"> </label>
+
 					
 					<div class="steps-div" style="grid-template-columns: 30% 40% 30%;">
 						<button v-on:click="backStep" style="float:right;padding: 10px 20px;margin-top:10px" class="log-btn"> 
@@ -166,6 +175,7 @@ Vue.component("new-restaurant", {
         }).addTo(Map);
 
         var marker;
+        var ref = this;
         Map.on('click', function(e) {
             var coordinate = e.latlng;
             var lon = coordinate.lng;
@@ -174,7 +184,8 @@ Vue.component("new-restaurant", {
             if (marker != undefined) {
                 Map.removeLayer(marker);
             }
-
+            ref.longitude = lon;
+            ref.latitude = lat;
             marker = L.marker([lat, lon]).addTo(Map);
         });
 
@@ -215,6 +226,9 @@ Vue.component("new-restaurant", {
                         this.postcode.value = json[0].address.postcode;
                         Map.setView([parseInt(json[0].lat) + 0.15, parseInt(json[0].lon) + 0.65], 9);
                         marker = L.marker([json[0].lat, json[0].lon]).addTo(Map);
+
+                        ref.longitude = json[0].lon;
+                        ref.latitude = json[0].lat;
                     }
                 })
             }
@@ -252,6 +266,9 @@ Vue.component("new-restaurant", {
                 previewImage.setAttribute("src", "");
             }
         },
+        selectManager: function(manager) {
+            this.restaurantManager = manager;
+        },
         nextStep: function(event) {
             event.preventDefault();
 
@@ -262,41 +279,94 @@ Vue.component("new-restaurant", {
 
             let errors = false;
 
+            if (document.querySelector('.firstStep').style.display == 'grid') {
+                if (!this.restaurantName) {
+                    document.getElementById('restaurantNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti naziv restorana!';
+                    errors = true;
+                } 
 
-            //TO-DO: Dodati proveru za sliku da li je dodata i odabrane kategorije hrane
-
-            if (!errors) {
-                if (document.querySelector('.firstStep').style.display == 'grid') {
-                    if (!this.restaurantName) {
-                        document.getElementById('restaurantNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti korisničko ime!';
-                        errors = true;
-                    } else {
-                        document.querySelector('.firstStep').style.display = 'none';
-                        document.querySelector('.secondStep').style.display = 'grid';
-                    }
-                } else if (document.querySelector('.secondStep').style.display == 'grid') {
-                    if (!this.street || !this.houseNumber || !this.city || !this.postcode) {
-                        document.getElementById('secondErr').style.color = 'red';
-                    } else {
-                        document.querySelector('.secondStep').style.display = 'none';
-                        document.querySelector('.thirdStep').style.display = 'grid';
-                    }
+                if(document.getElementById("inpFile").value == "") {
+                    document.getElementById('restaurantLogoErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate odabrati logo restorana!';
+                    errors = true;
+                }
+                
+                if (document.getElementById('Italian').checked) {
+                    this.restaurantType = 'Italian';
+                } else if (document.getElementById('Chinese').checked) {
+                    this.restaurantType = 'Chinese';
+                } else if (document.getElementById('Barbecue').checked) {
+                    this.restaurantType = 'Barbecue';
+                } else if (document.getElementById('Mexican').checked) {
+                    this.restaurantType = 'Mexican';
+                } else if (document.getElementById('American').checked) {
+                    this.restaurantType = 'American';
                 } else {
-
-                    document.querySelector('.register').style.display = 'none';
-                    document.querySelector('.registration-success').style.display = 'flex';
-                    let checkMark = document.getElementById('checkMark');
-                    checkMark.innerHTML = "&#xf10c";
-
-                    setTimeout(function() {
-                        checkMark.innerHTML = "&#xf05d";
-                    }, 500);
-
-                    setTimeout(function() {
-                        document.querySelector('.registration-success').style.display = 'none';
-                    }, 1500);
+                    document.getElementById('restaurantTypeErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate selektovati tip hrane!';
+                    errors = true;
+                }
+                
+                if (!errors) {
+                    document.querySelector('.firstStep').style.display = 'none';
+                    document.querySelector('.secondStep').style.display = 'grid';
                 }
 
+
+                
+            } else if (document.querySelector('.secondStep').style.display == 'grid') {
+                if (!this.street || !this.houseNumber || !this.city || !this.postcode) {
+                    document.getElementById('secondErr').style.color = 'red';
+                } else {
+                    document.querySelector('.secondStep').style.display = 'none';
+                    document.querySelector('.thirdStep').style.display = 'grid';
+                }
+                
+            } else {
+
+                if (!this.restaurantManager) {
+                    document.getElementById('restaurantManagerErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Restoran mora imati menadžera!';
+                    errors = true;
+                }
+                
+                if (!errors) {
+                    let restaurantDTO = {
+                        name: this.restaurantName,
+                        type: this.restaurantType,
+                        logo: this.restaurantLogo,
+                        longitude: Math.round((this.longitude + Number.EPSILON) * 1000000) / 1000000,
+                        latitude: Math.round((this.latitude + Number.EPSILON) * 1000000) / 1000000,
+                        streetAddress: this.street + ' ' + this.houseNumber,
+                        city: this.city,
+                        zipCode: this.postcode,
+                        manager: this.restaurantManager
+                    }
+    
+                    axios
+                        .post('/restaurants/addRestaurant', JSON.stringify(restaurantDTO))
+                        .then(response => {
+                            if (response.data == null || response.data == "") {
+                                document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Već postoji artikal sa unetim nazivom!';
+                            } else {
+                                document.querySelector('.register').style.display = 'none';
+                                document.querySelector('.registration-success').style.display = 'flex';
+                                let checkMark = document.getElementById('checkMark');
+                                checkMark.innerHTML = "&#xf10c";
+
+                                setTimeout(function() {
+                                    checkMark.innerHTML = "&#xf05d";
+                                }, 500);
+
+                                setTimeout(function() {
+                                    document.querySelector('.registration-success').style.display = 'none';
+                                }, 1500);
+
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
+                            }
+                        })
+                }
+
+                    
             }
 
 
@@ -347,6 +417,14 @@ Vue.component("new-restaurant", {
             }
             this.mode = '';
             document.getElementById('newRestaurantModal').style.backgroundColor = "rgb(44,53,63)"
+
+            axios
+                .get("/user/getAllFreeManagers")
+                .then(response => {
+                    if (response.data != null) {
+                        this.managers = response.data;
+                    }
+                })
         }
     }
 });

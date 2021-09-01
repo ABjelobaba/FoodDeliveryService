@@ -269,7 +269,7 @@ Vue.component("restaurant-page", {
 
         function createNavMenu() {
             if (window.location.href.endsWith('restaurant?id=' + id)) {
-                if (window.scrollY >= 250) {
+                if (window.scrollY >= 240) {
                     document.getElementById('navmenu-rp').style.visibility = 'visible';
                 } else {
                     document.getElementById('navmenu-rp').style.visibility = 'collapse';
