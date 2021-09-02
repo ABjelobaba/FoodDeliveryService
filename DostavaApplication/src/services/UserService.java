@@ -19,6 +19,7 @@ import dao.UserDAO;
 import dto.ChangePasswordDTO;
 import dto.LogInDTO;
 import dto.RegistrationDTO;
+import dto.RestaurantAssignmentDTO;
 
 public class UserService {
 	
@@ -125,5 +126,13 @@ public class UserService {
     	}
     	return managers;
     }
+
+	public void assignRestaurantToManager(RestaurantAssignmentDTO ra) throws JsonSyntaxException, IOException {
+		Manager manager = (Manager) userDAO.getByID(ra.getUsername());
+		
+		manager.setRestaurantID(ra.getRestaurantID());
+		
+		userDAO.update(manager);
+	}
 
 }

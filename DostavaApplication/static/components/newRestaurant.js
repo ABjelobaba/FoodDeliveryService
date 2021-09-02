@@ -336,16 +336,13 @@ Vue.component("new-restaurant", {
                         latitude: Math.round((this.latitude + Number.EPSILON) * 1000000) / 1000000,
                         streetAddress: this.street + ' ' + this.houseNumber,
                         city: this.city,
-                        zipCode: this.postcode,
-                        manager: this.restaurantManager
+                        zipCode: this.postcode
                     }
     
                     axios
                         .post('/restaurants/addRestaurant', JSON.stringify(restaurantDTO))
                         .then(response => {
-                            if (response.data == null || response.data == "") {
-                                document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Već postoji artikal sa unetim nazivom!';
-                            } else {
+                            if (response.data != null && response.data != "") {
                                 document.querySelector('.register').style.display = 'none';
                                 document.querySelector('.registration-success').style.display = 'flex';
                                 let checkMark = document.getElementById('checkMark');
@@ -359,11 +356,26 @@ Vue.component("new-restaurant", {
                                     document.querySelector('.registration-success').style.display = 'none';
                                 }, 1500);
 
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 2000);
+                                newRestaurantID = response.data.restaurantID;
+
+                                let restaurantAssignmentDTO = {
+                                    username: this.restaurantManager.username,
+                                    RestaurantID: newRestaurantID
+                                }
+            
+                                axios
+                                    .post('/user/assignRestaurant', JSON.stringify(restaurantAssignmentDTO))
+                                    .then(response => {
+                                        if (response.data != null && response.data != "") {
+                                            setTimeout(function() {
+                                                location.reload();
+                                            }, 2000);
+                                        }
+                                    })
+
                             }
                         })
+                        
                 }
 
                     
