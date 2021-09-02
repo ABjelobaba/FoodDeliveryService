@@ -18,8 +18,8 @@ Vue.component("view-order", {
 
         if (window.location.href.includes('availableOrders')) {
             this.mode = 'waitingDeliveryOrders';
-        } else {
-            this.mode = '';
+        } else if (window.location.href.includes('allOrders')) {
+            this.mode = 'allOrders';
         }
     },
     template: `
@@ -49,8 +49,9 @@ Vue.component("view-order", {
                         </div>
 
                         <button v-if="selectedOrder.status =='Processing'" v-on:click="cancelOrder(selectedOrder)" class="cancle-btn" style="margin: 20px 20%"> Otkaži</button>
-                        <button v-if="selectedOrder.status =='Delivered' && !selectedOrder.comment" v-on:click="$emit('openRateModal')" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
+                        <button v-if="mode == '' && selectedOrder.status =='Delivered' && !selectedOrder.comment" v-on:click="$emit('openRateModal')" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
                         <button v-if="mode == 'waitingDeliveryOrders'" style="margin: 20px 20%;width: -webkit-fill-available;" class="ask-for-delivery-btn" v-on:click="$emit('requestOrder')"> Zatraži porudžbinu</button>
+                        <button v-if="mode == 'allOrders' && selectedOrder.status == 'InTransport'" style="margin: 20px 20%;width: -webkit-fill-available;" class="ask-for-delivery-btn" v-on:click="$emit('confirmDelivery')"> Dostavi porudžbinu</button>
                     </div>
                 </div>
 
