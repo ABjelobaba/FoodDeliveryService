@@ -9,19 +9,21 @@ public class Order implements IEntity<String>{
 	private int restaurantID;
 	private Date orderDate;
 	private double price;
-	private String customerUsername;
+	private String customerName;
+	private String customerSurname;
 	private OrderStatus status;
 	private boolean deleted;
 	private String address;
 	
 	public Order(List<OrderedItem> orderedItems, int restaurantID, Date orderDate, double price,
-			String customerUsername, OrderStatus status, String address) {
+			String customerName, String customerSurname, OrderStatus status, String address) {
 		super();
 		this.orderedItems = orderedItems;
 		this.restaurantID = restaurantID;
 		this.orderDate = orderDate;
 		this.price = price;
-		this.customerUsername = customerUsername;
+		this.customerName = customerName;
+		this.customerSurname = customerSurname;
 		this.status = status;
 		this.deleted = false;
 		this.address = address;
@@ -78,13 +80,22 @@ public class Order implements IEntity<String>{
 	}
 
 
-	public String getCustomerUsername() {
-		return customerUsername;
+	public String getCustomerName() {
+		return customerName;
 	}
 
 
-	public void setCustomerUsername(String customerUsername) {
-		this.customerUsername = customerUsername;
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getCustomerSurname() {
+		return customerSurname;
+	}
+
+
+	public void setCustomerSurname(String customerSurname) {
+		this.customerSurname = customerSurname;
 	}
 
 

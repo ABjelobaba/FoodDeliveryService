@@ -37,8 +37,9 @@ public class OrderService {
 	}
 
     public Order createOrder(ShoppingCart cart, String string) throws JsonSyntaxException, IOException {
+		User user = userDAO.getByID(cart.getCustomerUsername());
         Order order = new Order(cart.getOrderedItems(), cart.getRestaurantID(), new Date(), 
-							cart.getTotalPrice() + 200, cart.getCustomerUsername(), OrderStatus.Processing,string);
+							cart.getTotalPrice() + 200, user.getName(), user.getSurname(), OrderStatus.Processing,string);
 		order.setID(generateID());
 		return order;
     }
