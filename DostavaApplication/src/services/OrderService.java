@@ -110,6 +110,7 @@ public class OrderService {
 	}
 
 	public Order setOrderInTransport(Deliverer deliverer, String orderID, String username) throws JsonSyntaxException, IOException {
+		//TODO: prepraviti za menadzera, zaboravila sam na slanje zahteva
 		User user = userDAO.getByID(username);
 		Order foundOrder = null;
 

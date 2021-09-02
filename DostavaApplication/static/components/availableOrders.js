@@ -1,12 +1,6 @@
 Vue.component("available-orders", {
     data: function() {
         return {
-            name: '',
-            surname: '',
-            username: '',
-            currentRestaurant: [],
-            article: '',
-            order: '',
             selectedOrder: undefined,
             orderStatuses: [
                 { id: 'Processing', value: 'Obrada' },
@@ -84,7 +78,7 @@ Vue.component("available-orders", {
                             <restaurant-cell v-bind:restaurantID="order.restaurantID"></restaurant-cell>
                         </td>
                         <td>{{order.price}}.00 RSD</td>
-                        <td ><div class="permission-to-deliver-btn" v-on:click="takeOrder(order)"> Zatraži porudžbinu </div></td>
+                        <td ><div class="permission-to-deliver-btn" v-on:click="requestOrder(order)"> Zatraži porudžbinu </div></td>
                     </tr>
                 </tbody>
             </table>
@@ -93,7 +87,7 @@ Vue.component("available-orders", {
         <view-order v-if="selectedOrder != undefined" 
                     v-bind:selectedOrder="selectedOrder" 
                     v-on:closeModal="closeModal"
-                    v-on:takeOrder="takeOrder"></view-order>
+                    v-on:requestOrder="requestOrder"></view-order>
 
     </div>
 
@@ -139,8 +133,8 @@ Vue.component("available-orders", {
 
             } else { this.advancedSearchClose(); }
         },
-        takeOrder: function(order) {
-            if (order == '' || order == undefined || order == null) {
+        requestOrder: function(order) {
+            /* if (order == '' || order == undefined || order == null) {
                 order = this.selectedOrder;
             }
             axios
@@ -158,7 +152,7 @@ Vue.component("available-orders", {
                         this.closeModal();
                     }
                 })
-            event.stopPropagation();
+            event.stopPropagation(); */
         }
     }
 })

@@ -315,7 +315,7 @@ Vue.component("user-orders", {
             this.toPrice = '';
             this.fromDate = '';
             this.fromPrice = '';
-            this.filerOrder();
+            this.findOrder();
         },
         findOrder: function() {
 
@@ -342,30 +342,30 @@ Vue.component("user-orders", {
             }
 
             //SEARCH
-            searchFunction(this.searchText, tr);
+            searchFunction(this.searchText, tr, 1);
 
             //FILTER - STATUS
-            filterStatusFunction(checkedStatus, tr);
+            filterStatusFunction(checkedStatus, tr, 3);
 
             //FILTER - CUISINE
-            filterCuisineFunction(checkedCuisine, tr);
+            filterCuisineFunction(checkedCuisine, tr, 1);
 
             //PRICE
-            filterPriceFunction(this.fromPrice, this.toPrice, tr);
+            filterPriceFunction(this.fromPrice, this.toPrice, tr, 2);
 
             //DATE
-            filterDateFunction(this.fromDate, this.toDate, tr);
+            filterDateFunction(this.fromDate, this.toDate, tr, 0);
 
         }
     }
 })
 
-function filterDateFunction(fromDate, toDate, tableRows) {
+function filterDateFunction(fromDate, toDate, tableRows, cellWithData) {
     for (j = 1; j < tableRows.length; j++) {
         show = false;
 
         if (tableRows[j].style.display != "none") {
-            td = tableRows[j].getElementsByTagName("td")[0];
+            td = tableRows[j].getElementsByTagName("td")[cellWithData];
             date = new Date(td.innerText);
             from = new Date(fromDate);
             to = new Date(toDate);
@@ -395,12 +395,12 @@ function filterDateFunction(fromDate, toDate, tableRows) {
     }
 }
 
-function filterPriceFunction(fromPrice, toPrice, tableRows) {
+function filterPriceFunction(fromPrice, toPrice, tableRows, cellWithData) {
     for (j = 1; j < tableRows.length; j++) {
         show = false;
 
         if (tableRows[j].style.display != "none") {
-            td = tableRows[j].getElementsByTagName("td")[2];
+            td = tableRows[j].getElementsByTagName("td")[cellWithData];
             price = parseInt(td.innerText);
             if (fromPrice != '' && toPrice != '') {
                 if (fromPrice <= price && price <= toPrice) {
@@ -428,12 +428,12 @@ function filterPriceFunction(fromPrice, toPrice, tableRows) {
     }
 }
 
-function filterCuisineFunction(checkedCuisines, tableRows) {
+function filterCuisineFunction(checkedCuisines, tableRows, cellWithData) {
     for (j = 1; j < tableRows.length; j++) {
         show = false;
         for (i = 0; i < checkedCuisines.length; i++) {
             if (tableRows[j].style.display != "none") {
-                td = tableRows[j].getElementsByTagName("td")[1];
+                td = tableRows[j].getElementsByTagName("td")[cellWithData];
                 label = td.getElementsByTagName("label")[1];
                 if (label.innerText.includes(checkedCuisines[i])) {
                     show = true;
@@ -448,12 +448,12 @@ function filterCuisineFunction(checkedCuisines, tableRows) {
     }
 }
 
-function filterStatusFunction(checkedStatuses, tableRows) {
+function filterStatusFunction(checkedStatuses, tableRows, cellWithData) {
     for (j = 1; j < tableRows.length; j++) {
         show = false;
         for (i = 0; i < checkedStatuses.length; i++) {
             if (tableRows[j].style.display != "none") {
-                td = tableRows[j].getElementsByTagName("td")[3];
+                td = tableRows[j].getElementsByTagName("td")[cellWithData];
                 if (checkedStatuses[i] == "Dostavljena") {
                     if (td.innerText.includes(checkedStatuses[i]) || td.innerText.includes("Oceni")) {
                         show = true;
@@ -471,11 +471,11 @@ function filterStatusFunction(checkedStatuses, tableRows) {
     }
 }
 
-function searchFunction(searchTxt, tableRows) {
+function searchFunction(searchTxt, tableRows, cellWithData) {
     let searchParts = searchTxt.trim().split(' ');
     for (i = 0; i < searchParts.length; i++) {
         for (j = 1; j < tableRows.length; j++) {
-            td = tableRows[j].getElementsByTagName("td")[1];
+            td = tableRows[j].getElementsByTagName("td")[cellWithData];
             label = td.getElementsByTagName("label")[0];
             if (label.innerText.toLocaleLowerCase().includes(searchParts[i].toLocaleLowerCase())) {
                 tableRows[j].style.display = "";
