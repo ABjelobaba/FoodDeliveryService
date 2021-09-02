@@ -3,15 +3,15 @@ package beans;
 public class CustomerReview implements IEntity<Integer>{
 	private int reviewID;
 	private String customerUsername;
-	private int restourantID;
+	private int restaurantID;
 	private String review;
 	private int rating;
 	private boolean deleted;
 	
-	public CustomerReview(String customerUsername, int restourantID, String review, int rating) {
+	public CustomerReview(String customerUsername, int restaurantID, String review, int rating) {
 		super();
 		this.customerUsername = customerUsername;
-		this.restourantID = restourantID;
+		this.restaurantID = restaurantID;
 		this.review = review;
 		this.rating = rating;
 		this.deleted = false;
@@ -25,12 +25,12 @@ public class CustomerReview implements IEntity<Integer>{
 		this.customerUsername = customerUsername;
 	}
 
-	public int getRestourantID() {
-		return restourantID;
+	public int getRestaurantID() {
+		return restaurantID;
 	}
 
-	public void setRestourantID(int restourantID) {
-		this.restourantID = restourantID;
+	public void setRestaurantID(int restaurantID) {
+		this.restaurantID = restaurantID;
 	}
 
 	public String getReview() {

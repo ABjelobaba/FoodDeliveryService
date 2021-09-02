@@ -115,13 +115,15 @@ public class UserService {
 		userDAO.update(blockedUser);
 	}
 	
-	public List<User> getAllFreeManagers() throws JsonSyntaxException, IOException{
-    	List<User> users = new ArrayList<User>();	//TODO: check if managers are free
+	public List<Manager> getAllFreeManagers() throws JsonSyntaxException, IOException{
+    	List<Manager> managers = new ArrayList<Manager>();
     	for (User user : getAll()) {
-    		if (user.getRole().equals(Role.Manager))
-    			users.add(user);
+    		if (user.getRole().equals(Role.Manager)) {
+    			if (((Manager)user).getRestaurantID() == -1)
+    				managers.add((Manager)user);
+    		}
     	}
-    	return users;
+    	return managers;
     }
 
 }
