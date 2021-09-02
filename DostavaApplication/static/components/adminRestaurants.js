@@ -20,7 +20,10 @@ Vue.component("admin-restaurants", {
             searchTextLocation: '',
             searchResults: '',
             filteredResults: '',
-            finalResults: ''
+            finalResults: '',
+            nameSort: '',
+            locationSort: '',
+            ratingSort: ''
         }
     },
     created: function() {
@@ -111,12 +114,12 @@ Vue.component("admin-restaurants", {
 						<h2 style="text-align: center;" >Sortiraj restorane</h2>
 						<div class="sort-div">
 								<div style="margin:2%" v-on:click="sortRestaurants">
-									<button type="radio" id="sortByName" name="sort" value="sortByName"><label>Naziv</label>
+									<button v-on:click="sortByName" type="radio" id="sort-by-name" name="sort" value="sort-by-name"><label>Naziv</label>
 										<i class="fa fa-sort" aria-hidden="true"></i>
 									</button>
 								</div>
 								<div style="margin:2%" v-on:click="sortRestaurants">
-									<button type="radio" id="sortByLocation" name="sort" value="sortByLocation"><label>Lokacija</label>
+									<button type="radio" v-on:click="sortByLocation" id="sort-by-location" name="sort" value="sort-by-location"><label>Lokacija</label>
 										<i class="fa fa-sort" aria-hidden="true"></i>
 									</button>
 								</div>
@@ -173,8 +176,11 @@ Vue.component("admin-restaurants", {
             }
         },
         sortRestaurants: function(event) {
+            let nameSort = document.getElementById('sort-by-name');
+            let locationSort = document.getElementById('sort-by-location');
+            let ratingSort = document.getElementById('sortByRating');
+            
             if (event.currentTarget.innerText.includes('Naziv')) {
-                let nameSort = document.getElementById('sortByName');
                 if (this.nameSort == '') {
                     nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.nameSort = 'desc';
@@ -186,8 +192,12 @@ Vue.component("admin-restaurants", {
                     this.nameSort = '';
                 }
 
+                locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.locationSort = '';
+                ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.ratingSort = '';
+
             } else if (event.currentTarget.innerText.includes('Lokacija')) {
-                let locationSort = document.getElementById('sortByLocation');
                 if (this.locationSort == '') {
                     locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.locationSort = 'desc';
@@ -199,8 +209,12 @@ Vue.component("admin-restaurants", {
                     this.locationSort = '';
                 }
 
+                nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.nameSort = '';
+                ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.ratingSort = '';
+
             } else if (event.currentTarget.innerText.includes('Prosecna ocena')) {
-                let ratingSort = document.getElementById('sortByRating');
                 if (this.ratingSort == '') {
                     ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.ratingSort = 'desc';
@@ -212,6 +226,10 @@ Vue.component("admin-restaurants", {
                     this.ratingSort = '';
                 }
 
+                nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.nameSort = '';
+                locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.locationSort = '';
             }
         },
         showHideSearch: function(event) {
@@ -337,6 +355,45 @@ Vue.component("admin-restaurants", {
 
             this.finalResults = this.searchResults.filter(x => this.filteredResults.includes(x));
 
+        },
+        sortByName: function() {
+            if (this.nameSort == 'desc') {
+                this.finalResults = this.finalResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) });
+            } else if (this.nameSort == '') {
+                this.finalResults = this.finalResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) }).reverse();
+            }
+        },
+        sortByLocation: function() {
+            restaurantAddresses = [];
+            for (restaurant of this.finalResults) {
+                streetAndNumber = restaurant.location.address.streetAddress;
+                fullAddress = restaurant.location.address.city + ' ' + streetAndNumber.substring(0, streetAndNumber.lastIndexOf(" "));
+                streetNumber = streetAndNumber.substring(streetAndNumber.lastIndexOf(" "));
+
+                let restourantAddress = {address: fullAddress, number: streetNumber, id: restaurant.restaurantID};
+                restaurantAddresses.push(restourantAddress);
+            }
+
+            if (this.locationSort == 'desc') {
+                restaurantAddresses = restaurantAddresses.sort(function compareFn(a, b) {
+                    return a.address.localeCompare(b.address) || a.number - b.number;
+                });
+                
+            } else if (this.locationSort == '') {
+                restaurantAddresses = restaurantAddresses.sort(function compareFn(a, b) {   
+                    return a.address.localeCompare(b.address) || a.number - b.number;
+                 }).reverse();
+            }
+
+            notSorted = Array.from(this.finalResults);
+            this.finalResults = [];
+            for (address of restaurantAddresses) {
+                for (restaurant of notSorted) {
+                    if (restaurant.restaurantID == address.id) {
+                        this.finalResults.push(restaurant)
+                    }
+                }
+            }
         }
     }
 });
