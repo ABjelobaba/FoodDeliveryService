@@ -84,7 +84,7 @@ Vue.component("available-orders", {
                             <restaurant-cell v-bind:restaurantID="order.restaurantID"></restaurant-cell>
                         </td>
                         <td>{{order.price}}.00 RSD</td>
-                        <td ><div class="permission-to-deliver-btn"> Zatraži porudžbinu </div></td>
+                        <td ><div class="permission-to-deliver-btn" v-on:click="takeOrder"> Zatraži porudžbinu </div></td>
                     </tr>
                 </tbody>
             </table>
