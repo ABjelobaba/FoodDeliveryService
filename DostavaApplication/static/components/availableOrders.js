@@ -28,13 +28,7 @@ Vue.component("available-orders", {
 
     },
     created: function() {
-        axios
-            .get("order/getWaitingDeliveryOrders")
-            .then(response => {
-                if (response.data != null) {
-                    this.orders = response.data;
-                }
-            })
+
     },
     template: `
     <div>
@@ -98,7 +92,8 @@ Vue.component("available-orders", {
 
         <view-order v-if="selectedOrder != undefined" 
                     v-bind:selectedOrder="selectedOrder" 
-                    v-on:closeModal="closeModal"></view-order>
+                    v-on:closeModal="closeModal"
+                    v-on:takeOrder="takeOrder"></view-order>
 
     </div>
 
@@ -111,11 +106,17 @@ Vue.component("available-orders", {
         document.querySelector('#advancedSearch-modal').style.marginRight = $(document).width() - this.rect.right + 'px';
 
         if (document.body.clientWidth <= 900) {
-
             document.querySelector('.filter-modal').style.width = 550 + 'px';
             document.querySelector('.filter-modal').style.marginRight = 'auto';
-
         }
+
+        axios
+            .get("order/getWaitingDeliveryOrders")
+            .then(response => {
+                if (response.data != null) {
+                    this.orders = response.data;
+                }
+            })
     },
     methods: {
         logOut: function(event) {
@@ -137,6 +138,23 @@ Vue.component("available-orders", {
                 document.querySelector('.table-users').style.top = '-' + (document.querySelector('#advancedSearch-modal').getBoundingClientRect().height + 10) + 'px';
 
             } else { this.advancedSearchClose(); }
+        },
+        takeOrder: function() {
+            axios
+                .put("/order/setInTransport/" + this.selectedOrder.orderID + "/" + this.selectedOrder.customerUsername)
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        this.selectedOrder.status = "InTransport";
+                        this.orders = this.orders.filter(function(value, index, arr) {
+                            if (value.status == "WaitingForDelivery") {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        });
+                        this.closeModal();
+                    }
+                })
         }
     }
 })

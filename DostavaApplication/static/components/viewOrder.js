@@ -50,7 +50,7 @@ Vue.component("view-order", {
 
                         <button v-if="selectedOrder.status =='Processing'" v-on:click="cancelOrder(selectedOrder)" class="cancle-btn" style="margin: 20px 20%"> Otkaži</button>
                         <button v-if="selectedOrder.status =='Delivered' && !selectedOrder.comment" v-on:click="$emit('openRateModal')" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
-                        <button v-if="mode == 'waitingDeliveryOrders'" style="margin: 20px 20%;width: -webkit-fill-available;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
+                        <button v-if="mode == 'waitingDeliveryOrders'" style="margin: 20px 20%;width: -webkit-fill-available;" class="ask-for-delivery-btn" v-on:click="$emit('takeOrder')"> Zatraži porudžbinu</button>
                     </div>
                 </div>
 

@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import beans.Customer;
+import beans.Deliverer;
 import beans.Order;
 import beans.ShoppingCart;
 import services.OrderService;
@@ -62,6 +63,20 @@ public class OrderController {
 			try {
 				List<Order> orders = orderService.getWaitingDeliveryOrders();
 				return gsTime.toJson(orders);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		put("/order/setInTransport/:orderID/:username",(req, res)->{
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                Deliverer deliverer = session.attribute("user");
+				Order order = orderService.setOrderInTransport(deliverer, req.params("orderID"), req.params("username"));
+				return gsTime.toJson(order);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";
