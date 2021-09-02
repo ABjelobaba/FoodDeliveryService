@@ -17,7 +17,12 @@ Vue.component("available-orders", {
                 { id: 'american', value: 'Americka hrana' },
                 { id: 'sweets', value: 'Poslastice' }
             ],
-            orders: []
+            orders: [],
+            searchText: '',
+            fromPrice: '',
+            toPrice: '',
+            fromTime: '',
+            toTime: ''
         }
 
     },
@@ -31,7 +36,7 @@ Vue.component("available-orders", {
         <div class="users-search">
                 <div class="search-text-div">
                     <i style="text-align: center;" class="fa fa-search"></i>
-                    <input type="text" placeholder="Pretraži po nazivu restorana.." >
+                    <input type="text" placeholder="Pretraži po nazivu restorana.." v-model="searchText" v-on:keyup="findOrder">
                 </div>  
                 <button class="filter-btn" v-on:click="advancedSearchClicked" id="advancedSearch-btn-do"><i class="fa fa-angle-down fa-lg"></i></button>
         </div>
@@ -43,19 +48,19 @@ Vue.component("available-orders", {
 
                 <div style="margin:20px">
                     <h2>Cena:</h2>
-                    <label>Od:</label><input type="number" min='0' name="price" id="fromPrice" placeholder="00000">(.00 RSD)<br>
-                    <label>Do:</label><input type="number" min='0' name="price" id="toPrice" placeholder="00000">(.00 RSD)
+                    <label>Od:</label><input type="number" min='0' name="price" id="fromPrice" v-model="fromPrice" v-on:change="findOrder" placeholder="00000">(.00 RSD)<br>
+                    <label>Do:</label><input type="number" min='0' name="price" id="toPrice" v-model="toPrice" v-on:change="findOrder" placeholder="00000">(.00 RSD)
                 </div>
                 <div style="margin:20px">
-                    <h2>Datum:</h2>
-                    <label>Od:</label><input type="date" name="date" id="fromDate" ><br>
-                    <label>Do:</label><input type="date" name="date" id="toDate" >
+                    <h2>Vreme:</h2>
+                    <label>Od:</label><input type="time" name="time" id="fromTime"  v-on:input="findOrder"><br>
+                    <label>Do:</label><input type="time" name="time" id="toTime" v-on:input="findOrder">
                 </div> 
             </div>
         </div>
 
         <div class="content" style="display:block" >
-            <table class="table-users" name="orders">
+            <table class="table-users" id="orders">
                 <thead>
                     <tr>
                         <th>Vreme <i class="fa fa-sort "></i></th>
@@ -153,6 +158,60 @@ Vue.component("available-orders", {
                     }
                 })
             event.stopPropagation(); */
+        },
+        findOrder: function() {
+            tr = document.getElementById("orders").getElementsByTagName('tr');
+            //SEARCH
+            searchFunction(this.searchText, tr, 2);
+
+            //PRICE
+            filterPriceFunction(this.fromPrice, this.toPrice, tr, 3);
+
+            //TIME
+            fromTime = document.getElementById("fromTime").value;
+            toTime = document.getElementById("toTime").value;
+            filterTimeFunction(fromTime, toTime, tr, 0);
         }
     }
 })
+
+function filterTimeFunction(fromTime, toTime, tableRows, cellWithData) {
+    for (j = 1; j < tableRows.length; j++) {
+        show = false;
+
+        if (tableRows[j].style.display != "none") {
+            td = tableRows[j].getElementsByTagName("td")[cellWithData];
+            tdTimeSplit = td.innerText.split(':');
+            tdTime = new Date();
+            tdTime.setHours(tdTimeSplit[0], tdTimeSplit[1].slice(0, 2), 0);
+            from = new Date();
+            tdTimeSplit = fromTime.split(':');
+            from.setHours(tdTimeSplit[0], tdTimeSplit[1], 0);
+            to = new Date();
+            tdTimeSplit = toTime.split(':');
+            to.setHours(tdTimeSplit[0], tdTimeSplit[1], 0);
+            if (fromTime != '' && toTime != '') {
+                if (from <= tdTime && tdTime <= to) {
+                    show = true;
+                }
+            } else if (fromTime != '' && toTime == '') {
+                if (from <= tdTime) {
+                    show = true;
+                }
+            } else if (fromTime == '' && toTime != '') {
+                if (tdTime <= to) {
+                    show = true;
+                }
+            } else {
+                show = true;
+            }
+
+        }
+
+        if (!show) {
+            tableRows[j].style.display = 'none';
+        } else if (tableRows[j].style.display != 'none') {
+            tableRows[j].style.display = '';
+        }
+    }
+}
