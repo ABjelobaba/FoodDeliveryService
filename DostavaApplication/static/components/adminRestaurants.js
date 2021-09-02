@@ -36,7 +36,6 @@ Vue.component("admin-restaurants", {
 				}
 		    });
     },
-
     template: `
 	<div>
 		<div class="white-behind-search" id="bigSearch" style="top:191px">
@@ -124,7 +123,7 @@ Vue.component("admin-restaurants", {
 									</button>
 								</div>
 								<div style="margin:2%" v-on:click="sortRestaurants"> 
-									<button type="radio" id="sortByRating" name="sort" value="sortByRating"><label>Prosecna ocena</label>
+									<button type="radio" id="sort-by-rating" name="sort" value="sort-by-rating"><label>Prosečna ocena</label>
 										<i class="fa fa-sort" aria-hidden="true"></i>
 									</button>
 								</div>
@@ -178,8 +177,8 @@ Vue.component("admin-restaurants", {
         sortRestaurants: function(event) {
             let nameSort = document.getElementById('sort-by-name');
             let locationSort = document.getElementById('sort-by-location');
-            let ratingSort = document.getElementById('sortByRating');
-            
+            let ratingSort = document.getElementById('sort-by-rating');
+
             if (event.currentTarget.innerText.includes('Naziv')) {
                 if (this.nameSort == '') {
                     nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
@@ -194,7 +193,7 @@ Vue.component("admin-restaurants", {
 
                 locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.locationSort = '';
-                ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.ratingSort = '';
 
             } else if (event.currentTarget.innerText.includes('Lokacija')) {
@@ -211,18 +210,18 @@ Vue.component("admin-restaurants", {
 
                 nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.nameSort = '';
-                ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.ratingSort = '';
 
-            } else if (event.currentTarget.innerText.includes('Prosecna ocena')) {
+            } else if (event.currentTarget.innerText.includes('Prosečna ocena')) {
                 if (this.ratingSort == '') {
-                    ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+                    ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.ratingSort = 'desc';
                 } else if (this.ratingSort == 'desc') {
-                    ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+                    ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
                     this.ratingSort = 'asc';
                 } else {
-                    ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.ratingSort = '';
                 }
 
