@@ -30,10 +30,10 @@ Vue.component("deliverer-orders", {
     },
     created: function() {
         axios
-            .get("user/getLoggedInUser")
+            .get("order/getDelivererOrders")
             .then(response => {
                 if (response.data != null) {
-                    this.orders = response.data.ordersToDeliver;
+                    this.orders = response.data;
                 }
             })
     },
@@ -200,7 +200,22 @@ Vue.component("deliverer-orders", {
             if (order == null) {
                 order = this.selectedOrder;
             }
-            order.status = "Delivered";
+            axios
+                .put("/order/confirmDelivery", JSON.stringify(order))
+                .then(response => {
+                    if (response.data != null) {
+                        order.status = "Delivered";
+                        this.orders = this.orders.filter(function(value, index, arr) {
+                            if (value.status == "InTransport") {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        });
+                        this.closeModal();
+                    }
+                })
+
             event.stopPropagation();
         }
     }

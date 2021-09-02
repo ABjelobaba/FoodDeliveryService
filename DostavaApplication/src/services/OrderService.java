@@ -131,4 +131,23 @@ public class OrderService {
 		return foundOrder;
 	}
 
+	public Deliverer confirmDelivery(Deliverer deliverer, Order order) throws JsonSyntaxException, IOException {
+		Customer customer = (Customer)userDAO.getByID(order.getCustomerUsername());
+		for(Order customerOrder: customer.getAllOrders()){
+			if(customerOrder.getID().equals(order.getID())){
+				customerOrder.setStatus(OrderStatus.Delivered);
+				userDAO.update(customer);
+				break;
+			}
+		}
+		for(Order delivererOrder: deliverer.getOrdersToDeliver()){
+			if(delivererOrder.getID().equals(order.getID())){
+				deliverer.getOrdersToDeliver().remove(delivererOrder);
+				userDAO.update(deliverer);
+				break;
+			}
+		}
+		return deliverer;
+	}
+
 }

@@ -76,7 +76,35 @@ public class OrderController {
                 Session session = req.session();
                 Deliverer deliverer = session.attribute("user");
 				Order order = orderService.setOrderInTransport(deliverer, req.params("orderID"), req.params("username"));
-				return gsTime.toJson(order);
+				return gs.toJson(order);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		get("/order/getDelivererOrders",(req, res)->{
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                Deliverer deliverer = session.attribute("user");
+				return gs.toJson(deliverer.getOrdersToDeliver());
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		put("/order/confirmDelivery",(req, res)->{
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                Deliverer deliverer = session.attribute("user");
+				deliverer = orderService.confirmDelivery(deliverer, gs.fromJson(req.body(), Order.class));
+				session.attribute("user", deliverer);
+				return gs.toJson(deliverer);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";
