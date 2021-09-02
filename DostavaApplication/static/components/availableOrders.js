@@ -9,12 +9,12 @@ Vue.component("available-orders", {
             order: '',
             selectedOrder: undefined,
             orderStatuses: [
-                { id: 'processing', value: 'Obrada' },
-                { id: 'prep', value: 'U pripremi' },
-                { id: 'waitingDeliverer', value: 'Čeka dostavljača' },
-                { id: 'transporting', value: 'U transportu' },
-                { id: 'finished', value: 'Dostavljena' },
-                { id: 'canceled', value: 'Otkazana' }
+                { id: 'Processing', value: 'Obrada' },
+                { id: 'InPreparation', value: 'U pripremi' },
+                { id: 'WaitingForDelivery', value: 'Čeka dostavljača' },
+                { id: 'InTransport', value: 'U transportu' },
+                { id: 'Delivered', value: 'Dostavljena' },
+                { id: 'Cancelled', value: 'Otkazana' }
             ],
             cuisines: [
                 { id: 'italian', value: 'Italijanska' },
@@ -23,62 +23,19 @@ Vue.component("available-orders", {
                 { id: 'american', value: 'Americka hrana' },
                 { id: 'sweets', value: 'Poslastice' }
             ],
-            orders: [{
-                    id: 1,
-                    date: '18:20h',
-                    restaurant: {
-                        id: 1,
-                        img: 'images/kfc.jpg',
-                        name: 'KFC',
-                        type: 'Americka hrana',
-                        status: 'OPENED'
-                    },
-                    summeryPrice: 1235,
-                    status: 'waitingDeliverer',
-                    articles: [{
-                        id: 1,
-                        name: 'Burger',
-                        quantity: 2
-                    }, {
-                        id: 2,
-                        name: 'Pomfrit',
-                        quantity: 2
-                    }]
-                },
-                {
-                    id: 2,
-                    date: '18:14h',
-                    restaurant: {
-                        id: 2,
-                        img: 'images/mcdonalds.png',
-                        name: "McDonald's",
-                        type: 'Americka hrana',
-                        status: 'OPENED'
-                    },
-                    summeryPrice: 1200,
-                    status: 'waitingDeliverer'
-                },
-                {
-                    id: 3,
-                    date: '18:11h',
-                    restaurant: {
-                        id: 3,
-                        img: 'images/burgerhouse.jpg',
-                        name: 'Burger House',
-                        type: 'Americka hrana',
-                        status: 'CLOSED'
-                    },
-                    summeryPrice: 3590,
-                    status: 'waitingDeliverer'
-                },
-                { id: 4, date: '18:09h', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 560, status: 'waitingDeliverer' },
-                { id: 5, date: '18:03h', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 1200, status: 'waitingDeliverer' },
-                { id: 6, date: '18:01h', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'Burger House', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'waitingDeliverer' }
-            ]
+            orders: []
         }
 
     },
-
+    created: function() {
+        axios
+            .get("order/getWaitingDeliveryOrders")
+            .then(response => {
+                if (response.data != null) {
+                    this.orders = response.data;
+                }
+            })
+    },
     template: `
     <div>
         <h1 style="text-align: center;">Pregled dostupnih porudžbina

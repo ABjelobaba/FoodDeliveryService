@@ -1,15 +1,20 @@
 package services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
 import com.google.gson.JsonSyntaxException;
 
+import java.util.List;
+
 import beans.Customer;
 import beans.Order;
 import beans.OrderStatus;
+import beans.Role;
 import beans.ShoppingCart;
+import beans.User;
 import dao.UserDAO;
 
 public class OrderService {
@@ -80,4 +85,25 @@ public class OrderService {
 		userDAO.update(customer);
 		return customer;
     }
+
+	public List<Order> getWaitingDeliveryOrders() throws JsonSyntaxException, IOException {
+		List<Order> waitingDeliveryOrders = new ArrayList<Order>();
+		for(User user: userDAO.getAll()){
+			if(user.getRole() == Role.Customer){
+				waitingDeliveryOrders.addAll(getWaitingDeliveryOrdersFromUser((Customer)user));
+			}
+		}
+		return waitingDeliveryOrders;
+	}
+
+	private List<Order> getWaitingDeliveryOrdersFromUser(Customer customer){
+		List<Order> orders = new ArrayList<Order>();
+		for(Order order: customer.getAllOrders()){
+			if(order.getStatus() == OrderStatus.WaitingForDelivery){
+				orders.add(order);
+			}
+		}
+		return orders;
+	}
+
 }

@@ -4,6 +4,8 @@ import static spark.Spark.post;
 import static spark.Spark.get;
 import static spark.Spark.put;
 
+import java.util.List;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -15,6 +17,7 @@ import spark.Session;
 
 public class OrderController {
     private static Gson gs = new GsonBuilder().setDateFormat("dd MMM yyyy").create();
+    private static Gson gsTime = new GsonBuilder().setDateFormat("HH:mm'h'").create();
 
 	public OrderController(OrderService orderService) {
 
@@ -47,6 +50,18 @@ public class OrderController {
 				customer = orderService.cancelledOrderPoints(customer, req.params("orderID"));
                 session.attribute("user", customer);
 				return gs.toJson(customer);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		get("/order/getWaitingDeliveryOrders",(req, res)->{
+			res.type("application/json");
+
+			try {
+				List<Order> orders = orderService.getWaitingDeliveryOrders();
+				return gsTime.toJson(orders);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";
