@@ -84,7 +84,7 @@ Vue.component("available-orders", {
                             <restaurant-cell v-bind:restaurantID="order.restaurantID"></restaurant-cell>
                         </td>
                         <td>{{order.price}}.00 RSD</td>
-                        <td ><div class="permission-to-deliver-btn" v-on:click="takeOrder"> Zatraži porudžbinu </div></td>
+                        <td ><div class="permission-to-deliver-btn" v-on:click="takeOrder(order)"> Zatraži porudžbinu </div></td>
                     </tr>
                 </tbody>
             </table>
@@ -139,12 +139,15 @@ Vue.component("available-orders", {
 
             } else { this.advancedSearchClose(); }
         },
-        takeOrder: function() {
+        takeOrder: function(order) {
+            if (order == '' || order == undefined || order == null) {
+                order = this.selectedOrder;
+            }
             axios
-                .put("/order/setInTransport/" + this.selectedOrder.orderID + "/" + this.selectedOrder.customerUsername)
+                .put("/order/setInTransport/" + order.orderID + "/" + order.customerUsername)
                 .then(response => {
                     if (response.data != null && response.data != "") {
-                        this.selectedOrder.status = "InTransport";
+                        order.status = "InTransport";
                         this.orders = this.orders.filter(function(value, index, arr) {
                             if (value.status == "WaitingForDelivery") {
                                 return true;
@@ -155,6 +158,7 @@ Vue.component("available-orders", {
                         this.closeModal();
                     }
                 })
+            event.stopPropagation();
         }
     }
 })
