@@ -212,7 +212,7 @@ Vue.component("user-orders", {
 
     <view-order v-if="modalMode == 'showOrder'" 
                     v-bind:selectedOrder="selectedOrder" 
-                    v-on:newUserClose="newUserClose"
+                    v-on:closeModal="closeModal"
                     v-on:openRateModal="openRateModal(selectedOrder)"></view-order>
 
     <rate-restaurant v-if="modalMode == 'rateOrder'" 
@@ -275,7 +275,7 @@ Vue.component("user-orders", {
             this.modalMode = "showOrder";
             this.selectedOrder = order;
         },
-        newUserClose: function(event) {
+        closeModal: function(event) {
             this.modalMode = "";
             this.selectedOrder = undefined;
         },

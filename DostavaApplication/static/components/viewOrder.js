@@ -2,7 +2,8 @@ Vue.component("view-order", {
     props: ['selectedOrder'],
     data: function() {
         return {
-            restaurant: ''
+            restaurant: '',
+            mode: ''
         }
 
     },
@@ -14,12 +15,18 @@ Vue.component("view-order", {
                     this.restaurant = response.data;
                 }
             })
+
+        if (window.location.href.includes('availableOrders')) {
+            this.mode = 'waitingDeliveryOrders';
+        } else {
+            this.mode = '';
+        }
     },
     template: `
     <div>
         <div class="register" style="display:flex;z-index:100" id="viewOrderModal">
             <div class="modal" style="height:auto">
-                <div v-on:click="$emit('newUserClose')" class="close">+</div>
+                <div v-on:click="$emit('closeModal')" class="close">+</div>
 
                 <div >
                     <div class="order-articles-title-div">
@@ -43,6 +50,7 @@ Vue.component("view-order", {
 
                         <button v-if="selectedOrder.status =='Processing'" v-on:click="cancelOrder(selectedOrder)" class="cancle-btn" style="margin: 20px 20%"> Otkaži</button>
                         <button v-if="selectedOrder.status =='Delivered' && !selectedOrder.comment" v-on:click="$emit('openRateModal')" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
+                        <button v-if="mode == 'waitingDeliveryOrders'" style="margin: 20px 20%;width: -webkit-fill-available;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
                     </div>
                 </div>
 
@@ -52,7 +60,6 @@ Vue.component("view-order", {
         
     </div>
              `,
-
     methods: {
         cancelOrder: function(order) {
             axios

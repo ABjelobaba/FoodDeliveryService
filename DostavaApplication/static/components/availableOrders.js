@@ -79,52 +79,27 @@ Vue.component("available-orders", {
                 </thead>
                 <tbody>
                     <tr v-for="order in orders" v-on:click="showOrder(order)">
-                        <td>{{order.date}}</td>
+                        <td>{{order.orderDate}}</td>
                         <td>
                             <div class="user-address-delivery">
-                                <h3>Marko Markovic</h3>
-                                <h4>Bulevar Evrope 9, Novi Sad</h4>
+                                <h3>{{order.customerName}} {{order.customerSurname}}</h3>
+                                <h4>{{order.address}}</h4>
                             </div>
                         </td>
                         <td>
-                            <restaurant-cell v-bind:restaurant="order.restaurant"></restaurant-cell>
+                            <restaurant-cell v-bind:restaurantID="order.restaurantID"></restaurant-cell>
                         </td>
-                        <td>{{order.summeryPrice}}.00 RSD</td>
+                        <td>{{order.price}}.00 RSD</td>
                         <td ><div class="permission-to-deliver-btn"> Zatraži porudžbinu </div></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="register" style="display:flex;z-index:100" v-if="selectedOrder != undefined">
-            <div class="modal" style="height:auto">
-            <div v-on:click="closeOrderView" class="close">+</div>
+        <view-order v-if="selectedOrder != undefined" 
+                    v-bind:selectedOrder="selectedOrder" 
+                    v-on:closeModal="closeModal"></view-order>
 
-            <div >
-                <div class="order-articles-title-div">
-                    <div class="order-articles-title" >
-                        <p > {{selectedOrder.restaurant.name}}  </p>
-                        <p > {{selectedOrder.date}}  </p>
-                    </div>
-                    <div class="order-status-white" style="text-align:right;margin-right:15%">
-                        <order-status-cell v-bind:orderStatus="selectedOrder.status"></order-status-cell>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 7%;" >
-                    <article-in-order v-for="article in selectedOrder.articles" v-bind:key="article.id" v-bind:article="article"></article-in-order>
-    
-                    <div style="border:1px solid white;margin: 5% 10% 2%" ></div>
-                    <div class="price-calculation-order-view">
-                        <p class="pc-order-view">  <span>Dostava</span>   <span>+ 200.00 RSD</span> </p>
-                        <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{selectedOrder.summeryPrice}}.00 RSD</span> </p>
-                    </div>
-                    <button style="margin: 20px 20%;width: -webkit-fill-available;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
-                </div>
-            </div>
-
-            </div>
-        </div>
     </div>
 
               `,
@@ -149,7 +124,7 @@ Vue.component("available-orders", {
         showOrder: function(order) {
             this.selectedOrder = order;
         },
-        closeOrderView: function() {
+        closeModal: function() {
             this.selectedOrder = undefined;
         },
         advancedSearchClose: function(event) {
