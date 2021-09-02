@@ -1,14 +1,12 @@
 Vue.component("admin-restaurants", {
     data: function() {
         return {
-
-            searchText: '',
             cuisines: [
-                { id: 'italian', value: 'Italijanska' },
-                { id: 'chinese', value: 'Kineska' },
-                { id: 'barbecue', value: 'Rostilj' },
-                { id: 'american', value: 'Americka hrana' },
-                { id: 'sweets', value: 'Poslastice' }
+                { id: 'American', value: 'Američka' },
+                { id: 'Barbecue', value: 'Roštilj' },
+                { id: 'Chinese', value: 'Kineska' },
+                { id: 'Italian', value: 'Italijanska' },
+                { id: 'Mexican', value: 'Meksička' }
             ],
             raitings: [
                 { id: 'zero-one', value: '0 - 1' },
@@ -17,10 +15,27 @@ Vue.component("admin-restaurants", {
                 { id: 'three-four', value: '3 - 4' },
                 { id: 'four-five', value: '4 - 5' }
             ],
-            restaurants: null
+            restaurants: null,
+            searchTextName: '',
+            searchTextLocation: '',
+            searchResults: '',
+            filteredResults: '',
+            finalResults: '',
+            nameSort: '',
+            locationSort: '',
+            ratingSort: ''
         }
     },
-
+    created: function() {
+        axios
+			.get('/restaurants/getAllRestaurants')
+			.then(response => {
+				if (response.data != null) {
+					this.restaurants = response.data;
+                    this.finalResults = response.data;
+				}
+		    });
+    },
     template: `
 	<div>
 		<div class="white-behind-search" id="bigSearch" style="top:191px">
@@ -35,11 +50,11 @@ Vue.component("admin-restaurants", {
 
 				<div style="display:flex;width:100%">
 					<i class="fa fa-search"></i>
-					<input style="margin-right:0" type="text" placeholder="Unesi naziv restorana..">
+					<input style="margin-right:0" type="text" placeholder="Unesi naziv restorana.." id="srchName">
 				</div>
-				<input type="text" placeholder="Unesi lokaciju restorana..">
+				<input type="text" placeholder="Unesi lokaciju restorana.." id="srchLocation">
 				<button class="black-btn" style="
-                margin:0;">Pretraži</button>
+                margin:0;" v-on:click="findRestaurants">Pretraži</button>
 				
 			</div>
 		</div>
@@ -74,21 +89,21 @@ Vue.component("admin-restaurants", {
 						transition: visibility 0s, opacity 0.5s linear;">
 						<div class="checkbox-btn-container-dark">
 							<div>
-								<input type="checkbox" id="openRestaurantsFilter" name="cuisine" value="openRestaurantsFilter">
+								<input type="checkbox" id="openRestaurantsFilter" value="openRestaurantsFilter" v-on:change="findRestaurants">
 								<label  for="openRestaurantsFilter" style="font-weight:bold">Otvoreni restorani</label>
 							</div>
 						</div>
 						<h2 style="text-align: center;" >Kuhinje</h2>
 						<div class="checkbox-btn-container-dark">
 							<div v-for="cuisine in cuisines">
-								<input type="checkbox" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id>
+								<input type="checkbox" v-bind:id=cuisine.id name="cuisineTypes" v-bind:value=cuisine.id v-on:change="findRestaurants">
 								<label  v-bind:for=cuisine.id>{{cuisine.value}}</label>
 							</div>
 						</div>
 						<h2 style="text-align: center;" >Ocene</h2>
 						<div class="checkbox-btn-container-dark">
 							<div v-for="raiting in raitings">
-								<input type="checkbox" v-bind:id=raiting.id name="stars" v-bind:value=raiting.id>
+								<input type="checkbox" v-bind:id=raiting.id name="stars" v-bind:value=raiting.id v-on:change="findRestaurants">
 								<label v-bind:for=raiting.id>{{raiting.value}}</label>
 							</div>
 						</div>
@@ -98,17 +113,17 @@ Vue.component("admin-restaurants", {
 						<h2 style="text-align: center;" >Sortiraj restorane</h2>
 						<div class="sort-div">
 								<div style="margin:2%" v-on:click="sortRestaurants">
-									<button type="radio" id="sortByName" name="sort" value="sortByName"><label>Naziv</label>
+									<button v-on:click="sortByName" type="radio" id="sort-by-name" name="sort" value="sort-by-name"><label>Naziv</label>
 										<i class="fa fa-sort" aria-hidden="true"></i>
 									</button>
 								</div>
 								<div style="margin:2%" v-on:click="sortRestaurants">
-									<button type="radio" id="sortByLocation" name="sort" value="sortByLocation"><label>Lokacija</label>
+									<button type="radio" v-on:click="sortByLocation" id="sort-by-location" name="sort" value="sort-by-location"><label>Lokacija</label>
 										<i class="fa fa-sort" aria-hidden="true"></i>
 									</button>
 								</div>
 								<div style="margin:2%" v-on:click="sortRestaurants"> 
-									<button type="radio" id="sortByRating" name="sort" value="sortByRating"><label>Prosecna ocena</label>
+									<button type="radio" id="sort-by-rating" name="sort" value="sort-by-rating"><label>Prosečna ocena</label>
 										<i class="fa fa-sort" aria-hidden="true"></i>
 									</button>
 								</div>
@@ -121,7 +136,7 @@ Vue.component("admin-restaurants", {
 				<h1> Restorani u ponudi</h1>
 				<p></p>
 
-                <a v-for="restaurant in restaurants" v-on:click="openRestaurantPage(restaurant)">
+                <a v-for="restaurant in finalResults" v-on:click="openRestaurantPage(restaurant)">
                     <restaurant-card v-bind:key="restaurant.id" style="cursor: pointer;"
                         v-bind:restaurant="restaurant" v-bind:loggedInRole="'admin'"></restaurant-card>
                 </a>
@@ -136,14 +151,6 @@ Vue.component("admin-restaurants", {
 	`,
     mounted() {
         window.scrollTo(0, 0);
-
-        axios
-			.get('/restaurants/getAllRestaurants')
-			.then(response => {
-				if (response.data != null) {
-					this.restaurants = response.data;
-				}
-		    });
     },
 
     methods: {
@@ -168,8 +175,11 @@ Vue.component("admin-restaurants", {
             }
         },
         sortRestaurants: function(event) {
+            let nameSort = document.getElementById('sort-by-name');
+            let locationSort = document.getElementById('sort-by-location');
+            let ratingSort = document.getElementById('sort-by-rating');
+
             if (event.currentTarget.innerText.includes('Naziv')) {
-                let nameSort = document.getElementById('sortByName');
                 if (this.nameSort == '') {
                     nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.nameSort = 'desc';
@@ -181,8 +191,12 @@ Vue.component("admin-restaurants", {
                     this.nameSort = '';
                 }
 
+                locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.locationSort = '';
+                ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.ratingSort = '';
+
             } else if (event.currentTarget.innerText.includes('Lokacija')) {
-                let locationSort = document.getElementById('sortByLocation');
                 if (this.locationSort == '') {
                     locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.locationSort = 'desc';
@@ -194,19 +208,27 @@ Vue.component("admin-restaurants", {
                     this.locationSort = '';
                 }
 
-            } else if (event.currentTarget.innerText.includes('Prosecna ocena')) {
-                let ratingSort = document.getElementById('sortByRating');
+                nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.nameSort = '';
+                ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.ratingSort = '';
+
+            } else if (event.currentTarget.innerText.includes('Prosečna ocena')) {
                 if (this.ratingSort == '') {
-                    ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+                    ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
                     this.ratingSort = 'desc';
                 } else if (this.ratingSort == 'desc') {
-                    ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+                    ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
                     this.ratingSort = 'asc';
                 } else {
-                    ratingSort.innerHTML = '<label>Prosecna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.ratingSort = '';
                 }
 
+                nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.nameSort = '';
+                locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.locationSort = '';
             }
         },
         showHideSearch: function(event) {
@@ -225,6 +247,152 @@ Vue.component("admin-restaurants", {
         },
         openRestaurantPage: function(restaurant) {
             window.location.href = "#/restaurant?id=" + restaurant.restaurantID;
+        },
+        findRestaurants: function(event) {
+            this.searchTextName = document.getElementById('srchName').value
+            this.searchTextLocation = document.getElementById('srchLocation').value
+            let isNameEntered = true;
+            let isLocationEntered = true;
+            let resultsForName = [];
+            let resultsForLocation = [];
+
+            // SEARCH RESTAURANTS
+            if (this.searchTextName != '' && this.searchTextName.trim().lenght != 0) {
+                let searchParts = this.searchTextName.trim().split(' ');
+
+                for (restaurant of this.restaurants) {
+                    let matches = true;
+                    for (let i = 0; i < searchParts.length; i++) {
+                        if (!restaurant.name.toUpperCase().includes(searchParts[i].toUpperCase())) {
+                            matches = false;
+                            break;
+                        }
+                    }
+                    if (matches) {
+                        resultsForName.push(restaurant);
+                    }
+                }
+
+            } else {
+                isNameEntered = false;
+            }
+
+            if (this.searchTextLocation != '' && this.searchTextLocation.trim().lenght != 0) {
+                let searchParts = this.searchTextLocation.trim().split(' ');
+
+                let rests;
+                if (!isNameEntered) {
+                    rests = this.restaurants;
+                }
+                else {
+                    rests = resultsForName;
+                }
+
+                for (restaurant of rests) {
+                    let matches = true;
+                    let address = restaurant.location.address;
+                    for (let i = 0; i < searchParts.length; i++) {
+                        if (!address.city.toUpperCase().includes(searchParts[i].toUpperCase()) && 
+                            !address.streetAddress.toUpperCase().includes(searchParts[i].toUpperCase())) {
+                            matches = false;
+                            break;
+                        }
+                    }
+                    if (matches) {
+                        resultsForLocation.push(restaurant);
+                    }
+                }
+            }
+            else {
+                isLocationEntered = false;
+            }
+            
+            if (!isNameEntered && !isLocationEntered) {
+                this.searchResults = this.restaurants;
+            } else if (isNameEntered && !isLocationEntered) {
+                this.searchResults = resultsForName;
+            } else {
+                this.searchResults = resultsForLocation;
+            }
+
+
+            // FILTER RESTAURANTS
+            var cbOpen = document.getElementById('openRestaurantsFilter');
+            var cbCuisine = document.getElementsByName('cuisineTypes');
+            var cbStars = document.getElementsByName('stars');
+            var cbCheckedCuisine = [];
+
+            this.filteredResults = [];
+
+            if (cbOpen.checked) {
+                for (restaurant of this.restaurants) {
+                    if (restaurant.open) {
+                        this.filteredResults.push(restaurant);
+                    }
+                }
+            }
+
+            for (var i = 0; i < cbCuisine.length; i++) {
+                if (cbCuisine[i].checked) {
+                    cbCheckedCuisine.push(cbCuisine[i].id);
+                }
+            }
+
+            for (restaurant of this.restaurants) {
+                for (cb of cbCheckedCuisine) {
+                    if (restaurant.type == cb) {
+                        this.filteredResults.push(restaurant);
+                    }
+                }
+            }
+
+            if (cbCheckedCuisine.length != 0 && !cbOpen.checked) {
+                this.filteredResults =  [...new Set(this.filteredResults)];
+            } else {
+                this.filteredResults = this.restaurants;
+            }
+
+            this.finalResults = this.searchResults.filter(x => this.filteredResults.includes(x));
+
+        },
+        sortByName: function() {
+            if (this.nameSort == 'desc') {
+                this.finalResults = this.finalResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) });
+            } else if (this.nameSort == '') {
+                this.finalResults = this.finalResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) }).reverse();
+            }
+        },
+        sortByLocation: function() {
+            restaurantAddresses = [];
+            for (restaurant of this.finalResults) {
+                streetAndNumber = restaurant.location.address.streetAddress;
+                fullAddress = restaurant.location.address.city + ' ' + streetAndNumber.substring(0, streetAndNumber.lastIndexOf(" "));
+                streetNumber = streetAndNumber.substring(streetAndNumber.lastIndexOf(" "));
+
+                let restourantAddress = {address: fullAddress, number: streetNumber, id: restaurant.restaurantID};
+                restaurantAddresses.push(restourantAddress);
+            }
+
+            if (this.locationSort == 'desc') {
+                restaurantAddresses = restaurantAddresses.sort(function compareFn(a, b) {
+                    return a.address.localeCompare(b.address) || a.number - b.number;
+                });
+                
+            } else if (this.locationSort == '') {
+                restaurantAddresses = restaurantAddresses.sort(function compareFn(a, b) {   
+                    return a.address.localeCompare(b.address) || a.number - b.number;
+                 }).reverse();
+            }
+
+            notSorted = Array.from(this.finalResults);
+            this.finalResults = [];
+            for (address of restaurantAddresses) {
+                for (restaurant of notSorted) {
+                    if (restaurant.restaurantID == address.id) {
+                        this.finalResults.push(restaurant)
+                    }
+                }
+            }
         }
     }
 });
