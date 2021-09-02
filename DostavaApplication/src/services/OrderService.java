@@ -142,7 +142,7 @@ public class OrderService {
 		}
 		for(Order delivererOrder: deliverer.getOrdersToDeliver()){
 			if(delivererOrder.getID().equals(order.getID())){
-				deliverer.getOrdersToDeliver().remove(delivererOrder);
+				delivererOrder.setStatus(OrderStatus.Delivered);
 				userDAO.update(deliverer);
 				break;
 			}
