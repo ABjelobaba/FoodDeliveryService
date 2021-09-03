@@ -130,7 +130,7 @@ Vue.component("new-restaurant", {
 
 					<div class="search" style="margin: 1% 10%;width:auto;">
 							<i class="fa fa-search fa-lg" style="color:white"></i>
-							<input style="color: white;margin: 0 0 0 10px;" v-model="searchText" type="text" placeholder="Pretraži po imenu i prezimenu.." v-on:keyup="searchManager" v-model="searchText">
+							<input style="color: white;margin: 0 0 0 10px;" v-model="searchText" type="text" placeholder="Pretraži po imenu i prezimenu.." v-on:keyup="searchManager">
 						</div>
 
 					<div style="margin: auto 0px;" >
