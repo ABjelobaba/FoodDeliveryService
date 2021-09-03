@@ -134,5 +134,9 @@ public class UserService {
 		
 		userDAO.update(manager);
 	}
+	
+	public Customer getCustomerByID(String username) throws JsonSyntaxException, IOException {
+		return (Customer) userDAO.getByID(username);
+	}
 
 }

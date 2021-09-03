@@ -18,7 +18,13 @@ public class RestaurantController {
 		
 		get("/restaurants/getAllRestaurants", (req, res) -> {
 			res.type("application/json");
-			return gs.toJson(restaurantService.getAll());	//need exceptions?
+			
+			try {
+				return gs.toJson(restaurantService.getAll());
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
 		});
 		
 		post("/restaurants/addRestaurant", (req, res) -> {

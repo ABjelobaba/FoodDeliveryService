@@ -27,6 +27,10 @@ public class Application {
 		RestaurantService restaurantService = new RestaurantService(restaurantDAO);
 		RestaurantController restaurantController = new RestaurantController(restaurantService);
 		
+		CustomerReviewDAO reviewDAO = new CustomerReviewDAO("./files/reviews.json");
+		CustomerReviewService reviewService = new CustomerReviewService(reviewDAO);
+		CustomerReviewController reviewController = new CustomerReviewController(reviewService);
+		
 		CartService cartService = new CartService();
 		CartController cartController = new CartController(cartService);
 

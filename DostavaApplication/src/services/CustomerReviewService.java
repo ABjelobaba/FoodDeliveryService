@@ -8,6 +8,7 @@ import com.google.gson.JsonSyntaxException;
 import beans.CustomerReview;
 import beans.ReviewStatus;
 import dao.CustomerReviewDAO;
+import dto.CustomerReviewDTO;
 
 public class CustomerReviewService {
 
@@ -25,7 +26,7 @@ public class CustomerReviewService {
 		ArrayList<CustomerReview> reviews = new ArrayList<CustomerReview>();
 		
 		for (CustomerReview review : getAll()) {
-			if (restaurantID == review.getID() && !review.isDeleted()) {
+			if (restaurantID == review.getRestaurantID() && !review.isDeleted()) {
 				reviews.add(review);
 			}
 		}
@@ -35,6 +36,15 @@ public class CustomerReviewService {
 	
 	public CustomerReview getReviewByID(int reviewID) throws JsonSyntaxException, IOException {
 		return reviewDAO.getByID(reviewID);
+	}
+	
+	public CustomerReview addReview(CustomerReviewDTO reviewDTO) throws JsonSyntaxException, IOException {
+		CustomerReview newReview = new CustomerReview(reviewDTO.getCustomerUsername(), reviewDTO.getRestaurantID(), 
+				reviewDTO.getReview(), reviewDTO.getRating());
+		
+		newReview.setID(reviewDAO.generateID());
+		
+		return reviewDAO.save(newReview);
 	}
 	
 	public void approveReview(int reviewID) throws JsonSyntaxException, IOException {

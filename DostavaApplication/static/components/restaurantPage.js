@@ -2,15 +2,11 @@ Vue.component("restaurant-page", {
     data: function() {
         return {
             loggedInUser: '',
-            comments: [
-                { id: 1, rating: 5.0, text: 'Odlična hrana, brza dostava', userName: 'Nikola', status: 'rejected' },
-                { id: 2, rating: 4.0, text: 'Dobra hrana,velike porcije', userName: 'Marko', status: 'approved' },
-                { id: 3, rating: 3.0, text: 'Okej hrana', userName: 'Marija', status: 'waiting' }
-            ],
+            comments: [],
             review_states: [
-                { value: 'rejected', text: 'Odbijen' },
-                { value: 'approved', text: 'Odobren' },
-                { value: 'waiting', text: ' Čeka obradu' }
+                { value: 'Rejected', text: 'Odbijen' },
+                { value: 'Approved', text: 'Odobren' },
+                { value: 'WaitingForApproval', text: ' Čeka obradu' }
             ],
             restaurant: "",
             restaurantTypes: [
@@ -264,6 +260,11 @@ Vue.component("restaurant-page", {
             this.zipCode = response.data.location.address.zipCode;
             this.longitude = response.data.location.longitude;
             this.latitude = response.data.location.latitude;
+        })
+
+        axios.get('/reviews/' + this.$route.query.id).then(response => {
+            this.comments = response.data;
+            
         })
 
         function createNavMenu() {
