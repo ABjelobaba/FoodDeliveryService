@@ -13,6 +13,7 @@ import services.*;
 
 
 public class Application {
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
 
 		port(8080);
@@ -25,7 +26,6 @@ public class Application {
 		RestaurantDAO restaurantDAO = new RestaurantDAO("./files/restaurants.json");
 		RestaurantService restaurantService = new RestaurantService(restaurantDAO);
 		RestaurantController restaurantController = new RestaurantController(restaurantService);
-
 		
 		CartService cartService = new CartService();
 		CartController cartController = new CartController(cartService);

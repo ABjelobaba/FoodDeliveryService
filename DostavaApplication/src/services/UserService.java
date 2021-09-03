@@ -19,6 +19,7 @@ import dao.UserDAO;
 import dto.ChangePasswordDTO;
 import dto.LogInDTO;
 import dto.RegistrationDTO;
+import dto.RestaurantAssignmentDTO;
 
 public class UserService {
 	
@@ -115,13 +116,23 @@ public class UserService {
 		userDAO.update(blockedUser);
 	}
 	
-	public List<User> getAllFreeManagers() throws JsonSyntaxException, IOException{
-    	List<User> users = new ArrayList<User>();	//TODO: check if managers are free
+	public List<Manager> getAllFreeManagers() throws JsonSyntaxException, IOException{
+    	List<Manager> managers = new ArrayList<Manager>();
     	for (User user : getAll()) {
-    		if (user.getRole().equals(Role.Manager))
-    			users.add(user);
+    		if (user.getRole().equals(Role.Manager)) {
+    			if (((Manager)user).getRestaurantID() == -1)
+    				managers.add((Manager)user);
+    		}
     	}
-    	return users;
+    	return managers;
     }
+
+	public void assignRestaurantToManager(RestaurantAssignmentDTO ra) throws JsonSyntaxException, IOException {
+		Manager manager = (Manager) userDAO.getByID(ra.getUsername());
+		
+		manager.setRestaurantID(ra.getRestaurantID());
+		
+		userDAO.update(manager);
+	}
 
 }

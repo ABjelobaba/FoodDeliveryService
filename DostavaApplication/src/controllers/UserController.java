@@ -176,5 +176,18 @@ public class UserController {
 				return "";
 			}
 		});
+		
+		post("/user/assignRestaurant", (req, res) -> {
+			res.type("application/json");
+			
+			
+			try {
+				userService.assignRestaurantToManager(gs.fromJson(req.body(), RestaurantAssignmentDTO.class));
+				return "ok";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
 	}
 }
