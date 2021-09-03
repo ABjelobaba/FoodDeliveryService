@@ -20,7 +20,7 @@ Vue.component("user-orders", {
                 { id: 'Sweets', value: 'Poslastice' }
             ],
             orders: [],
-            searchResults: [],
+            originalOrders: [],
             hover: '',
             searchText: '',
             fromPrice: '',
@@ -36,7 +36,7 @@ Vue.component("user-orders", {
             .then(response => {
                 if (response.data != null) {
                     this.orders = response.data.allOrders;
-                    this.searchResults = response.data.allOrders;
+                    this.originalOrders = this.orders;
                 } else {
                     window.location.href = '#/';
                 }
@@ -103,17 +103,17 @@ Vue.component("user-orders", {
     </div>
 
     <div class="content" style="display:block" >
-        <table class="table-users" name="orders" id="allOrders" v-if="mode=='all'">
+        <table class="table-users" name="orders" id="customerOrders">
             <thead>
                 <tr>
-                    <th>Datum <i class="fa fa-sort "></i></th>
-                    <th>Restoran <i class="fa fa-sort "></i></th>
-                    <th>Cena <i class="fa fa-sort"></i></th>
-                    <th>Status <i class="fa fa-sort"></i></th>
+                    <th v-on:click="sortByDate" id="dateTH">Datum <i class="fa fa-sort "></i></th>
+                    <th v-on:click="sortByRestaurant" id="restaurantTH">Restoran <i class="fa fa-sort "></i></th>
+                    <th v-on:click="sortByPrice" id="priceTH">Cena <i class="fa fa-sort"></i></th>
+                    <th v-on:click="sortByStatus" id="statusTH">Status <i class="fa fa-sort"></i></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="order in searchResults" v-on:click="showOrder(order)">
+                <tr v-for="order in orders" v-on:click="showOrder(order)">
                     <td>{{order.orderDate}}</td>
                     <td>
                         <restaurant-cell v-bind:restaurantID="order.restaurantID"></restaurant-cell>
@@ -152,58 +152,6 @@ Vue.component("user-orders", {
                         </div>
 
                         
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table class="table-users" name="orders" id="undeliveredOrdersTable" v-if="mode=='undelivered'">
-            <thead>
-                <tr>
-                    <th>Datum <i class="fa fa-sort "></i></th>
-                    <th>Restoran <i class="fa fa-sort "></i></th>
-                    <th>Cena <i class="fa fa-sort"></i></th>
-                    <th>Status <i class="fa fa-sort"></i></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="order in searchResults" v-on:click="showOrder(order)" v-if="order.status != 'Delivered' && order.status != 'Cancelled'">
-                    <td>{{order.orderDate}}</td>
-                    <td>
-                        <restaurant-cell v-bind:restaurantID="order.restaurantID"></restaurant-cell>
-                    </td>
-                    <td>{{order.price}}.00 RSD</td>
-                    <td >
-                        <div v-if="order.status == 'Delivered' && !order.comment" class="order-rate-btn"  v-on:click="openRateModal(order)"
-                            @mouseover="hover = order.orderID + 'r'"
-                            @mouseleave="hover = ''">
-
-                            <span v-if="hover != order.orderID + 'r'" >
-                               <i class="fa fa-star" aria-hidden="true" style="color:white"></i> Oceni
-                            </span>
-                            <span v-if="hover == order.orderID + 'r'"  style="color:white;background-color:rgb(197, 168, 1);">
-                                <i class="fa fa-star" aria-hidden="true" style="color:white"></i> Oceni
-                            </span>
-                        
-                        </div>
-
-                        <div v-else-if="order.status == 'Processing'" class="order-canceled-btn"  v-on:click="cancelOrder(order)"
-                            @mouseover="hover = order.orderID + 'c'"
-                            @mouseleave="hover = ''">
-
-                            <span v-if="hover != order.orderID + 'c'" >
-                                <i class="fa fa-spinner" aria-hidden="true"></i> Obrada
-                            </span>
-                            <span v-if="hover == order.orderID + 'c'" style="color:white;transition: 0.2s;">
-                                <i class="fa fa-ban" aria-hidden="true" style="color:white"></i> Otkaži
-                            </span>
-                        
-                        </div>
-
-                        <div class="order-status-black" v-else>
-                            <order-status-cell v-bind:orderStatus="order.status">
-                            </order-status-cell>
-                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -282,8 +230,16 @@ Vue.component("user-orders", {
         undeliveredOrders: function(event) {
             if (this.mode == 'all') {
                 this.mode = 'undelivered';
+                this.orders = this.orders.filter(function(element) {
+                    if (element.status == "Delivered") {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                });
             } else {
                 this.mode = 'all';
+                this.orders = this.originalOrders;
             }
         },
         cancelOrder: function(order) {
@@ -319,10 +275,7 @@ Vue.component("user-orders", {
         },
         findOrder: function() {
 
-            table = document.getElementById("allOrders");
-            if (table == null) {
-                table = document.getElementById("undeliveredOrdersTable");
-            }
+            table = document.getElementById("customerOrders");
             tr = table.getElementsByTagName("tr");
 
             checkboxes = document.getElementsByName("orderStatus");
@@ -356,6 +309,68 @@ Vue.component("user-orders", {
             //DATE
             filterDateFunction(this.fromDate, this.toDate, tr);
 
+        },
+        sortByDate: function() {
+            let dateTH = document.querySelector('#dateTH');
+            if (dateTH.innerHTML.includes('sort-desc')) {
+                sortTable('customerOrders', 0, 'date', true);
+                dateTH.innerHTML = 'Datum <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('customerOrders', 0, 'date', false);
+                dateTH.innerHTML = 'Datum <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('date');
+        },
+        sortByRestaurant: function() {
+            let restaurantTH = document.querySelector('#restaurantTH');
+            if (restaurantTH.innerHTML.includes('sort-desc')) {
+                sortTable('customerOrders', 1, 'restaurant', true);
+                restaurantTH.innerHTML = 'Restoran <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('customerOrders', 1, 'restaurant', false);
+                restaurantTH.innerHTML = 'Restoran <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('restaurant');
+        },
+        sortByPrice: function() {
+            let priceTH = document.querySelector('#priceTH');
+            if (priceTH.innerHTML.includes('sort-desc')) {
+                sortTable('customerOrders', 2, 'price', true);
+                priceTH.innerHTML = 'Cena <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('customerOrders', 2, 'price', false);
+                priceTH.innerHTML = 'Cena <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('price');
+        },
+        sortByStatus: function() {
+            let statusTH = document.querySelector('#statusTH');
+            if (statusTH.innerHTML.includes('sort-desc')) {
+                sortTable('customerOrders', 3, 'status', true);
+                statusTH.innerHTML = 'Status <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('customerOrders', 3, 'status', false);
+                statusTH.innerHTML = 'Status <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('status');
+        },
+        resetOtherSorts: function(activeSort) {
+            if (activeSort != "date") {
+                let dateTH = document.querySelector('#dateTH');
+                dateTH.innerHTML = 'Datum <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "restaurant") {
+                let restaurantTH = document.querySelector('#restaurantTH');
+                restaurantTH.innerHTML = 'Restoran <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "price") {
+                let priceTH = document.querySelector('#priceTH');
+                priceTH.innerHTML = 'Cena <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "status") {
+                let statusTH = document.querySelector('#statusTH');
+                statusTH.innerHTML = 'Status <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
         }
     }
 })
