@@ -48,8 +48,10 @@ public class UserController {
 				User user = userService.register(gs.fromJson(req.body(), RegistrationDTO.class));
 				if (user != null) {
 					Session session = req.session();
-					session.attribute("user", user);
-					session.attribute("cart", new ShoppingCart(user.getUsername()));
+					if(user.getRole() == Role.Customer){
+						session.attribute("user", user);
+						session.attribute("cart", new ShoppingCart(user.getUsername()));
+					}
 				} 
 				return (user != null) ? gs.toJson(user) : "";
 			} catch (Exception e) {

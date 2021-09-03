@@ -82,6 +82,17 @@ Vue.component("new-user", {
             }
 
             let error = false;
+
+            var today = Number(Date.now);
+            var minDate = Number(new Date(1896, 1, 1, 0, 0, 0, 0));
+            var date = Number(Date(this.dateOfBirth));
+            if (minDate <= date && date <= today) {
+                //Do nothing
+            } else {
+                document.getElementById('emptyFieldsError').innerHTML = "Neispravan datum rođenja!";
+                error = true;
+            }
+
             if (!this.username || !this.password || this.gender == "" || !this.dateOfBirth || this.role == "") {
                 document.getElementById('emptyFieldsError').innerHTML = "Sva polja moraju biti popunjena!";
                 error = true;

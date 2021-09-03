@@ -9,8 +9,12 @@ Vue.component("logIn-register", {
             passwordLogIn: '',
             name: '',
             surname: '',
-            dateOfBirth: ''
+            dateOfBirth: '',
+            today: ''
         }
+    },
+    created: function() {
+        this.today = new Date().toISOString().split('T')[0];
     },
     template: `
 	<div class="register">
@@ -45,7 +49,7 @@ Vue.component("logIn-register", {
 							</select>
 	
 							<label style="color: white;display: block;margin:15px 0 0 0">Datum rođenja:</label>
-							<input type="date" v-model="dateOfBirth" class="login-inputs" style="margin-top: 1px;" id="date_input">
+							<input type="date" v-model="dateOfBirth" class="login-inputs" style="margin-top: 1px;" id="date_input" min="1896-01-01" v-bind:max="today">
 	
 							<button v-on:click="registerUser" style="margin: 20px 10px" class="log-btn"> Potvrdi</button>
 							<label class="error" id="emptyFieldsError" name="labels" display="hidden"> </label>
@@ -104,6 +108,17 @@ Vue.component("logIn-register", {
             }
 
             let error = false;
+
+            var today = Number(Date.now);
+            var minDate = Number(new Date(1896, 1, 1, 0, 0, 0, 0));
+            var date = Number(Date(this.dateOfBirth));
+            if (minDate <= date && date <= today) {
+                //Do nothing
+            } else {
+                document.getElementById('emptyFieldsError').innerHTML = "Neispravan datum rođenja!";
+                error = true;
+            }
+
             if (!this.usernameRegistration || !this.passwordRegistration || !genderEnum || !this.dateOfBirth) {
                 document.getElementById('emptyFieldsError').innerHTML = "Sva polja moraju biti popunjena!";
                 error = true;
@@ -117,6 +132,8 @@ Vue.component("logIn-register", {
                 document.getElementById('surnameErr').innerHTML = "Morate uneti prezime koje počinje velikim slovom!";
                 error = true;
             }
+
+
 
             if (!error) {
 
