@@ -17,7 +17,7 @@ Vue.component("shopping-cart", {
 		
 		<h1 style="text-align:center">Vaša korpa</h1>
 
-		<div class="users-search" style="padding:0" id="cart-points" >
+		<div class="users-search" style="padding:0;backgound-color:transparent" id="cart-points" >
 			<h2> <i class="fa fa-user-circle-o fa-lg" aria-hidden="true"></i> Vaši bodovi nakon poručivanja : {{loggedInUser.totalPoints}} + <b style="color:#054e72">{{cart.points}}</b> = {{loggedInUser.totalPoints + cart.points}}</h2>
 		</div>
 		
