@@ -63,10 +63,10 @@ Vue.component("available-orders", {
             <table class="table-users" id="orders">
                 <thead>
                     <tr>
-                        <th>Vreme <i class="fa fa-sort "></i></th>
-                        <th>Kupac <i class="fa fa-sort"></i></th>
-                        <th>Restoran <i class="fa fa-sort "></i></th>
-                        <th>Cena <i class="fa fa-sort"></i></th>
+                        <th v-on:click="sortByTime" id="timeTH">Vreme <i class="fa fa-sort "></i></th>
+                        <th v-on:click="sortByCustomer" id="customerTH">Kupac <i class="fa fa-sort"></i></th>
+                        <th v-on:click="sortByRestaurant" id="restaurantTH">Restoran <i class="fa fa-sort "></i></th>
+                        <th v-on:click="sortByPrice" id="priceTH">Cena <i class="fa fa-sort"></i></th>
                         <th> </th>
                     </tr>
                 </thead>
@@ -171,6 +171,68 @@ Vue.component("available-orders", {
             fromTime = document.getElementById("fromTime").value;
             toTime = document.getElementById("toTime").value;
             filterTimeFunction(fromTime, toTime, tr, 0);
+        },
+        sortByTime: function() {
+            let timeTH = document.querySelector('#timeTH');
+            if (timeTH.innerHTML.includes('sort-desc')) {
+                sortTable('orders', 0, 'time', true);
+                timeTH.innerHTML = 'Vreme <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('orders', 0, 'time', false);
+                timeTH.innerHTML = 'Vreme <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('time');
+        },
+        sortByCustomer: function() {
+            let customerTH = document.querySelector('#customerTH');
+            if (customerTH.innerHTML.includes('sort-desc')) {
+                sortTable('orders', 1, 'customer', true);
+                customerTH.innerHTML = 'Kupac <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('orders', 1, 'customer', false);
+                customerTH.innerHTML = 'Kupac <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('customer');
+        },
+        sortByRestaurant: function() {
+            let restaurantTH = document.querySelector('#restaurantTH');
+            if (restaurantTH.innerHTML.includes('sort-desc')) {
+                sortTable('orders', 2, 'restaurant', true);
+                restaurantTH.innerHTML = 'Restoran <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('orders', 2, 'restaurant', false);
+                restaurantTH.innerHTML = 'Restoran <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('restaurant');
+        },
+        sortByPrice: function() {
+            let priceTH = document.querySelector('#priceTH');
+            if (priceTH.innerHTML.includes('sort-desc')) {
+                sortTable('orders', 3, 'price', true);
+                priceTH.innerHTML = 'Cena <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('orders', 3, 'price', false);
+                priceTH.innerHTML = 'Cena <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('price');
+        },
+        resetOtherSorts: function(activeSort) {
+            if (activeSort != "time") {
+                let timeTH = document.querySelector('#timeTH');
+                timeTH.innerHTML = 'Vreme <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "customer") {
+                let customerTH = document.querySelector('#customerTH');
+                customerTH.innerHTML = 'Kupac <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "restaurant") {
+                let restaurantTH = document.querySelector('#restaurantTH');
+                restaurantTH.innerHTML = 'Restoran <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "price") {
+                let priceTH = document.querySelector('#priceTH');
+                priceTH.innerHTML = 'Cena <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
         }
     }
 })

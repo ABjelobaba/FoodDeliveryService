@@ -83,7 +83,7 @@ Vue.component("deliverer-orders", {
         </div>
 
         <div class="content" style="display:block" >
-            <table class="table-users" id="allOrders" >
+            <table class="table-users" id="orders" >
                 <thead>
                     <tr>
                         <th v-on:click="sortByDate" id="dateTH">Datum <i class="fa fa-sort "></i></th>
@@ -263,10 +263,10 @@ Vue.component("deliverer-orders", {
         sortByDate: function() {
             let dateTH = document.querySelector('#dateTH');
             if (dateTH.innerHTML.includes('sort-desc')) {
-                sortTable(0, 'date', true);
+                sortTable('orders', 0, 'date', true);
                 dateTH.innerHTML = 'Datum <i class="fa fa-sort-asc" aria-hidden="true"></i>';
             } else {
-                sortTable(0, 'date', false);
+                sortTable('orders', 0, 'date', false);
                 dateTH.innerHTML = 'Datum <i class="fa fa-sort-desc" aria-hidden="true"></i>';
             }
             this.resetOtherSorts('date');
@@ -274,10 +274,10 @@ Vue.component("deliverer-orders", {
         sortByCustomer: function() {
             let customerTH = document.querySelector('#customerTH');
             if (customerTH.innerHTML.includes('sort-desc')) {
-                sortTable(1, 'customer', true);
+                sortTable('orders', 1, 'customer', true);
                 customerTH.innerHTML = 'Kupac <i class="fa fa-sort-asc" aria-hidden="true"></i>';
             } else {
-                sortTable(1, 'customer', false);
+                sortTable('orders', 1, 'customer', false);
                 customerTH.innerHTML = 'Kupac <i class="fa fa-sort-desc" aria-hidden="true"></i>';
             }
             this.resetOtherSorts('customer');
@@ -285,10 +285,10 @@ Vue.component("deliverer-orders", {
         sortByRestaurant: function() {
             let restaurantTH = document.querySelector('#restaurantTH');
             if (restaurantTH.innerHTML.includes('sort-desc')) {
-                sortTable(2, 'restaurant', true);
+                sortTable('orders', 2, 'restaurant', true);
                 restaurantTH.innerHTML = 'Restoran <i class="fa fa-sort-asc" aria-hidden="true"></i>';
             } else {
-                sortTable(2, 'restaurant', false);
+                sortTable('orders', 2, 'restaurant', false);
                 restaurantTH.innerHTML = 'Restoran <i class="fa fa-sort-desc" aria-hidden="true"></i>';
             }
             this.resetOtherSorts('restaurant');
@@ -296,10 +296,10 @@ Vue.component("deliverer-orders", {
         sortByPrice: function() {
             let priceTH = document.querySelector('#priceTH');
             if (priceTH.innerHTML.includes('sort-desc')) {
-                sortTable(3, 'price', true);
+                sortTable('orders', 3, 'price', true);
                 priceTH.innerHTML = 'Cena <i class="fa fa-sort-asc" aria-hidden="true"></i>';
             } else {
-                sortTable(3, 'price', false);
+                sortTable('orders', 3, 'price', false);
                 priceTH.innerHTML = 'Cena <i class="fa fa-sort-desc" aria-hidden="true"></i>';
             }
             this.resetOtherSorts('price');
@@ -307,42 +307,42 @@ Vue.component("deliverer-orders", {
         sortByStatus: function() {
             let statusTH = document.querySelector('#statusTH');
             if (statusTH.innerHTML.includes('sort-desc')) {
-                sortTable(4, 'status', true);
+                sortTable('orders', 4, 'status', true);
                 statusTH.innerHTML = 'Status <i class="fa fa-sort-asc" aria-hidden="true"></i>';
             } else {
-                sortTable(4, 'status', false);
+                sortTable('orders', 4, 'status', false);
                 statusTH.innerHTML = 'Status <i class="fa fa-sort-desc" aria-hidden="true"></i>';
             }
             this.resetOtherSorts('status');
         },
         resetOtherSorts: function(activeSort) {
             if (activeSort != "date") {
-                let nameTH = document.querySelector('#dateTH');
-                nameTH.innerHTML = 'Datum <i class="fa fa-sort" aria-hidden="true"></i>';
+                let dateTH = document.querySelector('#dateTH');
+                dateTH.innerHTML = 'Datum <i class="fa fa-sort" aria-hidden="true"></i>';
             }
             if (activeSort != "customer") {
-                let surnameTH = document.querySelector('#customerTH');
-                surnameTH.innerHTML = 'Kupac <i class="fa fa-sort" aria-hidden="true"></i>';
+                let customerTH = document.querySelector('#customerTH');
+                customerTH.innerHTML = 'Kupac <i class="fa fa-sort" aria-hidden="true"></i>';
             }
             if (activeSort != "restaurant") {
-                let usernameTH = document.querySelector('#restaurantTH');
-                usernameTH.innerHTML = 'Restoran <i class="fa fa-sort" aria-hidden="true"></i>';
+                let restaurantTH = document.querySelector('#restaurantTH');
+                restaurantTH.innerHTML = 'Restoran <i class="fa fa-sort" aria-hidden="true"></i>';
             }
             if (activeSort != "price") {
-                let pointsTH = document.querySelector('#priceTH');
-                pointsTH.innerHTML = 'Cena <i class="fa fa-sort" aria-hidden="true"></i>';
+                let priceTH = document.querySelector('#priceTH');
+                priceTH.innerHTML = 'Cena <i class="fa fa-sort" aria-hidden="true"></i>';
             }
             if (activeSort != "status") {
-                let pointsTH = document.querySelector('#statusTH');
-                pointsTH.innerHTML = 'Status <i class="fa fa-sort" aria-hidden="true"></i>';
+                let statusTH = document.querySelector('#statusTH');
+                statusTH.innerHTML = 'Status <i class="fa fa-sort" aria-hidden="true"></i>';
             }
         }
     }
 })
 
-function sortTable(tdNumber, sortCriteria, reverse) {
+function sortTable(tableID, tdNumber, sortCriteria, reverse) {
     var table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("allOrders");
+    table = document.getElementById(tableID);
     switching = true;
     while (switching) {
         switching = false;
@@ -367,6 +367,9 @@ function sortTable(tdNumber, sortCriteria, reverse) {
             } else if (sortCriteria == "status" && statusSort(x, y, reverse)) {
                 shouldSwitch = true;
                 break;
+            } else if (sortCriteria == "time" && timeSort(x, y, reverse)) {
+                shouldSwitch = true;
+                break;
             }
         }
         if (shouldSwitch) {
@@ -374,6 +377,25 @@ function sortTable(tdNumber, sortCriteria, reverse) {
             switching = true;
         }
     }
+}
+
+function timeSort(a, b, reverse) {
+    var retVal;
+    var aParts = a.innerHTML.slice(0, 5).split(':');
+    aTime = new Date().setHours(aParts[0], aParts[1], 0);
+    var bParts = b.innerHTML.slice(0, 5).split(':');
+    bTime = new Date().setHours(bParts[0], bParts[1], 0);
+
+    if (Number(aTime) > Number(bTime)) {
+        retVal = true;
+    } else {
+        retVal = false;
+    }
+
+    if (reverse) {
+        retVal = !retVal;
+    }
+    return retVal;
 }
 
 function dateSort(a, b, reverse) {
