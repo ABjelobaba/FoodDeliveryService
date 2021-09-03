@@ -1,5 +1,6 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,22 +10,29 @@ public class Order implements IEntity<String>{
 	private int restaurantID;
 	private Date orderDate;
 	private double price;
+	private String customerName;
+	private String customerSurname;
 	private String customerUsername;
 	private OrderStatus status;
 	private boolean deleted;
 	private String address;
+	private List<Deliverer> deliveryRequests;
 	
 	public Order(List<OrderedItem> orderedItems, int restaurantID, Date orderDate, double price,
-			String customerUsername, OrderStatus status, String address) {
+			String customerName, String customerSurname, String customerUsername, OrderStatus status, 
+			String address) {
 		super();
 		this.orderedItems = orderedItems;
 		this.restaurantID = restaurantID;
 		this.orderDate = orderDate;
 		this.price = price;
+		this.customerName = customerName;
+		this.customerSurname = customerSurname;
 		this.customerUsername = customerUsername;
 		this.status = status;
 		this.deleted = false;
 		this.address = address;
+		this.deliveryRequests = new ArrayList<Deliverer>();
 	}
 
 
@@ -78,6 +86,24 @@ public class Order implements IEntity<String>{
 	}
 
 
+	public String getCustomerName() {
+		return customerName;
+	}
+
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getCustomerSurname() {
+		return customerSurname;
+	}
+
+
+	public void setCustomerSurname(String customerSurname) {
+		this.customerSurname = customerSurname;
+	}
+
 	public String getCustomerUsername() {
 		return customerUsername;
 	}
@@ -86,7 +112,6 @@ public class Order implements IEntity<String>{
 	public void setCustomerUsername(String customerUsername) {
 		this.customerUsername = customerUsername;
 	}
-
 
 	public OrderStatus getStatus() {
 		return status;
@@ -103,6 +128,14 @@ public class Order implements IEntity<String>{
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public List<Deliverer> getDeliveryRequests() {
+		return deliveryRequests;
+	}
+
+	public void setDeliveryRequests(List<Deliverer> deliveryRequests) {
+		this.deliveryRequests = deliveryRequests;
 	}
 
 	@Override

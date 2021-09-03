@@ -4,17 +4,22 @@ import static spark.Spark.post;
 import static spark.Spark.get;
 import static spark.Spark.put;
 
+import java.util.List;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import beans.Customer;
+import beans.Deliverer;
 import beans.Order;
 import beans.ShoppingCart;
+import dto.OrderRequestDTO;
 import services.OrderService;
 import spark.Session;
 
 public class OrderController {
     private static Gson gs = new GsonBuilder().setDateFormat("dd MMM yyyy").create();
+    private static Gson gsTime = new GsonBuilder().setDateFormat("HH:mm'h'").create();
 
 	public OrderController(OrderService orderService) {
 
@@ -47,6 +52,76 @@ public class OrderController {
 				customer = orderService.cancelledOrderPoints(customer, req.params("orderID"));
                 session.attribute("user", customer);
 				return gs.toJson(customer);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		get("/order/getWaitingDeliveryOrders",(req, res)->{
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                Deliverer deliverer = session.attribute("user");
+				List<Order> orders = orderService.getWaitingDeliveryOrders(deliverer);
+				return gsTime.toJson(orders);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		put("/order/setInTransport/:orderID/:username",(req, res)->{
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                Deliverer deliverer = session.attribute("user");
+				Order order = orderService.setOrderInTransport(deliverer, req.params("orderID"), req.params("username"));
+				return gs.toJson(order);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		get("/order/getDelivererOrders",(req, res)->{
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                Deliverer deliverer = session.attribute("user");
+				return gs.toJson(deliverer.getOrdersToDeliver());
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		put("/order/confirmDelivery",(req, res)->{
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                Deliverer deliverer = session.attribute("user");
+				deliverer = orderService.confirmDelivery(deliverer, gs.fromJson(req.body(), Order.class));
+				session.attribute("user", deliverer);
+				return gs.toJson(deliverer);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		put("/order/requestOrder",(req, res)->{
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                Deliverer deliverer = session.attribute("user");
+				orderService.requestOrder(deliverer, gs.fromJson(req.body(), OrderRequestDTO.class));
+				return gs.toJson(orderService.getWaitingDeliveryOrders(deliverer));
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";

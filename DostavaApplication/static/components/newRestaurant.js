@@ -286,13 +286,13 @@ Vue.component("new-restaurant", {
                 if (!this.restaurantName) {
                     document.getElementById('restaurantNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate uneti naziv restorana!';
                     errors = true;
-                } 
+                }
 
-                if(document.getElementById("inpFile").value == "") {
+                if (document.getElementById("inpFile").value == "") {
                     document.getElementById('restaurantLogoErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate odabrati logo restorana!';
                     errors = true;
                 }
-                
+
                 if (document.getElementById('ItalianFood').checked) {
                     this.restaurantType = 'Italian';
                 } else if (document.getElementById('ChineseFood').checked) {
@@ -307,14 +307,14 @@ Vue.component("new-restaurant", {
                     document.getElementById('restaurantTypeErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate selektovati tip hrane!';
                     errors = true;
                 }
-                
+
                 if (!errors) {
                     document.querySelector('.firstStep').style.display = 'none';
                     document.querySelector('.secondStep').style.display = 'grid';
                 }
 
 
-                
+
             } else if (document.querySelector('.secondStep').style.display == 'grid') {
                 if (!this.street || !this.houseNumber || !this.city || !this.postcode) {
                     document.getElementById('secondErr').style.color = 'red';
@@ -322,14 +322,14 @@ Vue.component("new-restaurant", {
                     document.querySelector('.secondStep').style.display = 'none';
                     document.querySelector('.thirdStep').style.display = 'grid';
                 }
-                
+
             } else {
 
                 if (!this.restaurantManager) {
                     document.getElementById('restaurantManagerErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Restoran mora imati menadžera!';
                     errors = true;
                 }
-                
+
                 if (!errors) {
                     let restaurantDTO = {
                         name: this.restaurantName,
@@ -341,7 +341,7 @@ Vue.component("new-restaurant", {
                         city: this.city,
                         zipCode: this.postcode
                     }
-    
+
                     axios
                         .post('/restaurants/addRestaurant', JSON.stringify(restaurantDTO))
                         .then(response => {
@@ -365,7 +365,7 @@ Vue.component("new-restaurant", {
                                     username: this.restaurantManager.username,
                                     RestaurantID: newRestaurantID
                                 }
-            
+
                                 axios
                                     .post('/user/assignRestaurant', JSON.stringify(restaurantAssignmentDTO))
                                     .then(response => {
@@ -378,10 +378,10 @@ Vue.component("new-restaurant", {
 
                             }
                         })
-                        
+
                 }
 
-                    
+
             }
 
 
