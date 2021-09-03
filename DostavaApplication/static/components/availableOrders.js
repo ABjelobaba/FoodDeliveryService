@@ -26,9 +26,6 @@ Vue.component("available-orders", {
         }
 
     },
-    created: function() {
-
-    },
     template: `
     <div>
         <h1 style="text-align: center;">Pregled dostupnih porudžbina
@@ -139,25 +136,18 @@ Vue.component("available-orders", {
             } else { this.advancedSearchClose(); }
         },
         requestOrder: function(order) {
-            /* if (order == '' || order == undefined || order == null) {
+            if (order == '' || order == undefined || order == null) {
                 order = this.selectedOrder;
             }
             axios
-                .put("/order/setInTransport/" + order.orderID + "/" + order.customerUsername)
+                .put("/order/requestOrder", JSON.stringify({ "username": order.customerUsername, "orderID": order.orderID }))
                 .then(response => {
-                    if (response.data != null && response.data != "") {
-                        order.status = "InTransport";
-                        this.orders = this.orders.filter(function(value, index, arr) {
-                            if (value.status == "WaitingForDelivery") {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        });
+                    if (response.data != null) {
+                        this.orders = response.data;
                         this.closeModal();
                     }
                 })
-            event.stopPropagation(); */
+            event.stopPropagation();
         },
         findOrder: function() {
             tr = document.getElementById("orders").getElementsByTagName('tr');

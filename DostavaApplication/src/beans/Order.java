@@ -1,5 +1,6 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class Order implements IEntity<String>{
 	private OrderStatus status;
 	private boolean deleted;
 	private String address;
+	private List<Deliverer> deliveryRequests;
 	
 	public Order(List<OrderedItem> orderedItems, int restaurantID, Date orderDate, double price,
 			String customerName, String customerSurname, String customerUsername, OrderStatus status, 
@@ -30,6 +32,7 @@ public class Order implements IEntity<String>{
 		this.status = status;
 		this.deleted = false;
 		this.address = address;
+		this.deliveryRequests = new ArrayList<Deliverer>();
 	}
 
 
@@ -125,6 +128,14 @@ public class Order implements IEntity<String>{
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public List<Deliverer> getDeliveryRequests() {
+		return deliveryRequests;
+	}
+
+	public void setDeliveryRequests(List<Deliverer> deliveryRequests) {
+		this.deliveryRequests = deliveryRequests;
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import beans.Customer;
 import beans.Deliverer;
 import beans.Order;
 import beans.ShoppingCart;
+import dto.OrderRequestDTO;
 import services.OrderService;
 import spark.Session;
 
@@ -61,7 +62,9 @@ public class OrderController {
 			res.type("application/json");
 
 			try {
-				List<Order> orders = orderService.getWaitingDeliveryOrders();
+                Session session = req.session();
+                Deliverer deliverer = session.attribute("user");
+				List<Order> orders = orderService.getWaitingDeliveryOrders(deliverer);
 				return gsTime.toJson(orders);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -105,6 +108,20 @@ public class OrderController {
 				deliverer = orderService.confirmDelivery(deliverer, gs.fromJson(req.body(), Order.class));
 				session.attribute("user", deliverer);
 				return gs.toJson(deliverer);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+
+		put("/order/requestOrder",(req, res)->{
+			res.type("application/json");
+
+			try {
+                Session session = req.session();
+                Deliverer deliverer = session.attribute("user");
+				orderService.requestOrder(deliverer, gs.fromJson(req.body(), OrderRequestDTO.class));
+				return gs.toJson(orderService.getWaitingDeliveryOrders(deliverer));
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";

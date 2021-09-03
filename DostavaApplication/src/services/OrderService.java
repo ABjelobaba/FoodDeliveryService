@@ -17,6 +17,7 @@ import beans.Role;
 import beans.ShoppingCart;
 import beans.User;
 import dao.UserDAO;
+import dto.OrderRequestDTO;
 
 public class OrderService {
     private UserDAO userDAO;
@@ -89,24 +90,35 @@ public class OrderService {
 		return customer;
     }
 
-	public List<Order> getWaitingDeliveryOrders() throws JsonSyntaxException, IOException {
+	public List<Order> getWaitingDeliveryOrders(Deliverer deliverer) throws JsonSyntaxException, IOException {
 		List<Order> waitingDeliveryOrders = new ArrayList<Order>();
 		for(User user: userDAO.getAll()){
 			if(user.getRole() == Role.Customer){
-				waitingDeliveryOrders.addAll(getWaitingDeliveryOrdersFromUser((Customer)user));
+				waitingDeliveryOrders.addAll(getWaitingDeliveryOrdersFromUser((Customer)user, deliverer));
 			}
 		}
 		return waitingDeliveryOrders;
 	}
 
-	private List<Order> getWaitingDeliveryOrdersFromUser(Customer customer){
+	private List<Order> getWaitingDeliveryOrdersFromUser(Customer customer, Deliverer deliverer){
 		List<Order> orders = new ArrayList<Order>();
 		for(Order order: customer.getAllOrders()){
-			if(order.getStatus() == OrderStatus.WaitingForDelivery){
+			if(order.getStatus() == OrderStatus.WaitingForDelivery && !isAlreadyRequested(order, deliverer)){
 				orders.add(order);
 			}
 		}
 		return orders;
+	}
+
+	private boolean isAlreadyRequested(Order order, Deliverer deliverer){
+		boolean isRequested = false;
+		for(Deliverer orderDeliverer: order.getDeliveryRequests()){
+			if(orderDeliverer.isEqual(deliverer.getID())){
+				isRequested = true;
+				break;
+			}
+		}	
+		return isRequested;
 	}
 
 	public Order setOrderInTransport(Deliverer deliverer, String orderID, String username) throws JsonSyntaxException, IOException {
@@ -148,6 +160,17 @@ public class OrderService {
 			}
 		}
 		return deliverer;
+	}
+
+	public void requestOrder(Deliverer deliverer, OrderRequestDTO orderRequestDTO) throws JsonSyntaxException, IOException {
+		User user = userDAO.getByID(orderRequestDTO.getUsername());
+		for(Order customerOrder: ((Customer)user).getAllOrders()){
+			if(customerOrder.isEqual(orderRequestDTO.getOrderID())){
+				customerOrder.getDeliveryRequests().add(deliverer);
+				userDAO.update(user);
+				break;
+			}
+		}
 	}
 
 }
