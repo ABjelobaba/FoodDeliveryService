@@ -96,11 +96,12 @@ Vue.component("admin-users", {
                     <td>{{user.username}}</td>
                     <td>{{user.totalPoints}}</td>
                     <td>
-                        <button class="black-btn" v-if="user.role=='Administrator' || user.blocked"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
+                        <button class="black-btn" v-if="user.role=='Administrator'"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
+                        <button class="black-btn" v-else-if="user.blocked" v-on:click="askToUnblock(user)"><i class="fa fa-unlock" aria-hidden="true"></i> Odblokiraj</button>
                         <button class="black-btn" v-else v-on:click="askToBlock(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
                     </td>
                     <td>
-                        <button class="black-btn" v-if="user.role=='Administrator' || user.blocked"  disabled ><i class="fa fa-trash-o" aria-hidden="true"></i> Obrisi</button>
+                        <button class="black-btn" v-if="user.role=='Administrator'"  disabled ><i class="fa fa-trash-o" aria-hidden="true"></i> Obrisi</button>
                         <button class="black-btn" v-else v-on:click="askToDelete(user)"><i class="fa fa-trash-o" aria-hidden="true"></i> Obriši</button>
                     </td>
                 </tr>
@@ -171,6 +172,12 @@ Vue.component("admin-users", {
             this.selectedUser = user;
             document.querySelector("#question").style.display = "flex";
         },
+        askToUnblock: function(user) {
+            this.mode = 'block';
+            this.question = "Da li ste sigurni da želite da odblokirate korisnika '" + user.username + "'?";
+            this.selectedUser = user;
+            document.querySelector("#question").style.display = "flex";
+        },
         askToDelete: function(user) {
             this.mode = 'delete';
             this.question = "Da li ste sigurni da želite da obrišete korisnika '" + user.username + "'?";
@@ -184,7 +191,11 @@ Vue.component("admin-users", {
                 this.deleteUser();
             } else if (receivedAnswer == 'yes' && this.mode == 'block') {
                 this.mode = '';
-                this.blockUser();
+                if (this.selectedUser.blocked) {
+                    this.unblockUser();
+                } else {
+                    this.blockUser();
+                }
             } else {
                 this.selectedUser = '';
             }
@@ -203,6 +214,17 @@ Vue.component("admin-users", {
         blockUser: function(user) {
             axios
                 .put("user/" + this.selectedUser.username)
+                .then(response => {
+                    if (response.data != null) {
+                        this.users = response.data;
+                        this.searchResults = response.data;
+                    }
+
+                })
+        },
+        unblockUser: function(user) {
+            axios
+                .put("user/unblock/" + this.selectedUser.username)
                 .then(response => {
                     if (response.data != null) {
                         this.users = response.data;

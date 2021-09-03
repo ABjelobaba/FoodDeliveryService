@@ -115,4 +115,10 @@ public class UserService {
 		userDAO.update(blockedUser);
 	}
 
+    public void unblockUser(String username) throws JsonSyntaxException, IOException {
+		User blockedUser = userDAO.getByID(username);
+		blockedUser.setBlocked(false);
+		userDAO.update(blockedUser);
+    }
+
 }

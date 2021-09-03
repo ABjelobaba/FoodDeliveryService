@@ -160,5 +160,17 @@ public class UserController {
 				return null;
 			}
 		});
+
+		put("/user/unblock/:username", (req, res) -> {
+			res.type("application/json"); 
+
+			try {
+				userService.unblockUser(gs.fromJson(req.params("username"), String.class));
+				return gs.toJson(userService.getAll());
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
 	}
 }
