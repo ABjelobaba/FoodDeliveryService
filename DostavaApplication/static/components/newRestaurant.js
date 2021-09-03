@@ -20,7 +20,9 @@ Vue.component("new-restaurant", {
             longitude: null,
             restaurantType: '',
             restaurantLogo: '',
-            restaurantManager: null
+            restaurantManager: null,
+            searchText: '',
+            searchResults: ''
         }
     },
     created: function() {
@@ -29,6 +31,7 @@ Vue.component("new-restaurant", {
             .then(response => {
                 if (response.data != null) {
                     this.managers = response.data;
+                    this.searchResults = response.data;
                 }
             })
     },
@@ -122,19 +125,19 @@ Vue.component("new-restaurant", {
 				<div style="display: none;height: 100%;grid-template-rows: auto auto auto 50px;" class="thirdStep">
 					<div class="login-title">
 						<h3 style="color: white; font-weight: bolder;"> Menadžer {{restaurantName}}-a </h3>
-						<p>Odaberite nadležnog menadžera restora.</p>
+						<p>Odaberite nadležnog menadžera restorana.</p>
 					</div>
 
 					<div class="search" style="margin: 1% 10%;width:auto;">
 							<i class="fa fa-search fa-lg" style="color:white"></i>
-							<input style="color: white;margin: 0 0 0 10px;" v-model="searchText" type="text" placeholder="Pretraži po imenu i prezimenu..">
+							<input style="color: white;margin: 0 0 0 10px;" v-model="searchText" type="text" placeholder="Pretraži po imenu i prezimenu.." v-on:keyup="searchManager" v-model="searchText">
 						</div>
 
 					<div style="margin: auto 0px;" >
                         <button v-on:click="newManager" class="btn" style="margin: auto;width: 80%;right:0">Novi menadzer</button>
 						<form>
 							<div class="radio-btn-container" >
-                                <div v-for="manager in managers">
+                                <div v-for="manager in searchResults">
                                     <input type="radio" v-bind:id="manager.username" name="contact" v-bind:value="manager.username">
                                     <label class="radio-label" v-bind:for="manager.username" v-on:click="selectManager(manager)">{{manager.name}} {{manager.surname}}</label>
                                 </div>
@@ -430,13 +433,29 @@ Vue.component("new-restaurant", {
             this.mode = '';
             document.getElementById('newRestaurantModal').style.backgroundColor = "rgb(44,53,63)"
 
-            axios
-                .get("/user/getAllFreeManagers")
-                .then(response => {
-                    if (response.data != null) {
-                        this.managers = response.data;
+        },
+        searchManager: function() {
+            if (this.searchText != '' && this.searchText.trim().lenght != 0) {
+
+                let searchParts = this.searchText.trim().split(' ');
+
+                this.searchResults = [];
+                for (manager of this.managers) {
+                    let matches = true;
+                    for (let i = 0; i < searchParts.length; i++) {
+                        if (!manager.name.toUpperCase().includes(searchParts[i].toUpperCase()) && !manager.surname.toUpperCase().includes(searchParts[i].toUpperCase())) {
+                            matches = false;
+                            break;
+                        }
                     }
-                })
+                    if (matches) {
+                        this.searchResults.push(manager);
+                    }
+                }
+
+            } else {
+                this.searchResults = this.managers;
+            }
         }
     }
 });
