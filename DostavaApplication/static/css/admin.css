@@ -137,6 +137,9 @@
     background-color: #dddddd;
     z-index: 50;
     box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.15);
+}
+
+#cart-points {
     -webkit-animation: fadein 1.5s;
     -moz-animation: fadein 1.5s;
     -ms-animation: fadein 1.5s;
