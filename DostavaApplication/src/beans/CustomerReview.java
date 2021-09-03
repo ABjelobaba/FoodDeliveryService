@@ -6,6 +6,7 @@ public class CustomerReview implements IEntity<Integer>{
 	private int restaurantID;
 	private String review;
 	private int rating;
+	private ReviewStatus status;
 	private boolean deleted;
 	
 	public CustomerReview(String customerUsername, int restaurantID, String review, int rating) {
@@ -14,6 +15,7 @@ public class CustomerReview implements IEntity<Integer>{
 		this.restaurantID = restaurantID;
 		this.review = review;
 		this.rating = rating;
+		this.status = ReviewStatus.WaitingForApproval;
 		this.deleted = false;
 	}
 
@@ -47,6 +49,14 @@ public class CustomerReview implements IEntity<Integer>{
 
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+
+	public ReviewStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ReviewStatus status) {
+		this.status = status;
 	}
 
 	public boolean isDeleted() {
