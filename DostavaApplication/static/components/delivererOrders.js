@@ -228,7 +228,7 @@ Vue.component("deliverer-orders", {
         },
         findOrder: function() {
 
-            table = document.getElementById("allOrders");
+            table = document.getElementById("orders");
             tr = table.getElementsByTagName("tr");
 
             checkboxes = document.getElementsByName("orderStatus");
