@@ -86,7 +86,7 @@ Vue.component("suspicious-users", {
                     <td>{{user.username}}</td>
                     <td>{{user.totalPoints}}</td>
                     <td>
-                        <button class="black-btn" v-if="user.role=='Administrator' || user.blocked"  disabled ><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
+                        <button class="black-btn" v-if="user.blocked" v-on:click="askToUnblock(user)"><i class="fa fa-unlock" aria-hidden="true"></i> Odblokiraj</button>
                         <button class="black-btn" v-else v-on:click="askToBlock(user)"><i class="fa fa-ban" aria-hidden="true"></i> Blokiraj</button>
                     </td>
                 </tr>
@@ -149,7 +149,11 @@ Vue.component("suspicious-users", {
                 this.deleteUser();
             } else if (receivedAnswer == 'yes' && this.mode == 'block') {
                 this.mode = '';
-                this.blockUser();
+                if (this.selectedUser.blocked) {
+                    this.unblockUser();
+                } else {
+                    this.blockUser();
+                }
             } else {
                 this.selectedUser = '';
             }
@@ -168,6 +172,17 @@ Vue.component("suspicious-users", {
         blockUser: function(user) {
             axios
                 .put("user/" + this.selectedUser.username)
+                .then(response => {
+                    if (response.data != null) {
+                        this.users = response.data;
+                        this.searchResults = response.data;
+                    }
+
+                })
+        },
+        unblockUser: function(user) {
+            axios
+                .put("user/unblock/" + this.selectedUser.username)
                 .then(response => {
                     if (response.data != null) {
                         this.users = response.data;
