@@ -392,9 +392,10 @@ function timeSort(a, b, reverse) {
         retVal = false;
     }
 
-    if (reverse) {
+    if (reverse && Number(aTime) != Number(bTime)) {
         retVal = !retVal;
     }
+
     return retVal;
 }
 
@@ -406,7 +407,7 @@ function dateSort(a, b, reverse) {
         retVal = false;
     }
 
-    if (reverse) {
+    if (reverse && Number(Date.parse(a.innerHTML)) != Number(Date.parse(b.innerHTML))) {
         retVal = !retVal;
     }
     return retVal;
@@ -422,7 +423,7 @@ function customerSort(a, b, reverse) {
         retVal = false;
     }
 
-    if (reverse) {
+    if (reverse && aText.localeCompare(bText) != 0) {
         retVal = !retVal;
     }
     return retVal;
@@ -438,7 +439,7 @@ function restaurantSort(a, b, reverse) {
         retVal = false;
     }
 
-    if (reverse) {
+    if (reverse && aText.localeCompare(bText) != 0) {
         retVal = !retVal;
     }
     return retVal;
@@ -446,15 +447,15 @@ function restaurantSort(a, b, reverse) {
 
 function priceSort(a, b, reverse) {
     var retVal;
-    var aText = a.innerHTML.slice(0, 3);
-    var bText = b.innerHTML.slice(0, 3);
-    if (Number(aText) < Number(bText)) {
+    var aText = a.innerHTML.slice(0, -7);
+    var bText = b.innerHTML.slice(0, -7);
+    if (parseInt(aText) < parseInt(bText)) {
         retVal = true;
     } else {
         retVal = false;
     }
 
-    if (reverse) {
+    if (reverse && parseInt(aText) != parseInt(bText)) {
         retVal = !retVal;
     }
     return retVal;
@@ -470,7 +471,7 @@ function statusSort(a, b, reverse) {
         retVal = false;
     }
 
-    if (reverse) {
+    if (reverse && aText.localeCompare(bText) != 0) {
         retVal = !retVal;
     }
     return retVal;
