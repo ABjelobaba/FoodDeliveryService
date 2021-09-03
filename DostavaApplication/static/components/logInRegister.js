@@ -109,9 +109,9 @@ Vue.component("logIn-register", {
 
             let error = false;
 
-            var today = Number(Date.now);
+            var today = Number(new Date());
             var minDate = Number(new Date(1896, 1, 1, 0, 0, 0, 0));
-            var date = Number(Date(this.dateOfBirth));
+            var date = Number(new Date(this.dateOfBirth));
             if (minDate <= date && date <= today) {
                 //Do nothing
             } else {

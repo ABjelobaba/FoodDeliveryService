@@ -112,7 +112,7 @@ Vue.component("admin-users", {
         </table>
     </div>
 
-    <new-user v-if="mode == 'newUser'" v-on:closeRegistration="newUserClose"></new-user>
+    <new-user v-if="mode == 'newUser'" v-on:newUserRegistered="newUserRegistered"></new-user>
     <success></success>
     <question :question="question" v-on:answer="answer"></question>
     
@@ -150,6 +150,10 @@ Vue.component("admin-users", {
         },
         newUserClicked: function(event) {
             this.mode = 'newUser';
+        },
+        newUserRegistered: function(user) {
+            this.users.push(user);
+            this.newUserClose();
         },
         newUserClose: function(event) {
             this.role = 'Odaberite ulogu korisnika..';
