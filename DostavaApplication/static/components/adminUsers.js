@@ -224,7 +224,9 @@ Vue.component("admin-users", {
                 for (user of this.users) {
                     let matches = true;
                     for (let i = 0; i < searchParts.length; i++) {
-                        if (!user.name.includes(searchParts[i]) && !user.surname.includes(searchParts[i]) && !user.username.includes(searchParts[i])) {
+                        if (!user.name.toLocaleLowerCase().includes(searchParts[i].toLocaleLowerCase()) &&
+                            !user.surname.toLocaleLowerCase().includes(searchParts[i].toLocaleLowerCase()) &&
+                            !user.username.toLocaleLowerCase().includes(searchParts[i].toLocaleLowerCase())) {
                             matches = false;
                             break;
                         }
