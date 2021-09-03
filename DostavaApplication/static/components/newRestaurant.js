@@ -4,11 +4,11 @@ Vue.component("new-restaurant", {
             mode: 'dd',
             searchText: '',
             cuisines: [
-                { id: 'American', value: 'Američka' },
-                { id: 'Barbecue', value: 'Roštilj' },
-                { id: 'Chinese', value: 'Kineska' },
-                { id: 'Italian', value: 'Italijanska' },
-                { id: 'Mexican', value: 'Meksička' }
+                { id: 'AmericanFood', value: 'Američka' },
+                { id: 'BarbecueFood', value: 'Roštilj' },
+                { id: 'ChineseFood', value: 'Kineska' },
+                { id: 'ItalianFood', value: 'Italijanska' },
+                { id: 'MexicanFood', value: 'Meksička' }
             ],
             managers: null,
             restaurantName: '',
@@ -290,15 +290,15 @@ Vue.component("new-restaurant", {
                     errors = true;
                 }
                 
-                if (document.getElementById('Italian').checked) {
+                if (document.getElementById('ItalianFood').checked) {
                     this.restaurantType = 'Italian';
-                } else if (document.getElementById('Chinese').checked) {
+                } else if (document.getElementById('ChineseFood').checked) {
                     this.restaurantType = 'Chinese';
-                } else if (document.getElementById('Barbecue').checked) {
+                } else if (document.getElementById('BarbecueFood').checked) {
                     this.restaurantType = 'Barbecue';
-                } else if (document.getElementById('Mexican').checked) {
+                } else if (document.getElementById('MexicanFood').checked) {
                     this.restaurantType = 'Mexican';
-                } else if (document.getElementById('American').checked) {
+                } else if (document.getElementById('AmericanFood').checked) {
                     this.restaurantType = 'American';
                 } else {
                     document.getElementById('restaurantTypeErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate selektovati tip hrane!';
