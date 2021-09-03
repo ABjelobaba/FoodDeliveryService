@@ -30,6 +30,7 @@ const router = new VueRouter({
                 { path: 'profile', component: Profile },
                 { path: 'users', component: AdminUsers },
                 { path: 'orders', component: UserOrders },
+                { path: 'rOrders', component: UserOrders },
                 { path: 'allOrders', component: DelivererOrders },
                 { path: 'availableOrders', component: AvailableOrders },
                 { path: 'suspiciousUsers', component: SuspiciousUsers },

@@ -94,7 +94,9 @@ Vue.component("shopping-cart", {
             .then(response => {
                 if (response.data != null) {
                     this.loggedInUser = response.data;
-                    this.deliveryAddress = this.loggedInUser.deliveryAddress;
+                    if (this.deliveryAddress == '') {
+                        this.deliveryAddress = this.loggedInUser.deliveryAddress;
+                    }
                     var points = document.querySelector('#cart-points');
                     if (this.loggedInUser.category.type == 'Gold') {
                         points.style.backgroundColor = 'gold';
@@ -172,8 +174,7 @@ Vue.component("shopping-cart", {
                     .post('/order/create', JSON.stringify(this.deliveryAddress))
                     .then(response => {
                         if (response.data != null && response.data != "") {
-                            window.location.href = "#/account/orders";
-                            window.location.reload(true);
+                            window.location.href = "#/account/rOrders";
                         }
                     })
 

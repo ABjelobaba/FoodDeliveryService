@@ -35,6 +35,13 @@ Vue.component("account", {
             document.getElementById('profile').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('orders')) {
             document.getElementById('orders').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+        } else if (window.location.href.endsWith('rOrders')) {
+            this.deliveryAddress = '';
+            this.cart.orderedItems = [];
+            window.location.href = "#/account/orders";
+            document.querySelector('#user-nav-ul').style.marginTop = '0';
+            document.querySelector('#user-nav-ul-second').style.marginTop = '0';
+            document.querySelector('#user-nav-ul-second').style.margin = '80px 7% 20px 0';
         } else if (window.location.href.endsWith('restaurants')) {
             document.getElementById('restaurants').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         } else if (window.location.href.endsWith('availableOrders')) {
@@ -52,6 +59,8 @@ Vue.component("account", {
         } else if (window.location.href.endsWith('customers')) {
             document.getElementById('restaurant-customer-list').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
         }
+
+
 
         if (document.getElementById('accountAddress') != null) {
             if (document.getElementById('cartAddress') != null)
@@ -74,7 +83,7 @@ Vue.component("account", {
                     </div>
                 </div>
             </div>
-            <nav class="user-nav">
+            <nav class="user-nav" style="align-items:flex-end;">
                 <ul id="user-nav-ul" v-if="deliveryAddress=='' || deliveryAddress==undefined">
                     <li><a v-on:click="profileView" name="user-nav" id="profile">Profil</a></li>
                     <li v-if="loggedInUser.role == 'Administrator'"><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
