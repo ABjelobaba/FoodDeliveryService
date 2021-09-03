@@ -52,6 +52,7 @@
     background-color: #3F2C3F;
     color: white;
     transition: 0.5s;
+    cursor: pointer;
 }
 
 .order-delivered-btn {
