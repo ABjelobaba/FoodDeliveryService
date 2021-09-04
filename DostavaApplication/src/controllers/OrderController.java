@@ -32,6 +32,7 @@ public class OrderController {
                 Customer customer = session.attribute("user");
                 Order order = orderService.createOrder(cart, gs.fromJson(req.body(), String.class));
 				customer = orderService.addOrder(customer,order);
+				customer = orderService.calculatePoints(customer,cart);
                 session.attribute("cart", new ShoppingCart(customer.getUsername()));
                 session.attribute("user", customer);
 				session.attribute("address","");

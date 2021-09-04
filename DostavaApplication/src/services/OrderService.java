@@ -15,6 +15,7 @@ import beans.CustomerType;
 import beans.Deliverer;
 import beans.Order;
 import beans.OrderStatus;
+import beans.OrderedItem;
 import beans.Role;
 import beans.ShoppingCart;
 import beans.User;
@@ -22,7 +23,9 @@ import dao.UserDAO;
 import dto.OrderRequestDTO;
 
 public class OrderService {
-    private UserDAO userDAO;
+ 
+	private static final int DELIVERY_FEE = 200;
+	private UserDAO userDAO;
 	
 	public OrderService(UserDAO userDAO) {
 		this.userDAO = userDAO;
@@ -43,7 +46,7 @@ public class OrderService {
     public Order createOrder(ShoppingCart cart, String string) throws JsonSyntaxException, IOException {
 		User user = userDAO.getByID(cart.getCustomerUsername());
         Order order = new Order(cart.getOrderedItems(), cart.getRestaurantID(), new Date(), 
-							cart.getPriceWithDiscount() + 200, user.getName(), user.getSurname(), user.getUsername(), 
+							cart.getPriceWithDiscount() + DELIVERY_FEE, user.getName(), user.getSurname(), user.getUsername(), 
 							OrderStatus.Processing,string);
 		order.setID(generateID());
 		return order;
@@ -52,16 +55,17 @@ public class OrderService {
 	
 	public Customer addOrder(Customer customer, Order order) throws JsonSyntaxException, IOException {
 		customer.getAllOrders().add(order);
-		int totalPoints = customer.getTotalPoints();
-		int newTotalPoints =totalPoints + calculateNewPoints(order);
-		customer.setTotalPoints((int)newTotalPoints);
-		customer.setCategory(getCustomerCategory((int)newTotalPoints));
 		userDAO.update(customer);
 		return customer;
 	}
 
-	private int calculateNewPoints(Order order){
-		return (int) (order.getPrice()/1000*133);
+	public Customer calculatePoints(Customer customer,ShoppingCart cart) throws JsonSyntaxException, IOException{
+		int totalPoints = customer.getTotalPoints();
+		int newTotalPoints =totalPoints + (int)cart.getPoints();
+		customer.setTotalPoints((int)newTotalPoints);
+		customer.setCategory(getCustomerCategory((int)newTotalPoints));
+		userDAO.update(customer);
+		return customer;
 	}
 
 	private CustomerCategory getCustomerCategory(int points){
@@ -94,8 +98,10 @@ public class OrderService {
 	}
 
     public Customer cancelledOrderPoints(Customer customer, String orderID) throws JsonSyntaxException, IOException {
-		double price = getByID(customer, orderID).getPrice();
-		int lostPoints = (int) (price/1000*133*4);
+		Order order = getByID(customer, orderID);
+		double originalPrice = getOrderPrice(order);
+		double neki = originalPrice/1000*133*4;
+		int lostPoints = (int) (originalPrice/1000*133*4);
 		int remainingPoints = (int)(customer.getTotalPoints() - lostPoints);
 		if(remainingPoints < 0){
 			customer.setTotalPoints(0);
@@ -105,6 +111,14 @@ public class OrderService {
 		userDAO.update(customer);
 		return customer;
     }
+
+	private double getOrderPrice(Order order){
+		double sum = 0;
+		for(OrderedItem oi : order.getOrderedItems()){
+			sum += oi.getAmount()*oi.getItem().getPrice();
+		}
+		return sum;
+	}
 
 	public List<Order> getWaitingDeliveryOrders(Deliverer deliverer) throws JsonSyntaxException, IOException {
 		List<Order> waitingDeliveryOrders = new ArrayList<Order>();

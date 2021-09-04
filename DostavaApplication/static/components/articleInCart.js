@@ -6,7 +6,7 @@ Vue.component("article-in-cart", {
 	        <h2> <span class="food-quantity"> {{article.amount}} x</span> {{article.item.name}}</h2>
 	        <h3> {{article.item.price}},00 RSD </h3>
 	    </div>
-	    <img class="food-img" src="images/burger.jpg" alt="Food">
+	    <img class="food-img" v-bind:src="article.item.image" alt="Food">
 	    <div class="remove-item-from-cart" v-on:click="deleteItem">  <h4>+</h4> </div>
 	
 	    <div class="change-quantity">
@@ -17,22 +17,22 @@ Vue.component("article-in-cart", {
 	`,
     methods: {
         addItem: function() {
-            this.article.amount = this.article.amount + 1;
             axios
                 .post('/cart/increaseQuantity', JSON.stringify(this.article))
                 .then(response => {
                     if (response.data != null && response.data != "") {
+                        this.article.amount = this.article.amount + 1;
                         this.$emit('updateCart', response.data);
                     }
                 })
         },
         removeItem: function() {
             if (this.article.amount != 1) {
-                this.article.amount = this.article.amount - 1;
                 axios
                     .post('/cart/decreaseQuantity', JSON.stringify(this.article))
                     .then(response => {
                         if (response.data != null && response.data != "") {
+                            this.article.amount = this.article.amount - 1;
                             this.$emit('updateCart', response.data);
                         }
                     })

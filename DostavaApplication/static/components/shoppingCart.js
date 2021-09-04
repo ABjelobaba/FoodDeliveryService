@@ -183,7 +183,9 @@ Vue.component("shopping-cart", {
 
         },
         updateCart: function(cart) {
-            this.cart = cart;
+            this.cart.totalPrice = cart.totalPrice;
+            this.cart.priceWithDiscount = cart.priceWithDiscount;
+            this.cart.points = cart.points;
         }
     }
 })

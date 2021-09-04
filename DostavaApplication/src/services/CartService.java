@@ -83,7 +83,7 @@ public class CartService {
     }
 
     public ShoppingCart calculatePoints(ShoppingCart cart) {
-		double newPoints = (cart.getTotalPrice()+200)/1000*133;
+		double newPoints = cart.getTotalPrice()/1000*133;
 		cart.setPoints((int)newPoints);
 		return cart;
     }
