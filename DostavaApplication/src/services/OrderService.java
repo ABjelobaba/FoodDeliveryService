@@ -16,6 +16,7 @@ import beans.OrderStatus;
 import beans.Role;
 import beans.ShoppingCart;
 import beans.User;
+import beans.DeliveryRequest;
 import dao.UserDAO;
 import dto.OrderRequestDTO;
 
@@ -112,8 +113,8 @@ public class OrderService {
 
 	private boolean isAlreadyRequested(Order order, Deliverer deliverer){
 		boolean isRequested = false;
-		for(Deliverer orderDeliverer: order.getDeliveryRequests()){
-			if(orderDeliverer.isEqual(deliverer.getID())){
+		for(DeliveryRequest deliveryRequest: order.getDeliveryRequests()){
+			if(deliveryRequest.getDeliverer().isEqual(deliverer.getID())){
 				isRequested = true;
 				break;
 			}
@@ -166,7 +167,7 @@ public class OrderService {
 		User user = userDAO.getByID(orderRequestDTO.getUsername());
 		for(Order customerOrder: ((Customer)user).getAllOrders()){
 			if(customerOrder.isEqual(orderRequestDTO.getOrderID())){
-				customerOrder.getDeliveryRequests().add(deliverer);
+				customerOrder.getDeliveryRequests().add(new DeliveryRequest(deliverer));
 				userDAO.update(user);
 				break;
 			}

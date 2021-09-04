@@ -16,7 +16,7 @@ public class Order implements IEntity<String>{
 	private OrderStatus status;
 	private boolean deleted;
 	private String address;
-	private List<Deliverer> deliveryRequests;
+	private List<DeliveryRequest> deliveryRequests;
 	
 	public Order(List<OrderedItem> orderedItems, int restaurantID, Date orderDate, double price,
 			String customerName, String customerSurname, String customerUsername, OrderStatus status, 
@@ -32,7 +32,7 @@ public class Order implements IEntity<String>{
 		this.status = status;
 		this.deleted = false;
 		this.address = address;
-		this.deliveryRequests = new ArrayList<Deliverer>();
+		this.deliveryRequests = new ArrayList<DeliveryRequest>();
 	}
 
 
@@ -130,11 +130,11 @@ public class Order implements IEntity<String>{
 		this.address = address;
 	}
 
-	public List<Deliverer> getDeliveryRequests() {
+	public List<DeliveryRequest> getDeliveryRequests() {
 		return deliveryRequests;
 	}
 
-	public void setDeliveryRequests(List<Deliverer> deliveryRequests) {
+	public void setDeliveryRequests(List<DeliveryRequest> deliveryRequests) {
 		this.deliveryRequests = deliveryRequests;
 	}
 
