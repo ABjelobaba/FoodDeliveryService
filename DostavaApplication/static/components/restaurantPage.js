@@ -162,7 +162,9 @@ Vue.component("restaurant-page", {
             <div class="restaurant-reviews-rp">
                 <h1>Utisci</h1>
                 <ul class="user-reviews-list-rp">
-                    <comment-status v-for="c in comments" v-bind:key="c.id" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role"></comment-status>
+                    <comment-status v-for="c in comments" 
+                            v-if="(loggedInUser.role != 'Administrator' && loggedInUser.role != 'Manager' && c.status == 'Approved') || loggedInUser.role == 'Administrator' || loggedInUser.role == 'Manager'"
+                            v-bind:key="c.reviewID" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role"></comment-status>
                 </ul>
                 <h6 id="allReviews">Svi utisci... </h6>
             </div>

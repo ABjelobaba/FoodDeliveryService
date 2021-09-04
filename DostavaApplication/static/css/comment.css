@@ -36,24 +36,24 @@
 }
 
 .comment-status-button[name="red"] {
-    background-color: red;
+    background-color: #7F2020;
     border-radius: 0 1em 0 0em;
 }
 
 .comment-status-button[name="red"]:hover {
     background-color: rgba(44, 53, 63);
-    color: red;
+    color: #C62121;
     cursor: pointer;
 }
 
 .comment-status-button[name="green"] {
-    background-color: green;
+    background-color: #305013;
     border-radius: 0em 0em 1em 0em;
 }
 
 .comment-status-button[name="green"]:hover {
     background-color: rgba(44, 53, 63);
-    color: green;
+    color: #1D8F1F;
     cursor: pointer;
 }
 

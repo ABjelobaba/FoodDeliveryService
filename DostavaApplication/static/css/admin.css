@@ -339,7 +339,7 @@
 }
 
 .comment-delete:hover {
-    color: red;
+    color: #C62121;
     cursor: pointer;
     transition: 0.2s;
 }
