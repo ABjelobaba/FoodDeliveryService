@@ -10,6 +10,7 @@ import beans.Location;
 import beans.Restaurant;
 import dto.FoodItemDTO;
 import dto.RestaurantDTO;
+import utils.StringToImageDecoder;
 import dao.RestaurantDAO;
 
 public class RestaurantService {
@@ -29,15 +30,18 @@ public class RestaurantService {
 	}
 	
 	public Restaurant createRestaurant(RestaurantDTO newRestaurantForm) throws JsonSyntaxException, IOException {
+		StringToImageDecoder decoder = new StringToImageDecoder();
 		Location location = new Location(newRestaurantForm.getLongitude(), newRestaurantForm.getLatitude(), 
 				new Address(newRestaurantForm.getStreetAddress(), newRestaurantForm.getCity(), 
 						newRestaurantForm.getZipCode()));
 		Restaurant newRestaurant =  new Restaurant(newRestaurantForm.getName(), newRestaurantForm.getType(), 
-				null, true, location, newRestaurantForm.getLogo());
-		
-		//TODO: assign restaurant to manager
+				null, true, location, "");
 		
 		newRestaurant.setID(restaurantDAO.generateID());
+		
+		String logoLocation = "./images/" + newRestaurant.getName() + newRestaurant.getID() + ".jpg";
+		decoder.decodeBase64ToImage(newRestaurantForm.getLogo(), "./static/" + logoLocation.substring(2));
+		newRestaurant.setLogo(logoLocation);
 		
 		return restaurantDAO.save(newRestaurant);
 		

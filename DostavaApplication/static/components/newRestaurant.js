@@ -218,7 +218,7 @@ Vue.component("new-restaurant", {
                             this.city.value = json[0].address.city.substring(5);
                         } else if (this.city.value.startsWith('Opština')) {
                             this.city.value = json[0].address.city.substring(8);
-                        } else if (this.city.startsWith('Gradska opština')) {
+                        } else if (this.city.value.startsWith('Gradska opština')) {
                             this.city.value = json[0].address.city.substring(16);
                         }
 
@@ -258,8 +258,10 @@ Vue.component("new-restaurant", {
                 previewDefaultText.style.display = "none";
                 previewImage.style.display = "block";
 
+                let ref = this;
                 reader.addEventListener("load", function() {
                     previewImage.setAttribute("src", this.result);
+                    ref.restaurantLogo = this.result;
                 });
 
                 reader.readAsDataURL(file);
