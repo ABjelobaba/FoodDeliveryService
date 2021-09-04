@@ -14,7 +14,7 @@ import services.CartService;
 import spark.Session;
 
 public class CartController {
-	private static Gson gs = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+	private static Gson gs = new GsonBuilder().setDateFormat("dd MM yyyy").create();
 
     public CartController(CartService cartService){
 
@@ -33,6 +33,7 @@ public class CartController {
                 ShoppingCart cart = session.attribute("cart");
                 cart = cartService.addArticle(cart, gs.fromJson(req.body(), CartItemDTO.class));
                 cart = cartService.calculatePoints(cart);
+				cart = cartService.calculateDiscount(cart);
 				session.attribute("cart", cart);
 				return gs.toJson(cart);
 			} catch (Exception e) {
@@ -49,6 +50,7 @@ public class CartController {
                 ShoppingCart cart = session.attribute("cart");
                 cart = cartService.increaseQuantity(cart,gs.fromJson(req.body(), OrderedItem.class));
                 cart = cartService.calculatePoints(cart);
+				cart = cartService.calculateDiscount(cart);
 				session.attribute("cart", cart);
 				return gs.toJson(cart);
 			} catch (Exception e) {
@@ -65,6 +67,7 @@ public class CartController {
                 ShoppingCart cart = session.attribute("cart");
                 cart = cartService.decreaseQuantity(cart,gs.fromJson(req.body(), OrderedItem.class));
                 cart = cartService.calculatePoints(cart);
+				cart = cartService.calculateDiscount(cart);
 				session.attribute("cart", cart);
 				return gs.toJson(cart);
 			} catch (Exception e) {
@@ -81,6 +84,7 @@ public class CartController {
                 ShoppingCart cart = session.attribute("cart");
                 cart = cartService.deleteItem(cart,gs.fromJson(req.body(), OrderedItem.class));
                 cart = cartService.calculatePoints(cart);
+				cart = cartService.calculateDiscount(cart);
 				session.attribute("cart", cart);
 				return gs.toJson(cart);
 			} catch (Exception e) {

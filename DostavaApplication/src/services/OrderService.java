@@ -10,6 +10,8 @@ import com.google.gson.JsonSyntaxException;
 import java.util.List;
 
 import beans.Customer;
+import beans.CustomerCategory;
+import beans.CustomerType;
 import beans.Deliverer;
 import beans.Order;
 import beans.OrderStatus;
@@ -41,7 +43,7 @@ public class OrderService {
     public Order createOrder(ShoppingCart cart, String string) throws JsonSyntaxException, IOException {
 		User user = userDAO.getByID(cart.getCustomerUsername());
         Order order = new Order(cart.getOrderedItems(), cart.getRestaurantID(), new Date(), 
-							cart.getTotalPrice() + 200, user.getName(), user.getSurname(), user.getUsername(), 
+							cart.getPriceWithDiscount() + 200, user.getName(), user.getSurname(), user.getUsername(), 
 							OrderStatus.Processing,string);
 		order.setID(generateID());
 		return order;
@@ -51,13 +53,27 @@ public class OrderService {
 	public Customer addOrder(Customer customer, Order order) throws JsonSyntaxException, IOException {
 		customer.getAllOrders().add(order);
 		int totalPoints = customer.getTotalPoints();
-		customer.setTotalPoints((int)(totalPoints + newPoints(order)));
+		int newTotalPoints =totalPoints + calculateNewPoints(order);
+		customer.setTotalPoints((int)newTotalPoints);
+		customer.setCategory(getCustomerCategory((int)newTotalPoints));
 		userDAO.update(customer);
 		return customer;
 	}
 
-	private int newPoints(Order order){
+	private int calculateNewPoints(Order order){
 		return (int) (order.getPrice()/1000*133);
+	}
+
+	private CustomerCategory getCustomerCategory(int points){
+		CustomerCategory category;
+		if(points <= 2000){
+			category = new CustomerCategory(CustomerType.Bronze, 0, 0);
+		}else if(points <= 5000){
+			category = new CustomerCategory(CustomerType.Silver, 2, 2000);
+		}else{
+			category = new CustomerCategory(CustomerType.Gold, 5, 5000);
+		}
+		return category;
 	}
 
     public void cancelOrder(Customer customer, String orderID) throws JsonSyntaxException, IOException {

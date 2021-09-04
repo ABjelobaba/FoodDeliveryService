@@ -1,12 +1,18 @@
 package services;
 
+import java.io.IOException;
+
+import com.google.gson.JsonSyntaxException;
+
 import beans.*;
+import dao.UserDAO;
 import dto.CartItemDTO;
 
 public class CartService {
-    
+    private UserDAO userDAO;
 	
-	public CartService() {
+	public CartService(UserDAO userDAO) {
+        this.userDAO = userDAO;
 	}
     
     public ShoppingCart addArticle(ShoppingCart cart, CartItemDTO cartItemDTO) {
@@ -24,8 +30,15 @@ public class CartService {
 
         OrderedItem orderItem = new OrderedItem(cartItemDTO.getItem(), cartItemDTO.getQuantity());
         cart.getOrderedItems().add(orderItem);
-        cart.setTotalPrice(cart.getTotalPrice() + orderItem.getAmount()*orderItem.getItem().getPrice());
+        double cartPrice = cart.getTotalPrice() + orderItem.getAmount()*orderItem.getItem().getPrice();
+        cart.setTotalPrice(cartPrice);
+        return cart;
+    }
 
+    public ShoppingCart calculateDiscount(ShoppingCart cart) throws JsonSyntaxException, IOException{
+        Customer customer = (Customer) userDAO.getByID(cart.getCustomerUsername());
+        int discount = (int)cart.getTotalPrice() * customer.getCategory().getDiscount() / 100;
+        cart.setPriceWithDiscount(cart.getTotalPrice() - discount);
         return cart;
     }
 

@@ -54,8 +54,8 @@ Vue.component("shopping-cart", {
 						<h3 class="delivery-text">200,00 RSD </h3>
 					</div>
 					<div >
-						<h3>Ukupna cena artikala</h3>
-						<h3 class="total-price-value">{{cart.totalPrice + 200}},00 RSD </h3>
+						<h3>Ukupna cena porudžbine</h3>
+						<h3 class="total-price-value">{{cart.priceWithDiscount + 200}},00 RSD </h3>
 					</div>
 						
 					<a class="continue-with-order-btn" v-on:click="createOrder">Završi narudžbinu</a>
@@ -73,8 +73,8 @@ Vue.component("shopping-cart", {
 						<h3 class="delivery-text">200,00 RSD </h3>
 					</div>
 					<div >
-						<h3>Ukupna cena artikala</h3>
-						<h3 class="total-price-value">{{cart.totalPrice + 200}},00 RSD </h3>
+						<h3>Ukupna cena porudžbine</h3>
+						<h3 class="total-price-value">{{cart.priceWithDiscount + 200}},00 RSD </h3>
 					</div>
 						
 					<a class="continue-with-order-btn" v-on:click="createOrder">Završi narudžbinu</a>
