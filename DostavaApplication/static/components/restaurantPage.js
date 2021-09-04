@@ -177,7 +177,7 @@ Vue.component("restaurant-page", {
         <div class="selected-item-rp">
             <div class="item-img-av-rp">
                 <img v-bind:src="selectedArticle.image" alt="Food">
-                <a href="#" class="close-window-btn-rp" v-on:click="closeArticle">+</a>
+                <a class="close-window-btn-rp" v-on:click="closeArticle">+</a>
             </div>
             <div class="title-price-rp">
                 <h2>{{selectedArticle.name}}</h2>

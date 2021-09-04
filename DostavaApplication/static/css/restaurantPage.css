@@ -300,12 +300,13 @@
 .close-window-btn-rp {
     text-decoration: none;
     font-size: 2em;
-    transform: rotate(-45deg);
+    transform: rotate(45deg);
     color: white;
     float: right;
     font-weight: bold;
     margin-top: -20px;
     margin-right: -5px;
+    cursor: pointer;
 }
 
 .title-price-rp {
