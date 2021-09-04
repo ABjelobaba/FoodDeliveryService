@@ -141,4 +141,20 @@ public class UserService {
 		userDAO.update(blockedUser);
     }
 
+	public List<Customer> getAllRestaurantCustomers(int restaurantID) throws JsonSyntaxException, IOException {
+		List<Customer> restaurantCustomers = new ArrayList<Customer>();
+
+		for(User user: userDAO.getAll()){
+			if(user.getRole() == Role.Customer){
+				for(Order order: ((Customer)user).getAllOrders()){
+					if(order.getRestaurantID() == restaurantID){
+						restaurantCustomers.add((Customer)user);
+						break;
+					}
+				}
+			}
+		}
+		return restaurantCustomers;
+	}
+
 }
