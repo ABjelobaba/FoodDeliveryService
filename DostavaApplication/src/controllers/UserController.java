@@ -14,6 +14,8 @@ import static spark.Spark.get;
 import static spark.Spark.delete;
 import static spark.Spark.put;
 
+import java.util.List;
+
 
 public class UserController {
 	private static Gson gs = createGson();
@@ -201,6 +203,18 @@ public class UserController {
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
+			}
+		});
+
+		get("/user/getAllRestaurantCustomers/:restaurantID", (req, res) -> {
+			res.type("application/json");
+			
+			try {
+				List<Customer> restaurantCustomers = userService.getAllRestaurantCustomers(Integer.parseInt(req.params("restaurantID")));
+				return gs.toJson(restaurantCustomers);
+			} catch(Exception e) {
+				e.printStackTrace();
+				return "";
 			}
 		});
 	}
