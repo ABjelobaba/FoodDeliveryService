@@ -1,7 +1,9 @@
 package controllers;
 
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.put;
 
 import com.google.gson.Gson;
 
@@ -32,6 +34,45 @@ public class CustomerReviewController {
 		get("/reviews/:id", (req, res) -> {
 			res.type("application/json");
 			return gs.toJson(reviewService.getAllByRestaurant(Integer.parseInt(req.params("id"))));
+		});
+		
+		put("/reviews/reject/:id", (req, res) -> {
+			res.type("application/json");
+			
+			try {
+				reviewService.rejectReview(Integer.parseInt(req.params("id")));
+
+				return "ok";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+		
+		put("/reviews/approve/:id", (req, res) -> {
+			res.type("application/json");
+			
+			try {
+				reviewService.approveReview(Integer.parseInt(req.params("id")));
+
+				return "ok";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+		
+		delete("/reviews/:id", (req, res) -> {
+			res.type("application/json"); 
+
+			try {
+				reviewService.deleteReview(Integer.parseInt(req.params("id")));
+				
+				return "ok";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 		});
 	}
 }

@@ -30,7 +30,8 @@ Vue.component("restaurant-page", {
             articleImage: null,
             selectedArticle: undefined,
             selectedArticleQuantity: 1,
-            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 }
+            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 },
+            areThereVisibleComments: ''
         }
     },
     created: function() {
@@ -162,11 +163,13 @@ Vue.component("restaurant-page", {
             <div class="restaurant-reviews-rp">
                 <h1>Utisci</h1>
                 <ul class="user-reviews-list-rp">
-                    <comment-status v-for="c in comments" 
+                    <comment-status v-for="c in comments" v-on:updateComments="updateComments"
                             v-if="(loggedInUser.role != 'Administrator' && loggedInUser.role != 'Manager' && c.status == 'Approved') || loggedInUser.role == 'Administrator' || loggedInUser.role == 'Manager'"
                             v-bind:key="c.reviewID" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role"></comment-status>
+                    
+                    <h3 v-if="areThereVisibleComments == false"  style="text-align:center; font-size: 1.5em; padding-bottom: 1.7em;" >Niko nije ostavio utiske</h3>
                 </ul>
-                <h6 id="allReviews">Svi utisci... </h6>
+                <h6 v-if="areThereVisibleComments == true" id="allReviews">Svi utisci... </h6>
             </div>
         </div>
     </div>
@@ -264,10 +267,7 @@ Vue.component("restaurant-page", {
             this.latitude = response.data.location.latitude;
         })
 
-        axios.get('/reviews/' + this.$route.query.id).then(response => {
-            this.comments = response.data;
-            
-        })
+        this.updateComments();
 
         function createNavMenu() {
             if (window.location.href.endsWith('restaurant?id=' + id)) {
@@ -432,6 +432,29 @@ Vue.component("restaurant-page", {
         },
         openCart: function() {
             window.location.href = '#/account/cart';
+        },
+        checkVisibleComments() {
+            this.areThereVisibleComments = false;
+            if (this.comments.length != 0) {
+                for (comment of this.comments) {
+                    if (this.loggedInUser != 'Manager' && this.loggedInUser != 'Administrator') {
+                        if (comment.status == 'Approved') {
+                            this.areThereVisibleComments = true;
+                            break;
+                        }
+                    }
+                    else {
+                        this.areThereVisibleComments = true;
+                    }
+                }
+            }
+        },
+        updateComments: function() {
+            axios.get('/reviews/' + this.$route.query.id).then(response => {
+                this.comments = response.data;
+                
+                this.checkVisibleComments();
+            })
         }
     }
 });

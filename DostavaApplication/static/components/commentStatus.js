@@ -30,11 +30,21 @@ Vue.component("comment-status", {
                 <h5>- {{customer.name}}</h5>
             </div>
             <div class="comment-status-container" v-bind:name="comment.reviewID" v-if="loggedInRole == 'Administrator' || loggedInRole == 'Manager'">
+
+                <div v-if="loggedInRole == 'Manager' && comment.status == 'WaitingForApproval'" class="comment-status-button" name="red" v-on:click="rejectComment">
+                    <i class="fa fa-ban fa-2x" aria-hidden="true"></i>
+                </div>
+                <div v-if="loggedInRole == 'Manager' && comment.status == 'WaitingForApproval'" class="comment-status-button" name="green" v-on:click="approveComment">
+                    <i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i>
+                </div>
                 
             </div>
             <div v-bind:name="comment.reviewID" class="comment-delete" v-if="loggedInRole == 'Administrator'" v-on:click="deleteComment">
                 <div class="comment-status"><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></div>    
             </div>
+
+        
+
         </li>
              `,
     mounted() {
@@ -59,12 +69,6 @@ Vue.component("comment-status", {
                         '<i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>' +
                         '<div class="comment-status" style="background-color: transparent;border-radius: 0em 0em 1em 0em;border-left:1px solid rgba(44,53,63,1)">' +
                         '<i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
-                } else if (this.loggedInRole == 'Manager') {
-                    document.getElementsByName(this.comment.reviewID)[0].innerHTML =
-                        '<div class="comment-status-button" name="red" v-on:click="cancelComment">' +
-                        '<i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>' +
-                        '<div class="comment-status-button" name="green" v-on:click="approveComment">' +
-                        '<i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
                 }
             }
         }
@@ -72,13 +76,32 @@ Vue.component("comment-status", {
     },
 
     methods: {
-        cancelComment: function() {
-            
+        rejectComment: function() {
+            axios
+                .put("/reviews/reject/" + this.comment.reviewID)
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        document.getElementsByName(this.comment.reviewID)[0].innerHTML = '<div class="comment-status" style="background-color: #592C2C"><i class="fa fa-ban fa-2x" aria-hidden="true"></i></div>';
+                    }
+                })
         },
         approveComment: function() {
-
+            axios
+                .put("/reviews/approve/" + this.comment.reviewID)
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        document.getElementsByName(this.comment.reviewID)[0].innerHTML = '<div class="comment-status" style="background-color: #303F2C"><i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
+                    }
+                })
         },
-        deleteComment: function() {}
-
+        deleteComment: function() {
+            axios
+                .delete("/reviews/" + this.comment.reviewID)
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        this.$emit('updateComments');
+                    }
+                })
+        }
     }
 })
