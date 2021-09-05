@@ -481,7 +481,7 @@ Vue.component("restaurant-page", {
             axios
                 .put("/restaurant/updateRating/" + this.$route.query.id)
                 .then(response => {
-                    if (response.data != null && response.data != "") {
+                    if (response.data !== null && response.data !== "") {
                         this.restaurant.rating = response.data;
                         this.approvedCommentsNumber = 0;
                         for (comment of this.comments) {
