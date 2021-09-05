@@ -53,13 +53,19 @@ public class RestaurantService {
 	}
 
 	public FoodItem createFoodItem(FoodItemDTO foodItemForm) throws JsonSyntaxException, IOException {
+		StringToImageDecoder decoder = new StringToImageDecoder();
 		FoodItem newFoodItem = null;
 		Restaurant updatedRestaurant = restaurantDAO.getByID(foodItemForm.getRestaurantID());
 		ArrayList<FoodItem> restaurantArticles = getAllCurrentArticlesFromRestaurant(foodItemForm.getRestaurantID());
 		if (!doesArticleAlreadyExist(foodItemForm.getName(), foodItemForm.getRestaurantID())) {
 			newFoodItem = new FoodItem(foodItemForm.getName(), foodItemForm.getPrice(), foodItemForm.getType(),
 					foodItemForm.getRestaurantID(), foodItemForm.getQuantity(), foodItemForm.getDescription(),
-					foodItemForm.getImage());
+					"");
+			
+			String imageLocation = "./images/" + newFoodItem.getName() + newFoodItem.getRestaurantID() + ".jpg";
+			decoder.decodeBase64ToImage(foodItemForm.getImage(), "./static/" + imageLocation.substring(2));
+			newFoodItem.setImage(imageLocation);
+			System.out.print(imageLocation);
 			restaurantArticles.add(newFoodItem);
 			updatedRestaurant.setItems(restaurantArticles);
 

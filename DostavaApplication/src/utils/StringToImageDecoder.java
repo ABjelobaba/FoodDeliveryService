@@ -10,7 +10,6 @@ public class StringToImageDecoder {
 	
 	public void decodeBase64ToImage(String data, String imageLocation) throws FileNotFoundException, IOException {
 		String parts[] = data.split(",");
-		//System.out.println(parts[0]);
 		byte[] decodedData = Base64.getDecoder().decode(parts[1]);
 		
 		try (OutputStream out = new FileOutputStream(imageLocation)) {

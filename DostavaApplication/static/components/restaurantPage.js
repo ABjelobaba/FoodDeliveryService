@@ -335,7 +335,12 @@ Vue.component("restaurant-page", {
                 let reader = new FileReader();
                 previewDefaultText.style.display = "none";
                 previewImage.style.display = "block";
-                reader.addEventListener("load", function() { previewImage.setAttribute("src", this.result); });
+
+                let ref = this;
+                reader.addEventListener("load", function() { 
+                    previewImage.setAttribute("src", this.result); 
+                    ref.articleImage = this.result;
+                });
                 reader.readAsDataURL(file);
             } else {
                 previewDefaultText.style.display = null;
@@ -385,8 +390,7 @@ Vue.component("restaurant-page", {
                     restaurantID: this.restaurant.restaurantID,
                     quantity: this.articleQuantity,
                     description: this.articleDescription,
-                    image: 'images/burger.jpg'
-                        //fix 
+                    image: this.articleImage
                 }
                 axios
                     .post('/restaurant/addArticle', JSON.stringify(articleDTO))
