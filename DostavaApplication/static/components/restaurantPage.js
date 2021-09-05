@@ -456,6 +456,8 @@ Vue.component("restaurant-page", {
                 .get('/reviews/' + this.$route.query.id)
                 .then(response => {
                     this.comments = response.data;
+
+                    this.comments = this.comments.sort(function compareFn(a, b) { return b.reviewID - a.reviewID });
                     
                     this.checkVisibleComments();
                     if (isRatingChanged == true)
