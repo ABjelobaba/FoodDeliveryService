@@ -32,7 +32,13 @@ Vue.component("restaurant-page", {
             selectedArticleQuantity: 1,
             cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 },
             areThereVisibleComments: '',
-            approvedCommentsNumber: ''
+            approvedCommentsNumber: '',
+            limit: 3
+        }
+    },
+    computed: {
+        computedComment() {
+            return this.limit ? this.comments.slice(0, this.limit) : this.comments
         }
     },
     created: function() {
@@ -164,13 +170,14 @@ Vue.component("restaurant-page", {
             <div id="reviews-id" class="restaurant-reviews-rp">
                 <h1>Utisci</h1>
                 <ul class="user-reviews-list-rp">
-                    <comment-status v-for="c in comments" v-on:updateComments="updateComments"
+                    <comment-status v-for="c in computedComment" v-on:updateComments="updateComments"
                             v-if="(loggedInUser.role != 'Administrator' && loggedInUser.role != 'Manager' && c.status == 'Approved') || loggedInUser.role == 'Administrator' || loggedInUser.role == 'Manager'"
                             v-bind:key="c.reviewID" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role"></comment-status>
                     
                     <h3 v-if="areThereVisibleComments == false"  style="text-align:center; font-size: 1.5em; padding-bottom: 1.7em;" >Niko nije ostavio utiske</h3>
                 </ul>
-                <h6 v-if="areThereVisibleComments == true" id="allReviews">Svi utisci... </h6>
+                <h6 v-if="areThereVisibleComments == true && limit== 3" id="allReviews" @click="limit = null">Svi utisci... </h6>
+                <h6 v-if="areThereVisibleComments == true && limit!= 3" id="allReviews" @click="limit = 3">Smanji utiske... </h6>
             </div>
         </div>
     </div>
