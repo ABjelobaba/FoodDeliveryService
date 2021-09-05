@@ -38,7 +38,7 @@ Vue.component("restaurant-card", {
 	</div>
 	`,
     mounted() {
-		this.restaurant.rating = this.restaurant.rating.toFixed(2);
+		this.restaurant.rating = (Number(this.restaurant.rating)).toFixed(2);
 	},
 
     methods: {
