@@ -133,8 +133,8 @@ Vue.component("restaurant-page", {
                 <label class="full-radio-btn-label" style="min-width: fit-content;margin:1.5em 0 0 0" for="viewReviews">Pregled utisaka</label>
             </div>
             <div class="nav-menu-rp" id="scrollPanel">
-                <h3>Artikli</h3>
-                <h3>Utisci</h3>
+               <a v-on:click="scrollToArticles" style="text-decoration: none; color: black;"><h3>Artikli</h3></a>
+               <a v-on:click="scrollToReviews" style="text-decoration: none; color: black;"> <h3>Utisci</h3></a>
             </div>
             <div class="nav-menu-rp" id="statusFilter" style="display: none">
                 <h2 style="text-align: center;">Status utiska</h2>
@@ -152,7 +152,7 @@ Vue.component("restaurant-page", {
                 <a v-on:click="openCart"> Korpa ( {{cart.orderedItems.length}} )</a>
             </div>
 
-            <div class="articles-rp">
+            <div id="articles-id" class="articles-rp">
                 <h1>Artikli</h1>
                 <ul class="article-list-rp">
                     <a v-for="article in restaurant.items" v-on:click="showArticle(article)">
@@ -161,7 +161,7 @@ Vue.component("restaurant-page", {
                 </ul>
             </div>
 
-            <div class="restaurant-reviews-rp">
+            <div id="reviews-id" class="restaurant-reviews-rp">
                 <h1>Utisci</h1>
                 <ul class="user-reviews-list-rp">
                     <comment-status v-for="c in comments" v-on:updateComments="updateComments"
@@ -481,6 +481,12 @@ Vue.component("restaurant-page", {
                         }
                     }
                 })
+        },
+        scrollToArticles: function() {
+            document.getElementById('articles-id').scrollIntoView({ top: 0, behavior: 'smooth' });
+        },
+        scrollToReviews: function() {
+            document.getElementById('reviews-id').scrollIntoView({ top: 0, behavior: 'smooth' });
         }
     }
 });
