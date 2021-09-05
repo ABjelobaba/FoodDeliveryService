@@ -172,7 +172,7 @@ Vue.component("restaurant-page", {
             <div id="reviews-id" class="restaurant-reviews-rp">
                 <h1>Utisci</h1>
                 <ul class="user-reviews-list-rp">
-                    <comment-status v-for="c in computedComment" v-on:askToDelete="askToDelete"
+                    <comment-status v-for="c in computedComment" v-on:askToDelete="askToDeleteComment"
                             v-if="(loggedInUser.role != 'Administrator' && loggedInUser.role != 'Manager' && c.status == 'Approved') || loggedInUser.role == 'Administrator' || loggedInUser.role == 'Manager'"
                             v-bind:key="c.reviewID" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role"></comment-status>
                     
@@ -205,7 +205,7 @@ Vue.component("restaurant-page", {
                 </div>
                 <div class="add-to-basket-rp">
                     <a href="#" v-if="loggedInUser.role != 'Administrator'" v-on:click="addToCart" >Dodaj u korpu</a>
-                    <a href="#" v-else><i class="fa fa-trash-o fa-lg" aria-hidden="true"> </i> Obrisi</a>
+                    <a href="#" v-else v-on:click="deleteArticle"><i class="fa fa-trash-o fa-lg" aria-hidden="true" > </i> Obriši</a>
                 </div>
 
             </div>
@@ -498,7 +498,7 @@ Vue.component("restaurant-page", {
         scrollToReviews: function() {
             document.getElementById('reviews-id').scrollIntoView({ top: 0, behavior: 'smooth' });
         },
-        askToDelete: function(comment) {
+        askToDeleteComment: function(comment) {
             this.question = "Da li ste sigurni da želite da obrišete utisak?";
             document.querySelector("#question").style.display = "flex";
             this.selectedComment = comment;
@@ -520,6 +520,16 @@ Vue.component("restaurant-page", {
             if (receivedAnswer == 'yes') {
                 this.deleteComment();
             }
-        }
+        },
+        deleteArticle: function() {
+            axios
+                .delete("/restaurants/deleteArticle/" + this.restaurant.restaurantID + "/" + this.selectedArticle.name)
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        this.restaurant = response.data;
+                        this.selectedArticle = undefined;
+                    }
+                })
+        },
     }
 });

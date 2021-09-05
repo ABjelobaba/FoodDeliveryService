@@ -142,4 +142,16 @@ public class RestaurantService {
 		restaurantDAO.delete(restaurant);
 	}
 
+    public Restaurant deleteArticle(int restaurantID, String articleName) throws JsonSyntaxException, IOException {
+		Restaurant restaurant = restaurantDAO.getByID(restaurantID);
+		for(FoodItem fi: restaurant.getItems()){
+			if(fi.getName().equals(articleName)){
+				restaurant.getItems().remove(fi);
+				break;
+			}
+		}
+		restaurantDAO.update(restaurant);
+		return restaurant;
+    }
+
 }

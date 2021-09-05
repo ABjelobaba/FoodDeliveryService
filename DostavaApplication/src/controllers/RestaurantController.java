@@ -84,5 +84,17 @@ public class RestaurantController {
 				return null;
 			}
 		});
+
+		delete("/restaurants/deleteArticle/:restaurantID/:articleName", (req, res) -> {
+			res.type("application/json"); 
+
+			try {
+				Restaurant restaurant = restaurantService.deleteArticle(Integer.parseInt(req.params("restaurantID")),req.params("articleName"));
+				return gs.toJson(restaurant);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
 	}
 }
