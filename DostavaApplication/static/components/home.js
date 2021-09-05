@@ -10,12 +10,12 @@ Vue.component("home", {
                 { id: 'Italian', value: 'Italijanska' },
                 { id: 'Mexican', value: 'Meksička' }
             ],
-            raitings: [
-                { id: 'zero-one', value: '0 - 1' },
-                { id: 'one-two', value: '1 - 2' },
-                { id: 'two-three', value: '2 - 3' },
-                { id: 'three-four', value: '3 - 4' },
-                { id: 'four-five', value: '4 - 5' }
+            ratings: [
+                { id: '0 to 1', value: '0 - 1' },
+                { id: '1 to 2', value: '1 - 2' },
+                { id: '2 to 3', value: '2 - 3' },
+                { id: '3 to 4', value: '3 - 4' },
+                { id: '4 to 5', value: '4 - 5' }
             ],
             restaurants: null,
             searchTextName: '',
@@ -123,9 +123,9 @@ Vue.component("home", {
 					</div>
 					<h2 style="text-align: center;" >Ocene</h2>
 					<div class="checkbox-btn-container-dark">
-						<div v-for="raiting in raitings">
-							<input type="checkbox" v-bind:id=raiting.id name="stars" v-bind:value=raiting.id v-on:change="findRestaurants">
-							<label v-bind:for=raiting.id>{{raiting.value}}</label>
+						<div v-for="rating in ratings">
+							<input type="checkbox" v-bind:id=rating.id name="stars" v-bind:value=rating.id v-on:change="findRestaurants">
+							<label v-bind:for=rating.id>{{rating.value}}</label>
 						</div>
 					</div>
 				</div>
@@ -144,7 +144,7 @@ Vue.component("home", {
 								</button>
 							</div>
 							<div style="margin:2%" v-on:click="sortRestaurants"> 
-								<button type="radio" id="sort-by-rating" name="sort" value="sort-by-rating"><label>Prosečna ocena</label>
+								<button v-on:click="sortByRating" type="radio" id="sort-by-rating" name="sort" value="sort-by-rating"><label>Prosečna ocena</label>
 									<i class="fa fa-sort" aria-hidden="true"></i>
 								</button>
 							</div>
@@ -414,17 +414,23 @@ Vue.component("home", {
             var cbCuisine = document.getElementsByName('cuisineTypes');
             var cbStars = document.getElementsByName('stars');
             var cbCheckedCuisine = [];
+            var cbCheckedStars = [];
 
-            this.filteredResults = [];
+            this.filteredResults = this.restaurants;
+            filteredByStatus = [];
+            filteredByType = [];
+            filteredByRating = [];
 
+            // filter by status
             if (cbOpen.checked) {
                 for (restaurant of this.restaurants) {
                     if (restaurant.open) {
-                        this.filteredResults.push(restaurant);
+                        filteredByStatus.push(restaurant);
                     }
                 }
             }
 
+            // filter by type
             for (var i = 0; i < cbCuisine.length; i++) {
                 if (cbCuisine[i].checked) {
                     cbCheckedCuisine.push(cbCuisine[i].id);
@@ -434,16 +440,49 @@ Vue.component("home", {
             for (restaurant of this.restaurants) {
                 for (cb of cbCheckedCuisine) {
                     if (restaurant.type == cb) {
-                        this.filteredResults.push(restaurant);
+                        filteredByType.push(restaurant);
                     }
                 }
             }
 
-            if (cbCheckedCuisine.length != 0 && !cbOpen.checked) {
-                this.filteredResults =  [...new Set(this.filteredResults)];
-            } else {
-                this.filteredResults = this.restaurants;
+            // filter by rating
+            let minRating = '';
+            let maxRating = '';
+            for (var i = 0; i < cbStars.length; i++) {
+                if (cbStars[i].checked) {
+                    cbCheckedStars.push(cbStars[i].id);
+                }
             }
+            
+            for (var i = 0; i < cbCheckedStars.length; i++) {
+                minRating = Number((String(cbCheckedStars[i])).charAt(0));
+                maxRating = Number((String(cbCheckedStars[i])).charAt((String(cbCheckedStars[i])).length - 1));
+
+                for (restaurant of this.restaurants) {
+                    if (restaurant.rating >= minRating && restaurant.rating <= maxRating) {
+                        filteredByRating.push(restaurant);
+                    }
+                }                
+            }
+
+            if (!(cbCheckedCuisine.length == 0 && !cbOpen.checked && cbCheckedStars.length == 0)) {
+                if (cbOpen.checked) {
+                    this.filteredResults = filteredByStatus.filter(x => this.filteredResults.includes(x));
+                }
+
+                if (cbCheckedCuisine.length != 0) {
+                    this.filteredResults = filteredByType.filter(x => this.filteredResults.includes(x));
+                }
+
+                if (cbCheckedStars.length != 0) {
+                    this.filteredResults = filteredByRating.filter(x => this.filteredResults.includes(x));      
+                }
+
+                this.filteredResults =  [...new Set(this.filteredResults)];
+            }
+
+            this.searchResults;
+            this.filteredResults;
 
             this.finalResults = this.searchResults.filter(x => this.filteredResults.includes(x));
 
@@ -485,6 +524,13 @@ Vue.component("home", {
                         this.finalResults.push(restaurant)
                     }
                 }
+            }
+        },
+        sortByRating: function() {
+            if (this.ratingSort == 'desc') {
+                this.finalResults = this.finalResults.sort(function compareFn(a, b) { return a.rating - b.rating });
+            } else if (this.ratingSort == '') {
+                this.finalResults = this.finalResults.sort(function compareFn(a, b) { return a.rating - b.rating }).reverse();
             }
         }
     }

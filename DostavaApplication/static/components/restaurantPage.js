@@ -2,15 +2,11 @@ Vue.component("restaurant-page", {
     data: function() {
         return {
             loggedInUser: '',
-            comments: [
-                { id: 1, rating: 5.0, text: 'Odlična hrana, brza dostava', userName: 'Nikola', status: 'rejected' },
-                { id: 2, rating: 4.0, text: 'Dobra hrana,velike porcije', userName: 'Marko', status: 'approved' },
-                { id: 3, rating: 3.0, text: 'Okej hrana', userName: 'Marija', status: 'waiting' }
-            ],
+            comments: [],
             review_states: [
-                { value: 'rejected', text: 'Odbijen' },
-                { value: 'approved', text: 'Odobren' },
-                { value: 'waiting', text: ' Čeka obradu' }
+                { value: 'Rejected', text: 'Odbijen' },
+                { value: 'Approved', text: 'Odobren' },
+                { value: 'WaitingForApproval', text: ' Čeka obradu' }
             ],
             restaurant: "",
             restaurantTypes: [
@@ -34,7 +30,9 @@ Vue.component("restaurant-page", {
             articleImage: null,
             selectedArticle: undefined,
             selectedArticleQuantity: 1,
-            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 }
+            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 },
+            areThereVisibleComments: '',
+            approvedCommentsNumber: ''
         }
     },
     created: function() {
@@ -93,7 +91,7 @@ Vue.component("restaurant-page", {
                         <h1 class="restaurant-title-rp">{{restaurant.name}}</h1>
                         <div class="rating-rp">
                             <img class="star-rating-rp" src="images/star.png" alt="Rating">
-                            <p> <span class="rating-num-rp"> 4.6 </span> (14)</p>
+                            <p > <span class="rating-num-rp"> {{restaurant.rating}} </span> ({{approvedCommentsNumber}})</p>
                         </div>
                     </div>
 
@@ -166,9 +164,13 @@ Vue.component("restaurant-page", {
             <div class="restaurant-reviews-rp">
                 <h1>Utisci</h1>
                 <ul class="user-reviews-list-rp">
-                    <comment-status v-for="c in comments" v-bind:key="c.id" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role"></comment-status>
+                    <comment-status v-for="c in comments" v-on:updateComments="updateComments"
+                            v-if="(loggedInUser.role != 'Administrator' && loggedInUser.role != 'Manager' && c.status == 'Approved') || loggedInUser.role == 'Administrator' || loggedInUser.role == 'Manager'"
+                            v-bind:key="c.reviewID" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role"></comment-status>
+                    
+                    <h3 v-if="areThereVisibleComments == false"  style="text-align:center; font-size: 1.5em; padding-bottom: 1.7em;" >Niko nije ostavio utiske</h3>
                 </ul>
-                <h6 id="allReviews">Svi utisci... </h6>
+                <h6 v-if="areThereVisibleComments == true" id="allReviews">Svi utisci... </h6>
             </div>
         </div>
     </div>
@@ -264,7 +266,10 @@ Vue.component("restaurant-page", {
             this.zipCode = response.data.location.address.zipCode;
             this.longitude = response.data.location.longitude;
             this.latitude = response.data.location.latitude;
+            this.restaurant.rating = this.restaurant.rating.toFixed(2);
         })
+
+        this.updateComments(true);
 
         function createNavMenu() {
             if (window.location.href.endsWith('restaurant?id=' + id)) {
@@ -429,6 +434,49 @@ Vue.component("restaurant-page", {
         },
         openCart: function() {
             window.location.href = '#/account/cart';
+        },
+        checkVisibleComments() {
+            this.areThereVisibleComments = false;
+            if (this.comments.length != 0) {
+                if (this.loggedInUser.role != 'Manager' && this.loggedInUser.role != 'Administrator') {
+                    for (comment of this.comments) {
+                        if (comment.status == 'Approved') {
+                            this.areThereVisibleComments = true;
+                            break;
+                        }
+                    }
+                }
+                else {
+                        this.areThereVisibleComments = true;
+                }
+            }
+        },
+        updateComments: function(isRatingChanged) {
+            axios
+                .get('/reviews/' + this.$route.query.id)
+                .then(response => {
+                    this.comments = response.data;
+
+                    this.comments = this.comments.sort(function compareFn(a, b) { return b.reviewID - a.reviewID });
+                    
+                    this.checkVisibleComments();
+                    if (isRatingChanged == true)
+                        this.updateRating();
+                })
+        },
+        updateRating: function() {
+            axios
+                .put("/restaurant/updateRating/" +  this.$route.query.id)
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        this.approvedCommentsNumber = 0;
+                        for (comment of this.comments) {
+                            if (comment.status == 'Approved') {
+                                this.approvedCommentsNumber = this.approvedCommentsNumber + 1;
+                            }
+                        }
+                    }
+                })
         }
     }
 });

@@ -57,7 +57,33 @@ Vue.component("rate-restaurant", {
         rate: function() {
             let stars = document.querySelector("input[type='radio'][name='star']:checked");
             if (stars != null || (this.commentText != '' && this.commentText != undefined)) {
-                this.$emit('orderRated');
+                if (document.getElementById('star1').checked) {
+                    reviewRating = 5;
+                } else if (document.getElementById('star2').checked) {
+                    reviewRating = 4;
+                } else if (document.getElementById('star3').checked) {
+                    reviewRating = 3;
+                } else if (document.getElementById('star4').checked) {
+                    reviewRating = 2;
+                } else {
+                    reviewRating = 1;
+                }
+
+                let reviewDTO = {
+                    customerUsername: this.selectedOrder.customerUsername,
+                    restaurantID: this.restaurant.restaurantID,
+                    review: this.commentText,
+                    rating: reviewRating
+                }
+
+                axios
+                    .post('/reviews/addReview', JSON.stringify(reviewDTO))
+                    .then(response => {
+                        if (response.data != null && response.data != "") {
+                            this.$emit('orderRated');
+                        }
+                    })
+
             } else {
                 document.getElementById('error').innerHTML = "Popunite jedno od navedenih polja kako bi podelili vaše mišljenje o restoranu sa drugima!";
             }

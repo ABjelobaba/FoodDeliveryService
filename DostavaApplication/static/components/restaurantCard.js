@@ -27,7 +27,7 @@ Vue.component("restaurant-card", {
 			flex-direction: column;
 			align-items: center;">
 		
-			<i class="fa fa-star" aria-hidden="true" style="margin:10% 0 0 0;text-align:right"> {{restaurant.rating}}0.0</i>
+			<i class="fa fa-star" aria-hidden="true" style="margin:10% 0 0 0;text-align:right"> {{restaurant.rating}}</i>
 			<div class="closed-restaurant" style="width:auto" v-if="!restaurant.open">
 				<div  style="margin:5%">Zatvoren objekat</div>
 			</div>
@@ -37,7 +37,9 @@ Vue.component("restaurant-card", {
             </div>
 	</div>
 	`,
-    mounted() {},
+    mounted() {
+		this.restaurant.rating = (Number(this.restaurant.rating)).toFixed(2);
+	},
 
     methods: {
         deleteRestaurant: function() {

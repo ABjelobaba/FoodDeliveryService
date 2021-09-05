@@ -205,6 +205,17 @@ public class UserController {
 				return null;
 			}
 		});
+		
+		get("/customer/:username", (req, res) -> {
+			res.type("application/json"); 
+
+			try {
+				return gs.toJson(userService.getCustomerByID(req.params("username")));
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
 
 		get("/user/getAllRestaurantCustomers/:restaurantID", (req, res) -> {
 			res.type("application/json");
@@ -217,5 +228,6 @@ public class UserController {
 				return "";
 			}
 		});
+
 	}
 }

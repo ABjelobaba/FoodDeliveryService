@@ -1,22 +1,17 @@
-package beans;
+package dto;
 
-public class CustomerReview implements IEntity<Integer>{
-	private int reviewID;
+public class CustomerReviewDTO {
 	private String customerUsername;
 	private int restaurantID;
 	private String review;
 	private int rating;
-	private ReviewStatus status;
-	private boolean deleted;
 	
-	public CustomerReview(String customerUsername, int restaurantID, String review, int rating) {
+	public CustomerReviewDTO(String customerUsername, int restaurantID, String review, int rating) {
 		super();
 		this.customerUsername = customerUsername;
 		this.restaurantID = restaurantID;
 		this.review = review;
 		this.rating = rating;
-		this.status = ReviewStatus.WaitingForApproval;
-		this.deleted = false;
 	}
 
 	public String getCustomerUsername() {
@@ -51,35 +46,4 @@ public class CustomerReview implements IEntity<Integer>{
 		this.rating = rating;
 	}
 
-	public ReviewStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(ReviewStatus status) {
-		this.status = status;
-	}
-
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
-
-	@Override
-	public Integer getID() {
-		return this.reviewID;
-	}
-
-	@Override
-	public void setID(Integer id) {
-		this.reviewID = id;		
-	}
-
-	@Override
-	public boolean isEqual(Integer id) {
-		return this.reviewID == id;
-	}
-	
 }
