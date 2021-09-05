@@ -48,10 +48,10 @@ Vue.component("comment-status", {
             <div class="comment-status-container" v-bind:name="comment.reviewID" v-else-if="loggedInRole == 'Administrator'">
 
                 <div v-if="comment.status == 'WaitingForApproval'">
-                    <div class="comment-status" style="background-color: transparent;border-radius: 0 1em 0 0em;border-left:1px solid rgba(44,53,63,1)">
+                    <div class="comment-status" style="background-color: transparent;border-radius: 0 1em 0 0em;border-left:1px solid rgba(44,53,63,1); height: fit-content;">
                         <i class="fa fa-ban fa-2x" aria-hidden="true"></i>
                     </div>
-                    <div class="comment-status" style="background-color: transparent;border-radius: 0em 0em 1em 0em;border-left:1px solid rgba(44,53,63,1)">
+                    <div class="comment-status" style="background-color: transparent;border-radius: 0em 0em 1em 0em;border-left:1px solid rgba(44,53,63,1); height: fit-content;">
                         <i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i>
                     </div>
                 </div>
