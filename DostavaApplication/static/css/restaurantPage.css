@@ -438,17 +438,17 @@
 }
 
 .review-info-rp h4 {
-    padding: 0.8em 0 1em 0.5em;
+    padding: 0.8em 1em 1em 0.5em;
     font-weight: normal;
     margin: 0;
-    font-size: 1.5em;
+    font-size: 1.4em;
     color: white;
 }
 
 .review-info-rp h5 {
     padding: 0;
     margin: 0;
-    font-size: 1.3em;
+    font-size: 1.2em;
     word-wrap: break-word;
     font-style: italic;
     font-weight: normal;

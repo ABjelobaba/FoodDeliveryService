@@ -91,6 +91,8 @@ Vue.component("comment-status", {
                 .then(response => {
                     if (response.data != null && response.data != "") {
                         document.getElementsByName(this.comment.reviewID)[0].innerHTML = '<div class="comment-status" style="background-color: #303F2C"><i class="fa fa-check-circle-o fa-2x" aria-hidden="true"></i></div>';
+                        this.$emit('updateComments', true);
+                    
                     }
                 })
         },
@@ -99,7 +101,10 @@ Vue.component("comment-status", {
                 .delete("/reviews/" + this.comment.reviewID)
                 .then(response => {
                     if (response.data != null && response.data != "") {
-                        this.$emit('updateComments');
+                        if (this.comment.status == "Approved")
+                            this.$emit('updateComments', true);
+                        else
+                            this.$emit('updateComments', false);
                     }
                 })
         }

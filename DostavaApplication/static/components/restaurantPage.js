@@ -31,7 +31,8 @@ Vue.component("restaurant-page", {
             selectedArticle: undefined,
             selectedArticleQuantity: 1,
             cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 },
-            areThereVisibleComments: ''
+            areThereVisibleComments: '',
+            approvedCommentsNumber: ''
         }
     },
     created: function() {
@@ -90,7 +91,7 @@ Vue.component("restaurant-page", {
                         <h1 class="restaurant-title-rp">{{restaurant.name}}</h1>
                         <div class="rating-rp">
                             <img class="star-rating-rp" src="images/star.png" alt="Rating">
-                            <p> <span class="rating-num-rp"> 4.6 </span> (14)</p>
+                            <p > <span class="rating-num-rp"> {{restaurant.rating}} </span> ({{approvedCommentsNumber}})</p>
                         </div>
                     </div>
 
@@ -265,9 +266,10 @@ Vue.component("restaurant-page", {
             this.zipCode = response.data.location.address.zipCode;
             this.longitude = response.data.location.longitude;
             this.latitude = response.data.location.latitude;
+            this.restaurant.rating = this.restaurant.rating.toFixed(2);
         })
 
-        this.updateComments();
+        this.updateComments(true);
 
         function createNavMenu() {
             if (window.location.href.endsWith('restaurant?id=' + id)) {
@@ -436,25 +438,43 @@ Vue.component("restaurant-page", {
         checkVisibleComments() {
             this.areThereVisibleComments = false;
             if (this.comments.length != 0) {
-                for (comment of this.comments) {
-                    if (this.loggedInUser != 'Manager' && this.loggedInUser != 'Administrator') {
+                if (this.loggedInUser.role != 'Manager' && this.loggedInUser.role != 'Administrator') {
+                    for (comment of this.comments) {
                         if (comment.status == 'Approved') {
                             this.areThereVisibleComments = true;
                             break;
                         }
                     }
-                    else {
+                }
+                else {
                         this.areThereVisibleComments = true;
-                    }
                 }
             }
         },
-        updateComments: function() {
-            axios.get('/reviews/' + this.$route.query.id).then(response => {
-                this.comments = response.data;
-                
-                this.checkVisibleComments();
-            })
+        updateComments: function(isRatingChanged) {
+            axios
+                .get('/reviews/' + this.$route.query.id)
+                .then(response => {
+                    this.comments = response.data;
+                    
+                    this.checkVisibleComments();
+                    if (isRatingChanged == true)
+                        this.updateRating();
+                })
+        },
+        updateRating: function() {
+            axios
+                .put("/restaurant/updateRating/" +  this.$route.query.id)
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        this.approvedCommentsNumber = 0;
+                        for (comment of this.comments) {
+                            if (comment.status == 'Approved') {
+                                this.approvedCommentsNumber = this.approvedCommentsNumber + 1;
+                            }
+                        }
+                    }
+                })
         }
     }
 });

@@ -10,6 +10,7 @@ import services.RestaurantService;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.put;
 
 public class RestaurantController {
 	private static Gson gs = new Gson();
@@ -55,6 +56,18 @@ public class RestaurantController {
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";
+			}
+		});
+		
+		put("/restaurant/updateRating/:id", (req, res) -> {
+			res.type("application/json"); 
+
+			try {
+				restaurantService.updateRestaurantRating(Integer.parseInt(req.params("id")));
+				return "ok";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
 			}
 		});
 	}

@@ -5,19 +5,24 @@ import java.util.ArrayList;
 import com.google.gson.JsonSyntaxException;
 
 import beans.Address;
+import beans.CustomerReview;
 import beans.FoodItem;
 import beans.Location;
 import beans.Restaurant;
+import beans.ReviewStatus;
 import dto.FoodItemDTO;
 import dto.RestaurantDTO;
+import dao.CustomerReviewDAO;
 import dao.RestaurantDAO;
 
 public class RestaurantService {
 
 	private RestaurantDAO restaurantDAO;
+	private CustomerReviewDAO reviewDAO;
 	
-	public RestaurantService(RestaurantDAO restaurantDAO) {
+	public RestaurantService(RestaurantDAO restaurantDAO, CustomerReviewDAO reviewDAO) {
 		this.restaurantDAO = restaurantDAO;
+		this.reviewDAO = reviewDAO;
 	}
 
 	public ArrayList<Restaurant> getAll() throws JsonSyntaxException, IOException {
@@ -58,7 +63,7 @@ public class RestaurantService {
 		return newFoodItem;
 	}
 	
-	public boolean doesArticleAlreadyExist(String articleName, int restaurantID) throws JsonSyntaxException, IOException {
+	private boolean doesArticleAlreadyExist(String articleName, int restaurantID) throws JsonSyntaxException, IOException {
 		boolean alreadyExists = false;
 		ArrayList<FoodItem> articles = getAllCurrentArticlesFromRestaurant(restaurantID);
 		for (FoodItem article : articles) {
@@ -80,4 +85,41 @@ public class RestaurantService {
 		}
 		return articles;
 	}
+	
+	public void updateRestaurantRating(int restaurantID) throws JsonSyntaxException, IOException {
+		Restaurant restaurant = restaurantDAO.getByID(restaurantID);
+		ArrayList<CustomerReview> reviews = getAllReviewsForRestaurant(restaurantID);
+		
+		restaurant.setRating(calculateRestaurantRating(reviews));
+		
+		restaurantDAO.update(restaurant);
+	}
+	
+	private ArrayList<CustomerReview> getAllReviewsForRestaurant(int restaurantID) throws JsonSyntaxException, IOException {
+		ArrayList<CustomerReview> restaurantReviews = new ArrayList<CustomerReview>();
+		
+		for (CustomerReview review : reviewDAO.getAllNotDeleted()) {
+			if ((review.getRestaurantID() == restaurantID) && (review.getStatus().equals(ReviewStatus.Approved))) {
+				restaurantReviews.add(review);
+			}
+		}
+		
+		return restaurantReviews;
+	}
+	
+	private double calculateRestaurantRating(ArrayList<CustomerReview> reviews) {
+		double rating = 0;
+		int cnt = 0;
+		for (CustomerReview review : reviews) {
+			++cnt;
+			rating += review.getRating();
+		}
+		if (cnt != 0) {
+			rating = rating/cnt;
+			rating = (double) (Math.round(rating*100.0)/100.0);
+		}
+		
+		return rating;
+	}
+	
 }

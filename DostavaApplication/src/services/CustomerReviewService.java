@@ -19,14 +19,14 @@ public class CustomerReviewService {
 	}
 	
 	public ArrayList<CustomerReview> getAll() throws JsonSyntaxException, IOException {
-		return (ArrayList<CustomerReview>) reviewDAO.getAll();
+		return (ArrayList<CustomerReview>) reviewDAO.getAllNotDeleted();
 	}
 	
 	public ArrayList<CustomerReview> getAllByRestaurant(int restaurantID) throws JsonSyntaxException, IOException {
 		ArrayList<CustomerReview> reviews = new ArrayList<CustomerReview>();
 		
 		for (CustomerReview review : getAll()) {
-			if (restaurantID == review.getRestaurantID() && !review.isDeleted()) {
+			if (restaurantID == review.getRestaurantID()) {
 				reviews.add(review);
 			}
 		}
