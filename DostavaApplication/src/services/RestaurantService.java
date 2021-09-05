@@ -98,13 +98,15 @@ public class RestaurantService {
 		return articles;
 	}
 
-	public void updateRestaurantRating(int restaurantID) throws JsonSyntaxException, IOException {
+	public double updateRestaurantRating(int restaurantID) throws JsonSyntaxException, IOException {
 		Restaurant restaurant = restaurantDAO.getByID(restaurantID);
 		ArrayList<CustomerReview> reviews = getAllReviewsForRestaurant(restaurantID);
 
-		restaurant.setRating(calculateRestaurantRating(reviews));
+		double newRating = calculateRestaurantRating(reviews);
+		restaurant.setRating(newRating);
 
 		restaurantDAO.update(restaurant);
+		return newRating;
 	}
 
 	private ArrayList<CustomerReview> getAllReviewsForRestaurant(int restaurantID) throws JsonSyntaxException, IOException {

@@ -91,7 +91,7 @@ Vue.component("restaurant-page", {
                         <h1 class="restaurant-title-rp">{{restaurant.name}}</h1>
                         <div class="rating-rp">
                             <img class="star-rating-rp" src="images/star.png" alt="Rating">
-                            <p > <span class="rating-num-rp"> {{restaurant.rating}} </span> ({{approvedCommentsNumber}})</p>
+                            <p key="ratingg"> <span class="rating-num-rp"> {{restaurant.rating}} </span> ({{approvedCommentsNumber}})</p>
                         </div>
                     </div>
 
@@ -337,8 +337,8 @@ Vue.component("restaurant-page", {
                 previewImage.style.display = "block";
 
                 let ref = this;
-                reader.addEventListener("load", function() { 
-                    previewImage.setAttribute("src", this.result); 
+                reader.addEventListener("load", function() {
+                    previewImage.setAttribute("src", this.result);
                     ref.articleImage = this.result;
                 });
                 reader.readAsDataURL(file);
@@ -361,7 +361,7 @@ Vue.component("restaurant-page", {
                 errors = true;
             }
 
-            if(document.getElementById("inpFile").value == "") {
+            if (document.getElementById("inpFile").value == "") {
                 document.getElementById('articleImageErr').innerHTML = '<i class="fa fa-exclamation-circle"></i>Morate odabrati sliku!';
                 errors = true;
             }
@@ -449,9 +449,8 @@ Vue.component("restaurant-page", {
                             break;
                         }
                     }
-                }
-                else {
-                        this.areThereVisibleComments = true;
+                } else {
+                    this.areThereVisibleComments = true;
                 }
             }
         },
@@ -462,7 +461,7 @@ Vue.component("restaurant-page", {
                     this.comments = response.data;
 
                     this.comments = this.comments.sort(function compareFn(a, b) { return b.reviewID - a.reviewID });
-                    
+
                     this.checkVisibleComments();
                     if (isRatingChanged == true)
                         this.updateRating();
@@ -470,9 +469,10 @@ Vue.component("restaurant-page", {
         },
         updateRating: function() {
             axios
-                .put("/restaurant/updateRating/" +  this.$route.query.id)
+                .put("/restaurant/updateRating/" + this.$route.query.id)
                 .then(response => {
                     if (response.data != null && response.data != "") {
+                        this.restaurant.rating = response.data;
                         this.approvedCommentsNumber = 0;
                         for (comment of this.comments) {
                             if (comment.status == 'Approved') {

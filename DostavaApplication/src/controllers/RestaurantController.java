@@ -64,8 +64,8 @@ public class RestaurantController {
 			res.type("application/json"); 
 
 			try {
-				restaurantService.updateRestaurantRating(Integer.parseInt(req.params("id")));
-				return "ok";
+				double newRating = restaurantService.updateRestaurantRating(Integer.parseInt(req.params("id")));
+				return newRating;
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
