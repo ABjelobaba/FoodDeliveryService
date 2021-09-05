@@ -144,7 +144,7 @@ Vue.component("home", {
 								</button>
 							</div>
 							<div style="margin:2%" v-on:click="sortRestaurants"> 
-								<button type="radio" id="sort-by-rating" name="sort" value="sort-by-rating"><label>Prosečna ocena</label>
+								<button v-on:click="sortByRating" type="radio" id="sort-by-rating" name="sort" value="sort-by-rating"><label>Prosečna ocena</label>
 									<i class="fa fa-sort" aria-hidden="true"></i>
 								</button>
 							</div>
@@ -485,6 +485,13 @@ Vue.component("home", {
                         this.finalResults.push(restaurant)
                     }
                 }
+            }
+        },
+        sortByRating: function() {
+            if (this.ratingSort == 'desc') {
+                this.finalResults = this.finalResults.sort(function compareFn(a, b) { return a.rating - b.rating });
+            } else if (this.ratingSort == '') {
+                this.finalResults = this.finalResults.sort(function compareFn(a, b) { return a.rating - b.rating }).reverse();
             }
         }
     }
