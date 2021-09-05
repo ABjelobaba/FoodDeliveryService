@@ -23,7 +23,9 @@ Vue.component("admin-restaurants", {
             finalResults: '',
             nameSort: '',
             locationSort: '',
-            ratingSort: ''
+            ratingSort: '',
+            question: '',
+            selectedRestaurant: ''
         }
     },
     created: function() {
@@ -130,7 +132,7 @@ Vue.component("admin-restaurants", {
 				<p></p>
 
                 <a v-for="restaurant in finalResults" v-on:click="openRestaurantPage(restaurant)">
-                    <restaurant-card v-bind:key="restaurant.id" style="cursor: pointer;" v-on:getRestaurants="getRestaurants"
+                    <restaurant-card v-bind:key="restaurant.id" style="cursor: pointer;" v-on:askToDelete="askToDelete"
                         v-bind:restaurant="restaurant" v-bind:loggedInRole="'admin'"></restaurant-card>
                 </a>
 
@@ -140,6 +142,7 @@ Vue.component("admin-restaurants", {
 		
         <new-restaurant id="newRestaurant"></new-restaurant>
 		<success></success>
+        <question :question="question" v-on:answer="answer"></question>
 	</div>
 	`,
     mounted() {
@@ -185,9 +188,9 @@ Vue.component("admin-restaurants", {
                 }
 
                 locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.locationSort = '';
+                this.locationSort = '';
                 ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.ratingSort = '';
+                this.ratingSort = '';
 
             } else if (event.currentTarget.innerText.includes('Lokacija')) {
                 if (this.locationSort == '') {
@@ -202,9 +205,9 @@ Vue.component("admin-restaurants", {
                 }
 
                 nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.nameSort = '';
+                this.nameSort = '';
                 ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.ratingSort = '';
+                this.ratingSort = '';
 
             } else if (event.currentTarget.innerText.includes('Prosečna ocena')) {
                 if (this.ratingSort == '') {
@@ -219,9 +222,9 @@ Vue.component("admin-restaurants", {
                 }
 
                 nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.nameSort = '';
+                this.nameSort = '';
                 locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.locationSort = '';
+                this.locationSort = '';
             }
         },
         showHideSearch: function(event) {
@@ -276,8 +279,7 @@ Vue.component("admin-restaurants", {
                 let rests;
                 if (!isNameEntered) {
                     rests = this.restaurants;
-                }
-                else {
+                } else {
                     rests = resultsForName;
                 }
 
@@ -285,7 +287,7 @@ Vue.component("admin-restaurants", {
                     let matches = true;
                     let address = restaurant.location.address;
                     for (let i = 0; i < searchParts.length; i++) {
-                        if (!address.city.toUpperCase().includes(searchParts[i].toUpperCase()) && 
+                        if (!address.city.toUpperCase().includes(searchParts[i].toUpperCase()) &&
                             !address.streetAddress.toUpperCase().includes(searchParts[i].toUpperCase())) {
                             matches = false;
                             break;
@@ -295,11 +297,10 @@ Vue.component("admin-restaurants", {
                         resultsForLocation.push(restaurant);
                     }
                 }
-            }
-            else {
+            } else {
                 isLocationEntered = false;
             }
-            
+
             if (!isNameEntered && !isLocationEntered) {
                 this.searchResults = this.restaurants;
             } else if (isNameEntered && !isLocationEntered) {
@@ -353,7 +354,7 @@ Vue.component("admin-restaurants", {
                     cbCheckedStars.push(cbStars[i].id);
                 }
             }
-            
+
             for (var i = 0; i < cbCheckedStars.length; i++) {
                 minRating = Number((String(cbCheckedStars[i])).charAt(0));
                 maxRating = Number((String(cbCheckedStars[i])).charAt((String(cbCheckedStars[i])).length - 1));
@@ -362,7 +363,7 @@ Vue.component("admin-restaurants", {
                     if (restaurant.rating >= minRating && restaurant.rating <= maxRating) {
                         filteredByRating.push(restaurant);
                     }
-                }                
+                }
             }
 
             if (!(cbCheckedCuisine.length == 0 && !cbOpen.checked && cbCheckedStars.length == 0)) {
@@ -375,10 +376,10 @@ Vue.component("admin-restaurants", {
                 }
 
                 if (cbCheckedStars.length != 0) {
-                    this.filteredResults = filteredByRating.filter(x => this.filteredResults.includes(x));      
+                    this.filteredResults = filteredByRating.filter(x => this.filteredResults.includes(x));
                 }
 
-                this.filteredResults =  [...new Set(this.filteredResults)];
+                this.filteredResults = [...new Set(this.filteredResults)];
             }
 
             this.searchResults;
@@ -401,7 +402,7 @@ Vue.component("admin-restaurants", {
                 fullAddress = restaurant.location.address.city + ' ' + streetAndNumber.substring(0, streetAndNumber.lastIndexOf(" "));
                 streetNumber = streetAndNumber.substring(streetAndNumber.lastIndexOf(" "));
 
-                let restourantAddress = {address: fullAddress, number: streetNumber, id: restaurant.restaurantID};
+                let restourantAddress = { address: fullAddress, number: streetNumber, id: restaurant.restaurantID };
                 restaurantAddresses.push(restourantAddress);
             }
 
@@ -409,11 +410,11 @@ Vue.component("admin-restaurants", {
                 restaurantAddresses = restaurantAddresses.sort(function compareFn(a, b) {
                     return a.address.localeCompare(b.address) || a.number - b.number;
                 });
-                
+
             } else if (this.locationSort == '') {
-                restaurantAddresses = restaurantAddresses.sort(function compareFn(a, b) {   
+                restaurantAddresses = restaurantAddresses.sort(function compareFn(a, b) {
                     return a.address.localeCompare(b.address) || a.number - b.number;
-                 }).reverse();
+                }).reverse();
             }
 
             notSorted = Array.from(this.finalResults);
@@ -442,7 +443,27 @@ Vue.component("admin-restaurants", {
                         this.finalResults = response.data;
                     }
                 });
-            
+
+        },
+        askToDelete: function(restaurant) {
+            this.question = "Da li ste sigurni da želite da obrišete '" + restaurant.name + "'?";
+            document.querySelector("#question").style.display = "flex";
+            this.selectedRestaurant = restaurant;
+        },
+        deleteRestaurant: function() {
+            axios
+                .delete("/restaurants/" + this.selectedRestaurant.restaurantID)
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        this.getRestaurants();
+                    }
+                })
+        },
+        answer: function(receivedAnswer) {
+            document.querySelector("#question").style.display = "none";
+            if (receivedAnswer == 'yes') {
+                this.deleteRestaurant();
+            }
         }
     }
 });

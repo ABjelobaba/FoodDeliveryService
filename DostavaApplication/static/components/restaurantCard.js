@@ -2,14 +2,14 @@ Vue.component("restaurant-card", {
     props: ['restaurant', 'loggedInRole'],
     data: function() {
         return {
-			restaurantTypes: [
+            restaurantTypes: [
                 { id: 'Italian', value: 'Italijanska hrana' },
                 { id: 'Chinese', value: 'Kineska hrana' },
                 { id: 'Barbecue', value: 'Roštilj' },
                 { id: 'Mexican', value: 'Meksička hrana' },
                 { id: 'American', value: 'Američka hrana' }
             ]
-		}
+        }
     },
 
     template: `
@@ -38,18 +38,12 @@ Vue.component("restaurant-card", {
 	</div>
 	`,
     mounted() {
-		this.restaurant.rating = (Number(this.restaurant.rating)).toFixed(2);
-	},
+        this.restaurant.rating = (Number(this.restaurant.rating)).toFixed(2);
+    },
 
     methods: {
         deleteRestaurant: function() {
-			axios
-                .delete("/restaurants/" + this.restaurant.restaurantID)
-                .then(response => {
-                    if (response.data != null && response.data != "") {
-                        this.$emit('getRestaurants');
-                    }
-                })
+            this.$emit('askToDelete', this.restaurant);
         }
     }
 });
