@@ -33,7 +33,9 @@ Vue.component("restaurant-page", {
             cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 },
             areThereVisibleComments: '',
             approvedCommentsNumber: '',
-            limit: 3
+            limit: 3,
+            selectedComment: '',
+            question: ''
         }
     },
     computed: {
@@ -170,7 +172,7 @@ Vue.component("restaurant-page", {
             <div id="reviews-id" class="restaurant-reviews-rp">
                 <h1>Utisci</h1>
                 <ul class="user-reviews-list-rp">
-                    <comment-status v-for="c in computedComment" v-on:updateComments="updateComments"
+                    <comment-status v-for="c in computedComment" v-on:askToDelete="askToDelete"
                             v-if="(loggedInUser.role != 'Administrator' && loggedInUser.role != 'Manager' && c.status == 'Approved') || loggedInUser.role == 'Administrator' || loggedInUser.role == 'Manager'"
                             v-bind:key="c.reviewID" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role"></comment-status>
                     
@@ -258,6 +260,7 @@ Vue.component("restaurant-page", {
     </div>
     <success :text="'Neophodno je da se prijavite kako bi naručili željene proizvode!'"></success>
     <logIn-register></logIn-register>
+    <question :question="question" v-on:answer="answer"></question>
 </div>
 
 
@@ -494,6 +497,29 @@ Vue.component("restaurant-page", {
         },
         scrollToReviews: function() {
             document.getElementById('reviews-id').scrollIntoView({ top: 0, behavior: 'smooth' });
+        },
+        askToDelete: function(comment) {
+            this.question = "Da li ste sigurni da želite da obrišete utisak?";
+            document.querySelector("#question").style.display = "flex";
+            this.selectedComment = comment;
+        },
+        deleteComment: function() {
+            axios
+                .delete("/reviews/" + this.selectedComment.reviewID)
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        if (this.selectedComment.status == "Approved")
+                            this.updateComments(true);
+                        else
+                            this.updateComments(false);
+                    }
+                })
+        },
+        answer: function(receivedAnswer) {
+            document.querySelector("#question").style.display = "none";
+            if (receivedAnswer == 'yes') {
+                this.deleteComment();
+            }
         }
     }
 });

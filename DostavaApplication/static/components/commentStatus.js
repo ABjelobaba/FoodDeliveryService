@@ -94,16 +94,7 @@ Vue.component("comment-status", {
                 })
         },
         deleteComment: function() {
-            axios
-                .delete("/reviews/" + this.comment.reviewID)
-                .then(response => {
-                    if (response.data != null && response.data != "") {
-                        if (this.comment.status == "Approved")
-                            this.$emit('updateComments', true);
-                        else
-                            this.$emit('updateComments', false);
-                    }
-                })
+            this.$emit('askToDelete', this.comment);
         }
     }
 })
