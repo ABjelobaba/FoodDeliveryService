@@ -56,7 +56,7 @@ Vue.component("rate-restaurant", {
     methods: {
         rate: function() {
             let stars = document.querySelector("input[type='radio'][name='star']:checked");
-            if (stars != null || (this.commentText != '' && this.commentText != undefined)) {
+            if (stars != null && (this.commentText != '' && this.commentText != undefined)) {
                 if (document.getElementById('star1').checked) {
                     reviewRating = 5;
                 } else if (document.getElementById('star2').checked) {
@@ -85,7 +85,7 @@ Vue.component("rate-restaurant", {
                     })
 
             } else {
-                document.getElementById('error').innerHTML = "Popunite jedno od navedenih polja kako bi podelili vaše mišljenje o restoranu sa drugima!";
+                document.getElementById('error').innerHTML = "Morate dati ocenu restoranu i uneti komentar!";
             }
         }
     }
