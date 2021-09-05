@@ -27,14 +27,7 @@ Vue.component("admin-restaurants", {
         }
     },
     created: function() {
-        axios
-			.get('/restaurants/getAllRestaurants')
-			.then(response => {
-				if (response.data != null) {
-					this.restaurants = response.data;
-                    this.finalResults = response.data;
-				}
-		    });
+        this.getRestaurants();
     },
     template: `
 	<div>
@@ -137,7 +130,7 @@ Vue.component("admin-restaurants", {
 				<p></p>
 
                 <a v-for="restaurant in finalResults" v-on:click="openRestaurantPage(restaurant)">
-                    <restaurant-card v-bind:key="restaurant.id" style="cursor: pointer;"
+                    <restaurant-card v-bind:key="restaurant.id" style="cursor: pointer;" v-on:getRestaurants="getRestaurants"
                         v-bind:restaurant="restaurant" v-bind:loggedInRole="'admin'"></restaurant-card>
                 </a>
 
@@ -439,6 +432,17 @@ Vue.component("admin-restaurants", {
             } else if (this.ratingSort == '') {
                 this.finalResults = this.finalResults.sort(function compareFn(a, b) { return a.rating - b.rating }).reverse();
             }
+        },
+        getRestaurants: function() {
+            axios
+                .get('/restaurants/getAllRestaurants')
+                .then(response => {
+                    if (response.data != null) {
+                        this.restaurants = response.data;
+                        this.finalResults = response.data;
+                    }
+                });
+            
         }
     }
 });

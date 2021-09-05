@@ -32,7 +32,7 @@ Vue.component("restaurant-card", {
 				<div  style="margin:5%">Zatvoren objekat</div>
 			</div>
 		</div>
-		<div class="comment-delete" v-on:click="deleteRestaurant" v-if="loggedInRole == 'admin'">
+		<div class="comment-delete" v-on:click="deleteRestaurant" v-if="loggedInRole == 'admin'" v-on:click.stop>
                 <div class="comment-status" style="background-color:rgba(44,53,63,1);" ><i class="fa fa-trash-o fa-2x" aria-hidden="true"></i></div>    
             </div>
 	</div>
@@ -43,7 +43,13 @@ Vue.component("restaurant-card", {
 
     methods: {
         deleteRestaurant: function() {
-
+			axios
+                .delete("/restaurants/" + this.restaurant.restaurantID)
+                .then(response => {
+                    if (response.data != null && response.data != "") {
+                        this.$emit('getRestaurants');
+                    }
+                })
         }
     }
 });

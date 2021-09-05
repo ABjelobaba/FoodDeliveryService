@@ -133,5 +133,11 @@ public class RestaurantService {
 
 		return rating;
 	}
+	
+	public void deleteRestaurant(int restaurantID) throws JsonSyntaxException, IOException {
+		Restaurant restaurant = restaurantDAO.getByID(restaurantID);
+		
+		restaurantDAO.delete(restaurant);
+	}
 
 }

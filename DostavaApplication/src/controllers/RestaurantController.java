@@ -8,6 +8,7 @@ import dto.FoodItemDTO;
 import dto.RestaurantDTO;
 import services.RestaurantService;
 
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
@@ -64,6 +65,19 @@ public class RestaurantController {
 
 			try {
 				restaurantService.updateRestaurantRating(Integer.parseInt(req.params("id")));
+				return "ok";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		
+		delete("/restaurants/:id", (req, res) -> {
+			res.type("application/json"); 
+
+			try {
+				restaurantService.deleteRestaurant(Integer.parseInt(req.params("id")));
+				
 				return "ok";
 			} catch (Exception e) {
 				e.printStackTrace();
