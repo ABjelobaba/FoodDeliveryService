@@ -386,7 +386,7 @@ function timeSort(a, b, reverse) {
     var bParts = b.innerHTML.slice(0, 5).split(':');
     bTime = new Date().setHours(bParts[0], bParts[1], 0);
 
-    if (Number(aTime) > Number(bTime)) {
+    if (Number(aTime) < Number(bTime)) {
         retVal = true;
     } else {
         retVal = false;
@@ -401,7 +401,7 @@ function timeSort(a, b, reverse) {
 
 function dateSort(a, b, reverse) {
     var retVal;
-    if (Number(Date.parse(a.innerHTML)) > Number(Date.parse(b.innerHTML))) {
+    if (Number(Date.parse(a.innerHTML)) < Number(Date.parse(b.innerHTML))) {
         retVal = true;
     } else {
         retVal = false;
@@ -417,7 +417,7 @@ function customerSort(a, b, reverse) {
     var retVal;
     var aText = a.getElementsByTagName('h3')[0].innerHTML;
     var bText = b.getElementsByTagName('h3')[0].innerHTML;
-    if (aText.localeCompare(bText) == 1) {
+    if (aText.localeCompare(bText) == -1) {
         retVal = true;
     } else {
         retVal = false;
@@ -433,7 +433,7 @@ function restaurantSort(a, b, reverse) {
     var retVal;
     var aText = a.getElementsByTagName('label')[0].innerHTML;
     var bText = b.getElementsByTagName('label')[0].innerHTML;
-    if (aText.localeCompare(bText) == 1) {
+    if (aText.localeCompare(bText) == -1) {
         retVal = true;
     } else {
         retVal = false;
@@ -465,7 +465,7 @@ function statusSort(a, b, reverse) {
     var retVal;
     var aText = a.outerText.trim();
     var bText = b.outerText.trim();
-    if (aText.localeCompare(bText) == 1) {
+    if (aText.localeCompare(bText) == -1) {
         retVal = true;
     } else {
         retVal = false;

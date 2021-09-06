@@ -313,10 +313,10 @@ Vue.component("admin-users", {
         sortByName: function() {
             let nameTH = document.querySelector('#name-th');
             if (nameTH.innerHTML.includes('sort-asc')) {
-                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) });
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) }).reverse();
                 nameTH.innerHTML = 'Ime <i class="fa fa-sort-desc" aria-hidden="true"></i>';
             } else {
-                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) }).reverse();
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.name.localeCompare(b.name) });
                 nameTH.innerHTML = 'Ime <i class="fa fa-sort-asc" aria-hidden="true"></i>';
             }
             this.resetOtherSorts('name');
@@ -324,10 +324,10 @@ Vue.component("admin-users", {
         sortBySurname: function() {
             let surnameTH = document.querySelector('#surname-th');
             if (surnameTH.innerHTML.includes('sort-asc')) {
-                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.surname.localeCompare(b.surname) });
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.surname.localeCompare(b.surname) }).reverse();
                 surnameTH.innerHTML = 'Prezime <i class="fa fa-sort-desc" aria-hidden="true"></i>';
             } else {
-                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.surname.localeCompare(b.surname) }).reverse();
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.surname.localeCompare(b.surname) });
                 surnameTH.innerHTML = 'Prezime <i class="fa fa-sort-asc" aria-hidden="true"></i>';
             }
             this.resetOtherSorts('surname');
@@ -335,10 +335,10 @@ Vue.component("admin-users", {
         sortByUsername: function() {
             let usernameTH = document.querySelector('#username-th');
             if (usernameTH.innerHTML.includes('sort-asc')) {
-                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.username.localeCompare(b.username) });
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.username.localeCompare(b.username) }).reverse();
                 usernameTH.innerHTML = 'Korisničko ime <i class="fa fa-sort-desc" aria-hidden="true"></i>';
             } else {
-                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.username.localeCompare(b.username) }).reverse();
+                this.searchResults = this.searchResults.sort(function compareFn(a, b) { return a.username.localeCompare(b.username) });
                 usernameTH.innerHTML = 'Korisničko ime <i class="fa fa-sort-asc" aria-hidden="true"></i>';
             }
             this.resetOtherSorts('username');
