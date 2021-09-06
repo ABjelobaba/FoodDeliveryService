@@ -3,11 +3,22 @@ Vue.component("view-order", {
     data: function() {
         return {
             restaurant: '',
-            mode: ''
+            mode: '',
+            loggedInUser: ''
         }
 
     },
     created: function() {
+        axios
+            .get("user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    this.loggedInUser = response.data.role;
+                } else {
+                    window.location.href = '#/';
+                }
+            })
+
         axios.
         get('/restaurant/' + this.selectedOrder.restaurantID)
             .then(response => {
@@ -35,7 +46,7 @@ Vue.component("view-order", {
                             <p > {{selectedOrder.orderDate}} </p>
                         </div>
                         <div class="order-status-white" style="text-align:right;margin-right:15%">
-                            <order-status-cell v-bind:orderStatus="selectedOrder.status"></order-status-cell> 
+                            <order-status-cell v-bind:orderStatus="selectedOrder.status" style="margin: 0 auto;"></order-status-cell> 
                         </div>
                     </div>
                     
@@ -48,8 +59,8 @@ Vue.component("view-order", {
                                 <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{selectedOrder.price}}.00 RSD</span> </p>
                         </div>
 
-                        <button v-if="selectedOrder.status =='Processing'" v-on:click="cancelOrder(selectedOrder)" class="cancle-btn" style="margin: 20px 20%"> Otkaži</button>
-                        <button v-if="mode == '' && selectedOrder.status =='Delivered' && !selectedOrder.comment" v-on:click="$emit('openRateModal')" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
+                        <button v-if="selectedOrder.status =='Processing' && loggedInUser == 'Customer'" v-on:click="cancelOrder(selectedOrder)" class="cancle-btn" style="margin: 20px 20%"> Otkaži</button>
+                        <button v-if="mode == '' && selectedOrder.status =='Delivered' && !selectedOrder.comment && loggedInUser == 'Customer'" v-on:click="$emit('openRateModal')" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
                         <button v-if="mode == 'waitingDeliveryOrders'" style="margin: 20px 20%;width: -webkit-fill-available;" class="ask-for-delivery-btn" v-on:click="$emit('requestOrder')"> Zatraži porudžbinu</button>
                         <button v-if="mode == 'allOrders' && selectedOrder.status == 'InTransport'" style="margin: 20px 20%;width: -webkit-fill-available;" class="ask-for-delivery-btn" v-on:click="$emit('confirmDelivery')"> Dostavi porudžbinu</button>
                     </div>
