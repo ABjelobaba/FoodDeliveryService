@@ -121,17 +121,33 @@ Vue.component("manager-orders", {
                         </td>
                         <td>{{order.price}}.00 RSD</td>
                         <td >
-                            <div class="order-status-black" v-if="order.status != 'prep'">
-                                <order-status-cell v-bind:orderStatus="order.status">
-                                </order-status-cell>
+                            <div v-if="order.status == 'Processing'" class="order-processed-btn" v-on:click="orderProcessed(order)"
+                                @mouseover="hover = order.orderID + 'p'"
+                                @mouseleave="hover = ''">
+
+                            <span v-if="hover != order.orderID + 'p'" class="delivery-btn-text">
+                                <i class="fa fa-spinner" aria-hidden="true"></i> Obrada
+                            </span>
+                            <span v-if="hover == order.orderID + 'p'" class="delivery-btn-confirmation-text" style="transition: 0.2s;">
+                                <i class="fa fa-cutlery" aria-hidden="true"></i> U pripremi
+                            </span>
                             </div>
 
-                            <div v-else class="order-prepared-btn" v-on:click="orderPrepared(order)"
-                                @mouseover="hover = true"
-                                @mouseleave="hover = false">
+                            <div v-else-if="order.status == 'InPreparation'" class="order-prepared-btn" v-on:click="orderPrepared(order)"
+                                @mouseover="hover = order.orderID + 'i'"
+                                @mouseleave="hover = ''">
 
-                            <span v-if="!hover" class="delivery-btn-text"><i class="fa fa-cutlery" aria-hidden="true"></i> U pripremi</span>
-                            <span v-if="hover" class="delivery-btn-confirmation-text" style="transition: 0.2s;"><i class="fa fa-spinner" aria-hidden="true"></i> Čeka dostavljača</span>
+                            <span v-if="hover != order.orderID + 'i'" class="delivery-btn-text">
+                                <i class="fa fa-cutlery" aria-hidden="true"></i> U pripremi
+                            </span>
+                            <span v-if="hover == order.orderID + 'i'" class="delivery-btn-confirmation-text" style="transition: 0.2s;">
+                                <i class="fa fa-spinner" aria-hidden="true"></i> Čeka dostavljača
+                            </span>
+                            </div>
+
+                            <div v-else class="order-status-black">
+                                <order-status-cell v-bind:orderStatus="order.status">
+                                </order-status-cell>
                             </div>
                         </td>
                     </tr>
@@ -226,9 +242,25 @@ Vue.component("manager-orders", {
             this.modalMode = "";
             this.selectedOrder = undefined;
         },
+        orderProcessed: function(order) {
+            axios
+                .put("/order/process/" + order.orderID + "/" + order.customerUsername)
+                .then(response => {
+                    if (response.data != null) {
+                        order.status = "InPreparation";
+                    }
+                })
+            event.stopPropagation();
+        },
         orderPrepared: function(order) {
-            order.status = "waitingDeliverer";
-            stopPropagation();
+            axios
+                .put("/order/prepare/" + order.orderID + "/" + order.customerUsername)
+                .then(response => {
+                    if (response.data != null) {
+                        order.status = "WaitingForDelivery";
+                    }
+                })
+            event.stopPropagation();
         },
         closeDeliveryRequests: function() {
             document.querySelector('#delivery-requests-view').style.display = 'none';

@@ -237,5 +237,27 @@ public class OrderService {
 		
 		return orders;
 	}
+	
+	public void processOrder(String orderID, String customerUsername) throws JsonSyntaxException, IOException {
+		Customer customer = (Customer) userDAO.getByID(customerUsername);
+		for (Order order : customer.getAllOrders()) {
+			if (order.getID().equals(orderID)) {
+				order.setStatus(OrderStatus.InPreparation);
+				break;
+			}
+		}
+		userDAO.update(customer);
+	}
+	
+	public void prepareOrder(String orderID, String customerUsername) throws JsonSyntaxException, IOException {
+		Customer customer = (Customer) userDAO.getByID(customerUsername);
+		for (Order order : customer.getAllOrders()) {
+			if (order.getID().equals(orderID)) {
+				order.setStatus(OrderStatus.WaitingForDelivery);
+				break;
+			}
+		}
+		userDAO.update(customer);
+	}
 
 }

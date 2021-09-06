@@ -152,5 +152,29 @@ public class OrderController {
 				return "";
 			}
 		});
+		
+		put("/order/process/:orderID/:username", (req, res) -> {
+			res.type("application/json");
+
+			try {
+				orderService.processOrder(req.params("orderID"), req.params("username"));
+				return gs.toJson("ok");
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+		
+		put("/order/prepare/:orderID/:username", (req, res) -> {
+			res.type("application/json");
+
+			try {
+				orderService.prepareOrder(req.params("orderID"), req.params("username"));
+				return gs.toJson("ok");
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
     }
 }
