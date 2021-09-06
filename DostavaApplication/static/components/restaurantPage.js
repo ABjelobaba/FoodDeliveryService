@@ -190,9 +190,9 @@ Vue.component("restaurant-page", {
             </p>
             <div class="av-buttons-rp">
                 <div class="cq-buttons-rp">
-                    <img src="images/remove-white.png" alt="Remove item" v-on:click="decreaseQuantity" class="change-quantity-rp">
+                    <i class="fa fa-minus" aria-hidden="true" v-on:click="decreaseQuantity"></i>
                     <h5>{{selectedArticleQuantity}}</h5>
-                    <img src="images/add-white.png" alt="Add item" v-on:click="increaseQuantity" class="change-quantity-rp">
+                    <i class="fa fa-plus" aria-hidden="true" v-on:click="increaseQuantity"></i>
                 </div>
                 <div class="add-to-basket-rp">
                     <a href="#" v-if="loggedInUser.role != 'Administrator'" v-on:click="addToCart" >Dodaj u korpu</a>

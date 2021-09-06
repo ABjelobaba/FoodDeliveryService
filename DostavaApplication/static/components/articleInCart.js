@@ -10,8 +10,8 @@ Vue.component("article-in-cart", {
 	    <div class="remove-item-from-cart" v-on:click="deleteItem">  <h4>+</h4> </div>
 	
 	    <div class="change-quantity">
-	        <img src="images/add.png" alt="Add one item" v-on:click="addItem">
-	        <img src="images/remove.png" alt="Remove one item" v-on:click="removeItem">
+            <i class="fa fa-minus" aria-hidden="true"  v-on:click="removeItem"></i>
+            <i class="fa fa-plus" aria-hidden="true" v-on:click="addItem"></i>
 	    </div>
 	</li>
 	`,

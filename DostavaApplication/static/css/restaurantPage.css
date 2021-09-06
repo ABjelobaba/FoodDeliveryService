@@ -349,12 +349,14 @@
     margin-top: 1.5em;
 }
 
-.cq-buttons-rp img {
+.cq-buttons-rp i {
     z-index: 1;
     cursor: pointer;
-    width: 2em;
-    border: 1px solid white;
+    font-size: 2em;
+    padding: 2px 7px 0px 7px;
+    border: 2px solid white;
     border-radius: 50%;
+    margin-bottom: 2px;
 }
 
 .add-to-basket-rp {
