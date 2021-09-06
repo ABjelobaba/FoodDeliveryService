@@ -203,5 +203,22 @@ public class OrderService {
 			}
 		}
 	}
+	
+	public List<Order> getAllPreviousOrdersByRestaurant(int restaurantID) throws JsonSyntaxException, IOException {
+		List<Order> orders = new ArrayList<Order>();
+		for (User user : userDAO.getAllNotDeleted()) {
+			if (user.getRole().equals(Role.Customer)) {
+				Customer customer = (Customer) user;
+    			for (Order order : customer.getAllOrders()) {
+    				if (order.getRestaurantID() == restaurantID && 
+    						(order.getStatus().equals(OrderStatus.Delivered) || order.getStatus().equals(OrderStatus.Cancelled))) {
+    					orders.add(order);
+    				}
+    			}
+    		}
+		}
+		
+		return orders;
+	}
 
 }
