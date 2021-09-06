@@ -230,7 +230,7 @@ Vue.component("manager-orders", {
             document.querySelector('.table-users').style.top = '0px';
         },
         showOrder: function(order) {
-            if (order.status != "waitingDeliverer") {
+            if (order.status != "WaitingForDelivery") {
                 this.modalMode = "showOrder";
                 this.selectedOrder = order;
             }
