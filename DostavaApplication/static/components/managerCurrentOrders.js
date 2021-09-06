@@ -1,82 +1,24 @@
 Vue.component("manager-orders", {
     data: function() {
         return {
-            name: '',
-            surname: '',
-            username: '',
-            currentRestaurant: [],
-            article: '',
-            order: '',
+            mode: 'all',
+            modalMode: '',
             selectedOrder: undefined,
             orderStatuses: [
-                { id: 'processing', value: 'Obrada' },
-                { id: 'prep', value: 'U pripremi' },
-                { id: 'waitingDeliverer', value: 'Čeka dostavljača' },
-                { id: 'transporting', value: 'U transportu' },
-                { id: 'finished', value: 'Dostavljena' },
-                { id: 'canceled', value: 'Otkazana' }
+                { id: 'Processing', value: 'Obrada' },
+                { id: 'InPreparation', value: 'U pripremi' },
+                { id: 'WaitingForDelivery', value: 'Čeka dostavljača' },
+                { id: 'InTransport', value: 'U transportu' }
             ],
-            cuisines: [
-                { id: 'italian', value: 'Italijanska' },
-                { id: 'chinese', value: 'Kineska' },
-                { id: 'barbecue', value: 'Rostilj' },
-                { id: 'american', value: 'Americka hrana' },
-                { id: 'sweets', value: 'Poslastice' }
-            ],
-            orders: [{
-                    id: 1,
-                    date: '21.08.2021.',
-                    restaurant: {
-                        id: 1,
-                        img: 'images/kfc.jpg',
-                        name: 'KFC',
-                        type: 'Americka hrana',
-                        status: 'OPENED'
-                    },
-                    summeryPrice: 1235,
-                    status: 'processing',
-                    articles: [{
-                        id: 1,
-                        name: 'Burger',
-                        quantity: 2
-                    }, {
-                        id: 2,
-                        name: 'Pomfrit',
-                        quantity: 2
-                    }]
-                },
-                {
-                    id: 2,
-                    date: '17.08.2021.',
-                    restaurant: {
-                        id: 2,
-                        img: 'images/mcdonalds.png',
-                        name: "KFC",
-                        type: 'Americka hrana',
-                        status: 'OPENED'
-                    },
-                    summeryPrice: 1200,
-                    status: 'prep'
-                },
-                {
-                    id: 3,
-                    date: '11.07.2021.',
-                    restaurant: {
-                        id: 3,
-                        img: 'images/burgerhouse.jpg',
-                        name: 'KFC',
-                        type: 'Americka hrana',
-                        status: 'CLOSED'
-                    },
-                    summeryPrice: 3590,
-                    status: 'waitingDeliverer'
-                },
-                { id: 4, date: '05.06.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'KFC', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 560, status: 'transporting' },
-                { id: 5, date: '20.04.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'KFC', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 1200, status: 'finished' },
-                { id: 6, date: '15.03.2021.', restaurant: { id: 3, img: 'images/burgerhouse.jpg', name: 'KFC', type: 'Americka hrana', status: 'CLOSED' }, summeryPrice: 2560, status: 'canceled' }
-            ],
-            hover: false,
-            rect: undefined,
+            orders: [],
+            originalOrders: [],
+            hover: '',
+            searchText: '',
+            fromPrice: '',
+            toPrice: '',
+            restaurantID: '',
+            fromTime: '',
+            toTime: '',
             deliverers: [
                 { id: '4', role: 'deliverer', name: 'Filip', surname: 'Janković', username: 'filipp', points: 0 },
                 { id: '5', role: 'deliverer', name: 'Nemanja', surname: 'Marković', username: 'n_markovic', points: 0 },
@@ -84,7 +26,29 @@ Vue.component("manager-orders", {
             ]
         }
     },
+    created: function() {
+        axios
+            .get("user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    this.restaurantID = response.data.restaurantID;
 
+                    axios
+                        .get("/order/getCurrentOrdersByRestaurant/" + this.restaurantID)
+                        .then(response => {
+                            if (response.data != null) {
+                                this.orders = response.data;
+                                this.originalOrders = this.orders;
+                            } else {
+                                window.location.href = '#/';
+                            }
+                        })
+                } else {
+                    window.location.href = '#/';
+                }
+            })
+
+    },
     template: `
     <div>
         <h1 style="text-align: center;">Pregled aktuelnih porudžbina restorana
@@ -92,7 +56,7 @@ Vue.component("manager-orders", {
         <div class="users-search">
             <div class="search-text-div">
                 <i style="text-align: center;" class="fa fa-search"></i>
-                <input type="text" placeholder="Pretraži po opsegu cene ili opsegu datuma..." id="search-text-mo">
+                <input type="text" placeholder="Pretraži po kupcu..." id="search-text-mo" v-model="searchText" v-on:keyup="findOrder">
             </div>
             <button class="filter-btn" v-on:click="advancedSearchClicked" id="advancedSearch-btn-do"><i class="fa fa-angle-down fa-lg"></i></button>
             <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
@@ -106,7 +70,7 @@ Vue.component("manager-orders", {
                 <h2>Status porudžbine</h2>
                 <div class="checkbox-btn-container-dark" >
                     <div v-for="status in orderStatuses">
-                        <input type="checkbox" v-bind:id="status.id" name="orderStatus" v-bind:value="status.id">
+                        <input type="checkbox" v-bind:id="status.id" name="orderStatus" v-bind:value="status.value" v-on:change="findOrder">
                         <label v-bind:for="status.id">{{status.value}}</label>
                     </div>
                 </div>
@@ -119,38 +83,43 @@ Vue.component("manager-orders", {
 
                 <div style="margin:20px">
                     <h2>Cena:</h2>
-                    <label>Od:</label><input type="number" min='0' name="price" id="fromPrice" placeholder="00000">(.00 RSD)<br>
-                    <label>Do:</label><input type="number" min='0' name="price" id="toPrice" placeholder="00000">(.00 RSD)
+                    <label>Od:</label><input type="number" min='0' name="price" id="fromPrice" placeholder="00000" v-model="fromPrice" v-on:change="findOrder" v-on:keyup="findOrder">(.00 RSD)<br>
+                    <label>Do:</label><input type="number" min='0' name="price" id="toPrice" placeholder="00000" v-model="toPrice" v-on:change="findOrder" v-on:keyup="findOrder">(.00 RSD)
                 </div>
                 <div style="margin:20px">
-                    <h2>Datum:</h2>
-                    <label>Od:</label><input type="date" name="date" id="fromDate" ><br>
-                    <label>Do:</label><input type="date" name="date" id="toDate" >
+                    <h2>Vreme:</h2>
+                    <label>Od:</label><input type="time" name="time" id="fromTime"  v-on:input="findOrder"><br>
+                    <label>Do:</label><input type="time" name="time" id="toTime" v-on:input="findOrder" style="margin-left: 1px;">
                 </div> 
+                <div>
+                    <button class="filter-btn" v-on:click="invalidate" id="filter-btn-do" style="white-space: nowrap;float:none">Poništi</button>
+                </div>
             </div>
         </div>
                     
 
         <div class="content" style="display:block" >
-            <table class="table-users" name="orders">
+            <table class="table-users" name="orders" id="managerCurrentOrders">
                 <thead>
                     <tr>
-                        <th>Datum <i class="fa fa-sort "></i></th>
-                        <th>Kupac <i class="fa fa-sort"></i></th>
-                        <th>Cena <i class="fa fa-sort"></i></th>
-                        <th>Status <i class="fa fa-sort"></i></th>
+                        <th v-on:click="sortByTime" id="timeTH">Vreme <i class="fa fa-sort "></i></th>
+                        <th v-on:click="sortByCustomer" id="customerTH">Kupac <i class="fa fa-sort"></i></th>
+                        <th v-on:click="sortByPrice" id="priceTH">Cena <i class="fa fa-sort"></i></th>
+                        <th v-on:click="sortByStatus" id="statusTH">Status <i class="fa fa-sort"></i></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="order in orders" v-on:click="showOrder(order)">
-                        <td>{{order.date}}</td>
+                        <td>{{order.orderDate}}</td>
                         <td>
                             <div class="user-address-delivery">
-                                <h3>Marko Markovic</h3>
-                                <h4>Bulevar Evrope 9, Novi Sad</h4>
+                                <label>
+                                    <h3>{{order.customerName}} {{order.customerSurname}}</h3>
+                                    <h4>{{order.address}}</h4>
+                                </label>
                             </div>
                         </td>
-                        <td>{{order.summeryPrice}}.00 RSD</td>
+                        <td>{{order.price}}.00 RSD</td>
                         <td >
                             <div class="order-status-black" v-if="order.status != 'prep'">
                                 <order-status-cell v-bind:orderStatus="order.status">
@@ -170,33 +139,9 @@ Vue.component("manager-orders", {
             </table>
         </div>
 
-        <div class="register"  style="display:flex;z-index:100" v-if="selectedOrder != undefined">
-            <div class="modal" style="height:auto; padding-bottom: 35px;">
-            <div v-on:click="closeOrderView" class="close">+</div>
-                <div>
-                    <div class="order-articles-title-div">
-                        <div class="order-articles-title" >
-                            <p> {{selectedOrder.restaurant.name}} </p>
-                            <p> {{selectedOrder.date}} </p>
-                        </div>
-                        <div class="order-status-white" style="text-align:right;margin-right:15%">
-                            <order-status-cell v-bind:orderStatus="selectedOrder.status"></order-status-cell>  
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 7%;" >
-                        <article-in-order v-for="article in selectedOrder.articles" v-bind:key="article.id" v-bind:article="article"></article-in-order>
-                        
-                        <div style="border:1px solid white;margin: 5% 10% 2%" ></div>
-                        <div class="price-calculation-order-view">
-                            <p class="pc-order-view">  <span>Dostava</span>   <span>+ 200.00 RSD</span> </p>
-                            <p class="pc-order-view">  <span>Ukupna cena</span>   <span>{{selectedOrder.summeryPrice}}.00 RSD</span> </p>
-                        </div>
-                        <button style="margin: 20px 20%;width: -webkit-fill-available; display: none;" class="ask-for-delivery-btn"> Zatraži porudžbinu</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <view-order v-if="modalMode == 'showOrder'" 
+        v-bind:selectedOrder="selectedOrder" 
+        v-on:closeModal="closeModal"></view-order>
 
         <div class="register" style="display:none;z-index:100" v-if="" id="delivery-requests-view">
             <div class="modal" style="height:auto; padding-bottom: 35px;">
@@ -269,13 +214,16 @@ Vue.component("manager-orders", {
             document.querySelector('.table-users').style.top = '0px';
         },
         showOrder: function(order) {
-            if (order.status != "waitingDeliverer")
+            if (order.status != "waitingDeliverer") {
+                this.modalMode = "showOrder";
                 this.selectedOrder = order;
-            else
+            }
+            else {
                 document.querySelector('#delivery-requests-view').style.display = 'flex';
-
+            }
         },
-        closeOrderView: function() {
+        closeModal: function(event) {
+            this.modalMode = "";
             this.selectedOrder = undefined;
         },
         orderPrepared: function(order) {
@@ -284,6 +232,100 @@ Vue.component("manager-orders", {
         },
         closeDeliveryRequests: function() {
             document.querySelector('#delivery-requests-view').style.display = 'none';
+        },
+        invalidate: function() {
+            this.toPrice = '';
+            this.fromPrice = '';
+            this.findOrder();
+        },
+        findOrder: function() {
+
+            table = document.getElementById("managerCurrentOrders");
+            tr = table.getElementsByTagName("tr");
+
+            checkboxes = document.getElementsByName("orderStatus");
+            let checkedStatus = [];
+            for (c of checkboxes) {
+                if (c.checked) {
+                    checkedStatus.push(c.value);
+                }
+            }
+
+            //SEARCH
+            searchFunction(this.searchText, tr, 1);
+
+            //FILTER - STATUS
+            filterStatusFunction(checkedStatus, tr, 3);
+
+            //PRICE
+            filterPriceFunction(this.fromPrice, this.toPrice, tr, 2);
+
+             //TIME
+             fromTime = document.getElementById("fromTime").value;
+             toTime = document.getElementById("toTime").value;
+             filterTimeFunction(fromTime, toTime, tr, 0);
+        },
+        sortByTime: function() {
+            let timeTH = document.querySelector('#timeTH');
+            if (timeTH.innerHTML.includes('sort-desc')) {
+                sortTable('managerCurrentOrders', 0, 'time', true);
+                timeTH.innerHTML = 'Vreme <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('managerCurrentOrders', 0, 'time', false);
+                timeTH.innerHTML = 'Vreme <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('time');
+        },
+        sortByCustomer: function() {
+            let customerTH = document.querySelector('#customerTH');
+            if (customerTH.innerHTML.includes('sort-desc')) {
+                sortTable('managerCurrentOrders', 1, 'customer', true);
+                customerTH.innerHTML = 'Kupac <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('managerCurrentOrders', 1, 'customer', false);
+                customerTH.innerHTML = 'Kupac <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('customer');
+        },
+        sortByPrice: function() {
+            let priceTH = document.querySelector('#priceTH');
+            if (priceTH.innerHTML.includes('sort-desc')) {
+                sortTable('managerCurrentOrders', 2, 'price', true);
+                priceTH.innerHTML = 'Cena <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('managerCurrentOrders', 2, 'price', false);
+                priceTH.innerHTML = 'Cena <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('price');
+        },
+        sortByStatus: function() {
+            let statusTH = document.querySelector('#statusTH');
+            if (statusTH.innerHTML.includes('sort-desc')) {
+                sortTable('managerCurrentOrders', 3, 'status', true);
+                statusTH.innerHTML = 'Status <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+            } else {
+                sortTable('managerCurrentOrders', 3, 'status', false);
+                statusTH.innerHTML = 'Status <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+            }
+            this.resetOtherSorts('status');
+        },
+        resetOtherSorts: function(activeSort) {
+            if (activeSort != "time") {
+                let timeTH = document.querySelector('#timeTH');
+                timeTH.innerHTML = 'Vreme <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "customer") {
+                let customerTH = document.querySelector('#customerTH');
+                customerTH.innerHTML = 'Kupac <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "price") {
+                let priceTH = document.querySelector('#priceTH');
+                priceTH.innerHTML = 'Cena <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
+            if (activeSort != "status") {
+                let statusTH = document.querySelector('#statusTH');
+                statusTH.innerHTML = 'Status <i class="fa fa-sort" aria-hidden="true"></i>';
+            }
         }
     }
 })

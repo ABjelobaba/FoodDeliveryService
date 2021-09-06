@@ -140,5 +140,17 @@ public class OrderController {
 				return "";
 			}
 		});
+		
+		get("/order/getCurrentOrdersByRestaurant/:id",(req, res)->{
+			res.type("application/json");
+
+			try {
+				List<Order> orders = orderService.getAllCurrentOrdersByRestaurant(Integer.parseInt(req.params("id")));
+				return gsTime.toJson(orders);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
     }
 }

@@ -35,7 +35,7 @@ Vue.component("view-order", {
                             <p > {{selectedOrder.orderDate}} </p>
                         </div>
                         <div class="order-status-white" style="text-align:right;margin-right:15%">
-                            <order-status-cell v-bind:orderStatus="selectedOrder.status"></order-status-cell> 
+                            <order-status-cell v-bind:orderStatus="selectedOrder.status" style="margin: 0 auto;"></order-status-cell> 
                         </div>
                     </div>
                     

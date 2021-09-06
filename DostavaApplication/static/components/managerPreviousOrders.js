@@ -125,8 +125,7 @@ Vue.component("manager-previous-orders", {
 
         <view-order v-if="modalMode == 'showOrder'" 
         v-bind:selectedOrder="selectedOrder" 
-        v-on:closeModal="closeModal"
-        v-on:openRateModal="openRateModal(selectedOrder)"></view-order>
+        v-on:closeModal="closeModal"></view-order>
 
     </div>
               `,
