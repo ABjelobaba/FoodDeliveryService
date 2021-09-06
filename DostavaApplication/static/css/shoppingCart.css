@@ -100,22 +100,21 @@
 .change-quantity {
     display: block;
     text-align: right;
-    margin-top: 0.2em;
+    margin-top: -0.1em;
     margin-right: 1.5em;
+    margin-bottom: 0.1em;
     padding: 0;
 }
 
-.change-quantity img {
-    border: 1px solid black;
+.change-quantity i {
+    border: 2px solid black;
+    font-size: 27px;
     border-radius: 10%;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 25px;
-    height: 25px;
+    padding: 2px 10px 0px 10px;
     cursor: pointer;
 }
 
-.change-quantity img:hover {
+.change-quantity i:hover {
     background-color: #dddddd;
 }
 
