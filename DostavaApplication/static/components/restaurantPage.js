@@ -199,14 +199,14 @@ Vue.component("restaurant-page", {
                 {{selectedArticle.description}}
             </p>
             <div class="av-buttons-rp">
-                <div class="cq-buttons-rp">
+                <div class="cq-buttons-rp" v-if="loggedInUser.role == 'Customer'">
                     <i class="fa fa-minus" aria-hidden="true" v-on:click="decreaseQuantity"></i>
                     <h5>{{selectedArticleQuantity}}</h5>
                     <i class="fa fa-plus" aria-hidden="true" v-on:click="increaseQuantity"></i>
                 </div>
-                <div class="add-to-basket-rp">
-                    <a href="#" v-if="loggedInUser.role != 'Administrator'" v-on:click="addToCart" >Dodaj u korpu</a>
-                    <a href="#" v-else v-on:click="deleteArticle"><i class="fa fa-trash-o fa-lg" aria-hidden="true" > </i> Obriši</a>
+                <div class="add-to-basket-rp" >
+                    <a href="#" v-if="loggedInUser.role == 'Customer'" v-on:click="addToCart" >Dodaj u korpu</a>
+                    <a href="#"  v-if="loggedInUser.role == 'Administrator'" v-on:click="deleteArticle"><i class="fa fa-trash-o fa-lg" aria-hidden="true" > </i> Obriši</a>
                 </div>
 
             </div>
