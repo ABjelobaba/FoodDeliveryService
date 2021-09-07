@@ -214,7 +214,7 @@ Vue.component("account", {
             for (element of document.getElementsByName("user-nav")) {
                 element.style.backgroundColor = "transparent";
             }
-            document.getElementById('restaurant-customer-list').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            document.getElementById('managers-restaurant').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
             window.location.href = "#/restaurant?id=" + this.loggedInUser.restaurantID;
         },
         managersOrdersView: function(event) {

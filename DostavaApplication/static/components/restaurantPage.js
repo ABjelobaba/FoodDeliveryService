@@ -120,11 +120,11 @@ Vue.component("restaurant-page", {
 
             <nav class="user-nav user-nav-rp" v-if="loggedInUser.role == 'Manager' && loggedInUser.restaurantID == restaurant.restaurantID">
                 <ul id="user-nav-ul">
-                    <li><a  name="user-nav" id="profile">Profil</a></li>
-                    <li><a name="user-nav" id="managers-restaurant"> {{restaurant.name}}</a></li>
-                    <li><a  name="user-nav" id="managers-orders"> Aktuelne porudžbine</a></li>
-                    <li><a  name="user-nav" id="managers-prev-orders"> Prethodne porudžbine</a></li>
-                    <li><a  name="user-nav" id="restaurant-customer-list">Kupci</a></li>
+                    <li><a href="#/account/profile" name="user-nav" id="profile">Profil</a></li>
+                    <li><a name="user-nav" id="managers-restaurant" style="background-color: rgba(255, 255, 255, 0.3);"> {{restaurant.name}}</a></li>
+                    <li><a href="#/account/restaurantOrders" name="user-nav" id="managers-orders"> Aktuelne porudžbine</a></li>
+                    <li><a href="#/account/restaurantPreviousOrders" name="user-nav" id="managers-prev-orders"> Prethodne porudžbine</a></li>
+                    <li><a href="#/account/customers" name="user-nav" id="restaurant-customer-list">Kupci</a></li>
                 </ul>
             </nav>
         </div>
@@ -531,6 +531,6 @@ Vue.component("restaurant-page", {
                         this.selectedArticle = undefined;
                     }
                 })
-        },
+        }
     }
 });
