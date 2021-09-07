@@ -133,10 +133,10 @@ Vue.component("restaurant-page", {
 
     <div class="bottom-section-rp">
         <div style="position: sticky;top: 65px;text-align: right;align-self: start;">
-            <div v-if="loggedInUser.role == 'Manager'">
+            <div v-if="loggedInUser.role == 'Manager' && loggedInUser.restaurantID == restaurant.restaurantID">
                 <button v-on:click="showNewArticleWindow()" class="add-article-btn">+ Novi artikal</button>
             </div>
-            <div v-if="loggedInUser.role =='Administrator' || loggedInUser.role =='Manager'">
+            <div v-if="loggedInUser.role =='Administrator' || (loggedInUser.role =='Manager' && loggedInUser.restaurantID == restaurant.restaurantID)">
                 <input v-on:click="showHideReviews()" type="checkbox" id="viewReviews" value="viewReviews">
                 <label class="full-radio-btn-label" style="min-width: fit-content;margin:1.5em 0 0 0" for="viewReviews">Pregled utisaka</label>
             </div>
@@ -174,7 +174,8 @@ Vue.component("restaurant-page", {
                 <ul class="user-reviews-list-rp">
                     <comment-status v-for="c in computedComment" v-on:askToDelete="askToDeleteComment"
                             v-if="(loggedInUser.role != 'Administrator' && loggedInUser.role != 'Manager' && c.status == 'Approved') || loggedInUser.role == 'Administrator' || loggedInUser.role == 'Manager'"
-                            v-bind:key="c.reviewID" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role"></comment-status>
+                            v-bind:key="c.reviewID" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role" 
+                            v-bind:restaurantID="restaurant.restaurantID" v-bind:managersRestaurant="loggedInUser.restaurantID"></comment-status>
                     
                     <h3 v-if="areThereVisibleComments == false"  style="text-align:center; font-size: 1.5em; padding-bottom: 1.7em;" >Niko nije ostavio utiske</h3>
                 </ul>

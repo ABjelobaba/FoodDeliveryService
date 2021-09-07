@@ -1,5 +1,5 @@
 Vue.component("comment-status", {
-    props: ['comment', 'loggedInRole'],
+    props: ['comment', 'loggedInRole', 'restaurantID', 'managersRestaurant'],
     data: function() {
         return {
             customer: '',
@@ -29,7 +29,7 @@ Vue.component("comment-status", {
                 <h4>{{comment.review}}</h4>
                 <h5>- {{customer.name}}</h5>
             </div>
-            <div class="comment-status-container" v-bind:name="comment.reviewID" v-if="loggedInRole == 'Manager'">
+            <div class="comment-status-container" v-bind:name="comment.reviewID" v-if="loggedInRole == 'Manager' && managersRestaurant == restaurantID">
 
                 <div v-if="comment.status == 'WaitingForApproval'" class="comment-status-button" name="red" v-on:click="rejectComment">
                     <i class="fa fa-ban fa-2x" aria-hidden="true"></i>
