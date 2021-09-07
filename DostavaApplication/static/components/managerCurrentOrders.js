@@ -58,7 +58,10 @@ Vue.component("manager-orders", {
             </div>
             <button class="filter-btn" v-on:click="advancedSearchClicked" id="advancedSearch-btn-do"><i class="fa fa-angle-down fa-lg"></i></button>
             <button class="filter-btn" v-on:click="filterClicked" id="filter-btn-do"><i class="fa fa-sliders fa-lg"></i>Filteri<i class="fa fa-angle-down fa-lg"></i></button>
-            <button class="new-user-btn">Porudžbine koje čekaju dostavljača</button>
+            <div >
+                <input v-on:click="ordersToBeDelivered" type="checkbox" id="ordersToBeDelivered" value="ordersToBeDelivered">
+                <label style="padding: 10px 10px;font-size: 15px;white-space: nowrap;" class="full-radio-btn-label" for="ordersToBeDelivered">Porudžbine koje čekaju dostavljača</label>
+            </div>
         </div>
         
         <div class="filter-div" id="filter-div" style="top:250px">
@@ -325,6 +328,21 @@ Vue.component("manager-orders", {
             document.querySelector('#delivery-requests-view').style.display = 'none';
             this.selectedOrder = undefined;
             this.selectedDeliveryRequest = undefined;
+        },
+        ordersToBeDelivered: function() {
+            if (this.mode == 'all') {
+                this.mode = 'toBeDelivered';
+                this.orders = this.orders.filter(function(element) {
+                    if (element.status == "WaitingForDelivery") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            } else {
+                this.mode = 'all';
+                this.orders = this.originalOrders;
+            }
         },
         invalidate: function() {
             this.toPrice = '';
