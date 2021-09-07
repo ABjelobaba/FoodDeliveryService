@@ -16,5 +16,14 @@ public class DeliveryRequest {
     public boolean getRequestProcessed(){
         return requestProcessed;
     }
+
+	public void setDeliverer(Deliverer deliverer) {
+		this.deliverer = deliverer;
+	}
+
+	public void setRequestProcessed(boolean requestProcessed) {
+		this.requestProcessed = requestProcessed;
+	}
+    
     
 }

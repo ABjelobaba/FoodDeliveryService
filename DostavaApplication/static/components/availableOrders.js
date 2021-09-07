@@ -51,7 +51,7 @@ Vue.component("available-orders", {
                 <div style="margin:20px">
                     <h2>Vreme:</h2>
                     <label>Od:</label><input type="time" name="time" id="fromTime"  v-on:input="findOrder"><br>
-                    <label>Do:</label><input type="time" name="time" id="toTime" v-on:input="findOrder">
+                    <label>Do:</label><input type="time" name="time" id="toTime" v-on:input="findOrder" style="margin-left: 1px;">
                 </div> 
             </div>
         </div>

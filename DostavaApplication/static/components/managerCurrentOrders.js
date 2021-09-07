@@ -19,11 +19,9 @@ Vue.component("manager-orders", {
             restaurantID: '',
             fromTime: '',
             toTime: '',
-            deliverers: [
-                { id: '4', role: 'deliverer', name: 'Filip', surname: 'Janković', username: 'filipp', points: 0 },
-                { id: '5', role: 'deliverer', name: 'Nemanja', surname: 'Marković', username: 'n_markovic', points: 0 },
-                { id: '6', role: 'deliverer', name: 'Maja', surname: 'Zorić', username: 'maja_z', points: 0 }
-            ]
+            delivereryRequests: [],
+            selectedDeliveryRequest: undefined,
+            requestKey: 0
         }
     },
     created: function() {
@@ -159,24 +157,27 @@ Vue.component("manager-orders", {
         v-bind:selectedOrder="selectedOrder" 
         v-on:closeModal="closeModal"></view-order>
 
-        <div class="register" style="display:none;z-index:100" v-if="" id="delivery-requests-view">
+        <div class="register" style="display:none;z-index:100" v-if="" id="delivery-requests-view" v-bind:selectedOrder="selectedOrder" >
             <div class="modal" style="height:auto; padding-bottom: 35px;">
             <div v-on:click="closeDeliveryRequests" class="close">+</div>
                 <div class="login-title" style="margin: auto 0;">
                     <h3 style="color: white; font-weight: bolder;"> ZAHTEVI ZA DOSTAVU </h3>
                 </div>
                 <label style="color: white;display: block;margin:15px 0 1em 0;font-weight: bold;">Odaberite dostavljača:</label>
-                <div class="radio-btn-container" style="width: 60%;height: 200px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2); min-width: fit-content">
-                    <div v-for="deliverer in deliverers">
-                        <input type="radio" v-bind:id=deliverer.id name="contact" v-bind:value=deliverer.id>
-                        <label style="font-size: 1.25em;" class="radio-label" v-bind:for=deliverer.id> <span style="margin-left: 10px;"> {{deliverer.name}} {{deliverer.surname}} </span> 
-                            <span style="margin-left: auto; margin-right: 10px;">{{deliverer.username}}</span></label>
+                <div class="radio-btn-container" style="width: 60%;height: 200px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2); min-width: fit-content" :key="requestKey">
+                    <div v-for="request in delivereryRequests">
+                        <input type="radio" v-bind:id=request.deliverer.username name="contact" v-bind:value=request.deliverer.username>
+                        <label v-if="request.requestProcessed == false" style="font-size: 1.25em;" class="radio-label" v-bind:for=request.deliverer.username v-on:click="selectDeliveryRequest(request)"> <span style="margin-left: 10px;"> 
+                            {{request.deliverer.name}} {{request.deliverer.surname}} </span> 
+                            <span style="margin-left: auto; margin-right: 10px;">{{request.deliverer.username}}</span></label>
                     </div>
+                    <!-- <div v-if="delivereryRequests.length == 0"> <h3 style="color: white;">Niko nije poslao zahtev</h3> </div> -->
                 </div>
+                <label class="error" id="deliverRequestErr" name="labels" display="hidden"> </label>
 
                 <div class="delivery-request-btns">
-                    <button class="delivery-req-btns refuse-delivery-btn">Odbi</button>
-                    <button class="delivery-req-btns approve-delivery-btn">Odobri</button>
+                    <button class="delivery-req-btns refuse-delivery-btn" v-on:click="rejectDeliveryRequest()">Odbi</button>
+                    <button class="delivery-req-btns approve-delivery-btn" v-on:click="approveDeliveryRequest()">Odobri</button>
                 </div>
             </div>
         </div>
@@ -235,6 +236,8 @@ Vue.component("manager-orders", {
                 this.selectedOrder = order;
             }
             else {
+                this.selectedOrder = order;
+                this.delivereryRequests = order.deliveryRequests;
                 document.querySelector('#delivery-requests-view').style.display = 'flex';
             }
         },
@@ -262,8 +265,56 @@ Vue.component("manager-orders", {
                 })
             event.stopPropagation();
         },
+        selectDeliveryRequest: function(request) {
+            this.selectedDeliveryRequest = request;
+        },
+        approveDeliveryRequest: function() {
+            if (!this.selectedDeliveryRequest) {
+                document.getElementById('deliverRequestErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate selektovati dostavljača!';
+            } else {
+                let RequestForDeliveryDTO = {
+                    orderID: this.selectedOrder.orderID,
+                    delivererUsername: this.selectedDeliveryRequest.deliverer.username,
+                    customerUsername: this.selectedOrder.customerUsername
+                }
+                axios
+                    .put("/order/approveDeliveryRequest", JSON.stringify(RequestForDeliveryDTO))
+                    .then(response => {
+                        if (response.data != null) {
+                            this.selectedOrder.status = "InTransport";
+                            document.querySelector('#delivery-requests-view').style.display = 'none';
+                            this.selectedDeliveryRequest = undefined;
+                             
+                        }
+                })
+
+            }
+        },
+        rejectDeliveryRequest: function() {
+            if (!this.selectedDeliveryRequest) {
+                document.getElementById('deliverRequestErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate selektovati dostavljača!';
+            } else {
+                let RequestForDeliveryDTO = {
+                    orderID: this.selectedOrder.orderID,
+                    delivererUsername: this.selectedDeliveryRequest.deliverer.username,
+                    customerUsername: this.selectedOrder.customerUsername
+                }
+                axios
+                    .put("/order/rejectDeliveryRequest", JSON.stringify(RequestForDeliveryDTO))
+                    .then(response => {
+                        if (response.data != null) {
+                            this.selectedDeliveryRequest.requestProcessed = true;
+                            this.requestKey = this.requestKey + 1;
+                        }
+                })
+
+            }
+        },
         closeDeliveryRequests: function() {
+            document.getElementById('deliverRequestErr').style.display = 'none' ;
             document.querySelector('#delivery-requests-view').style.display = 'none';
+            this.selectedOrder = undefined;
+            this.selectedDeliveryRequest = undefined;
         },
         invalidate: function() {
             this.toPrice = '';

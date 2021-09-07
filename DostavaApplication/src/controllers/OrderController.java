@@ -14,6 +14,7 @@ import beans.Deliverer;
 import beans.Order;
 import beans.ShoppingCart;
 import dto.OrderRequestDTO;
+import dto.RequestForDeliveryDTO;
 import services.OrderService;
 import spark.Session;
 
@@ -176,5 +177,30 @@ public class OrderController {
 				return "";
 			}
 		});
+		
+		put("/order/approveDeliveryRequest", (req, res) -> {
+			res.type("application/json");
+
+			try {
+				orderService.approveDeliveryRequest(gs.fromJson(req.body(), RequestForDeliveryDTO.class));
+				return gs.toJson("ok");
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+		
+		put("/order/rejectDeliveryRequest", (req, res) -> {
+			res.type("application/json");
+
+			try {
+				orderService.rejectDeliveryRequest(gs.fromJson(req.body(), RequestForDeliveryDTO.class));
+				return gs.toJson("ok");
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+		
     }
 }

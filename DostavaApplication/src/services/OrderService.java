@@ -22,6 +22,7 @@ import beans.User;
 import beans.DeliveryRequest;
 import dao.UserDAO;
 import dto.OrderRequestDTO;
+import dto.RequestForDeliveryDTO;
 
 public class OrderService {
 
@@ -257,6 +258,30 @@ public class OrderService {
 				break;
 			}
 		}
+		userDAO.update(customer);
+	}
+	
+	public void approveDeliveryRequest(RequestForDeliveryDTO requestDTO) throws JsonSyntaxException, IOException {
+		Customer customer = (Customer) userDAO.getByID(requestDTO.getCustomerUsername());
+		Order order = getByID(customer, requestDTO.getOrderID());
+		order.setStatus(OrderStatus.InTransport);
+		order.getDeliveryRequests().clear();
+		Deliverer deliverer = (Deliverer) userDAO.getByID(requestDTO.getDelivererUsername());
+		deliverer.getOrdersToDeliver().add(order);
+		
+		userDAO.update(customer);
+		userDAO.update(deliverer);
+	}
+	
+	public void rejectDeliveryRequest(RequestForDeliveryDTO requestDTO) throws JsonSyntaxException, IOException {
+		Customer customer = (Customer) userDAO.getByID(requestDTO.getCustomerUsername());
+		Order order = getByID(customer, requestDTO.getOrderID());
+		for (DeliveryRequest request : order.getDeliveryRequests()) {
+			if (request.getDeliverer().getUsername().equals(requestDTO.getDelivererUsername())) {
+				request.setRequestProcessed(true);
+			}
+		}
+		
 		userDAO.update(customer);
 	}
 
