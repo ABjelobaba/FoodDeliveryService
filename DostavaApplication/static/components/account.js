@@ -4,7 +4,8 @@ Vue.component("account", {
             deliveryAddress: '',
             loggedInUser: '',
             mode: '',
-            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 }
+            cart: { restaurantID: -1, orderedItems: [], customerUsername: '', totalPrice: 0 },
+            restaurantName: ''
         }
     },
     created: function() {
@@ -13,6 +14,12 @@ Vue.component("account", {
             .then(response => {
                 if (response.data != null) {
                     this.loggedInUser = response.data;
+
+                    if (this.loggedInUser.role == 'Manager' && this.loggedInUser.restaurantID != -1) {
+                        axios.get('/restaurant/' + this.loggedInUser.restaurantID).then(response => {
+                            this.restaurantName = response.data.name;
+                        })
+                    }
                 } else {
                     window.location.href = '#/';
                 }
@@ -92,6 +99,7 @@ Vue.component("account", {
                     <li v-if="loggedInUser.role == 'Deliverer'"><a v-on:click="availableOrdersView" name="user-nav" id="available-orders">Dostupne porudžbine</a></li>
                     <li v-if="loggedInUser.role == 'Deliverer'"><a v-on:click="deliverersOrdersView" name="user-nav" id="deliverers-orders">Porudžbine</a></li>
                     <li v-if="loggedInUser.role == 'Administrator'"><a v-on:click="suspiciousUsersView" name="user-nav" id="suspicious-users">Sumnjivi korisnici</a></li>
+                    <li v-if="loggedInUser.role == 'Manager' && loggedInUser.restaurantID != -1"><a v-on:click="managersRestaurantView" name="user-nav" id="managers-restaurant"> {{restaurantName}}</a></li>
                     <li v-if="loggedInUser.role == 'Manager'"><a v-on:click="managersOrdersView" name="user-nav" id="managers-orders"> Aktuelne porudžbine</a></li>
                     <li v-if="loggedInUser.role == 'Manager'"><a v-on:click="managersPreviousOrdersView" name="user-nav" id="managers-prev-orders"> Prethodne porudžbine</a></li>
                     <li v-if="loggedInUser.role == 'Manager'"><a v-on:click="restaurantCustomersView" name="user-nav" id="restaurant-customer-list">Kupci</a></li>
@@ -201,6 +209,13 @@ Vue.component("account", {
             }
             document.getElementById('shopping-cart').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
             window.location.href = "#/account/cart";
+        },
+        managersRestaurantView: function(event) {
+            for (element of document.getElementsByName("user-nav")) {
+                element.style.backgroundColor = "transparent";
+            }
+            document.getElementById('restaurant-customer-list').style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            window.location.href = "#/restaurant?id=" + this.loggedInUser.restaurantID;
         },
         managersOrdersView: function(event) {
             for (element of document.getElementsByName("user-nav")) {

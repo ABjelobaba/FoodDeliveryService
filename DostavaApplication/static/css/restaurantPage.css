@@ -4,7 +4,7 @@
     padding: 0;
     margin: 0;
     width: 100%;
-    height: 308px;
+    height: fit-content;
     position: absolute;
     top: 0em;
     background-size: cover;
@@ -13,6 +13,15 @@
     background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(../images/background.jpg);
 }
 
+.user-nav-rp {
+    position: relative;
+    margin-top: -103px;
+    margin-bottom: -7px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: flex-end;
+    left: 0;
+}
 
 /* Fixed top menu */
 
@@ -59,13 +68,10 @@
     margin: 0;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 5%;
-    max-height: 180px;
-    position: absolute;
-    left: 12.3%;
-    top: 60px;
-    margin: 17px 0;
+    height: fit-content;
     width: fit-content;
     display: block;
+    margin: 88px 0 37px 13%;
 }
 
 .logo-rp {
@@ -101,7 +107,7 @@
 
 .top-info-rp {
     display: flex;
-    position: relative;
+    width: 100%;
 }
 
 .restaurant-title-rp {
@@ -156,7 +162,7 @@
     grid-gap: 0 2em;
     width: 75%;
     margin: 0 auto;
-    margin-top: 320px;
+    margin-top: 345px;
 }
 
 

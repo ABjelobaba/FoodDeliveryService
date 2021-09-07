@@ -118,18 +118,18 @@ Vue.component("restaurant-page", {
                 </div>
             </div>
 
-            <nav class="user-nav">
-                <ul style="margin-top: 60px; width: 100%; box-sizing: border-box;">
-                    <!-- <li><a name="user-nav" id="profile">Narudžbine</a></li> -->
-                    <!-- <div style=" width: 100%; text-align: right;">
-                            <li><a v-on:click="openCart">Korpa ( {{cart.orderedItems.length}} )</a></li>
-                        </div> -->
+            <nav class="user-nav user-nav-rp" v-if="loggedInUser.role == 'Manager' && loggedInUser.restaurantID == restaurant.restaurantID">
+                <ul id="user-nav-ul">
+                    <li><a  name="user-nav" id="profile">Profil</a></li>
+                    <li><a name="user-nav" id="managers-restaurant"> {{restaurant.name}}</a></li>
+                    <li><a  name="user-nav" id="managers-orders"> Aktuelne porudžbine</a></li>
+                    <li><a  name="user-nav" id="managers-prev-orders"> Prethodne porudžbine</a></li>
+                    <li><a  name="user-nav" id="restaurant-customer-list">Kupci</a></li>
                 </ul>
             </nav>
         </div>
 
     </section>
-    <!-- navigacioni meni -->
 
     <div class="bottom-section-rp">
         <div style="position: sticky;top: 65px;text-align: right;align-self: start;">
