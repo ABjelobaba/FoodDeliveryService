@@ -155,7 +155,9 @@ Vue.component("manager-orders", {
 
         <view-order v-if="modalMode == 'showOrder'" 
         v-bind:selectedOrder="selectedOrder" 
-        v-on:closeModal="closeModal"></view-order>
+        v-on:closeModal="closeModal"
+        v-on:orderProcessed="orderProcessed"
+        v-on:orderPrepared="orderPrepared"></view-order>
 
         <div class="register" style="display:none;z-index:100" v-if="" id="delivery-requests-view" v-bind:selectedOrder="selectedOrder" >
             <div class="modal" style="height:auto; padding-bottom: 35px;">
@@ -246,21 +248,29 @@ Vue.component("manager-orders", {
             this.selectedOrder = undefined;
         },
         orderProcessed: function(order) {
+            if (order == '' || order == undefined || order == null) {
+                order = this.selectedOrder;
+            }
             axios
                 .put("/order/process/" + order.orderID + "/" + order.customerUsername)
                 .then(response => {
                     if (response.data != null) {
                         order.status = "InPreparation";
+                        this.closeModal();
                     }
                 })
             event.stopPropagation();
         },
         orderPrepared: function(order) {
+            if (order == '' || order == undefined || order == null) {
+                order = this.selectedOrder;
+            }
             axios
                 .put("/order/prepare/" + order.orderID + "/" + order.customerUsername)
                 .then(response => {
                     if (response.data != null) {
                         order.status = "WaitingForDelivery";
+                        this.closeModal();
                     }
                 })
             event.stopPropagation();

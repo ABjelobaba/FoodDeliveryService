@@ -63,6 +63,8 @@ Vue.component("view-order", {
                         <button v-if="mode == '' && selectedOrder.status =='Delivered' && !selectedOrder.comment && loggedInUser == 'Customer'" v-on:click="$emit('openRateModal')" class="rate-btn" style="margin: 20px 20%"> Oceni</button>
                         <button v-if="mode == 'waitingDeliveryOrders'" style="margin: 20px 20%;width: -webkit-fill-available;" class="ask-for-delivery-btn" v-on:click="$emit('requestOrder')"> Zatraži porudžbinu</button>
                         <button v-if="mode == 'allOrders' && selectedOrder.status == 'InTransport'" style="margin: 20px 20%;width: -webkit-fill-available;" class="ask-for-delivery-btn" v-on:click="$emit('confirmDelivery')"> Dostavi porudžbinu</button>
+                        <button v-if="selectedOrder.status =='Processing' && loggedInUser == 'Manager'" class="ask-for-delivery-btn" style="margin: 20px 20%" v-on:click="$emit('orderProcessed')"> Prihvati porudžbinu</button>
+                        <button v-if="selectedOrder.status =='InPreparation' && loggedInUser == 'Manager'" class="ask-for-delivery-btn" style="margin: 20px 20%" v-on:click="$emit('orderPrepared')"> Porudžbina je spremna</button>
                     </div>
                 </div>
 
