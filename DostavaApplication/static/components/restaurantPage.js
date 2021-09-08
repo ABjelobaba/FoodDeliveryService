@@ -35,7 +35,8 @@ Vue.component("restaurant-page", {
             approvedCommentsNumber: '',
             limit: 3,
             selectedComment: '',
-            question: ''
+            question: '',
+            editedArticle: ''
         }
     },
     computed: {
@@ -185,7 +186,7 @@ Vue.component("restaurant-page", {
         </div>
     </div>
 
-    <div class="article-view-rp" v-if="selectedArticle != undefined">
+    <div class="article-view-rp" v-if="selectedArticle != undefined && loggedInUser.role != 'Manager'">
         <div class="selected-item-rp">
             <div class="item-img-av-rp">
                 <img v-bind:src="selectedArticle.image" alt="Food">
@@ -244,8 +245,8 @@ Vue.component("restaurant-page", {
 
                     </div>
 
-                    <div style="display: inline-flex; justify-content: space-between; width: 60%;">
-                        <input v-model="articleQuantity" type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Kolicina (g)">
+                    <div style="display: inline-flex; justify-content: space-between; width: 60%; text-align: center;">
+                        <input v-model="articleQuantity" type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Količina (g)">
                         <input v-model="articlePrice" type="text" class="login-inputs" id="article-price-input" placeholder="Cena (RSD)">
                     </div>
                     <label class="error" id="articleQPErr" name="labels" display="hidden"> </label>
@@ -255,6 +256,57 @@ Vue.component("restaurant-page", {
             </div>
             <button v-on:click="addNewArticle" style="margin-top:5px; width: 25%;" class="log-btn"> 
 				Dodaj
+			</button>
+
+        </div>
+    </div>
+
+    <div class="edit-article-view-rp" v-if="selectedArticle != undefined && loggedInUser.role == 'Manager'">
+        <div class="selected-item-rp" style="width:500px; margin: auto auto; text-align: center;">
+            <div v-on:click="closeEditArticleWindow" class="close">+</div>
+
+            <div style="display: grid; height: 100%; grid-template-rows: auto auto;" class="firstStep">
+                <form>
+                    <div class="login-title" style="margin: auto 0;">
+                        <h3 style="color: white; font-weight: bolder;"> IZMENITE ARTIKAL </h3>
+                    </div>
+
+                    <div style="margin: auto 0px;">
+
+                        <input v-model="editedArticle.name" type="text" class="login-inputs" placeholder="Naziv artikla">
+                        <label class="error" id="articleNameForEditErr" name="labels" display="hidden"> </label>
+
+                        <label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Nova slika:</label>
+                        <input type="file" class="login-inputs" style="margin: 2px auto 2px;" id="inpFileForEdit" v-on:change="fileUploadedForArticleEdit">
+
+                        <div class="image-preview-for-edit" id="imagePreviewForEdit">
+                            <img id="imgPreview" v-bind:src="editedArticle.image" alt="Image Preview" class="image-preview__image-for-edit" style="max-width: 60%;">
+                        </div>
+
+                        <label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Opis artikla:</label>
+                        <div class="radio-btn-container" style="width: 60%;height: 100px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);">
+                            <textarea v-model="editedArticle.description" class="article-desc-ta" placeholder="Unesite opis artikla..."></textarea>
+                        </div>
+
+                    </div>
+
+                    <div style="display: inline-flex; justify-content: space-between; width: 60%;">
+                        <div style="display: inline-flex;" class="edit-quantity edit-article-inputs">
+                            <input v-model="editedArticle.quantity" type="text" class="login-inputs" style="width: 100%; margin-right: 10%;" placeholder="Količina (g)">
+                            <span class="tooltiptext">Količina</span>
+                        </div>
+                        <div style="display: inline-flex;" class="edit-price edit-article-inputs">
+                            <input v-model="editedArticle.price" type="text" class="login-inputs" id="article-price-input" style="width: 100%; margin-left: 10%;" placeholder="Cena (RSD)">
+                            <span class="tooltiptext">Cena</span>
+                        </div>
+                    </div>
+                    <label class="error" id="articleQPForEditErr" name="labels" display="hidden"> </label>
+
+                    <br>
+                </form>
+            </div>
+            <button v-on:click="editArticle" style="margin-top:5px; width: 25%;" class="log-btn"> 
+				Sačuvaj
 			</button>
 
         </div>
@@ -300,6 +352,8 @@ Vue.component("restaurant-page", {
         showArticle: function(article) {
             if (this.loggedInUser != '' && this.loggedInUser != undefined) {
                 this.selectedArticle = article;
+                this.editedArticle = JSON.parse(JSON.stringify(this.selectedArticle));
+                this.editedArticle.price = this.editedArticle.price;
                 for (orderItem of this.cart.orderedItems) {
                     if (orderItem.item.name === article.name) {
                         this.selectedArticleQuantity = orderItem.amount;
@@ -336,12 +390,10 @@ Vue.component("restaurant-page", {
         },
         fileUploaded: function(event) {
             let inpFile = document.getElementById("inpFile");
-            let
-                imagePreviewContainer = document.getElementById("imagePreview");
+            let imagePreviewContainer = document.getElementById("imagePreview");
             let previewImage = imagePreviewContainer.querySelector(".image-preview__image");
             let previewDefaultText = imagePreviewContainer.querySelector(".image-preview__default-text");
-            let file =
-                inpFile.files[0];
+            let file = inpFile.files[0];
             if (file) {
                 let reader = new FileReader();
                 previewDefaultText.style.display = "none";
@@ -357,6 +409,27 @@ Vue.component("restaurant-page", {
                 previewDefaultText.style.display = null;
                 previewImage.style.display = null;
                 previewImage.setAttribute("src", "");
+            }
+        },
+        fileUploadedForArticleEdit: function(event) {
+            let inpFile = document.getElementById("inpFileForEdit");
+            let imagePreviewContainer = document.getElementById("imagePreviewForEdit");
+            let previewImage = imagePreviewContainer.querySelector(".image-preview__image-for-edit");
+            let file = inpFile.files[0];
+            if (file) {
+                let reader = new FileReader();
+                previewImage.style.display = "block";
+
+                let ref = this;
+                reader.addEventListener("load", function() {
+                    previewImage.setAttribute("src", this.result);
+                    ref.editedArticle.image = this.result;
+                });
+                reader.readAsDataURL(file);
+            } else {
+                previewImage.style.display = null;
+                let loc = this.selectedArticle.image;
+                previewImage.setAttribute("src", loc);
             }
         },
         addNewArticle: function(event) {
@@ -394,7 +467,7 @@ Vue.component("restaurant-page", {
             }
             if (!errors) {
                 let articleDTO = {
-                    name: this.articleName,
+                    name: this.articleName.trim(),
                     price: this.articlePrice,
                     type: 'Food',
                     //this.articleType, 
@@ -410,11 +483,72 @@ Vue.component("restaurant-page", {
                             document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Već postoji artikal sa unetim nazivom!';
                         } else {
                             document.querySelector('.new-article-view-rp').style.display = 'none ';
-                            location.reload();
+                            this.refreshArticles();
                         }
                     })
             }
         },
+        editArticle: function(event) {
+            event.preventDefault();
+            for (element of document.getElementsByName('labels')) {
+                element.innerHTML = '';
+                element.style.display = 'hidden';
+            }
+            let errors = false;
+
+            if (!this.editedArticle.name) {
+                document.getElementById('articleNameForEditErr').innerHTML = '<i class="fa fa-exclamation-circle"></i>Morate uneti naziv artikla!';
+                errors = true;
+            }
+
+            var reg = /[0-9]+/;
+            if (!reg.test(this.editedArticle.price)) {
+                document.getElementById('articleQPForEditErr').innerHTML = ' <i class = "fa fa-exclamation-circle" ></i> I količina i cena moraju biti brojčane vrednosti!';
+                errors = true;
+            }
+            if (this.editedArticle.quantity) {
+                if (!reg.test(this.editedArticle.quantity)) {
+                    document.getElementById('articleQPForEditErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> I količina i cena moraju biti brojčane vrednosti!';
+                    errors = true;
+                }
+            }
+            if (!this.editedArticle.price) {
+                document.getElementById('articleQPForEditErr').innerHTML = ' <i class = "fa fa-exclamation-circle"> </i> Cena mora biti uneta!';
+                errors = true;
+            }
+            if (!errors) {
+                let updatedArticleDTO = {
+                    newName: this.editedArticle.name.trim(),
+                    price: this.editedArticle.price,
+                    type: this.editedArticle.type,
+                    restaurantID: this.restaurant.restaurantID,
+                    quantity: this.editedArticle.quantity,
+                    description: this.editedArticle.description,
+                    image: this.editedArticle.image,
+                    oldName: this.selectedArticle.name.trim()
+                }
+                axios
+                    .put('/restaurant/updateArticle', JSON.stringify(updatedArticleDTO))
+                    .then(response => {
+                        if (response.data == null || response.data == "") {
+                            document.getElementById('articleNameForEditErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Već postoji artikal sa unetim nazivom!';
+                        } else {
+                            this.closeEditArticleWindow();
+                            this.refreshArticles();
+                        }
+                    })
+            }
+        },
+        refreshArticles: function() {
+            axios.get('/restaurant/' + this.$route.query.id).then(response => {
+                this.restaurant.items = response.data.items;
+            })
+        },
+        closeEditArticleWindow: function() {
+            this.selectedArticle = undefined;
+            this.editedArticle = undefined;
+        }
+        ,
         showNewArticleWindow: function() {
             document.querySelector('.new-article-view-rp').style.display = 'flex';
         },
@@ -483,7 +617,7 @@ Vue.component("restaurant-page", {
                 .put("/restaurant/updateRating/" + this.$route.query.id)
                 .then(response => {
                     if (response.data !== null && response.data !== "") {
-                        this.restaurant.rating = response.data;
+                        this.restaurant.rating = response.data.toFixed(2);
                         this.approvedCommentsNumber = 0;
                         for (comment of this.comments) {
                             if (comment.status == 'Approved') {

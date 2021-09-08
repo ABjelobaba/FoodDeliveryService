@@ -12,6 +12,7 @@ import beans.Restaurant;
 import beans.ReviewStatus;
 import dto.FoodItemDTO;
 import dto.RestaurantDTO;
+import dto.UpdatedFoodItemDTO;
 import utils.StringToImageDecoder;
 import dao.CustomerReviewDAO;
 import dao.RestaurantDAO;
@@ -55,8 +56,11 @@ public class RestaurantService {
 	public FoodItem createFoodItem(FoodItemDTO foodItemForm) throws JsonSyntaxException, IOException {
 		StringToImageDecoder decoder = new StringToImageDecoder();
 		FoodItem newFoodItem = null;
+		
+		
 		Restaurant updatedRestaurant = restaurantDAO.getByID(foodItemForm.getRestaurantID());
 		ArrayList<FoodItem> restaurantArticles = getAllCurrentArticlesFromRestaurant(foodItemForm.getRestaurantID());
+		
 		if (!doesArticleAlreadyExist(foodItemForm.getName(), foodItemForm.getRestaurantID())) {
 			newFoodItem = new FoodItem(foodItemForm.getName(), foodItemForm.getPrice(), foodItemForm.getType(),
 					foodItemForm.getRestaurantID(), foodItemForm.getQuantity(), foodItemForm.getDescription(),
@@ -65,7 +69,6 @@ public class RestaurantService {
 			String imageLocation = "./images/" + newFoodItem.getName() + newFoodItem.getRestaurantID() + ".jpg";
 			decoder.decodeBase64ToImage(foodItemForm.getImage(), "./static/" + imageLocation.substring(2));
 			newFoodItem.setImage(imageLocation);
-			System.out.print(imageLocation);
 			restaurantArticles.add(newFoodItem);
 			updatedRestaurant.setItems(restaurantArticles);
 
@@ -153,5 +156,38 @@ public class RestaurantService {
 		restaurantDAO.update(restaurant);
 		return restaurant;
     }
+    
+    public FoodItem updateFoodItem(UpdatedFoodItemDTO updatedFoodItem) throws JsonSyntaxException, IOException {
+		FoodItem foodItem = null;
+		Restaurant updatedRestaurant = restaurantDAO.getByID(updatedFoodItem.getRestaurantID());
+		ArrayList<FoodItem> restaurantArticles = getAllCurrentArticlesFromRestaurant(updatedFoodItem.getRestaurantID());
+		
+		if (!doesArticleAlreadyExist(updatedFoodItem.getNewName(), updatedFoodItem.getRestaurantID()) 
+				|| updatedFoodItem.getOldName().toUpperCase().equals(updatedFoodItem.getNewName().toUpperCase())) {
+			for (int i = 0; i < restaurantArticles.size(); i++ ) {
+				if (restaurantArticles.get(i).getName().toUpperCase().equals(updatedFoodItem.getOldName().toUpperCase())) {
+					foodItem = new FoodItem(updatedFoodItem.getNewName(), updatedFoodItem.getPrice(), updatedFoodItem.getType(),
+							updatedFoodItem.getRestaurantID(), updatedFoodItem.getQuantity(), updatedFoodItem.getDescription(), "");
+					
+					if (restaurantArticles.get(i).getImage().equals(updatedFoodItem.getImage())) {
+						foodItem.setImage(updatedFoodItem.getImage());
+					} else {
+						StringToImageDecoder decoder = new StringToImageDecoder();
+						String imageLocation = "./images/" + foodItem.getName() + foodItem.getRestaurantID() + ".jpg";
+						decoder.decodeBase64ToImage(updatedFoodItem.getImage(), "./static/" + imageLocation.substring(2));
+						foodItem.setImage(imageLocation);
+					}
+					
+					restaurantArticles.remove(i);
+					restaurantArticles.add(i, foodItem);
+					break;
+				}
+			}
+			updatedRestaurant.setItems(restaurantArticles);
+			restaurantDAO.update(updatedRestaurant);
+		}
+
+		return foodItem;
+	}
 
 }

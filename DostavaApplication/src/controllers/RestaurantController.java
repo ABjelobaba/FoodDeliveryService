@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import beans.FoodItem;
 import beans.Restaurant;
 import dto.FoodItemDTO;
+import dto.UpdatedFoodItemDTO;
 import dto.RestaurantDTO;
 import services.RestaurantService;
 
@@ -94,6 +95,19 @@ public class RestaurantController {
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
+			}
+		});
+		
+		put("/restaurant/updateArticle", (req, res) -> {
+			res.type("application/json");
+
+			try {
+				FoodItem article = restaurantService.updateFoodItem(gs.fromJson(req.body(), UpdatedFoodItemDTO.class));
+				
+				return (article != null) ? gs.toJson(article) : "";
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
 			}
 		});
 	}
