@@ -158,9 +158,9 @@
 
 .bottom-section-rp {
     display: grid;
-    grid: auto/ 25% 1fr;
-    grid-gap: 0 2em;
-    width: 75%;
+    grid: auto/ 24% 1fr;
+    grid-gap: 0 4em;
+    width: 80%;
     margin: 0 auto;
     margin-top: 345px;
 }
