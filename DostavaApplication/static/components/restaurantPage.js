@@ -380,6 +380,7 @@ Vue.component("restaurant-page", {
                 document.getElementById('allReviews').style.display = 'none';
                 document.getElementById('statusFilter').style.display = 'block';
                 document.getElementsByClassName('restaurant-reviews-rp')[0].style.height = '100%';
+                this.limit = null;
             } else {
                 document.querySelector('.articles-rp').style.display = 'block';
                 document.getElementById('scrollPanel').style.display = 'block';
