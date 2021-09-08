@@ -81,16 +81,16 @@ Vue.component("restaurant-page", {
 <div class="restourant-page-div">
     <div class="nav-rp" id="navmenu-rp" style="visibility: collapse;">
         <a href="#/"><img class="logo-img" style="top:20px" src="images/logo_transparent.png"></a>
-        <a v-if="loggedInUser == '' || loggedInUser == undefined" v-on:click="register" class="btn" style="float:right;top:30px">Prijavi se/Registruj se</a>
-        <a v-else class="btn" style="float:right;top:30px">Odjavi se</a>
+        <a v-if="loggedInUser == '' || loggedInUser == undefined" v-on:click="register" class="btn" style="float:right;top:30px; right:91px;">Prijavi se/Registruj se</a>
+        <a v-else v-on:click="logOut" class="btn" style="float:right;top:30px; right:83px;">Odjavi se</a>
     </div>
 
     <section class="top-section-rp">
         <div class="top-part-rp">
             <div class="top-menu-rp">
                 <a href="#/"><img class="logo-img" style="top:20px" src="images/logo_transparent.png"></a>
-                <a v-if="loggedInUser == '' || loggedInUser == undefined" v-on:click="register" class="btn" style="float:right;top:30px">Prijavi se/Registruj se</a>
-                <a v-else class="btn" style="float:right;top:30px">Odjavi se</a>
+                <a v-if="loggedInUser == '' || loggedInUser == undefined" v-on:click="register" class="btn" style="float:right;top:15px; right:91px;">Prijavi se/Registruj se</a>
+                <a v-else v-on:click="logOut" class="btn" style="float:right;top:15px;right:83px;">Odjavi se</a>
             </div>
 
             <div class="restaurant-info-rp">
@@ -719,6 +719,13 @@ Vue.component("restaurant-page", {
             } else {
                 this.comments = filteredReviews;
             }
+        },
+        logOut: function() {
+            axios
+                .get("user/logOut")
+                .then(response => {
+                    location.reload();
+                })
         }
     }
 });
