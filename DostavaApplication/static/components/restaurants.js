@@ -97,7 +97,7 @@ Vue.component("restaurants", {
 					<div class="restaurant-info">
 						<h3>KFC</h3>
 						<p>Piletina, Burgeri, Americka hrana</p>
-						<div class="closed-restaurant"><span>Zatvoren objekat</span></div>
+						<div class="closed-restaurant" style="width: 157px;"><span>Zatvoren objekat</span></div>
 					</div>
 
 				</div>

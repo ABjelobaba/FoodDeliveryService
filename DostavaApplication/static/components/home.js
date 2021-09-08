@@ -34,6 +34,7 @@ Vue.component("home", {
             .then(response => {
                 if (response.data != null) {
                     this.restaurants = response.data;
+                    this.restaurants = this.restaurants.sort(function compareFn(a, b) { return b.open - a.open });
                     this.finalResults = response.data;
                 }
             });

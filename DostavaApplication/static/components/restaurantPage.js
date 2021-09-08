@@ -187,7 +187,7 @@ Vue.component("restaurant-page", {
         </div>
     </div>
 
-    <div class="article-view-rp" v-if="selectedArticle != undefined && loggedInUser.role != 'Manager'">
+    <div class="article-view-rp" v-if="selectedArticle != undefined && loggedInUser.role != 'Manager' && restaurant.open == true">
         <div class="selected-item-rp">
             <div class="item-img-av-rp">
                 <img v-bind:src="selectedArticle.image" alt="Food">

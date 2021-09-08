@@ -28,7 +28,7 @@ Vue.component("restaurant-card", {
 			align-items: center;">
 		
 			<i class="fa fa-star" aria-hidden="true" style="margin:10% 0 0 0;text-align:right"> {{restaurant.rating}}</i>
-			<div class="closed-restaurant" style="width:auto" v-if="!restaurant.open">
+			<div class="closed-restaurant" style="width: 157px;" v-if="!restaurant.open">
 				<div  style="margin:5%">Zatvoren objekat</div>
 			</div>
 		</div>
