@@ -294,8 +294,8 @@ Vue.component("restaurant-page", {
 
                     <div style="display: inline-flex; justify-content: space-between; width: 60%;">
                         <div style="display: inline-flex;" class="edit-quantity edit-article-inputs">
-                            <input v-if="articleType == 'Food'" v-model="editedArticle.quantity" type="text" class="login-inputs" style="width: 100%; margin-right: 10%;" placeholder="Količina (g)">
-                            <input v-if="articleType == 'Drink'" v-model="editedArticle.quantity" type="text" class="login-inputs" style="width: 100%; margin-right: 10%;" placeholder="Količina (ml)">
+                            <input v-if="editedArticle.type == 'Food'" v-model="editedArticle.quantity" type="text" class="login-inputs" style="width: 100%; margin-right: 10%;" placeholder="Količina (g)">
+                            <input v-if="editedArticle.type == 'Drink'" v-model="editedArticle.quantity" type="text" class="login-inputs" style="width: 100%; margin-right: 10%;" placeholder="Količina (ml)">
                             <span class="tooltiptext">Količina</span>
                         </div>
                         <div style="display: inline-flex;" class="edit-price edit-article-inputs">
