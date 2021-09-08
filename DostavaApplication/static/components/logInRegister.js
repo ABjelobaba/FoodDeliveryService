@@ -20,8 +20,10 @@ Vue.component("logIn-register", {
 	<div class="register">
 			<div class="modal" style="height: auto">
 				<div class="tab">
-					<button v-on:click="tabClick('logIn')">Prijavi se</button>
-					<button v-on:click="tabClick('register')">Registruj se</button>
+					<input type="radio" name="logInRegister" id="logIn" >
+                    <label class="tab-label" for="logIn" v-on:click="tabClick('logIn')">Prijavi se</label>
+					<input type="radio" name="logInRegister" id="Register" >
+                    <label class="tab-label" for="Register" v-on:click="tabClick('register')" >Registruj se</label>
 				</div>
 				<div v-on:click="registrationClose" class="close">+</div>
 

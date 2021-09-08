@@ -429,9 +429,8 @@ input[type="checkbox"] {
     border-bottom: 1px solid rgba(109, 93, 93, 0.4);
 }
 
-.tab button {
+.tab-label {
     font-size: 17px;
-    display: inline-flexbox;
     cursor: pointer;
     background-color: transparent;
     border-width: 0;
@@ -442,9 +441,20 @@ input[type="checkbox"] {
     font-weight: bold;
 }
 
-.tab button:hover {
-    background: linear-gradient(rgba(44, 53, 63, 1), rgba(44, 53, 63, 1), rgba(44, 53, 63, 1), rgba(44, 53, 63, 1), rgba(255, 255, 255, 1));
-    transition: 0.5s;
+.tab-label:hover {
+    background: linear-gradient(rgba(44, 53, 63, 1), rgba(44, 53, 63, 1), rgba(44, 53, 63, 1), rgba(44, 53, 63, 1), rgba(255, 255, 255, 0.473));
+}
+
+input[type="radio"][name="logInRegister"]:checked+.tab-label {
+    background: linear-gradient(rgba(44, 53, 63, 1) 90%, rgba(255, 255, 255, 1) 10%);
+}
+
+.tab input[type="radio"][name="logInRegister"]:checked+.tab-label::before {
+    background: transparent;
+}
+
+.tab-label::before {
+    background: transparent;
 }
 
 .login-title {
