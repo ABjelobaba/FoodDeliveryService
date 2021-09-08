@@ -8,7 +8,8 @@ Vue.component("shopping-cart", {
                 { id: 3, name: 'Milk Shake', price: 200, quantity: 2 }
             ],
             cart: '',
-            deliveryAddress: ''
+            deliveryAddress: '',
+            userType: ''
         }
 
     },
@@ -54,11 +55,14 @@ Vue.component("shopping-cart", {
 						<h3 class="delivery-text">200,00 RSD </h3>
 					</div>
 					<div >
-						<h3>Ukupna cena porudžbine</h3>
-						<h3 class="total-price-value">{{cart.priceWithDiscount + 200}},00 RSD </h3>
+						<h3 style="margin-bottom:0">Ukupna cena porudžbine</h3>
+						<h3 style="margin-bottom:0" class="total-price-value">{{cart.priceWithDiscount + 200}},00 RSD </h3>
+					</div>
+					<div >
+						<h3 style="margin-top:0" v-if="userType != 'Bronze'">sa popustom</h3>
 					</div>
 						
-					<a class="continue-with-order-btn" v-on:click="createOrder">Završi narudžbinu</a>
+					<a class="continue-with-order-btn" style="margin-top: 40px" v-on:click="createOrder">Završi narudžbinu</a>
 				</div>
 				<div class="finish-order" id="bill-div">
 					<div style="display:block" id="billTitle">
@@ -73,11 +77,14 @@ Vue.component("shopping-cart", {
 						<h3 class="delivery-text">200,00 RSD </h3>
 					</div>
 					<div >
-						<h3>Ukupna cena porudžbine</h3>
-						<h3 class="total-price-value">{{cart.priceWithDiscount + 200}},00 RSD </h3>
+						<h3 style="margin-bottom:0">Ukupna cena porudžbine</h3>
+						<h3 style="margin-bottom:0" class="total-price-value">{{cart.priceWithDiscount + 200}},00 RSD </h3>
+					</div>
+					<div >
+						<h3 style="margin-top:0" v-if="userType != 'Bronze'">sa popustom</h3>
 					</div>
 						
-					<a class="continue-with-order-btn" v-on:click="createOrder">Završi narudžbinu</a>
+					<a class="continue-with-order-btn"  style="margin-top: 40px" v-on:click="createOrder">Završi narudžbinu</a>
 				</div>
 				<a id="back-to-restaurant-btn" v-on:click="goBack">Niste završili sa narudžbinom?</a>
 			</div>
@@ -94,6 +101,7 @@ Vue.component("shopping-cart", {
             .then(response => {
                 if (response.data != null) {
                     this.loggedInUser = response.data;
+                    this.userType = this.loggedInUser.category.type;
                     if (this.deliveryAddress == '') {
                         this.deliveryAddress = this.loggedInUser.deliveryAddress;
                     }
