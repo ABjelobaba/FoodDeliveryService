@@ -6,7 +6,7 @@ Vue.component("restaurant-page", {
             review_states: [
                 { value: 'Rejected', text: 'Odbijen' },
                 { value: 'Approved', text: 'Odobren' },
-                { value: 'WaitingForApproval', text: ' Čeka obradu' }
+                { value: 'WaitingForApproval', text: 'Čeka obradu' }
             ],
             restaurant: "",
             restaurantTypes: [
@@ -36,7 +36,8 @@ Vue.component("restaurant-page", {
             limit: 3,
             selectedComment: '',
             question: '',
-            editedArticle: ''
+            editedArticle: '',
+            allComments: []
         }
     },
     computed: {
@@ -149,7 +150,7 @@ Vue.component("restaurant-page", {
                 <h2 style="text-align: center;">Status utiska</h2>
                 <div class="checkbox-btn-container-dark">
                     <div v-for="state in review_states">
-                        <input type="checkbox" v-bind:id=state.value name="order-status" v-bind:value=state.value>
+                        <input type="checkbox" name="reviewStatuses" v-bind:id=state.value v-bind:value=state.value v-on:change="filterReviews">
                         <label v-bind:for=state.value style="border:0">{{state.text}}</label>
                     </div>
                 </div>
@@ -607,7 +608,7 @@ Vue.component("restaurant-page", {
                     this.comments = response.data;
 
                     this.comments = this.comments.sort(function compareFn(a, b) { return b.reviewID - a.reviewID });
-
+                    this.allComments = this.comments;
                     this.checkVisibleComments();
                     if (isRatingChanged == true)
                         this.updateRating();
@@ -666,6 +667,30 @@ Vue.component("restaurant-page", {
                         this.selectedArticle = undefined;
                     }
                 })
+        },
+        filterReviews: function() {
+            var cbReviewStatus = document.getElementsByName('reviewStatuses');
+            var cbCheckedStatuses = [];
+            filteredReviews = []
+            for (var i = 0; i < cbReviewStatus.length; i++) {
+                if (cbReviewStatus[i].checked) {
+                    cbCheckedStatuses.push(cbReviewStatus[i].id);
+                }
+            }
+
+            for (review of this.allComments) {
+                for (cb of cbCheckedStatuses) {
+                    if (review.status == cb) {
+                        filteredReviews.push(review);
+                    }
+                }
+            }
+
+            if (cbCheckedStatuses.length == 0) {
+                this.comments = this.allComments;
+            } else {
+                this.comments = filteredReviews;
+            }
         }
     }
 });
