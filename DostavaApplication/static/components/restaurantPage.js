@@ -370,7 +370,9 @@ Vue.component("restaurant-page", {
             if (this.loggedInUser != '' && this.loggedInUser != undefined) {
                 this.selectedArticle = article;
                 this.editedArticle = JSON.parse(JSON.stringify(this.selectedArticle));
-                this.editedArticle.price = this.editedArticle.price;
+                if (this.editedArticle.quantity == 0) {
+                    this.editedArticle.quantity = '';
+                }
                 for (orderItem of this.cart.orderedItems) {
                     if (orderItem.item.name === article.name) {
                         this.selectedArticleQuantity = orderItem.amount;
@@ -485,12 +487,18 @@ Vue.component("restaurant-page", {
                 errors = true;
             }
             if (!errors) {
+                let quantityOfArticle = 0;
+                if (this.articleQuantity) {
+                    quantityOfArticle = this.articleQuantity;
+                }
+
+
                 let articleDTO = {
                     name: this.articleName.trim(),
                     price: this.articlePrice,
                     type: this.articleType, 
                     restaurantID: this.restaurant.restaurantID,
-                    quantity: this.articleQuantity,
+                    quantity: quantityOfArticle,
                     description: this.articleDescription,
                     image: this.articleImage
                 }
@@ -535,12 +543,17 @@ Vue.component("restaurant-page", {
                 errors = true;
             }
             if (!errors) {
+                let quantityOfArticle = 0;
+                if (this.editedArticle.quantity) {
+                    quantityOfArticle = this.editedArticle.quantity;
+                }
+
                 let updatedArticleDTO = {
                     newName: this.editedArticle.name.trim(),
                     price: this.editedArticle.price,
                     type: this.editedArticle.type,
                     restaurantID: this.restaurant.restaurantID,
-                    quantity: this.editedArticle.quantity,
+                    quantity: quantityOfArticle,
                     description: this.editedArticle.description,
                     image: this.editedArticle.image,
                     oldName: this.selectedArticle.name.trim()

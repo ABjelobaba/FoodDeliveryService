@@ -164,7 +164,7 @@ Vue.component("new-restaurant", {
 			</div>
 
 
-            <new-user v-if="mode == 'newUser'" v-on:closeRegistration="newUserClose"  v-bind:mode="mode"></new-user>
+            <new-user v-if="mode == 'newUser'" v-on:newUserClose="newUserClose"  v-bind:mode="mode"></new-user>
 		</div>
 	`,
     mounted() {
@@ -275,7 +275,8 @@ Vue.component("new-restaurant", {
             this.restaurantManager = manager;
         },
         nextStep: function(event) {
-            event.preventDefault();
+            if (event)
+                event.preventDefault();
 
             for (element of document.getElementsByName('labels')) {
                 element.innerHTML = '';
@@ -420,7 +421,7 @@ Vue.component("new-restaurant", {
             this.mode = 'newUser'
             document.getElementById('newRestaurantModal').style.backgroundColor = "rgb(75,83,92)"
         },
-        newUserClose: function(event) {
+        newUserClose: function(user) {
             this.role = 'Odaberite ulogu korisnika..';
             this.username = '';
             this.password = '';
@@ -432,6 +433,13 @@ Vue.component("new-restaurant", {
                 element.innerHTML = '';
                 element.style.display = 'hidden';
             }
+
+            if (user) {
+                this.managers.push(user);
+                this.selectManager(user);
+                this.nextStep();
+            }
+
             this.mode = '';
             document.getElementById('newRestaurantModal').style.backgroundColor = "rgb(44,53,63)"
 
