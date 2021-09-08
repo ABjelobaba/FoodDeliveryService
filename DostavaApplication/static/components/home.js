@@ -270,56 +270,65 @@ Vue.component("home", {
             let locationSort = document.getElementById('sort-by-location');
             let ratingSort = document.getElementById('sort-by-rating');
 
-            if (event.currentTarget.innerText.includes('Naziv')) {
-                if (this.nameSort == '') {
-                    nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
-                    this.nameSort = 'desc';
-                } else if (this.nameSort == 'desc') {
-                    nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
-                    this.nameSort = 'asc';
-                } else {
-                    nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.nameSort = '';
-                }
+            if (event) {
+                if (event.currentTarget.innerText.includes('Naziv')) {
+                    if (this.nameSort == '') {
+                        nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+                        this.nameSort = 'desc';
+                    } else if (this.nameSort == 'desc') {
+                        nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+                        this.nameSort = 'asc';
+                    } else {
+                        nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                        this.nameSort = '';
+                    }
 
-                locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                this.locationSort = '';
-                ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                this.ratingSort = '';
-
-            } else if (event.currentTarget.innerText.includes('Lokacija')) {
-                if (this.locationSort == '') {
-                    locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
-                    this.locationSort = 'desc';
-                } else if (this.locationSort == 'desc') {
-                    locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
-                    this.locationSort = 'asc';
-                } else {
                     locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.locationSort = '';
-                }
-
-                nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                this.nameSort = '';
-                ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                this.ratingSort = '';
-
-            } else if (event.currentTarget.innerText.includes('Prosečna ocena')) {
-                if (this.ratingSort == '') {
-                    ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
-                    this.ratingSort = 'desc';
-                } else if (this.ratingSort == 'desc') {
-                    ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
-                    this.ratingSort = 'asc';
-                } else {
                     ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.ratingSort = '';
-                }
 
+                } else if (event.currentTarget.innerText.includes('Lokacija')) {
+                    if (this.locationSort == '') {
+                        locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+                        this.locationSort = 'desc';
+                    } else if (this.locationSort == 'desc') {
+                        locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+                        this.locationSort = 'asc';
+                    } else {
+                        locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                        this.locationSort = '';
+                    }
+
+                    nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.nameSort = '';
+                    ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.ratingSort = '';
+
+                } else if (event.currentTarget.innerText.includes('Prosečna ocena')) {
+                    if (this.ratingSort == '') {
+                        ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
+                        this.ratingSort = 'desc';
+                    } else if (this.ratingSort == 'desc') {
+                        ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort-asc" aria-hidden="true"></i>';
+                        this.ratingSort = 'asc';
+                    } else {
+                        ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                        this.ratingSort = '';
+                    }
+
+                    nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.nameSort = '';
+                    locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                    this.locationSort = '';
+                } 
+            } else {
                 nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                 this.nameSort = '';
                 locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                 this.locationSort = '';
+                ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
+                this.ratingSort = '';
             }
         },
         showHideSearch: function(event) {
@@ -484,7 +493,7 @@ Vue.component("home", {
             this.filteredResults;
 
             this.finalResults = this.searchResults.filter(x => this.filteredResults.includes(x));
-
+            this.sortRestaurants();
         },
         sortByName: function() {
             if (this.nameSort == 'desc') {

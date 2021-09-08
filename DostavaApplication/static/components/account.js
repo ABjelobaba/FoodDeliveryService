@@ -93,8 +93,8 @@ Vue.component("account", {
             <nav class="user-nav" style="align-items:flex-end;">
                 <ul id="user-nav-ul" v-if="deliveryAddress=='' || deliveryAddress==undefined">
                     <li><a v-on:click="profileView" name="user-nav" id="profile">Profil</a></li>
-                    <li v-if="loggedInUser.role == 'Administrator'"><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
                     <li v-if="loggedInUser.role == 'Administrator'"><a v-on:click="restaurantsView" name="user-nav" id="restaurants">Restorani</a></li>
+                    <li v-if="loggedInUser.role == 'Administrator'"><a v-on:click="usersView" name="user-nav" id="users">Korisnici</a></li>
                     <li v-if="loggedInUser.role == 'Customer'"><a v-on:click="ordersView" name="user-nav" id="orders">Porudžbine</a></li>
                     <li v-if="loggedInUser.role == 'Deliverer'"><a v-on:click="availableOrdersView" name="user-nav" id="available-orders">Dostupne porudžbine</a></li>
                     <li v-if="loggedInUser.role == 'Deliverer'"><a v-on:click="deliverersOrdersView" name="user-nav" id="deliverers-orders">Porudžbine</a></li>
