@@ -30,13 +30,13 @@ Vue.component("home", {
     },
     created: function() {
         axios
-        .get('/restaurants/getAllRestaurants')
-        .then(response => {
-            if (response.data != null) {
-                this.restaurants = response.data;
-                this.finalResults = response.data;
-            }
-        });
+            .get('/restaurants/getAllRestaurants')
+            .then(response => {
+                if (response.data != null) {
+                    this.restaurants = response.data;
+                    this.finalResults = response.data;
+                }
+            });
 
         axios
             .get("user/getLoggedInUser")
@@ -178,18 +178,19 @@ Vue.component("home", {
             .then(response => {
                 if (response.data != null) {
                     this.loggedInUser = response.data;
-                    if (this.loggedInUser.deliveryAddress == '') {
-                        axios
-                            .get("cart/getAddress")
-                            .then(response => {
-                                if (response.data != null) {
-                                    this.deliveryAddress = response.data;
-                                }
-                            })
-                    }
+
+                    axios
+                        .get("cart/getAddress")
+                        .then(response => {
+                            if (response.data != null) {
+                                this.deliveryAddress = response.data;
+                            }
+                        })
+
 
                 }
             })
+
 
         window.addEventListener('resize', function(event) {
             var b = document.getElementById('filter-btn-do');
@@ -268,7 +269,7 @@ Vue.component("home", {
             let nameSort = document.getElementById('sort-by-name');
             let locationSort = document.getElementById('sort-by-location');
             let ratingSort = document.getElementById('sort-by-rating');
-            
+
             if (event.currentTarget.innerText.includes('Naziv')) {
                 if (this.nameSort == '') {
                     nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort-desc" aria-hidden="true"></i>';
@@ -282,9 +283,9 @@ Vue.component("home", {
                 }
 
                 locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.locationSort = '';
+                this.locationSort = '';
                 ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.ratingSort = '';
+                this.ratingSort = '';
 
             } else if (event.currentTarget.innerText.includes('Lokacija')) {
                 if (this.locationSort == '') {
@@ -299,9 +300,9 @@ Vue.component("home", {
                 }
 
                 nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.nameSort = '';
+                this.nameSort = '';
                 ratingSort.innerHTML = '<label>Prosečna ocena</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.ratingSort = '';
+                this.ratingSort = '';
 
             } else if (event.currentTarget.innerText.includes('Prosečna ocena')) {
                 if (this.ratingSort == '') {
@@ -316,9 +317,9 @@ Vue.component("home", {
                 }
 
                 nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.nameSort = '';
+                this.nameSort = '';
                 locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
-                    this.locationSort = '';
+                this.locationSort = '';
             }
         },
         showHideSearch: function(event) {
@@ -376,8 +377,7 @@ Vue.component("home", {
                 let rests;
                 if (!isNameEntered) {
                     rests = this.restaurants;
-                }
-                else {
+                } else {
                     rests = resultsForName;
                 }
 
@@ -385,7 +385,7 @@ Vue.component("home", {
                     let matches = true;
                     let address = restaurant.location.address;
                     for (let i = 0; i < searchParts.length; i++) {
-                        if (!address.city.toUpperCase().includes(searchParts[i].toUpperCase()) && 
+                        if (!address.city.toUpperCase().includes(searchParts[i].toUpperCase()) &&
                             !address.streetAddress.toUpperCase().includes(searchParts[i].toUpperCase())) {
                             matches = false;
                             break;
@@ -395,11 +395,10 @@ Vue.component("home", {
                         resultsForLocation.push(restaurant);
                     }
                 }
-            }
-            else {
+            } else {
                 isLocationEntered = false;
             }
-            
+
             if (!isNameEntered && !isLocationEntered) {
                 this.searchResults = this.restaurants;
             } else if (isNameEntered && !isLocationEntered) {
@@ -453,7 +452,7 @@ Vue.component("home", {
                     cbCheckedStars.push(cbStars[i].id);
                 }
             }
-            
+
             for (var i = 0; i < cbCheckedStars.length; i++) {
                 minRating = Number((String(cbCheckedStars[i])).charAt(0));
                 maxRating = Number((String(cbCheckedStars[i])).charAt((String(cbCheckedStars[i])).length - 1));
@@ -462,7 +461,7 @@ Vue.component("home", {
                     if (restaurant.rating >= minRating && restaurant.rating <= maxRating) {
                         filteredByRating.push(restaurant);
                     }
-                }                
+                }
             }
 
             if (!(cbCheckedCuisine.length == 0 && !cbOpen.checked && cbCheckedStars.length == 0)) {
@@ -475,10 +474,10 @@ Vue.component("home", {
                 }
 
                 if (cbCheckedStars.length != 0) {
-                    this.filteredResults = filteredByRating.filter(x => this.filteredResults.includes(x));      
+                    this.filteredResults = filteredByRating.filter(x => this.filteredResults.includes(x));
                 }
 
-                this.filteredResults =  [...new Set(this.filteredResults)];
+                this.filteredResults = [...new Set(this.filteredResults)];
             }
 
             this.searchResults;
@@ -501,7 +500,7 @@ Vue.component("home", {
                 fullAddress = restaurant.location.address.city + ' ' + streetAndNumber.substring(0, streetAndNumber.lastIndexOf(" "));
                 streetNumber = streetAndNumber.substring(streetAndNumber.lastIndexOf(" "));
 
-                let restourantAddress = {address: fullAddress, number: streetNumber, id: restaurant.restaurantID};
+                let restourantAddress = { address: fullAddress, number: streetNumber, id: restaurant.restaurantID };
                 restaurantAddresses.push(restourantAddress);
             }
 
@@ -509,11 +508,11 @@ Vue.component("home", {
                 restaurantAddresses = restaurantAddresses.sort(function compareFn(a, b) {
                     return a.address.localeCompare(b.address) || a.number - b.number;
                 });
-                
+
             } else if (this.locationSort == '') {
-                restaurantAddresses = restaurantAddresses.sort(function compareFn(a, b) {   
+                restaurantAddresses = restaurantAddresses.sort(function compareFn(a, b) {
                     return a.address.localeCompare(b.address) || a.number - b.number;
-                 }).reverse();
+                }).reverse();
             }
 
             notSorted = Array.from(this.finalResults);

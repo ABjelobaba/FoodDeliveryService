@@ -25,7 +25,8 @@ Vue.component("admin-restaurants", {
             locationSort: '',
             ratingSort: '',
             question: '',
-            selectedRestaurant: ''
+            selectedRestaurant: '',
+            loggedInUser: ''
         }
     },
     created: function() {
@@ -133,7 +134,7 @@ Vue.component("admin-restaurants", {
 
                 <a v-for="restaurant in finalResults" v-on:click="openRestaurantPage(restaurant)">
                     <restaurant-card v-bind:key="restaurant.id" style="cursor: pointer;" v-on:askToDelete="askToDelete"
-                        v-bind:restaurant="restaurant" v-bind:loggedInRole="'admin'"></restaurant-card>
+                        v-bind:restaurant="restaurant" v-bind:loggedInRole="loggedInUser.role"></restaurant-card>
                 </a>
 
 			</div>
@@ -147,6 +148,14 @@ Vue.component("admin-restaurants", {
 	`,
     mounted() {
         window.scrollTo(0, 0);
+
+        axios.get("/user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    this.loggedInUser = response.data;
+                }
+            })
+
     },
 
     methods: {

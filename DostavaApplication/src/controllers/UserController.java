@@ -53,6 +53,7 @@ public class UserController {
 					if(user.getRole() == Role.Customer){
 						session.attribute("user", user);
 						session.attribute("cart", new ShoppingCart(user.getUsername()));
+						session.attribute("address", ((Customer)user).getDeliveryAddress());
 					}
 				} 
 				return (user != null) ? gs.toJson(user) : "";
@@ -73,6 +74,7 @@ public class UserController {
 					
 					if(user.getRole() == Role.Customer){
 						session.attribute("cart", new ShoppingCart(user.getUsername()));
+						session.attribute("address", ((Customer)user).getDeliveryAddress());
 					}
 				} 
 				return (user != null) ? user.isBlocked() : "";
