@@ -126,6 +126,7 @@ Vue.component("new-user", {
                             document.getElementById('emptyFieldsError').innerHTML = "Neuspešna registracija!";
                         } else {
                             this.$emit('newUserRegistered', response.data);
+                            this.$emit('newUserClose', response.data);
                         }
                     })
 
