@@ -76,12 +76,12 @@ Vue.component("profile", {
                     </div>
                     <div class="inputs-div">
                         <label class="input-label">Datum rođenja:</label>
-                        <input v-model="loggedInUser.birthdate" type="date" class="profile-change-input" style="margin-top: 1px;" id="date_input">
+                        <input v-model="loggedInUser.birthdate" type="date" class="profile-change-input" style="margin-top: 1px;" id="date_input" min="1896-01-01">
                     </div>
 
                     
                 </form>
-                <label class="error" id="userDataErr" name="labels" display="hidden"> </label>
+                <label class="error" id="emptyFieldsError" name="labels" display="hidden"> </label>
                 <button style=" margin: 20px auto;width:280px" class="black-btn" v-on:click="editProfile"> Potvrdi</button>
 
             </div>
@@ -112,6 +112,8 @@ Vue.component("profile", {
 </div>
 `,
     mounted() {
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById("date_input").setAttribute('max', today);
         window.scrollTo(0, 0);
     },
     methods: {
@@ -122,6 +124,16 @@ Vue.component("profile", {
             }
 
             let error = false;
+            var today = Number(new Date());
+            var minDate = Number(new Date(1896, 1, 1, 0, 0, 0, 0));
+            var date = Number(new Date(this.loggedInUser.birthdate));
+            if (minDate <= date && date <= today) {
+                //Do nothing
+            } else {
+                document.getElementById('emptyFieldsError').innerHTML = "Neispravan datum rođenja!";
+                error = true;
+            }
+
             if (this.loggedInUser.name[0] < 'A' || this.loggedInUser.name[0] > 'Z' || !this.loggedInUser.name) {
                 document.getElementById('nameErr').innerHTML = "Morate uneti ime koje počinje velikim slovom!";
                 error = true;
