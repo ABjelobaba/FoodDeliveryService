@@ -15,7 +15,7 @@ Vue.component("new-user", {
 	
     <div class="register" style="z-index:100;display:flex">
         <div class="modal" style="height:auto">
-            <div v-on:click="$emit('closeRegistration')" class="close">+</div>
+            <div v-on:click="$emit('newUserClose')" class="close">+</div>
 
             <div >
                 <div class="login-title">

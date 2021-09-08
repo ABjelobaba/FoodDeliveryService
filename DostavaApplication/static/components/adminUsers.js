@@ -113,7 +113,7 @@ Vue.component("admin-users", {
         </table>
     </div>
 
-    <new-user v-if="mode == 'newUser'" v-on:newUserRegistered="newUserRegistered"></new-user>
+    <new-user v-if="mode == 'newUser'" v-on:newUserClose="newUserClose"></new-user>
     <success></success>
     <question :question="question" v-on:answer="answer"></question>
     
