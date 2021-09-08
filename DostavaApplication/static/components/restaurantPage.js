@@ -136,7 +136,7 @@ Vue.component("restaurant-page", {
     <div class="bottom-section-rp">
         <div style="position: sticky;top: 65px;text-align: right;align-self: start;">
             <div v-if="loggedInUser.role == 'Manager' && loggedInUser.restaurantID == restaurant.restaurantID">
-                <button v-on:click="showNewArticleWindow()" class="add-article-btn">+ Novi artikal</button>
+                <button v-on:click="askForFoodType()" class="add-article-btn">+ Novi artikal</button>
             </div>
             <div v-if="loggedInUser.role =='Administrator' || (loggedInUser.role =='Manager' && loggedInUser.restaurantID == restaurant.restaurantID)">
                 <input v-on:click="showHideReviews()" type="checkbox" id="viewReviews" value="viewReviews">
@@ -247,7 +247,8 @@ Vue.component("restaurant-page", {
                     </div>
 
                     <div style="display: inline-flex; justify-content: space-between; width: 60%; text-align: center;">
-                        <input v-model="articleQuantity" type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Količina (g)">
+                        <input v-if="articleType == 'Food'" v-model="articleQuantity" type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Količina (g)">
+                        <input v-if="articleType == 'Drink'" v-model="articleQuantity" type="text" class="login-inputs" style="margin-right: 10%;" placeholder="Količina (ml)">
                         <input v-model="articlePrice" type="text" class="login-inputs" id="article-price-input" placeholder="Cena (RSD)">
                     </div>
                     <label class="error" id="articleQPErr" name="labels" display="hidden"> </label>
@@ -293,7 +294,8 @@ Vue.component("restaurant-page", {
 
                     <div style="display: inline-flex; justify-content: space-between; width: 60%;">
                         <div style="display: inline-flex;" class="edit-quantity edit-article-inputs">
-                            <input v-model="editedArticle.quantity" type="text" class="login-inputs" style="width: 100%; margin-right: 10%;" placeholder="Količina (g)">
+                            <input v-if="articleType == 'Food'" v-model="editedArticle.quantity" type="text" class="login-inputs" style="width: 100%; margin-right: 10%;" placeholder="Količina (g)">
+                            <input v-if="articleType == 'Drink'" v-model="editedArticle.quantity" type="text" class="login-inputs" style="width: 100%; margin-right: 10%;" placeholder="Količina (ml)">
                             <span class="tooltiptext">Količina</span>
                         </div>
                         <div style="display: inline-flex;" class="edit-price edit-article-inputs">
@@ -312,6 +314,20 @@ Vue.component("restaurant-page", {
 
         </div>
     </div>
+
+    <div class="food-or-drink-rp">
+        <div class="selected-item-rp" style="width:500px; margin: auto auto; text-align: center;">
+            <div v-on:click="closeFoodTypeDialog" class="close">+</div>
+            <p>Koji tip artikla želite da dodate?</p>
+
+            <span>
+                <button id="type-food" v-on:click="showNewArticleWindow($event)" class="log-btn" style="margin: 10px 20px 10px 0;">Hrana</button>
+                <button id="type-drink" v-on:click="showNewArticleWindow($event)" class="log-btn" style="margin: 10px 0 10px 20px;">Piće</button>
+            </span>
+
+        </div>
+    </div>
+
     <success :text="'Neophodno je da se prijavite kako bi naručili željene proizvode!'"></success>
     <logIn-register></logIn-register>
     <question :question="question" v-on:answer="answer"></question>
@@ -436,6 +452,7 @@ Vue.component("restaurant-page", {
         },
         addNewArticle: function(event) {
             event.preventDefault();
+
             for (element of document.getElementsByName('labels')) {
                 element.innerHTML = '';
                 element.style.display = 'hidden';
@@ -471,8 +488,7 @@ Vue.component("restaurant-page", {
                 let articleDTO = {
                     name: this.articleName.trim(),
                     price: this.articlePrice,
-                    type: 'Food',
-                    //this.articleType, 
+                    type: this.articleType, 
                     restaurantID: this.restaurant.restaurantID,
                     quantity: this.articleQuantity,
                     description: this.articleDescription,
@@ -485,7 +501,7 @@ Vue.component("restaurant-page", {
                             document.getElementById('articleNameErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Već postoji artikal sa unetim nazivom!';
                         } else {
                             document.querySelector('.new-article-view-rp').style.display = 'none ';
-                            this.refreshArticles();
+                            location.reload();
                         }
                     })
             }
@@ -549,9 +565,21 @@ Vue.component("restaurant-page", {
         closeEditArticleWindow: function() {
             this.selectedArticle = undefined;
             this.editedArticle = undefined;
-        }
-        ,
-        showNewArticleWindow: function() {
+        },
+        askForFoodType: function() {
+            document.querySelector('.food-or-drink-rp').style.display = 'flex';
+        },
+        closeFoodTypeDialog: function() {
+            document.querySelector('.food-or-drink-rp').style.display = 'none';
+        },
+        showNewArticleWindow: function(event) {
+            elID = event.currentTarget.id;
+            if (elID == 'type-food') {
+                this.articleType = 'Food';
+            } else {
+                this.articleType = 'Drink';
+            }
+            document.querySelector('.food-or-drink-rp').style.display = 'none';
             document.querySelector('.new-article-view-rp').style.display = 'flex';
         },
         closeNewArticleWindow: function() {
