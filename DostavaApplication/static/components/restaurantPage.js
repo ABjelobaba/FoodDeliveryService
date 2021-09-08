@@ -649,6 +649,9 @@ Vue.component("restaurant-page", {
                     this.comments = response.data;
 
                     this.comments = this.comments.sort(function compareFn(a, b) { return b.reviewID - a.reviewID });
+                    if (this.loggedInUser.role != 'Administrator' && this.loggedInUser.role != 'Manager') {
+                        this.comments = this.comments.sort(function compareFn(a, b) { return a.status.localeCompare(b.status) });
+                    }
                     this.allComments = this.comments;
                     this.checkVisibleComments();
                     if (isRatingChanged == true)
