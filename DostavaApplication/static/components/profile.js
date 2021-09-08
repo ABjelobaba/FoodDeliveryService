@@ -41,7 +41,7 @@ Vue.component("profile", {
 
                 <div class="inputs-div">
                     <input v-model="loggedInUser.deliveryAddress" type="text" class="profile-change-input" style="width:auto" placeholder="Unesi adresu.." >
-                    <label class="error" id="nameErr" name="labels" display="hidden"> </label>
+                    <label id="addressErr" style="color:red;display:none">Knez Mihajlova 7, Beograd</label>
                 </div>
 
                 <button style=" margin: 20px auto;width:280px" class="black-btn" v-on:click="changeAddress"> Potvrdi</button>
@@ -201,27 +201,33 @@ Vue.component("profile", {
         },
         changeAddress: function() {
             this.loggedInUser.type = this.loggedInUser.role;
-            axios
-                .put("/user/editProfile", JSON.stringify(this.loggedInUser))
-                .then(response => {
-                    if (response.data != null && response.data != "") {
-                        document.querySelector('#dataSuccess').style.display = 'flex';
-                        let checkMark = document.querySelector('#dataSuccess #checkMark');
-                        checkMark.innerHTML = "&#xf10c";
+            if (!this.loggedInUser.deliveryAddress.match(/[\p{Letter}\s]+ [0-9]+,[\p{Letter}\s]+/gu)) {
+                document.querySelector('#addressErr').style.display = 'block';
+            } else {
+                document.querySelector('#addressErr').style.display = 'none';
+                axios
+                    .put("/user/editProfile", JSON.stringify(this.loggedInUser))
+                    .then(response => {
+                        if (response.data != null && response.data != "") {
+                            document.querySelector('#dataSuccess').style.display = 'flex';
+                            let checkMark = document.querySelector('#dataSuccess #checkMark');
+                            checkMark.innerHTML = "&#xf10c";
 
-                        setTimeout(function() {
-                            checkMark.innerHTML = "&#xf05d";
-                        }, 500);
+                            setTimeout(function() {
+                                checkMark.innerHTML = "&#xf05d";
+                            }, 500);
 
-                        setTimeout(function() {
-                            document.querySelector('#dataSuccess').style.display = 'none ';
-                        }, 1500);
-                    } else {
-                        this.oldPassword = '';
-                        this.newPassword = '';
-                        document.getElementById('userDataErr').innerHTML = "Neuspešna izmena podataka!";
-                    }
-                })
+                            setTimeout(function() {
+                                document.querySelector('#dataSuccess').style.display = 'none ';
+                            }, 1500);
+                        } else {
+                            this.oldPassword = '';
+                            this.newPassword = '';
+                            document.getElementById('userDataErr').innerHTML = "Neuspešna izmena podataka!";
+                        }
+                    })
+            }
+
         }
     }
 })

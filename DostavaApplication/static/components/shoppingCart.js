@@ -37,6 +37,7 @@ Vue.component("shopping-cart", {
 			<div class="entered-address" style="border:1px solid black;box-shadow:none;margin-bottom:35px" >
 				<i class="fa fa-map-marker fa-2x" style="color:black"></i>
 				<input placeholder="Unesite adresu.." class="deliveryAddress" v-model="deliveryAddress"></input>
+                <label id="addressErr" style="color:black">Knez Mihajlova 7, Beograd</label>
 			</div>
 			</div>
 				<div id="showBill-div">
@@ -175,6 +176,8 @@ Vue.component("shopping-cart", {
                 setTimeout(function() {
                     document.querySelector('.registration-success').style.display = 'none';
                 }, 2000);
+            } else if (!this.deliveryAddress.match(/[\p{Letter}\s]+ [0-9]+,[\p{Letter}\s]+/gu)) {
+                document.querySelector('#addressErr').style.color = 'red';
             } else if (this.cart.orderedItems.length == 0) {
                 this.goBack();
             } else {
