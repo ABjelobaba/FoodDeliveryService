@@ -130,6 +130,12 @@ Vue.component("suspicious-users", {
             document.querySelector('.filter-div').style.display = 'none';
             document.querySelector('.table-users').style.top = '0px';
         },
+        askToUnblock: function(user) {
+            this.mode = 'block';
+            this.question = "Da li ste sigurni da želite da odblokirate korisnika '" + user.username + "'?";
+            this.selectedUser = user;
+            document.querySelector("#question").style.display = "flex";
+        },
         askToBlock: function(user) {
             this.mode = 'block';
             this.question = "Da li ste sigurni da želite da blokirate korisnika '" + user.username + "'?";

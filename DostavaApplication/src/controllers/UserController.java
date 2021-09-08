@@ -165,7 +165,7 @@ public class UserController {
 
 			try {
 				userService.blockUser(gs.fromJson(req.params("username"), String.class));
-				return gs.toJson(userService.getAll());
+				return gs.toJson(userService.getSuspiciousUsers());
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -201,7 +201,7 @@ public class UserController {
 
 			try {
 				userService.unblockUser(gs.fromJson(req.params("username"), String.class));
-				return gs.toJson(userService.getAll());
+				return gs.toJson(userService.getSuspiciousUsers());
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
