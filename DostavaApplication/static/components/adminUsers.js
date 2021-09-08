@@ -169,6 +169,7 @@ Vue.component("admin-users", {
                 element.style.display = 'hidden';
             }
             this.mode = '';
+            location.reload();
         },
         askToBlock: function(user) {
             this.mode = 'block';
