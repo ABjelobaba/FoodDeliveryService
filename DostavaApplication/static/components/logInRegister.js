@@ -20,10 +20,10 @@ Vue.component("logIn-register", {
 	<div class="register">
 			<div class="modal" style="height: auto">
 				<div class="tab">
-					<input type="radio" name="logInRegister" id="logIn" >
-                    <label class="tab-label" for="logIn" v-on:click="tabClick('logIn')">Prijavi se</label>
+					<input type="radio" name="logInRegister" id="logIn" checked>
+                    <label class="tab-label" for="logIn" v-on:click="tabClick('logIn')" style="padding-bottom: 5px">Prijavi se</label>
 					<input type="radio" name="logInRegister" id="Register" >
-                    <label class="tab-label" for="Register" v-on:click="tabClick('register')" >Registruj se</label>
+                    <label class="tab-label" for="Register" v-on:click="tabClick('register')" style="padding-bottom: 5px" >Registruj se</label>
 				</div>
 				<div v-on:click="registrationClose" class="close">+</div>
 
@@ -93,6 +93,7 @@ Vue.component("logIn-register", {
             }
             document.querySelector('.register').style.display = 'none';
             this.mode = 'logIn';
+            document.getElementById('logIn').checked = true;
         },
         registerUser: function(event) {
             event.preventDefault();
