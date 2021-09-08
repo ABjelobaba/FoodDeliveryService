@@ -105,8 +105,10 @@ public class OrderService {
 		int remainingPoints = (int) (customer.getTotalPoints() - lostPoints);
 		if (remainingPoints < 0) {
 			customer.setTotalPoints(0);
+			customer.setCategory(getCustomerCategory(0));
 		} else {
 			customer.setTotalPoints(remainingPoints);
+			customer.setCategory(getCustomerCategory((int) remainingPoints));
 		}
 		userDAO.update(customer);
 		return customer;
