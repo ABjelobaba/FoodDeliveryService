@@ -23,6 +23,7 @@
     left: 0;
 }
 
+
 /* Fixed top menu */
 
 .nav-rp {
@@ -72,6 +73,11 @@
     width: fit-content;
     display: block;
     margin: 88px 0 37px 13%;
+    -webkit-animation: fadein 2s;
+    -moz-animation: fadein 2s;
+    -ms-animation: fadein 2s;
+    -o-animation: fadein 2s;
+    animation: fadein 2s;
 }
 
 .logo-rp {
@@ -534,6 +540,7 @@
 
 
 /* Add article */
+
 .food-or-drink-rp {
     position: fixed;
     top: 0;
@@ -627,7 +634,7 @@
 
 .edit-price .tooltiptext {
     left: 108%;
-  }
+}
 
 .edit-price:hover .tooltiptext {
     visibility: visible;
@@ -639,7 +646,7 @@
 
 .edit-quantity .tooltiptext {
     right: 108%;
-  }
+}
 
 .edit-quantity:hover .tooltiptext {
     visibility: visible;
@@ -667,6 +674,7 @@
     color: #6390A7;
     opacity: 1;
 }
+
 #article-price-input {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #8AACBD;
@@ -678,4 +686,11 @@
         margin: 0 0 0 10px;
     }
 }
-  
+
+.top-menu-rp .btn {
+    -webkit-animation: fadein 3s;
+    -moz-animation: fadein 3s;
+    -ms-animation: fadein 3s;
+    -o-animation: fadein 3s;
+    animation: fadein 3s;
+}
