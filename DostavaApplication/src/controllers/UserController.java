@@ -77,7 +77,7 @@ public class UserController {
 						session.attribute("address", ((Customer)user).getDeliveryAddress());
 					}
 				} 
-				return (user != null) ? user.isBlocked() : "";
+				return (user != null && !user.isDeleted()) ? user.isBlocked() : "";
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";
