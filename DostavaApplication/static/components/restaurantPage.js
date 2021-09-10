@@ -208,8 +208,8 @@ Vue.component("restaurant-page", {
                     <i class="fa fa-plus" aria-hidden="true" v-on:click="increaseQuantity"></i>
                 </div>
                 <div class="add-to-basket-rp" >
-                    <a href="#" v-if="loggedInUser.role == 'Customer'" v-on:click="addToCart" >Dodaj u korpu</a>
-                    <a href="#"  v-if="loggedInUser.role == 'Administrator'" v-on:click="deleteArticle"><i class="fa fa-trash-o fa-lg" aria-hidden="true" > </i> Obriši</a>
+                    <a v-if="loggedInUser.role == 'Customer'" v-on:click="addToCart" >Dodaj u korpu</a>
+                    <a v-if="loggedInUser.role == 'Administrator'" v-on:click="deleteArticle"><i class="fa fa-trash-o fa-lg" aria-hidden="true" > </i> Obriši</a>
                 </div>
 
             </div>
