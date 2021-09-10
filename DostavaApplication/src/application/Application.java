@@ -19,6 +19,10 @@ public class Application {
 		port(8080);
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
 
+		CuisineDAO cuisineDAO = new CuisineDAO("./files/cuisines.json");
+		CuisineService cuisineService = new CuisineService(cuisineDAO);
+		CuisineController cuisineController = new CuisineController(cuisineService);
+
 		UserDAO userDAO = new UserDAO("./files/users.json");
 		UserService userService = new UserService(userDAO);
 		UserController userController = new UserController(userService);
