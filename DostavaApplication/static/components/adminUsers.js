@@ -220,8 +220,15 @@ Vue.component("admin-users", {
                 .put("user/" + this.selectedUser.username)
                 .then(response => {
                     if (response.data != null) {
-                        this.users = response.data;
-                        this.searchResults = response.data;
+
+                        axios
+                            .get("user/getAll")
+                            .then(response => {
+                                if (response.data != null) {
+                                    this.users = response.data;
+                                    this.searchResults = response.data;
+                                }
+                            })
                     }
 
                 })
@@ -231,8 +238,15 @@ Vue.component("admin-users", {
                 .put("user/unblock/" + this.selectedUser.username)
                 .then(response => {
                     if (response.data != null) {
-                        this.users = response.data;
-                        this.searchResults = response.data;
+                        
+                        axios
+                            .get("user/getAll")
+                            .then(response => {
+                                if (response.data != null) {
+                                    this.users = response.data;
+                                    this.searchResults = response.data;
+                                }
+                            })
                     }
 
                 })
