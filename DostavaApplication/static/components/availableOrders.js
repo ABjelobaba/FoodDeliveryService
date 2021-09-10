@@ -10,13 +10,6 @@ Vue.component("available-orders", {
                 { id: 'Delivered', value: 'Dostavljena' },
                 { id: 'Cancelled', value: 'Otkazana' }
             ],
-            cuisines: [
-                { id: 'italian', value: 'Italijanska' },
-                { id: 'chinese', value: 'Kineska' },
-                { id: 'barbecue', value: 'Rostilj' },
-                { id: 'american', value: 'Americka hrana' },
-                { id: 'sweets', value: 'Poslastice' }
-            ],
             orders: [],
             searchText: '',
             fromPrice: '',
@@ -113,6 +106,7 @@ Vue.component("available-orders", {
                     this.orders = response.data;
                 }
             })
+
     },
     methods: {
         logOut: function(event) {

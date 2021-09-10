@@ -3,13 +3,7 @@ Vue.component("home", {
         return {
             loggedInUser: '',
             deliveryAddress: '',
-            cuisines: [
-                { id: 'American', value: 'Američka' },
-                { id: 'Barbecue', value: 'Roštilj' },
-                { id: 'Chinese', value: 'Kineska' },
-                { id: 'Italian', value: 'Italijanska' },
-                { id: 'Mexican', value: 'Meksička' }
-            ],
+            cuisines: '',
             ratings: [
                 { id: '0 to 1', value: '0 - 1' },
                 { id: '1 to 2', value: '1 - 2' },
@@ -48,6 +42,12 @@ Vue.component("home", {
                 }
             })
 
+        axios.get("/cuisines/getAll")
+            .then(response => {
+                if (response.data != null) {
+                    this.cuisines = response.data;
+                }
+            })
 
     },
     template: `
@@ -118,8 +118,8 @@ Vue.component("home", {
 					<h2 style="text-align: center;" >Kuhinje</h2>
 					<div class="checkbox-btn-container-dark">
 						<div v-for="cuisine in cuisines">
-							<input type="checkbox" v-bind:id=cuisine.id name="cuisineTypes" v-bind:value=cuisine.id v-on:change="findRestaurants">
-							<label  v-bind:for=cuisine.id>{{cuisine.value}}</label>
+							<input type="checkbox" v-bind:id="cuisine.cuisineID" name="cuisineTypes" v-bind:value="cuisine.cuisineID" v-on:change="findRestaurants">
+							<label  v-bind:for="cuisine.cuisineID">{{cuisine.value}}</label>
 						</div>
 					</div>
 					<h2 style="text-align: center;" >Ocene</h2>
@@ -322,7 +322,7 @@ Vue.component("home", {
                     this.nameSort = '';
                     locationSort.innerHTML = '<label>Lokacija</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                     this.locationSort = '';
-                } 
+                }
             } else {
                 nameSort.innerHTML = '<label>Naziv</label> <i class="fa fa-sort" aria-hidden="true"></i>';
                 this.nameSort = '';

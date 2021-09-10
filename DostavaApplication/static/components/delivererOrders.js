@@ -3,13 +3,7 @@ Vue.component("deliverer-orders", {
         return {
             mode: 'all',
             selectedOrder: undefined,
-            cuisines: [
-                { id: 'Italian', value: 'Italijanska' },
-                { id: 'Chinese', value: 'Kineska' },
-                { id: 'Barbecue', value: 'Rostilj' },
-                { id: 'American', value: 'Americka hrana' },
-                { id: 'Sweets', value: 'Poslastice' }
-            ],
+            cuisines: '',
             orders: [],
             originalOrders: [],
             hover: '',
@@ -28,6 +22,13 @@ Vue.component("deliverer-orders", {
                 if (response.data != null) {
                     this.orders = response.data;
                     this.originalOrders = response.data;
+                }
+            })
+
+        axios.get("/cuisines/getAll")
+            .then(response => {
+                if (response.data != null) {
+                    this.cuisines = response.data;
                 }
             })
     },
@@ -54,8 +55,8 @@ Vue.component("deliverer-orders", {
                 <h2>Tip restorana</h2>
                 <div class="checkbox-btn-container-dark">
                     <div v-for="cuisine in cuisines">
-                        <input type="checkbox" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id v-on:change="findOrder">
-                        <label  v-bind:for=cuisine.id>{{cuisine.value}}</label>
+                        <input type="checkbox" v-bind:id="cuisine.cuisineID" name="cuisine" v-bind:value="cuisine.cuisineID" v-on:change="findOrder">
+                        <label  v-bind:for="cuisine.cuisineID">{{cuisine.value}}</label>
                     </div>
                 </div>
             </div>

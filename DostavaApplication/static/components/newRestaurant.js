@@ -3,13 +3,7 @@ Vue.component("new-restaurant", {
         return {
             mode: 'dd',
             searchText: '',
-            cuisines: [
-                { id: 'AmericanFood', value: 'Američka' },
-                { id: 'BarbecueFood', value: 'Roštilj' },
-                { id: 'ChineseFood', value: 'Kineska' },
-                { id: 'ItalianFood', value: 'Italijanska' },
-                { id: 'MexicanFood', value: 'Meksička' }
-            ],
+            cuisines: '',
             managers: null,
             restaurantName: '',
             street: '',
@@ -32,6 +26,13 @@ Vue.component("new-restaurant", {
                 if (response.data != null) {
                     this.managers = response.data;
                     this.searchResults = response.data;
+                }
+            })
+
+        axios.get("/cuisines/getAll")
+            .then(response => {
+                if (response.data != null) {
+                    this.cuisines = response.data;
                 }
             })
     },
@@ -57,15 +58,15 @@ Vue.component("new-restaurant", {
 							<label class="error" id="restaurantLogoErr" name="labels" display="hidden"> </label>
 
 							<div class="image-preview" id="imagePreview">
-								<img style="max-width: 60%;" src="" alt="Image Preview" class="image-preview__image">
+								<img style="max-width: 60%;max-height: 110px;" src="" alt="Image Preview" class="image-preview__image" >
 								<span class="image-preview__default-text">Image Preview</span>
 							</div>
 
 							<label style="color: white;display: block;margin:15px 0 0 0;font-weight: bold;">Odaberite tip hrane:</label>
 							<div class="radio-btn-container" style="width: 60%;height: 100px;box-shadow: 10px 20px 20px 0 rgba(0, 0, 0, 0.2);">
                                 <div v-for="cuisine in cuisines">
-                                    <input type="radio" v-bind:id=cuisine.id name="cuisine" v-bind:value=cuisine.id>
-                                    <label  class="radio-label" name="cuisine" v-bind:for=cuisine.id>{{cuisine.value}}</label>
+                                    <input type="radio" v-bind:id="cuisine.cuisineID + 'Food'" name="cuisineFood" v-bind:value="cuisine.cuisineID + 'Food'">
+                                    <label  class="radio-label" name="cuisine" v-bind:for="cuisine.cuisineID + 'Food'">{{cuisine.value}}</label>
                                 </div>
 							</div>
 							<label style="margin-top: -8px;" class="error" id="restaurantTypeErr" name="labels" display="hidden"> </label>
@@ -296,17 +297,14 @@ Vue.component("new-restaurant", {
                     errors = true;
                 }
 
-                if (document.getElementById('ItalianFood').checked) {
-                    this.restaurantType = 'Italian';
-                } else if (document.getElementById('ChineseFood').checked) {
-                    this.restaurantType = 'Chinese';
-                } else if (document.getElementById('BarbecueFood').checked) {
-                    this.restaurantType = 'Barbecue';
-                } else if (document.getElementById('MexicanFood').checked) {
-                    this.restaurantType = 'Mexican';
-                } else if (document.getElementById('AmericanFood').checked) {
-                    this.restaurantType = 'American';
-                } else {
+                cbs = document.getElementsByName('cuisineFood');
+                for (i = 0; i < cbs.length; i++) {
+                    if (cbs[i].checked) {
+                        this.restaurantType = cbs[i].value.slice(0, -4);
+                        break;
+                    }
+                }
+                if (!this.restaurantType) {
                     document.getElementById('restaurantTypeErr').innerHTML = '<i class="fa fa-exclamation-circle"></i> Morate selektovati tip hrane!';
                     errors = true;
                 }
@@ -382,6 +380,23 @@ Vue.component("new-restaurant", {
                             }
                         })
 
+                    this.restaurantName = '';
+                    this.restaurantLogo = '';
+                    this.restaurantType = '';
+                    this.longitude = '';
+                    this.latitude = '';
+                    this.street = '';
+                    this.houseNumber = '';
+                    this.city = '';
+                    this.postcode = '';
+                    cb = document.getElementsByName('cuisineFood');
+                    for (i = 0; i < cb.length; i++) {
+                        cb[i].checked = false;
+                    }
+                    let imagePreviewContainer = document.getElementById("imagePreview");
+                    let previewImage = imagePreviewContainer.querySelector(".image-preview__image");
+                    previewImage.setAttribute("src", "");
+
                 }
 
 
@@ -401,13 +416,22 @@ Vue.component("new-restaurant", {
             }
         },
         newRestaurantClose: function(event) {
-            this.role = 'Odaberite ulogu korisnika..';
-            this.username = '';
-            this.password = '';
-            this.name = '';
-            this.surname = '';
-            this.gender = 'Odaberite pol..';
-            $("input[type=date]").val("");
+            this.restaurantName = '';
+            this.restaurantType = '';
+            this.restaurantLogo = '';
+            this.longitude = '';
+            this.latitude = '';
+            this.street = '';
+            this.houseNumber = '';
+            this.city = '';
+            this.postcode = '';
+            cb = document.getElementsByName('cuisineFood');
+            for (i = 0; i < cb.length; i++) {
+                cb[i].checked = false;
+            }
+            let imagePreviewContainer = document.getElementById("imagePreview");
+            let previewImage = imagePreviewContainer.querySelector(".image-preview__image");
+            previewImage.setAttribute("src", "");
             for (element of document.getElementsByName('labels')) {
                 element.innerHTML = '';
                 element.style.display = 'hidden';
