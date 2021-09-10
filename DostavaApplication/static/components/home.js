@@ -238,13 +238,15 @@ Vue.component("home", {
             document.querySelector('.register').style.display = 'flex';
         },
         order: function(event) {
-            if (this.deliveryAddress.match(/[\p{Letter}\s]+ [0-9]+,[\p{Letter}\s]+/gu)) {
+            if (!this.loggedInUser) {
+                this.register();
+            } else if (this.deliveryAddress.match(/[\p{Letter}\s]+ [0-9]+,[\p{Letter}\s]+/gu)) {
 
                 axios
                     .post('/cart/searchAddress', JSON.stringify(this.deliveryAddress))
                     .then(response => {
                         if (response.data != null && response.data != "") {
-                            window.location.href = "#/account?" + this.deliveryAddress;
+                            window.location.href = "#/account";
                         }
                     })
             } else {

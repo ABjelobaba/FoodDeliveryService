@@ -124,12 +124,15 @@ Vue.component("shopping-cart", {
                 }
             })
 
-        axios.get("/cart/getAddress")
-            .then(response => {
-                if (response.data != null) {
-                    this.deliveryAddress = response.data;
-                }
-            })
+        if (this.loggedInUser.deliveryAddress == undefined || this.loggedInUser.deliveryAddress == '') {
+            axios.get("/cart/getAddress")
+                .then(response => {
+                    if (response.data != null) {
+                        this.deliveryAddress = response.data;
+                    }
+                })
+        }
+
 
 
 
@@ -160,8 +163,7 @@ Vue.component("shopping-cart", {
                 if (this.deliveryAddress == '' || this.deliveryAddress == undefined) {
                     window.location.href = "#/";
                 } else {
-                    window.location.href = "#/account?" + this.deliveryAddress.replace(' ', '%20');
-                    window.location.reload(true);
+                    router.go(-1);
                 }
             } else {
                 window.location.href = "#/restaurant?id=" + this.cart.restaurantID;

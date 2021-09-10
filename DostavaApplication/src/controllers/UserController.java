@@ -118,6 +118,9 @@ public class UserController {
 				User updatedUser = userService.changePassword(user, gs.fromJson(req.body(), ChangePasswordDTO.class));
 				if(updatedUser != null){
 					session.attribute("user", updatedUser);
+					if(updatedUser.getRole() == Role.Customer){
+						session.attribute("address", ((Customer)updatedUser).getDeliveryAddress());
+					}
 				}
 				return (updatedUser != null) ? gs.toJson(updatedUser) : "";
 			} catch (Exception e) {

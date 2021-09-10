@@ -24,6 +24,7 @@ Vue.component("account", {
                     window.location.href = '#/';
                 }
             })
+
     },
     updated: function() {
 
@@ -127,14 +128,8 @@ Vue.component("account", {
                     this.cart = response.data;
                 }
             })
-        if (window.location.href.split('?').length == 2) {
-            let query = window.location.href.split('?');
-            this.deliveryAddress = query[1].replace('%20', ' ');
-            this.deliveryAddress = this.deliveryAddress.replace('%20', ' ');
-            this.deliveryAddress = this.deliveryAddress.replace(',%20', ', ');
-        }
 
-        if ((this.deliveryAddress == '' || this.deliveryAddress == undefined) && window.location.href.includes('cart')) {
+        if (this.loggedInUser.role = 'Customer' && (window.location.href.includes('cart') || window.location.href == 'http://localhost:8080/#/account')) {
             axios.get("/cart/getAddress")
                 .then(response => {
                     if (response.data != null) {
