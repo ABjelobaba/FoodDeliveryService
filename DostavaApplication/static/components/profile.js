@@ -70,8 +70,8 @@ Vue.component("profile", {
                         <label class="input-label">Pol:</label>
                         <select v-model="loggedInUser.gender" class="profile-change-select">
                                 <option hidden>Odaberite pol..</option>
-                                <option value="Male">MUŠKO</option>
-                                <option value="Female">ŽENSKO</option>
+                                <option value="Male">Muško</option>
+                                <option value="Female">Žensko</option>
                             </select>
                     </div>
                     <div class="inputs-div">
