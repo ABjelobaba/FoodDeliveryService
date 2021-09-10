@@ -136,7 +136,7 @@ Vue.component("admin-restaurants", {
 
 		
         <new-restaurant id="newRestaurant"></new-restaurant>
-		<success></success>
+		<success :text="'Uspešno ste kreirali restoran!'"></success>
         <question :question="question" v-on:answer="answer"></question>
 	</div>
 	`,

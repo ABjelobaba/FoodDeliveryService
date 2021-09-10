@@ -113,7 +113,7 @@ Vue.component("admin-users", {
         </table>
     </div>
 
-    <new-user v-if="mode == 'newUser'" v-on:newUserClose="newUserClose"></new-user>
+    <new-user v-if="mode == 'newUser'" v-on:newUserClose="newUserClose" v-on:newUserRegistered="newUserRegistered"></new-user>
     <success></success>
     <question :question="question" v-on:answer="answer"></question>
     
@@ -169,7 +169,6 @@ Vue.component("admin-users", {
                 element.style.display = 'hidden';
             }
             this.mode = '';
-            location.reload();
         },
         askToBlock: function(user) {
             this.mode = 'block';
