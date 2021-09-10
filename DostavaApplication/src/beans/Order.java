@@ -17,7 +17,9 @@ public class Order implements IEntity<String>{
 	private boolean deleted;
 	private String address;
 	private List<DeliveryRequest> deliveryRequests;
-	
+	private boolean reviewed;
+
+
 	public Order(List<OrderedItem> orderedItems, int restaurantID, Date orderDate, double price,
 			String customerName, String customerSurname, String customerUsername, OrderStatus status, 
 			String address) {
@@ -33,6 +35,7 @@ public class Order implements IEntity<String>{
 		this.deleted = false;
 		this.address = address;
 		this.deliveryRequests = new ArrayList<DeliveryRequest>();
+		this.reviewed = false;
 	}
 
 
@@ -137,6 +140,16 @@ public class Order implements IEntity<String>{
 	public void setDeliveryRequests(List<DeliveryRequest> deliveryRequests) {
 		this.deliveryRequests = deliveryRequests;
 	}
+	
+	public boolean isReviewed() {
+		return reviewed;
+	}
+
+
+	public void setReviewed(boolean isReviewed) {
+		this.reviewed = isReviewed;
+	}
+
 
 	@Override
 	public String getID() {

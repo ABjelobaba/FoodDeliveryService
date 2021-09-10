@@ -286,5 +286,17 @@ public class OrderService {
 		
 		userDAO.update(customer);
 	}
+	
+	public Customer rateOrder(String orderID, String customerUsername) throws JsonSyntaxException, IOException {
+		Customer customer = (Customer) userDAO.getByID(customerUsername);
+		for (Order order : customer.getAllOrders()) {
+			if (order.getID().equals(orderID)) {
+				order.setReviewed(true);
+				break;
+			}
+		}
+		userDAO.update(customer);
+		return customer;
+	}
 
 }

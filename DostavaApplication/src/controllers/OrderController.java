@@ -202,5 +202,19 @@ public class OrderController {
 			}
 		});
 		
+		put("/order/rate/:orderID/:username", (req, res) -> {
+			res.type("application/json");
+
+			try {
+				Customer customer = orderService.rateOrder(req.params("orderID"), req.params("username"));
+				Session session = req.session();
+	            session.attribute("user", customer);
+				
+				return gs.toJson("ok");
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
     }
 }

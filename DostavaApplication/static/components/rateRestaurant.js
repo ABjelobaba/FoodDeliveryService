@@ -80,7 +80,15 @@ Vue.component("rate-restaurant", {
                     .post('/reviews/addReview', JSON.stringify(reviewDTO))
                     .then(response => {
                         if (response.data != null && response.data != "") {
-                            this.$emit('orderRated');
+
+                            axios
+                                .put('/order/rate/' + this.selectedOrder.orderID + '/' + this.selectedOrder.customerUsername)
+                                .then(response => {
+                                    if (response.data != null && response.data != "") {
+                                        this.$emit('orderRated');
+      
+                                    }
+                                })
                         }
                     })
 

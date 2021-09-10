@@ -25,16 +25,6 @@ Vue.component("user-orders", {
         }
     },
     created: function() {
-        axios
-            .get("user/getLoggedInUser")
-            .then(response => {
-                if (response.data != null) {
-                    this.orders = response.data.allOrders;
-                    this.originalOrders = this.orders;
-                } else {
-                    window.location.href = '#/';
-                }
-            })
         axios.get("/cuisines/getAll")
             .then(response => {
                 if (response.data != null) {
@@ -119,7 +109,7 @@ Vue.component("user-orders", {
                     </td>
                     <td>{{order.price}}.00 RSD</td>
                     <td >
-                        <div v-if="order.status == 'Delivered' && !order.comment" class="order-rate-btn"  v-on:click="openRateModal(order)"
+                        <div v-if="order.status == 'Delivered' && !order.reviewed" class="order-rate-btn"  v-on:click="openRateModal(order)"
                             @mouseover="hover = order.orderID + 'r'"
                             @mouseleave="hover = ''">
 
@@ -174,6 +164,17 @@ Vue.component("user-orders", {
     mounted() {
         window.scrollTo(0, 0);
         var today = new Date().toISOString().split('T')[0];
+
+        axios
+            .get("user/getLoggedInUser")
+            .then(response => {
+                if (response.data != null) {
+                    this.orders = response.data.allOrders;
+                    this.originalOrders = this.orders;
+                } else {
+                    window.location.href = '#/';
+                }
+            })
 
         var b = document.getElementById('filter-btn-do');
         this.rect = b.getBoundingClientRect();
@@ -258,7 +259,7 @@ Vue.component("user-orders", {
         },
         orderRated: function(event) {
             this.modalMode = "";
-            this.selectedOrder.comment = true;
+            this.selectedOrder.reviewed = true;
             this.rateClose();
         },
         rateClose: function(event) {
