@@ -9,13 +9,7 @@ Vue.component("restaurant-page", {
                 { value: 'WaitingForApproval', text: 'Čeka obradu' }
             ],
             restaurant: "",
-            restaurantTypes: [
-                { id: 'Italian', value: 'italijanska hrana' },
-                { id: 'Chinese', value: 'kineska hrana' },
-                { id: 'Barbecue', value: 'roštilj' },
-                { id: 'Mexican', value: 'meksička hrana' },
-                { id: 'American', value: 'američka hrana' }
-            ],
+            restaurantTypes: '',
             address: null,
             streetAddress: null,
             city: null,
@@ -57,6 +51,13 @@ Vue.component("restaurant-page", {
             .then(response => {
                 if (response.data != null) {
                     this.cart = response.data;
+                }
+            })
+
+        axios.get("/cuisines/getAll")
+            .then(response => {
+                if (response.data != null) {
+                    this.restaurantTypes = response.data;
                 }
             })
     },
@@ -110,7 +111,7 @@ Vue.component("restaurant-page", {
                 </div>
 
                 <div class="bottom-info-rp">
-                    <h3 v-for="restaurantType in restaurantTypes" v-if="restaurantType.id == restaurant.type">{{restaurantType.value}}</h3>
+                    <h3 v-for="restaurantType in restaurantTypes" v-if="restaurantType.cuisineID == restaurant.type">{{restaurantType.fullValue}}</h3>
 
                     <div class="full-address-rp">
                         <p>{{streetAddress}}</p>
@@ -496,7 +497,7 @@ Vue.component("restaurant-page", {
                 let articleDTO = {
                     name: this.articleName.trim(),
                     price: this.articlePrice,
-                    type: this.articleType, 
+                    type: this.articleType,
                     restaurantID: this.restaurant.restaurantID,
                     quantity: quantityOfArticle,
                     description: this.articleDescription,

@@ -3,11 +3,13 @@ package beans;
 public class Cuisine implements IEntity<String>{
     private String cuisineID;
     private String value;
+    private String fullValue;
 	private boolean deleted;
 
-    public Cuisine(String cuisineID, String value) {
+    public Cuisine(String cuisineID,String fullValue, String value) {
         this.cuisineID = cuisineID;
         this.value = value;
+        this.fullValue = fullValue;
         this.deleted = false;
     }
 
@@ -19,6 +21,13 @@ public class Cuisine implements IEntity<String>{
         this.value = value;
     }
 
+    public String getFullValue() {
+        return this.fullValue;
+    }
+
+    public void setFullValue(String fullValue) {
+        this.fullValue = fullValue;
+    }
     @Override
     public String getID() {
         return cuisineID;
