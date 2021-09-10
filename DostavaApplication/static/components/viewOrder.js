@@ -51,7 +51,9 @@ Vue.component("view-order", {
                     </div>
                     
                     <div style="margin-top: 7%;" >
+                        <div style="overflow-y: auto; max-height: 290px;">
                         <article-in-order v-for="article in selectedOrder.orderedItems" v-bind:key="article.item.name" v-bind:article="article"></article-in-order>
+                        </div>
 
                         <div style="border:1px solid white;margin: 5% 10% 2%" ></div>
                         <div class="price-calculation-order-view">
