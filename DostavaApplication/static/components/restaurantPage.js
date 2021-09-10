@@ -175,7 +175,7 @@ Vue.component("restaurant-page", {
             <div id="reviews-id" class="restaurant-reviews-rp">
                 <h1>Utisci</h1>
                 <ul class="user-reviews-list-rp">
-                    <comment-status v-for="c in computedComment" v-on:askToDelete="askToDeleteComment"
+                    <comment-status v-for="c in computedComment" v-on:askToDelete="askToDeleteComment"  v-on:updateComments="updateComments"
                             v-if="(loggedInUser.role != 'Administrator' && loggedInUser.role != 'Manager' && c.status == 'Approved') || loggedInUser.role == 'Administrator' || loggedInUser.role == 'Manager'"
                             v-bind:key="c.reviewID" v-bind:comment="c" v-bind:loggedInRole="loggedInUser.role" 
                             v-bind:restaurantID="restaurant.restaurantID" v-bind:managersRestaurant="loggedInUser.restaurantID"></comment-status>
