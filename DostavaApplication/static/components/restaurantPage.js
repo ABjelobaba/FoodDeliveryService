@@ -329,9 +329,10 @@ Vue.component("restaurant-page", {
         </div>
     </div>
 
-    <success :text="'Neophodno je da se prijavite kako bi naručili željene proizvode!'"></success>
+    <success :text="'Neophodno je da se prijavite kako bi naručili željene proizvode!'" id="registerToOrder-success"></success>
     <logIn-register></logIn-register>
     <question :question="question" v-on:answer="answer"></question>
+    <success :text="'Nije moguće poručiti iz više različitih restorana!'" id="articleInCart-success"></success>
 </div>
 
 
@@ -380,11 +381,11 @@ Vue.component("restaurant-page", {
                     }
                 }
             } else {
-                document.querySelector('.registration-success').style.display = 'flex';
-                let checkMark = document.getElementById('checkMark');
+                document.querySelector('#registerToOrder-success').style.display = 'flex';
+                let checkMark = document.querySelector('#registerToOrder-success #checkMark');
                 checkMark.innerHTML = "&#xf06a";
                 setTimeout(function() {
-                    document.querySelector('.registration-success').style.display = 'none';
+                    document.querySelector('#registerToOrder-success').style.display = 'none';
                 }, 2000);
             }
         },
@@ -608,21 +609,31 @@ Vue.component("restaurant-page", {
             this.selectedArticleQuantity = this.selectedArticleQuantity + 1;
         },
         addToCart: function() {
-            axios
-                .post(
-                    '/cart/addArticle',
-                    JSON.stringify({
-                        restaurantID: this.restaurant.restaurantID,
-                        item: this.selectedArticle,
-                        quantity: this.selectedArticleQuantity
+            if (this.cart.restaurantID != this.restaurant.restaurantID && this.cart.restaurantID != -1) {
+                document.querySelector('#articleInCart-success').style.display = 'flex';
+                let checkMark = document.querySelector('#articleInCart-success #checkMark');
+                checkMark.innerHTML = "&#xf06a";
+                setTimeout(function() {
+                    document.querySelector('#articleInCart-success').style.display = 'none';
+                }, 2000);
+            } else {
+                axios
+                    .post(
+                        '/cart/addArticle',
+                        JSON.stringify({
+                            restaurantID: this.restaurant.restaurantID,
+                            item: this.selectedArticle,
+                            quantity: this.selectedArticleQuantity
+                        })
+                    )
+                    .then(response => {
+                        if (response.data != null && response.data != "") {
+                            this.cart = response.data;
+                            this.closeArticle();
+                        }
                     })
-                )
-                .then(response => {
-                    if (response.data != null && response.data != "") {
-                        this.cart = response.data;
-                        this.closeArticle();
-                    }
-                })
+            }
+
 
         },
         openCart: function() {

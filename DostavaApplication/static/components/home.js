@@ -38,7 +38,20 @@ Vue.component("home", {
             .then(response => {
                 if (response.data != null) {
                     this.loggedInUser = response.data;
-                    this.deliveryAddress = this.loggedInUser.deliveryAddress;
+                    if (this.deliveryAddress == '' || this.deliveryAddress == undefined) {
+                        axios
+                            .get("cart/getAddress")
+                            .then(response => {
+                                if (response.data != null) {
+                                    this.deliveryAddress = response.data;
+                                    if (this.deliveryAddress == '' || this.deliveryAddress == undefined) {
+                                        this.deliveryAddress = this.loggedInUser.deliveryAddress;
+                                    }
+                                }
+                            })
+                    }
+
+
                 }
             })
 
@@ -48,6 +61,7 @@ Vue.component("home", {
                     this.cuisines = response.data;
                 }
             })
+
 
     },
     template: `
@@ -173,25 +187,6 @@ Vue.component("home", {
 	`,
     mounted() {
         window.scrollTo(0, 0);
-
-        axios
-            .get("user/getLoggedInUser")
-            .then(response => {
-                if (response.data != null) {
-                    this.loggedInUser = response.data;
-
-                    axios
-                        .get("cart/getAddress")
-                        .then(response => {
-                            if (response.data != null) {
-                                this.deliveryAddress = response.data;
-                            }
-                        })
-
-
-                }
-            })
-
 
         window.addEventListener('resize', function(event) {
             var b = document.getElementById('filter-btn-do');
