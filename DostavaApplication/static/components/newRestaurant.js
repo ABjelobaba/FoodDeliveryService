@@ -336,8 +336,8 @@ Vue.component("new-restaurant", {
                         name: this.restaurantName,
                         type: this.restaurantType,
                         logo: this.restaurantLogo,
-                        longitude: Math.round((this.longitude + Number.EPSILON) * 1000000) / 1000000,
-                        latitude: Math.round((this.latitude + Number.EPSILON) * 1000000) / 1000000,
+                        longitude: Math.round((Number(this.longitude) + Number.EPSILON) * 1000000) / 1000000,
+                        latitude: Math.round((Number(this.latitude) + Number.EPSILON) * 1000000) / 1000000,
                         streetAddress: this.street + ' ' + this.houseNumber,
                         city: this.city,
                         zipCode: this.postcode
