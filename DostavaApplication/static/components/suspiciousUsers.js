@@ -91,7 +91,7 @@ Vue.component("suspicious-users", {
                     </td>
                 </tr>
                 <tr v-if="searchResults.length == 0">
-                    <td colspan="6"><h3  style="text-align:center" >Nema treženih korisnika</h3></td>
+                    <td colspan="6"><h3  style="text-align:center" >Nema traženih korisnika</h3></td>
                 </tr>
             </tbody>
 
