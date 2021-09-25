@@ -31,3 +31,11 @@ Implemented in Eclipse using: _Vue.js_, _Spark_, _JavaScript_, _Java_, _HTML_ an
 &emsp;&emsp; ◦ Overview of assigned and already delivered orders </br>
 &emsp;&emsp; ◦ Able to send requests for available orders </br>
 
+## Screenshots
+
+![FoodDeliveryService](DostavaApplication/static/images/screenshot-restaurants.png)
+![FoodDeliveryService](DostavaApplication/static/images/screenshot-restaurantPage.png)
+![FoodDeliveryService](DostavaApplication/static/images/screenshot-cart.png)
+![FoodDeliveryService](DostavaApplication/static/images/screenshot-users.png)
+![FoodDeliveryService](DostavaApplication/static/images/screenshot-profile.png)
+![FoodDeliveryService](DostavaApplication/static/images/screenshot-orders.png)
